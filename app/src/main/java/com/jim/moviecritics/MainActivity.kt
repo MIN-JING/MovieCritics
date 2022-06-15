@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.jim.moviecritics.data.Actor
-import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.Rating
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.databinding.ActivityMainBinding
-import java.util.*
+
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,9 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             Log.d("Jim", "Button onClick")
             loadMockDataMovie()
+            loadMockDataComment()
+            loadMockDataScore()
+            loadMockDataUser()
             listenData()
         }
     }
@@ -35,13 +38,69 @@ class MainActivity : AppCompatActivity() {
 
         movies.addSnapshotListener { snapshots, e ->
             if (e != null) {
-                Log.w("Jim", "listen: error", e)
+                Log.w("Jim", "movies listen: error", e)
                 return@addSnapshotListener
             }
             if (snapshots != null) {
                 for (dc in snapshots.documents) {
-                    Log.d("Jim", "snapshots.documents = ${dc.data}")
-                    Log.d("Jim", "snapshots.documents = ${dc.data?.get("title")}")
+                    Log.d("Jim", "movies snapshots.documents = ${dc.data}")
+                    Log.d("Jim", "movies dc.data?.get(\"title\") = ${dc.data?.get("title")}")
+
+                }
+
+            }
+        }
+
+        val comments = FirebaseFirestore.getInstance()
+            .collection("comment")
+            .orderBy("createdTime", Query.Direction.DESCENDING)
+
+        comments.addSnapshotListener { snapshots, e ->
+            if (e != null) {
+                Log.w("Jim", "comments listen: error", e)
+                return@addSnapshotListener
+            }
+            if (snapshots != null) {
+                for (dc in snapshots.documents) {
+                    Log.d("Jim", "comments snapshots.documents = ${dc.data}")
+                    Log.d("Jim", "comments dc.data?.get(\"content\") = ${dc.data?.get("content")}")
+
+                }
+
+            }
+        }
+
+        val scores = FirebaseFirestore.getInstance()
+            .collection("score")
+            .orderBy("createdTime", Query.Direction.DESCENDING)
+        scores.addSnapshotListener { snapshots, e ->
+            if (e != null) {
+                Log.w("Jim", "scores listen: error", e)
+                return@addSnapshotListener
+            }
+            if (snapshots != null) {
+                for (dc in snapshots.documents) {
+                    Log.d("Jim", "scores snapshots.documents = ${dc.data}")
+                    Log.d("Jim", "scores dc.data?.get(\"average\") = ${dc.data?.get("average")}")
+
+                }
+
+            }
+        }
+
+        val users = FirebaseFirestore.getInstance()
+            .collection("user")
+            .orderBy("id", Query.Direction.DESCENDING)
+
+        users.addSnapshotListener { snapshots, e ->
+            if (e != null) {
+                Log.w("Jim", "users listen: error", e)
+                return@addSnapshotListener
+            }
+            if (snapshots != null) {
+                for (dc in snapshots.documents) {
+                    Log.d("Jim", "users snapshots.documents = ${dc.data}")
+                    Log.d("Jim", "users dc.data?.get(\"name\") = ${dc.data?.get("name")}")
 
                 }
 
@@ -84,76 +143,61 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadMockDataComment() {
-
+        val comments = FirebaseFirestore.getInstance().collection("comment")
+        val document = comments.document()
+        val data = Comment(
+            "23456",
+            12344,
+            "tt0343818",
+            Timestamp.now(),
+            "Would Google LaMDA chat robot become a human?",
+            listOf(12345, 45678, 89012),
+            listOf(12345, 45678, 89012)
+        )
+        document.set(data)
     }
 
     private fun loadMockDataScore() {
+        val scores = FirebaseFirestore.getInstance().collection("score")
+        val document = scores.document()
+        val tempLeisure = 5.6
+        val tempHit = 6.5
+        val tempCast = 7.2
+        val tempMusic = 9.3
+        val tempStory = 8.7
+        val average = (tempLeisure + tempHit + tempMusic + tempStory)/5
 
+        val data = Score(
+            123345,
+            67891,
+            "tt0343818",
+            Timestamp.now(),
+            tempLeisure,
+            tempHit,
+            tempCast,
+            tempMusic,
+            tempStory,
+            average
+        )
+        document.set(data)
     }
 
     private fun loadMockDataUser() {
-
+        val users = FirebaseFirestore.getInstance().collection("user")
+        val document = users.document()
+        val data = User(
+            12345,
+            "MIN-JING",
+            "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
+            "Taipei City",
+            "instagram.com",
+            "twitter.com",
+            listOf(123, 456, 789),
+            listOf(123, 456, 789),
+            listOf(123, 456, 789),
+            listOf("tt0343818","tt0343818"),
+            listOf("tt0343818","tt0343818")
+        )
+        document.set(data)
     }
 }
-//    private fun listenData(
-//        allData: MutableList<DataClass>?,
-//    ) {
-//
-//        val articles = FirebaseFirestore.getInstance()
-//            .collection("articles")
-//            .orderBy("createdTime", Query.Direction.DESCENDING)
-//
-//
-//        articles.addSnapshotListener { snapshots, e ->
-//            if (e != null) {
-//                Log.w("Jim", "listen:error", e)
-//                return@addSnapshotListener
-//            }
-//            for (dc in snapshots!!.documents) {
-//                Log.d("Jim", " snapshots!!.documents ${dc.data}")
-//                Log.d("Jim", " dc.data?.get(\"title\") ${dc.data?.get("title")}")
-//                Log.d("Jim", "dc.data?.get(\"author\") = ${dc.data?.get("author")}")
-//                dc.data?.get("author")
-//                val tempAuthor = dc.data?.get("author") as HashMap<*, *>
-//                Log.d("Jim", "author HashMap<*, *> = ${tempAuthor?.get("email")}")
-//
-//                val tempData = DataClass(
-//                    AuthorData(
-//                        tempAuthor?.get("email") as String,
-//                        tempAuthor?.get("id") as String,
-//                        tempAuthor?.get("name") as String,
-//                    ),
-//                    dc.data?.get("title") as String,
-//                    dc.data?.get("content") as String,
-//                    dc.data?.get("createdTime") as Long,
-//                    dc.data?.get("id") as String,
-//                    dc.data?.get("category") as String
-//                )
-//                Log.d("Jim", "tempData = $tempData")
-//
-//                allData?.add(tempData)
-//                Log.d("Jim", "allData?.add = $allData")
-//                mAdapter.submitList(allData)
-//
-//            }
-//        }
-//    }
-//
-//    private fun addData() {
-//        val articles = FirebaseFirestore.getInstance()
-//            .collection("articles")
-//        val document = articles.document()
-//        val data = hashMapOf(
-//            "author" to hashMapOf(
-//                "email" to "wayne@school.appworks.tw",
-//                "id" to "waynechen323",
-//                "name" to "AKA小安老師"
-//            ),
-//            "title" to "IU「亂穿」竟美出新境界！笑稱自己品味奇怪　網笑：靠顏值撐住女神氣場",
-//            "content" to "南韓歌手IU（李知恩）無論在歌唱方面或是近期的戲劇作品都有亮眼的成績，但俗話說人無完美、美玉微瑕，曾再跟工作人員的互動影片中坦言自己品味很奇怪，近日在IG上分享了宛如「媽媽們青春時代的玉女歌手」超復古穿搭造型，卻意外美出新境界。",
-//            "createdTime" to Calendar.getInstance().timeInMillis,
-//            "id" to document.id,
-//            "category" to "Beauty"
-//        )
-//        document.set(data)
-//    }

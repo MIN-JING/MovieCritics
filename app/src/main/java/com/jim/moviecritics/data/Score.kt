@@ -1,14 +1,16 @@
 package com.jim.moviecritics.data
 
+import com.google.firebase.Timestamp
+
 data class Score(
     val id: Long,
     val userID: Long,
     val imdbID: String,
-    val createdTime: Long,
-    val leisure: Float,
-    val hit: Float,
-    val cast: Float,
-    val music: Float,
-    val story: Float,
-    val average: Float
+    val createdTime: Timestamp,
+    val leisure: Double,
+    val hit: Double,
+    val cast: Double,
+    val music: Double,
+    val story: Double,
+    val average: Double
 )

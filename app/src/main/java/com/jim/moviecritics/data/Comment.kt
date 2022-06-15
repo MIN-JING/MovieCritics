@@ -1,11 +1,13 @@
 package com.jim.moviecritics.data
 
+import com.google.firebase.Timestamp
+
 data class Comment(
-    val id: Long,
+    var id: String,
     val userID: Long,
     val imdbID: String,
-    val createdTime: Long,
-    val content: Long,
+    var createdTime: Timestamp,
+    val content: String,
     val likes: List<Long>,
     val dislikes: List<Long>
 )

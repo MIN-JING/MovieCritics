@@ -11,5 +11,5 @@ data class User(
     val followings: List<Long>,
     val blocks: List<Long>,
     val favorites: List<String>,
-    val downshifts: List<Long>
+    val downshifts: List<String>
 )

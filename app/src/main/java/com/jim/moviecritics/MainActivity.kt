@@ -3,23 +3,59 @@ package com.jim.moviecritics
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.databinding.ActivityMainBinding
+import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.util.CurrentFragmentType
 
 
+class MainActivity : BaseActivity() {
+//    AppCompatActivity()
 
-class MainActivity : AppCompatActivity() {
+    val viewModel by viewModels<MainViewModel> { getVmFactory() }
+
+    private lateinit var binding: ActivityMainBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
-            this, R.layout.activity_main
+//        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
+//            this, R.layout.activity_main
+//        )
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        viewModel.currentFragmentType.observe(
+            this,
+            Observer {
+                Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                Log.i("Jim","[${viewModel.currentFragmentType.value}]")
+                Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            }
         )
+
+//        val navController: NavController = Navigation.findNavController(
+//            this, R.id.activity_main_nav_host_fragment
+//        )
+        setupBottomNav()
+        setupNavController()
 
         binding.button.setOnClickListener {
             Log.d("Jim", "Button onClick")
@@ -29,6 +65,54 @@ class MainActivity : AppCompatActivity() {
             loadMockDataUser()
             listenData()
         }
+    }
+
+    private fun setupNavController() {
+        findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+            viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
+                R.id.homeFragment -> CurrentFragmentType.HOME
+                R.id.searchFragment -> CurrentFragmentType.SEARCH
+                R.id.downshiftFragment -> CurrentFragmentType.DOWNSHIFT
+                R.id.profileFragment -> CurrentFragmentType.PROFILE
+                R.id.detailFragment -> CurrentFragmentType.DETAIL
+                else -> viewModel.currentFragmentType.value
+            }
+        }
+    }
+
+    private fun setupBottomNav() {
+        binding.bottomNavView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToHomeFragment())
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_search-> {
+
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToSearchFragment())
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_downshift-> {
+
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToDownshiftFragment())
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_profile -> {
+
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+                    return@setOnItemSelectedListener true
+                }
+
+            }
+            false
+        }
+
+//        val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
+//        val itemView = menuView.getChildAt(2) as BottomNavigationItemView
+//        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
+//        bindingBadge.lifecycleOwner = this
+//        bindingBadge.viewModel = viewModel
     }
 
     private fun listenData() {

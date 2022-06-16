@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieCritics</string>
     <string name="you_know_nothing">You know nothing</string>
+    <string name="search">搜尋</string>
 </resources>

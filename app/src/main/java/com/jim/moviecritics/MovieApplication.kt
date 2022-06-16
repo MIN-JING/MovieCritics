@@ -13,7 +13,7 @@ import kotlin.properties.Delegates
 class MovieApplication : Application() {
 
     // Depends on the flavor
-    val repository: ApplicationRepository
+    val applicationRepository: ApplicationRepository
         get() = ServiceLocator.provideRepository(this)
 
     companion object {

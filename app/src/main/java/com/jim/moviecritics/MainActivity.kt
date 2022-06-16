@@ -1,10 +1,14 @@
 package com.jim.moviecritics
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.activity.viewModels
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -20,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.CurrentFragmentType
+import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
@@ -28,6 +33,16 @@ class MainActivity : BaseActivity() {
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
 
     private lateinit var binding: ActivityMainBinding
+
+    // get the height of status bar from system
+    private val statusBarHeight: Int
+        get() {
+            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            return when {
+                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
+                else -> 0
+            }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +69,7 @@ class MainActivity : BaseActivity() {
 //        val navController: NavController = Navigation.findNavController(
 //            this, R.id.activity_main_nav_host_fragment
 //        )
+        setupToolbar()
         setupBottomNav()
         setupNavController()
 
@@ -113,6 +129,43 @@ class MainActivity : BaseActivity() {
 //        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
 //        bindingBadge.lifecycleOwner = this
 //        bindingBadge.viewModel = viewModel
+    }
+
+    private fun setupToolbar() {
+
+        binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
+
+        launch {
+
+            val dpi = resources.displayMetrics.densityDpi.toFloat()
+            val dpiMultiple = dpi / DisplayMetrics.DENSITY_DEFAULT
+
+            val cutoutHeight = getCutoutHeight()
+
+            Log.i("Jim","====== ${Build.MODEL} ======")
+            Log.i("Jim","$dpi dpi (${dpiMultiple}x)")
+            Log.i("Jim","statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
+
+            when {
+                cutoutHeight > 0 -> {
+                    Log.i("Jim","cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
+
+                    val oriStatusBarHeight = resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
+
+                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                    val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
+                    layoutParams.gravity = Gravity.CENTER
+
+                    when (Build.MODEL) {
+                        "Pixel 5" -> { Log.i("Jim","Build.MODEL is ${Build.MODEL}") }
+                        else -> { layoutParams.topMargin = statusBarHeight - oriStatusBarHeight }
+                    }
+//                    binding.imageToolbarLogo.layoutParams = layoutParams
+                    binding.textToolbarTitle.layoutParams = layoutParams
+                }
+            }
+            Log.i("Jim","====== ${Build.MODEL} ======")
+        }
     }
 
     private fun listenData() {

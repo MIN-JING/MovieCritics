@@ -16,6 +16,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_toolbar"
+        android:background="@color/white"
+        android:elevation="@dimen/elevation_all"
+        android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
+        app:navigationIcon="@drawable/ic_toolbar_menu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/text_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_3f3a3a"
+            android:letterSpacing="0.15"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
+            android:text="@{viewModel.currentFragmentType.value}"
+            android:layout_gravity="center"
+            tools:visibility="visible"
+            tools:text="Movie Critics"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <fragment
         android:id="@+id/navHostFragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

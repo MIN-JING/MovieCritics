@@ -1,0 +1,67 @@
+package com.jim.moviecritics.home
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.databinding.ItemHomePopularweekBinding
+
+
+class HomeAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<HomeItem, RecyclerView.ViewHolder>(DiffCallback) {
+
+    class OnClickListener(val clickListener: (movie: Movie) -> Unit) {
+        fun onClick(movie: Movie) = clickListener(movie)
+    }
+
+    class PopularMovieViewHolder(private var binding: ItemHomePopularweekBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+            fun bind(movie: Movie, onClickListener: OnClickListener) {
+                binding.movie = movie
+                binding.root.setOnClickListener { onClickListener.onClick(movie) }
+                binding.executePendingBindings()
+            }
+        }
+
+    companion object DiffCallback : DiffUtil.ItemCallback<HomeItem>() {
+        override fun areItemsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
+            return oldItem === newItem
+        }
+
+        override fun areContentsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
+            return oldItem.id == newItem.id
+            //return oldItem.id == newItem.id
+        }
+
+        private const val ITEM_VIEW_TYPE_MOVIE_POPULAR = 0x00
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ITEM_VIEW_TYPE_MOVIE_POPULAR -> PopularMovieViewHolder(
+                ItemHomePopularweekBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
+            else -> throw ClassCastException("Unknown viewType $viewType")
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is PopularMovieViewHolder -> {
+                holder.bind((getItem(position) as HomeItem.PopularMovie).movie, onClickListener)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is HomeItem.PopularMovie -> ITEM_VIEW_TYPE_MOVIE_POPULAR
+        }
+    }
+}

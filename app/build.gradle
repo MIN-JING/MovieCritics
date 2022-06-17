@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -20,8 +22,13 @@ android {
 
     buildTypes {
         release {
+            buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
         }
     }
     compileOptions {
@@ -35,9 +42,17 @@ android {
         enabled = true
     }
 
-    // Material 3
+
     buildFeatures {
+        // Material 3
         compose = true
+
+        // Determines whether to generate a BuildConfig class.
+        buildConfig = true
+
+        // Determines whether to support Data Binding.
+        // Note that the dataBinding.enabled property is now deprecated.
+//        dataBinding = true
     }
 
     composeOptions {
@@ -80,4 +95,29 @@ dependencies {
     // Material 3
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha13")
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:1.13.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
+
+    // Moshi Codegen
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
+
+    // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+
+    // Retrofit Logging Interceptor
+    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5')
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:4.13.1"
+    kapt "com.github.bumptech.glide:compiler:4.13.1"
+
+    implementation "com.google.code.gson:gson:2.9.0"
+
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+
+
 }

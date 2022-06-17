@@ -7,6 +7,10 @@ buildscript {
     repositories {
         // Google's Maven repository
         google()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

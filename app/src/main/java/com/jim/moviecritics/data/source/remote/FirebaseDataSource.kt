@@ -12,14 +12,20 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.jim.moviecritics.data.Result
 import com.google.firebase.Timestamp
+import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.PopularMoviesResult
 
 /**
  * Implementation of the Application source that from network.
  */
-object ApplicationRemoteDataSource : ApplicationDataSource {
+object FirebaseDataSource : ApplicationDataSource {
 
     private const val PATH_COMMENTS = "comment"
     private const val KEY_CREATED_TIME = "createdTime"
+
+    override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun getComments(): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
@@ -63,7 +69,7 @@ object ApplicationRemoteDataSource : ApplicationDataSource {
 
                 val list = mutableListOf<Comment>()
                 if (snapshot != null) {
-                    for (document in snapshot) {
+                    snapshot.forEach { document ->
                         Log.d("Jim", "${document.id} => ${document.data}")
 
                         val comment = document.toObject(Comment::class.java)
@@ -102,9 +108,9 @@ object ApplicationRemoteDataSource : ApplicationDataSource {
 
     override suspend fun delete(comment: Comment): Result<Boolean> = suspendCoroutine { continuation ->
 
-        when {
-            comment.userID == 12344L -> {
-                continuation.resume(com.jim.moviecritics.data.Result.Fail("You know nothing!! ${comment.userID}"))
+        when (comment.userID) {
+            12344L -> {
+                continuation.resume(Result.Fail("You know nothing!! ${comment.userID}"))
             }
             else -> {
                 FirebaseFirestore.getInstance()

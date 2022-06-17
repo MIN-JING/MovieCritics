@@ -6,7 +6,8 @@ import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.data.source.DefaultApplicationRepository
 import com.jim.moviecritics.data.source.local.ApplicationLocalDataSource
-import com.jim.moviecritics.data.source.remote.ApplicationRemoteDataSource
+import com.jim.moviecritics.data.source.remote.ApiDataSource
+import com.jim.moviecritics.data.source.remote.FirebaseDataSource
 
 object ServiceLocator {
 
@@ -24,7 +25,8 @@ object ServiceLocator {
 
     private fun createApplicationRepository(context: Context): ApplicationRepository {
         return DefaultApplicationRepository(
-            ApplicationRemoteDataSource,
+            ApiDataSource,
+            FirebaseDataSource,
             createLocalDataSource(context)
         )
 

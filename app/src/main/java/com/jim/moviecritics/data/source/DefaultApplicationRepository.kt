@@ -34,4 +34,8 @@ class DefaultApplicationRepository(
         return firebaseDataSource.delete(comment)
     }
 
+    override suspend fun loadMockDataComment(): Result<Comment> {
+        return localDataSource.loadMockDataComment()
+    }
+
 }

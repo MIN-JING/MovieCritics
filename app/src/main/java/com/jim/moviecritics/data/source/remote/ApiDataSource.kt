@@ -51,4 +51,8 @@ object ApiDataSource : ApplicationDataSource {
     override suspend fun delete(comment: Comment): Result<Boolean> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun loadMockDataComment(): Result<Comment> {
+        TODO("Not yet implemented")
+    }
 }

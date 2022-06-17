@@ -128,4 +128,8 @@ object FirebaseDataSource : ApplicationDataSource {
             }
         }
     }
+
+    override suspend fun loadMockDataComment(): Result<Comment> {
+        TODO("Not yet implemented")
+    }
 }

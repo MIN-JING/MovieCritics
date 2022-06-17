@@ -23,4 +23,6 @@ interface ApplicationRepository {
     suspend fun comment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
+
+    suspend fun loadMockDataComment(): Result<Comment>
 }

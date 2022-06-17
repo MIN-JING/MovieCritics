@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
@@ -70,6 +71,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
         getPopularMoviesResult(true)
         getCommentsResult(true)
+        loadMockCommentResult(true)
     }
 
     /**
@@ -140,6 +142,41 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                 }
             }
         }
+    }
+
+    private fun loadMockCommentResult(isInitial: Boolean = false) {
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            when (val result = applicationRepository.loadMockDataComment()) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+//                    result.data
+
+                    val comments = FirebaseFirestore.getInstance().collection("comment")
+                    val document = comments.document()
+                    document.set(result.data)
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+
     }
 }
 

@@ -18,6 +18,8 @@ import com.jim.moviecritics.util.Util.getString
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
+    private val testComments = MutableLiveData<List<Comment>>()
+
     private val testItems = MutableLiveData<PopularMoviesResult>()
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
@@ -67,6 +69,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         Log.i("Jim","------------------------------------")
 
         getPopularMoviesResult(true)
+        getCommentsResult(true)
     }
 
     /**
@@ -103,6 +106,39 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                 }
             }
 //            _refreshStatus.value = false
+        }
+    }
+
+    private fun getCommentsResult(isInitial: Boolean = false) {
+
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getComments()
+
+            testComments.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
         }
     }
 }

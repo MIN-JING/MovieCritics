@@ -6,8 +6,8 @@
 
     <data>
         <variable
-            name="movie"
-            type="com.jim.moviecritics.data.Movie" />
+            name="trend"
+            type="com.jim.moviecritics.data.Trend" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="wrap_content"

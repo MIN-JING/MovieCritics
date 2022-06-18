@@ -13,7 +13,7 @@ import com.jim.moviecritics.data.Result
 interface ApplicationRepository {
 
     // ApiDataSource
-    suspend fun getPopularMovies(): Result<PopularMoviesResult>
+    suspend fun getPopularMovies(): Result<List<HomeItem>>
 
     // FirebaseDataSource
     suspend fun getComments(): Result<List<Comment>>

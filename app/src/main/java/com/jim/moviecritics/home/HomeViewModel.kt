@@ -1,6 +1,6 @@
 package com.jim.moviecritics.home
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +9,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,9 +20,9 @@ import com.jim.moviecritics.util.Util.getString
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
-    private val testComments = MutableLiveData<List<Comment>>()
+    val testComments = MutableLiveData<List<Comment>>()
 
-    private val testItems = MutableLiveData<PopularMoviesResult>()
+    val testItems = MutableLiveData<PopularMoviesResult?>()
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 
@@ -65,13 +66,13 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
      * Call getMarketingHotsResult() on init so we can display status immediately.
      */
     init {
-        Log.i("Jim","------------------------------------")
-        Log.i("Jim","[${this::class.simpleName}]$this")
-        Log.i("Jim","------------------------------------")
+        Logger.i("------------------------------------")
+        Logger.i("[${this::class.simpleName}]$this")
+        Logger.i("------------------------------------")
 
         getPopularMoviesResult(true)
         getCommentsResult(true)
-        loadMockCommentResult(true)
+//        loadMockCommentResult(true)
     }
 
     /**
@@ -85,7 +86,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
             val result = applicationRepository.getPopularMovies()
 
-            testItems.value = when (result) {
+            _homeItems.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     if (isInitial) _status.value = LoadApiStatus.DONE

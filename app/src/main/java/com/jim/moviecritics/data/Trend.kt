@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Trends(
+data class Trend(
     @Json(name = "poster_path") val posterUri: String?,
     val adult: Boolean,
     val overview: String,
@@ -18,7 +18,7 @@ data class Trends(
     @Json(name = "backdrop_path") val backdrop: String?,
     val popularity: Double,
     @Json(name = "vote_count") val count: Int,
-    @Json(name = "vote_average") val average: Int,
+    @Json(name = "vote_average") val average: Double,
     val video: Boolean,
     @Json(name = "media_type") val type: String
 ) : Parcelable

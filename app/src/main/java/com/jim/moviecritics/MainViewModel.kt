@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,5 +27,11 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    init {
+        Logger.i("------------------------------------")
+        Logger.i("[${this::class.simpleName}]$this")
+        Logger.i("------------------------------------")
     }
 }

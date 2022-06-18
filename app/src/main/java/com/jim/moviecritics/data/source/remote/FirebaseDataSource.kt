@@ -14,6 +14,7 @@ import com.jim.moviecritics.data.Result
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.PopularMoviesResult
+import com.jim.moviecritics.util.Logger
 
 /**
  * Implementation of the Application source that from network.
@@ -23,7 +24,7 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_COMMENTS = "comment"
     private const val KEY_CREATED_TIME = "createdTime"
 
-    override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
+    override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
     }
 
@@ -36,7 +37,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     val list = mutableListOf<Comment>()
                     for (document in task.result) {
-                        Log.d("Jim", "${document.id} => ${document.data}")
+                        Logger.d( document.id + " => " + document.data)
 
                         val comment = document.toObject(Comment::class.java)
                         list.add(comment)
@@ -44,7 +45,7 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Success(list))
                 } else {
                     task.exception?.let {
-                        Log.d("Jim", "${this::class.simpleName} Error getting documents. message = ${it.message}")
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -61,16 +62,16 @@ object FirebaseDataSource : ApplicationDataSource {
             .collection(PATH_COMMENTS)
             .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
-                Log.i("Jim", "ApplicationRemoteDataSource addSnapshotListener detect")
+                Logger.i("ApplicationRemoteDataSource addSnapshotListener detect")
 
                 exception?.let {
-                    Log.w("Jim", "${this::class.simpleName} Error getting documents. message = ${it.message}")
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                 }
 
                 val list = mutableListOf<Comment>()
                 if (snapshot != null) {
                     snapshot.forEach { document ->
-                        Log.d("Jim", "${document.id} => ${document.data}")
+                        Logger.d(document.id + " => " + document.data)
 
                         val comment = document.toObject(Comment::class.java)
                         list.add(comment)
@@ -92,12 +93,12 @@ object FirebaseDataSource : ApplicationDataSource {
             .set(comment)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.i("Jim", "Comment: $comment")
+                    Logger.i("Comment: $comment")
 
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Log.w("Jim", "${this::class.simpleName} Error getting documents. message = ${it.message}")
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -118,11 +119,11 @@ object FirebaseDataSource : ApplicationDataSource {
                     .document(comment.id)
                     .delete()
                     .addOnSuccessListener {
-                        Log.i("Jim", "Delete: $comment")
+                        Logger.i("Delete: $comment")
 
                         continuation.resume(Result.Success(true))
                     }.addOnFailureListener {
-                        Log.w("Jim", "${this::class.simpleName} Error getting documents. message = ${it.message}")
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                     }
             }

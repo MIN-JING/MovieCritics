@@ -7,22 +7,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Trend
 import com.jim.moviecritics.databinding.ItemHomePopularweekBinding
 
 
 class HomeAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<HomeItem, RecyclerView.ViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (movie: Movie) -> Unit) {
-        fun onClick(movie: Movie) = clickListener(movie)
+    class OnClickListener(val clickListener: (trend: Trend) -> Unit) {
+        fun onClick(trend: Trend) = clickListener(trend)
     }
 
     class PopularMovieViewHolder(private var binding: ItemHomePopularweekBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(movie: Movie, onClickListener: OnClickListener) {
-                binding.movie = movie
-                binding.root.setOnClickListener { onClickListener.onClick(movie) }
+            fun bind(trend: Trend, onClickListener: OnClickListener) {
+                binding.trend= trend
+                binding.root.setOnClickListener { onClickListener.onClick(trend) }
                 binding.executePendingBindings()
             }
         }
@@ -54,7 +55,7 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is PopularMovieViewHolder -> {
-                holder.bind((getItem(position) as HomeItem.PopularMovie).movie, onClickListener)
+                holder.bind((getItem(position) as HomeItem.PopularMovie).trend, onClickListener)
             }
         }
     }

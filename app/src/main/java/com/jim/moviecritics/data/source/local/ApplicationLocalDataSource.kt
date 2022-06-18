@@ -11,7 +11,7 @@ import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.source.ApplicationDataSource
 
 class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
-    override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
+    override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
     }
 

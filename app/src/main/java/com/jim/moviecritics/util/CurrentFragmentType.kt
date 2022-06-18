@@ -1,9 +1,12 @@
 package com.jim.moviecritics.util
 
+import com.jim.moviecritics.R
+import com.jim.moviecritics.util.Util.getString
+
 enum class CurrentFragmentType(val value: String) {
-    HOME("Movie Critics"),
-    SEARCH("探索"),
-    DOWNSHIFT("即將下檔"),
-    PROFILE("個人頁面"),
-    DETAIL("")
+    HOME(getString(R.string.movie_critics)),
+    SEARCH(getString(R.string.search)),
+    DOWNSHIFT(getString(R.string.downshift)),
+    PROFILE(getString(R.string.profile)),
+    DETAIL(getString(R.string.detail))
 }

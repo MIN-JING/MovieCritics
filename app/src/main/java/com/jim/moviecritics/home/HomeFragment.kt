@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentHomeBinding
+import com.jim.moviecritics.util.Logger
 
 
 class HomeFragment : Fragment() {
@@ -30,6 +33,14 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        viewModel.testItems.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.testItems = $it")
+        })
+
+        viewModel.testComments.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.testComments = $it")
+        })
 
         return binding.root
 //        return inflater.inflate(R.layout.home_fragment, container, false)

@@ -34,9 +34,17 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.testItems.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.testItems = $it")
+        viewModel.homeItems.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.homeItems = $it")
+
         })
+
+        binding.recyclerviewPopular.adapter = HomeAdapter(
+            HomeAdapter.OnClickListener {
+                Logger.i("HomeAdapter.OnClickListener it = $it")
+                viewModel.navigateToDetail(it)
+            }
+        )
 
         viewModel.testComments.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.testComments = $it")

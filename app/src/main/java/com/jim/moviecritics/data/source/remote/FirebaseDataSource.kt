@@ -13,7 +13,6 @@ import kotlin.coroutines.suspendCoroutine
 import com.jim.moviecritics.data.Result
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.PopularMoviesResult
 import com.jim.moviecritics.util.Logger
 
 /**

@@ -22,7 +22,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
     val testComments = MutableLiveData<List<Comment>>()
 
-    val testItems = MutableLiveData<PopularMoviesResult?>()
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 
@@ -42,9 +41,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         get() = _error
 
     // Handle navigation to detail
-    private val _navigateToDetail = MutableLiveData<Movie>()
+    private val _navigateToDetail = MutableLiveData<Trend?>()
 
-    val navigateToDetail: LiveData<Movie>
+    val navigateToDetail: LiveData<Trend?>
         get() = _navigateToDetail
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -178,6 +177,14 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             }
         }
 
+    }
+
+    fun navigateToDetail(trend: Trend) {
+        _navigateToDetail.value = trend
+    }
+
+    fun onDetailNavigated() {
+        _navigateToDetail.value = null
     }
 }
 

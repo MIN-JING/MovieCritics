@@ -25,6 +25,8 @@ data class PopularMoviesResult(
 
             for (trend in it) {
                 Logger.i("trend = $trend")
+                trend.posterUri = "https://image.tmdb.org/t/p/w185" + trend.posterUri
+                Logger.i("trend.posterUri = ${trend.posterUri}")
                 items.add(HomeItem.PopularMovie(trend))
             }
             Logger.i("items = $items")

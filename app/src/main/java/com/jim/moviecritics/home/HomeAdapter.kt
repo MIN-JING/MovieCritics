@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Trend
-import com.jim.moviecritics.databinding.ItemHomePopularweekBinding
+import com.jim.moviecritics.databinding.ItemHomePopularWeekBinding
 
 
 class HomeAdapter(private val onClickListener: OnClickListener) :
@@ -18,7 +18,7 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
         fun onClick(trend: Trend) = clickListener(trend)
     }
 
-    class PopularMovieViewHolder(private var binding: ItemHomePopularweekBinding) :
+    class PopularMovieViewHolder(private var binding: ItemHomePopularWeekBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
             fun bind(trend: Trend, onClickListener: OnClickListener) {
@@ -35,7 +35,6 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
 
         override fun areContentsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
             return oldItem.id == newItem.id
-            //return oldItem.id == newItem.id
         }
 
         private const val ITEM_VIEW_TYPE_MOVIE_POPULAR = 0x00
@@ -44,7 +43,7 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_MOVIE_POPULAR -> PopularMovieViewHolder(
-                ItemHomePopularweekBinding.inflate(
+                ItemHomePopularWeekBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )

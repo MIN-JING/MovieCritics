@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Trend(
-    @Json(name = "poster_path") val posterUri: String?,
+    @Json(name = "poster_path") var posterUri: String?,
     val adult: Boolean,
     val overview: String,
     @Json(name = "release_date") val releaseDate: String,

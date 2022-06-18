@@ -72,15 +72,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
-
-        binding.button.setOnClickListener {
-            Log.d("Jim", "Button onClick")
-            loadMockDataMovie()
-            loadMockDataComment()
-            loadMockDataScore()
-            loadMockDataUser()
-            listenData()
-        }
+        
     }
 
     private fun setupNavController() {

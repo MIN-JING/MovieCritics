@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
-import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.downshift.DownshiftViewModel
 import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.profile.ProfileViewModel
@@ -34,8 +33,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(ProfileViewModel::class.java) ->
                     ProfileViewModel(applicationRepository)
 
-                isAssignableFrom(DetailViewModel::class.java) ->
-                    DetailViewModel(applicationRepository)
+//                isAssignableFrom(DetailViewModel::class.java) ->
+//                    DetailViewModel(applicationRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

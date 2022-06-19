@@ -12,10 +12,17 @@ class DefaultApplicationRepository(
     private val firebaseDataSource: ApplicationDataSource,
     private val localDataSource: ApplicationDataSource ) : ApplicationRepository {
 
+
+    // ApiDataSource
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         return apiDataSource.getPopularMovies()
     }
 
+    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
+        return apiDataSource.getMoviesDetail(id)
+    }
+
+    // FirebaseDataSource
     override suspend fun getComments(): Result<List<Comment>> {
         return firebaseDataSource.getComments()
     }

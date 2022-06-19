@@ -46,9 +46,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         get() = _error
 
     // Handle navigation to detail
-    private val _navigateToDetail = MutableLiveData<Trend?>()
+    private val _navigateToDetail = MutableLiveData<Movie?>()
 
-    val navigateToDetail: LiveData<Trend?>
+    val navigateToDetail: LiveData<Movie?>
         get() = _navigateToDetail
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -211,8 +211,8 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-    fun navigateToDetail(trend: Trend) {
-        _navigateToDetail.value = trend
+    fun navigateToDetail(movie: Movie) {
+        _navigateToDetail.value = movie
     }
 
     fun onDetailNavigated() {

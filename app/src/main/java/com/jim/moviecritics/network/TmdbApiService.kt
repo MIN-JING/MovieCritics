@@ -1,6 +1,7 @@
 package com.jim.moviecritics.network
 
 import com.jim.moviecritics.BuildConfig
+import com.jim.moviecritics.data.MoviesDetailResult
 import com.jim.moviecritics.data.PopularMoviesResult
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -59,6 +60,12 @@ interface TmdbApiService {
         @Path("time_window") timeWindow: String = TIME_WINDOW,
         @Query("api_key") apiKey: String = API_KEY
     ): PopularMoviesResult
+
+    @GET("movie/{movie_id}")
+    suspend fun getMoviesDetail(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKey: String = API_KEY
+    ): MoviesDetailResult
 }
 
 /**

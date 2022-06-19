@@ -51,7 +51,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
-        android:text="MIN-JING"
+        android:text="@{trend.title}"
         android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_user_pic"
@@ -64,7 +64,7 @@
         android:layout_height="10dp"
         android:layout_marginStart="4dp"
         android:gravity="center_vertical"
-        android:text="4.5"
+        android:text="@{String.valueOf(trend.average)}"
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="@+id/image_star"
         app:layout_constraintStart_toEndOf="@+id/image_star" />

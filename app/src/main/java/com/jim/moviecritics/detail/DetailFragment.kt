@@ -1,13 +1,15 @@
 package com.jim.moviecritics.detail
 
-import androidx.lifecycle.ViewModelProvider
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.jim.moviecritics.R
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentDetailBinding
 
@@ -30,6 +32,19 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.navigateToPending.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigateToPendingFragment(it))
+                viewModel.onPendingNavigated()
+            }
+        })
+
+        viewModel.leaveDetail.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) findNavController().popBackStack()
+            }
+        })
 
         return binding.root
 

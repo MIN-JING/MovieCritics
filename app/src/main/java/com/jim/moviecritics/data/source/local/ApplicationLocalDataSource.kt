@@ -3,12 +3,15 @@ package com.jim.moviecritics.data.source.local
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
 
 class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
         TODO("Not yet implemented")
     }
 

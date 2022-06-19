@@ -1,6 +1,6 @@
 package com.jim.moviecritics.data.source.remote
 
-import android.util.Log
+
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,6 +23,10 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val KEY_CREATED_TIME = "createdTime"
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
         TODO("Not yet implemented")
     }
 

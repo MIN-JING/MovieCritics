@@ -33,10 +33,35 @@
         tools:layout="@layout/fragment_detail" >
 
         <argument
-            android:name="trend"
-            app:argType="com.jim.moviecritics.data.Trend"
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
             app:nullable="false" />
     </fragment>
+
+    <fragment
+        android:id="@+id/pendingFragment"
+        android:name="com.jim.moviecritics.pending.PendingFragment"
+        android:label="fragment_pending"
+        tools:layout="@layout/fragment_pending" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.jim.moviecritics.review.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false" />
+    </fragment>
+
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
@@ -55,4 +80,10 @@
         app:popUpToInclusive="true" />
 
     <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
+
+    <action android:id="@+id/navigate_to_pending_fragment" app:destination="@id/pendingFragment"/>
+
+    <action android:id="@+id/navigate_to_review_fragment" app:destination="@id/reviewFragment"/>
+
+
 </navigation>

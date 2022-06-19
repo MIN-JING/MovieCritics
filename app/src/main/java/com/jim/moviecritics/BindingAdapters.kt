@@ -40,3 +40,11 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .into(imgView)
     }
 }
+
+/**
+ * Displays currency price to [TextView] by [Double]
+ */
+//@BindingAdapter("average")
+//fun bindAverage(textView: TextView, average: Double?) {
+//    average?.let { textView.text = MovieApplication.instance.getString(it.toInt()) }
+//}

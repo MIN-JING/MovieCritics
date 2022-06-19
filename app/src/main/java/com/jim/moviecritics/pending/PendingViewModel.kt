@@ -1,4 +1,4 @@
-package com.jim.moviecritics.detail
+package com.jim.moviecritics.pending
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,10 +10,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-class DetailViewModel(
+class PendingViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -21,18 +21,6 @@ class DetailViewModel(
 
     val movie: LiveData<Movie>
         get() = _movie
-
-    private val _leaveDetail = MutableLiveData<Boolean>()
-
-    val leaveDetail: LiveData<Boolean>
-        get() = _leaveDetail
-
-
-    private val _navigateToPending = MutableLiveData<Movie?>()
-
-    val navigateToPending: LiveData<Movie?>
-        get() = _navigateToPending
-
 
     private var viewModelJob = Job()
 
@@ -47,17 +35,5 @@ class DetailViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-    }
-
-    fun navigateToPending(movie: Movie) {
-        _navigateToPending.value = movie
-    }
-
-    fun onPendingNavigated() {
-        _navigateToPending.value = null
-    }
-
-    fun leaveDetail() {
-        _leaveDetail.value = true
     }
 }

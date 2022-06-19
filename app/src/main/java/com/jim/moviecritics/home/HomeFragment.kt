@@ -40,12 +40,15 @@ class HomeFragment : Fragment() {
 
         viewModel.homeItems.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.homeItems = $it")
+            for (value in it) {
+                Logger.i("value in List<HomeItem> value.id = ${value.id}")
+            }
         })
 
         binding.recyclerviewPopular.adapter = HomeAdapter(
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
-                viewModel.navigateToDetail(it)
+//                viewModel.navigateToDetail(it)
             }
         )
 
@@ -53,6 +56,7 @@ class HomeFragment : Fragment() {
             Logger.i("viewModel.navigateToDetail = $it")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
+                viewModel.onDetailNavigated()
             }
         })
 

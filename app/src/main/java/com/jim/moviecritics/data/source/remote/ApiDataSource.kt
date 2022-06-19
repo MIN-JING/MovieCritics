@@ -7,7 +7,8 @@ import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.network.TmdbApi
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
+import com.jim.moviecritics.util.Util.getString
+import com.jim.moviecritics.util.Util.isInternetConnected
 
 
 object ApiDataSource : ApplicationDataSource {
@@ -15,8 +16,8 @@ object ApiDataSource : ApplicationDataSource {
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
 //        override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
 
-        if (!Util.isInternetConnected()) {
-            return Result.Fail(Util.getString(R.string.internet_not_connected))
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
         }
 
         return try {
@@ -28,6 +29,26 @@ object ApiDataSource : ApplicationDataSource {
             }
             Result.Success(listResult.toHomeItems())
 //            Result.Success(listResult)
+
+        } catch (e: Exception) {
+            Logger.w("[${this::class.simpleName}] exception=${e.message}")
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
+
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
+        }
+
+        return try {
+            val movieResult = TmdbApi.retrofitService.getMoviesDetail(id)
+
+            movieResult.error?.let {
+                return Result.Fail(it)
+            }
+            Result.Success(movieResult)
 
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")

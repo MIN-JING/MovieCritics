@@ -12,6 +12,8 @@ interface ApplicationDataSource {
     // ApiDataSource
     suspend fun getPopularMovies(): Result<List<HomeItem>>
 
+    suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult>
+
     // FirebaseDataSource
     suspend fun getComments(): Result<List<Comment>>
 

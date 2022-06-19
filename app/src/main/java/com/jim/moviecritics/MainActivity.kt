@@ -259,7 +259,7 @@ class MainActivity : BaseActivity() {
             "United States, Germany",
             "Nominated for 1 Oscar. 1 win & 15 nominations total",
             "PG-13",
-            "115 min",
+            115,
             "Jeff Vintar, Akiva Goldsman, Isaac Asimov",
             listOf(
                 Rating("Internet Movie Database","7.1/10"),

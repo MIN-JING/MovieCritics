@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.NavigationDirections
+import com.jim.moviecritics.data.PopularMoviesResult
+import com.jim.moviecritics.data.PushTrend
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentHomeBinding
 import com.jim.moviecritics.util.Logger
@@ -36,7 +40,6 @@ class HomeFragment : Fragment() {
 
         viewModel.homeItems.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.homeItems = $it")
-
         })
 
         binding.recyclerviewPopular.adapter = HomeAdapter(
@@ -45,6 +48,13 @@ class HomeFragment : Fragment() {
                 viewModel.navigateToDetail(it)
             }
         )
+
+        viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.navigateToDetail = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
+            }
+        })
 
         viewModel.testComments.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.testComments = $it")

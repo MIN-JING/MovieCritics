@@ -6,13 +6,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.source.ApplicationDataSource
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import com.jim.moviecritics.data.Result
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
 
 /**
@@ -21,6 +19,7 @@ import com.jim.moviecritics.util.Logger
 object FirebaseDataSource : ApplicationDataSource {
 
     private const val PATH_COMMENTS = "comment"
+    private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val KEY_CREATED_TIME = "createdTime"
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
@@ -131,5 +130,31 @@ object FirebaseDataSource : ApplicationDataSource {
 
     override suspend fun loadMockDataComment(): Result<Comment> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>  = suspendCoroutine { continuation ->
+        val popularMovies = FirebaseFirestore.getInstance().collection(PATH_POPULAR_MOVIES)
+        val document = popularMovies.document()
+
+        pushTrend.documentID = document.id
+
+
+        document
+            .set(popularMovies)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("popularMovies: $popularMovies")
+
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+
     }
 }

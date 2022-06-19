@@ -3,10 +3,7 @@ package com.jim.moviecritics.data.source.remote
 
 import androidx.lifecycle.MutableLiveData
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.network.TmdbApi
 import com.jim.moviecritics.util.Logger
@@ -55,6 +52,10 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override suspend fun loadMockDataComment(): Result<Comment> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         TODO("Not yet implemented")
     }
 }

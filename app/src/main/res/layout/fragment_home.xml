@@ -39,7 +39,7 @@
 
 
         <TextView
-            android:id="@+id/title_newfrom"
+            android:id="@+id/title_new_from_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -49,16 +49,17 @@
             app:layout_constraintTop_toBottomOf="@+id/recyclerview_popular" />
 
         <TextView
-            android:id="@+id/title_popularwith"
+            android:id="@+id/title_popular_with_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="150dp"
             android:text="Popular with friends"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_newfrom" />
+            app:layout_constraintTop_toBottomOf="@+id/title_new_from_friends" />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="600dp"
@@ -66,6 +67,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="@+id/textView" />
+<!--        android:onClick="@{() -> viewModel.pushPopularMovies()}"-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

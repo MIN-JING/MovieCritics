@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
@@ -21,6 +22,10 @@ import com.jim.moviecritics.util.Util.getString
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
     val testComments = MutableLiveData<List<Comment>>()
+
+
+
+    val pushTrend = MutableLiveData<PushTrend>()
 
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
@@ -72,6 +77,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         getPopularMoviesResult(true)
         getCommentsResult(true)
 //        loadMockCommentResult(true)
+
     }
 
     /**
@@ -154,7 +160,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     _error.value = null
                     if (isInitial) _status.value = LoadApiStatus.DONE
 //                    result.data
-
                     val comments = FirebaseFirestore.getInstance().collection("comment")
                     val document = comments.document()
                     document.set(result.data)
@@ -177,6 +182,33 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             }
         }
 
+    }
+
+    fun pushPopularMovies(pushTrend: PushTrend) {
+
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            when (val result = applicationRepository.pushPopularMovies(pushTrend)) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
     }
 
     fun navigateToDetail(trend: Trend) {

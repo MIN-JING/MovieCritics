@@ -1,10 +1,8 @@
 package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.source.remote.FirebaseDataSource
 
 /**
  * Concrete implementation to load Application sources.
@@ -36,6 +34,10 @@ class DefaultApplicationRepository(
 
     override suspend fun loadMockDataComment(): Result<Comment> {
         return localDataSource.loadMockDataComment()
+    }
+
+    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
+        return FirebaseDataSource.pushPopularMovies(pushTrend)
     }
 
 }

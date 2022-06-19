@@ -30,7 +30,13 @@
         android:id="@+id/detailFragment"
         android:name="com.jim.moviecritics.detail.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+
+        <argument
+            android:name="trend"
+            app:argType="com.jim.moviecritics.data.Trend"
+            app:nullable="false" />
+    </fragment>
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"

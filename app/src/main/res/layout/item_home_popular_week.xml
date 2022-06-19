@@ -14,7 +14,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/image_poster"
+        android:id="@+id/image_poster_home"
         android:layout_width="100dp"
         android:layout_height="130dp"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/image_poster_home"
         tools:srcCompat="@tools:sample/avatars" />
 
     <ImageView
@@ -55,7 +55,7 @@
         android:textSize="8sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_user_pic"
-        app:layout_constraintTop_toBottomOf="@+id/image_poster" />
+        app:layout_constraintTop_toBottomOf="@+id/image_poster_home" />
 <!--    android:autoSizeTextType="uniform"-->
 
     <TextView

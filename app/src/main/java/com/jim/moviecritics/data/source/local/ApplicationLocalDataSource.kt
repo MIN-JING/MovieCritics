@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
 
 class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
@@ -45,5 +42,9 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         )
 //        document.set(data)
         return Result.Success(data)
+    }
+
+    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 }

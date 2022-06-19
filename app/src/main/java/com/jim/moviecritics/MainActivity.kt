@@ -72,7 +72,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
-        
+
     }
 
     private fun setupNavController() {

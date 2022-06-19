@@ -1,10 +1,7 @@
 package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.*
 
 
 /**
@@ -25,4 +22,6 @@ interface ApplicationRepository {
     suspend fun delete(comment: Comment): Result<Boolean>
 
     suspend fun loadMockDataComment(): Result<Comment>
+
+    suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
 }

@@ -48,7 +48,8 @@
             android:layout_marginTop="100dp"
             android:text="@{viewModel.movie.title}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Movie Title"/>
 
         <TextView
             android:id="@+id/text_released_year"
@@ -58,7 +59,8 @@
             android:layout_marginTop="16dp"
             android:text="@{viewModel.movie.released}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_title" />
+            app:layout_constraintTop_toBottomOf="@+id/text_title"
+            tools:text="Released Date"/>
 
         <TextView
             android:id="@+id/text_directed_by"
@@ -74,10 +76,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="知名導演"
+            android:text="@{viewModel.movie.director}"
             app:layout_constraintEnd_toEndOf="@+id/text_directed_by"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_released_year" />
+            app:layout_constraintTop_toBottomOf="@+id/text_released_year"
+            tools:text="Director Name"/>
 
         <ImageView
             android:id="@+id/image_poster_detail"
@@ -93,7 +96,7 @@
         <Button
             android:id="@+id/button_trailer"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:includeFontPadding="false"
@@ -114,7 +117,8 @@
             android:text="@{viewModel.movie.runTime.toString()}"
             app:layout_constraintBottom_toBottomOf="@+id/button_trailer"
             app:layout_constraintStart_toEndOf="@+id/button_trailer"
-            app:layout_constraintTop_toTopOf="@+id/button_trailer" />
+            app:layout_constraintTop_toTopOf="@+id/button_trailer"
+            tools:text="Runtime: 120 Min" />
 
         <TextView
             android:id="@+id/text_overview"
@@ -143,19 +147,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="固定好評4.3"
+            android:text="Score: 4.3"
             app:layout_constraintStart_toEndOf="@+id/text_ratings"
-            app:layout_constraintTop_toTopOf="@+id/text_ratings" />
+            app:layout_constraintTop_toTopOf="@+id/text_ratings"
+            tools:text="Score: 4.3"/>
+
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/radar_chart_rating"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_rating" />
 
         <TextView
             android:id="@+id/text_cast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="16dp"
             android:text="Cast"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_ratings" />
+            app:layout_constraintTop_toBottomOf="@+id/radar_chart_rating" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_cast"
@@ -168,15 +184,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_cast" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="600dp"
-            android:text="Detail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

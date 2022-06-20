@@ -312,11 +312,11 @@ class MainActivity : BaseActivity() {
     private fun loadMockDataScore() {
         val scores = FirebaseFirestore.getInstance().collection("score")
         val document = scores.document()
-        val tempLeisure = 5.6
-        val tempHit = 6.5
-        val tempCast = 7.2
-        val tempMusic = 9.3
-        val tempStory = 8.7
+        val tempLeisure = 5.6F
+        val tempHit = 6.5F
+        val tempCast = 7.2F
+        val tempMusic = 9.3F
+        val tempStory = 8.7F
         val average = (tempLeisure + tempHit + tempMusic + tempStory)/5
 
         val data = Score(

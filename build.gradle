@@ -8,9 +8,9 @@ buildscript {
         // Google's Maven repository
         google()
         mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven { url "https://plugins.gradle.org/m2/" }
+        // Radar Chart
+        maven { url "https://jitpack.io" }
     }
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

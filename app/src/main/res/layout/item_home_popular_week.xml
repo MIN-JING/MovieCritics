@@ -42,6 +42,7 @@
         android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/image_user_pic"
         app:layout_constraintStart_toEndOf="@+id/image_user_pic"
+        app:srcCompat="@drawable/ic_star"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -76,6 +77,7 @@
         android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/text_score"
         app:layout_constraintStart_toEndOf="@+id/text_score"
+        app:srcCompat="@drawable/ic_notes"
         tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

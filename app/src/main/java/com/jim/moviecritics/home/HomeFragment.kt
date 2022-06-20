@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.PushTrend
+import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentHomeBinding
 import com.jim.moviecritics.util.Logger
@@ -40,17 +38,44 @@ class HomeFragment : Fragment() {
 
         viewModel.homeItems.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.homeItems = $it")
-            for (value in it) {
-                Logger.i("value in List<HomeItem> value.id = ${value.id}")
-            }
+//            for (value in it) {
+//                Logger.i("value in List<HomeItem> value.id = ${value.id}")
+//            }
         })
 
         binding.recyclerviewPopular.adapter = HomeAdapter(
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
-//                viewModel.navigateToDetail(it)
+                Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")
+                viewModel.getMovieDetail(isInitial = true, id = it.id)
+                //                viewModel.navigateToDetail(it)
+
+
             }
         )
+
+        viewModel.detailItem.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.detailItem = $it")
+            viewModel.navigateToDetail(
+                Movie(
+                    id = it.id,
+                    actors = listOf(),
+                    imdbID = it.imdbID,
+                    awards = null,
+                    country = null,
+                    director = null,
+                    genre = it.genres,
+                    overview = it.overview,
+                    posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri,
+                    released = it.releaseDate,
+                    runTime = it.runTime,
+                    sales = null,
+                    salesTaiwan = null,
+                    title = it.title,
+                    trailerUri = null,
+                    writer = null,
+                    ratings = listOf()))
+        })
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.navigateToDetail = $it")

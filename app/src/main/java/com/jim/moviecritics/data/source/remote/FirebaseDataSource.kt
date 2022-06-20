@@ -26,7 +26,7 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
+    override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
         TODO("Not yet implemented")
     }
 

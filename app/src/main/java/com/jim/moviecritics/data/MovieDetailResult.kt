@@ -1,12 +1,15 @@
 package com.jim.moviecritics.data
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 
-data class MoviesDetailResult(
+@Parcelize
+data class MovieDetailResult(
     @Json(name = "status_message")val error: String?,
     val adult: Boolean,
     @Json(name = "backdrop_path") val backdrop: String?,
-    @Json(name = "belongs_to_collection") val belongsTo: List<Any>?,
+//    @Json(name = "belongs_to_collection") val belongsTo: List<Any>?,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String?,
@@ -26,4 +29,4 @@ data class MoviesDetailResult(
     val video: Boolean,
     @Json(name = "vote_average") val average: Double,
     @Json(name = "vote_count") val count: Int,
-)
+) : Parcelable

@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.FragmentReviewBinding
+import com.jim.moviecritics.detail.DetailFragmentArgs
 import com.jim.moviecritics.ext.getVmFactory
 
 class ReviewFragment : Fragment() {
 
-    private val viewModel by viewModels<ReviewViewModel> { getVmFactory() }
+    private val viewModel by viewModels<ReviewViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
 
 //    companion object {
 //        fun newInstance() = ReviewFragment()

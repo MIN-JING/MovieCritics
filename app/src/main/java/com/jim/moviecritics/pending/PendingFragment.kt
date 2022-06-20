@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.FragmentPendingBinding
+import com.jim.moviecritics.detail.DetailFragmentArgs
 import com.jim.moviecritics.ext.getVmFactory
 
 class PendingFragment : Fragment() {
 
-    private val viewModel by viewModels<PendingViewModel> { getVmFactory() }
+    private val viewModel by viewModels<PendingViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
 
 //    companion object {
 //        fun newInstance() = PendingFragment()

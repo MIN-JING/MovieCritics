@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope

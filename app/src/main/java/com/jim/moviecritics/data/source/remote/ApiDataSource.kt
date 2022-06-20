@@ -36,14 +36,14 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
-    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
+    override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
 
         if (!isInternetConnected()) {
             return Result.Fail(getString(R.string.internet_not_connected))
         }
 
         return try {
-            val movieResult = TmdbApi.retrofitService.getMoviesDetail(id)
+            val movieResult = TmdbApi.retrofitService.getMovieDetail(id)
 
             movieResult.error?.let {
                 return Result.Fail(it)

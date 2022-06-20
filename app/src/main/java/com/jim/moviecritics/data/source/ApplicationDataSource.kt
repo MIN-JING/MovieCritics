@@ -12,7 +12,7 @@ interface ApplicationDataSource {
     // ApiDataSource
     suspend fun getPopularMovies(): Result<List<HomeItem>>
 
-    suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult>
+    suspend fun getMovieDetail(id: Int): Result<MovieDetailResult>
 
     // FirebaseDataSource
     suspend fun getComments(): Result<List<Comment>>

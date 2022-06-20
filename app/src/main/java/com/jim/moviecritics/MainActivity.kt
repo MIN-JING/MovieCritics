@@ -240,6 +240,35 @@ class MainActivity : BaseActivity() {
     private fun loadMockDataMovie() {
         val movies = FirebaseFirestore.getInstance().collection("movie")
         val document = movies.document()
+//        val data = Movie(
+//            12345,
+//            "tt0343818",
+//            "67890",
+//            "I, Robot",
+//            "https://m.media-amazon.com/images/M/MV5BNmE1OWI2ZGItMDUyOS00MmU5LWE0MzUtYTQ0YzA1YTE5MGYxXkEyXkFqcGdeQXVyMDM5ODIyNw@@._V1_SX300.jpg",
+//            "https://www.imdb.com/video/vi160497945/?playlistId=tt0343818?ref_=ext_shr_lnk",
+//            "16 Jul 2004",
+//            "Action, Mystery, Sci-Fi",
+//            "Alex Proyas",
+//            listOf(
+//                Actor(56788, "34671", "Will Smith"),
+//                Actor(46754, "23453", "Bridget Moynahan"),
+//                Actor(45332, "23425", "Bruce Greenwood")
+//            ),
+//            "In 2035, techno-phobic homicide detective Del Spooner of the Chicago PD heads the investigation of the apparent suicide of leading robotics scientist, Dr. Alfred Lanning. Unconvinced of the motive, Spooner's investigation into Lanning's death reveals a trail of secrets and agendas within the USR (United States Robotics) corporation and suspicions of murder. Little does he know that his investigation would lead to uncovering a larger threat to humanity.",
+//            "United States, Germany",
+//            "Nominated for 1 Oscar. 1 win & 15 nominations total",
+//            "PG-13",
+//            115,
+//            "Jeff Vintar, Akiva Goldsman, Isaac Asimov",
+//            listOf(
+//                Rating("Internet Movie Database","7.1/10"),
+//                Rating("Metacritic", "59/100")
+//            ),
+//            "$144,801,023",
+//            null
+//        )
+
         val data = Movie(
             12345,
             "tt0343818",
@@ -247,18 +276,12 @@ class MainActivity : BaseActivity() {
             "I, Robot",
             "https://m.media-amazon.com/images/M/MV5BNmE1OWI2ZGItMDUyOS00MmU5LWE0MzUtYTQ0YzA1YTE5MGYxXkEyXkFqcGdeQXVyMDM5ODIyNw@@._V1_SX300.jpg",
             "https://www.imdb.com/video/vi160497945/?playlistId=tt0343818?ref_=ext_shr_lnk",
-            "16 Jul 2004",
+            listOf(),
             "Action, Mystery, Sci-Fi",
-            "Alex Proyas",
-            listOf(
-                Actor(56788, "34671", "Will Smith"),
-                Actor(46754, "23453", "Bridget Moynahan"),
-                Actor(45332, "23425", "Bruce Greenwood")
-            ),
+            listOf(),
             "In 2035, techno-phobic homicide detective Del Spooner of the Chicago PD heads the investigation of the apparent suicide of leading robotics scientist, Dr. Alfred Lanning. Unconvinced of the motive, Spooner's investigation into Lanning's death reveals a trail of secrets and agendas within the USR (United States Robotics) corporation and suspicions of murder. Little does he know that his investigation would lead to uncovering a larger threat to humanity.",
             "United States, Germany",
             "Nominated for 1 Oscar. 1 win & 15 nominations total",
-            "PG-13",
             115,
             "Jeff Vintar, Akiva Goldsman, Isaac Asimov",
             listOf(

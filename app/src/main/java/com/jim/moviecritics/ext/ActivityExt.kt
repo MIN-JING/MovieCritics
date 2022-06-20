@@ -8,6 +8,7 @@ import com.jim.moviecritics.factory.ViewModelFactory
 
 fun Activity.getVmFactory(): ViewModelFactory {
     val repository = (applicationContext as MovieApplication).applicationRepository
+//    val movieDetailResult
     return ViewModelFactory(repository)
 }
 

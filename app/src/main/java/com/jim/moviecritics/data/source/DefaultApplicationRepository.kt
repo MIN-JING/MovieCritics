@@ -18,8 +18,8 @@ class DefaultApplicationRepository(
         return apiDataSource.getPopularMovies()
     }
 
-    override suspend fun getMoviesDetail(id: Int): Result<MoviesDetailResult> {
-        return apiDataSource.getMoviesDetail(id)
+    override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
+        return apiDataSource.getMovieDetail(id)
     }
 
     // FirebaseDataSource

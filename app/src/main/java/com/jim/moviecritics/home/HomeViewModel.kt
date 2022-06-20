@@ -33,6 +33,11 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
     val homeItems: LiveData<List<HomeItem>>
         get() = _homeItems
 
+    private val _detailItem = MutableLiveData<MovieDetailResult>()
+
+    val detailItem: LiveData<MovieDetailResult>
+        get() = _detailItem
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -46,9 +51,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         get() = _error
 
     // Handle navigation to detail
-    private val _navigateToDetail = MutableLiveData<Movie?>()
+    private val _navigateToDetail = MutableLiveData<Movie>()
 
-    val navigateToDetail: LiveData<Movie?>
+    val navigateToDetail: LiveData<Movie>
         get() = _navigateToDetail
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -114,6 +119,38 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                 }
             }
 //            _refreshStatus.value = false
+        }
+    }
+
+    fun getMovieDetail(isInitial: Boolean = false, id: Int) {
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getMovieDetail(id)
+
+            _detailItem.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
         }
     }
 

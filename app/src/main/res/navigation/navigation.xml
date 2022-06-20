@@ -79,7 +79,10 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
+    <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
 
     <action android:id="@+id/navigate_to_pending_fragment" app:destination="@id/pendingFragment"/>
 

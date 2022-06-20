@@ -23,7 +23,9 @@ interface ApplicationDataSource {
 
     suspend fun delete(comment: Comment): Result<Boolean>
 
-    suspend fun loadMockDataComment(): Result<Comment>
+    fun loadMockComment(): Comment
+
+    fun loadMockScore(): Score
 
     suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
 }

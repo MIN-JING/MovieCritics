@@ -132,7 +132,11 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-    override suspend fun loadMockDataComment(): Result<Comment> {
+    override fun loadMockComment(): Comment {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadMockScore(): Score {
         TODO("Not yet implemented")
     }
 

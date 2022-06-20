@@ -320,7 +320,7 @@ class MainActivity : BaseActivity() {
         val average = (tempLeisure + tempHit + tempMusic + tempStory)/5
 
         val data = Score(
-            123345,
+            "",
             67891,
             "tt0343818",
             Timestamp.now(),

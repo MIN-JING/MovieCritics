@@ -39,8 +39,12 @@ class DefaultApplicationRepository(
         return firebaseDataSource.delete(comment)
     }
 
-    override suspend fun loadMockDataComment(): Result<Comment> {
-        return localDataSource.loadMockDataComment()
+    override fun loadMockComment(): Comment {
+        return localDataSource.loadMockComment()
+    }
+
+    override fun loadMockScore(): Score {
+        return localDataSource.loadMockScore()
     }
 
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {

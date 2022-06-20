@@ -51,9 +51,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         get() = _error
 
     // Handle navigation to detail
-    private val _navigateToDetail = MutableLiveData<Movie>()
+    private val _navigateToDetail = MutableLiveData<Movie?>()
 
-    val navigateToDetail: LiveData<Movie>
+    val navigateToDetail: LiveData<Movie?>
         get() = _navigateToDetail
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -83,6 +83,14 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         getCommentsResult(true)
 //        loadMockCommentResult(true)
 
+    }
+
+    fun navigateToDetail(movie: Movie) {
+        _navigateToDetail.value = movie
+    }
+
+    fun onDetailNavigated() {
+        _navigateToDetail.value = null
     }
 
     /**
@@ -187,38 +195,11 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-    private fun loadMockCommentResult(isInitial: Boolean = false) {
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            when (val result = applicationRepository.loadMockDataComment()) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-//                    result.data
-                    val comments = FirebaseFirestore.getInstance().collection("comment")
-                    val document = comments.document()
-                    document.set(result.data)
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
-
+    private fun pushMockComment() {
+        val result = applicationRepository.loadMockComment()
+        val comment = FirebaseFirestore.getInstance().collection("comment")
+        val document = comment.document()
+        document.set(result)
     }
 
     fun pushPopularMovies(pushTrend: PushTrend) {
@@ -247,35 +228,4 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             }
         }
     }
-
-    fun navigateToDetail(movie: Movie) {
-        _navigateToDetail.value = movie
-    }
-
-    fun onDetailNavigated() {
-        _navigateToDetail.value = null
-    }
 }
-
-//_homeItems.value = when (result) {
-//    is Result.Success -> {
-//        _error.value = null
-//        if (isInitial) _status.value = LoadApiStatus.DONE
-//        result.data
-//    }
-//    is Result.Fail -> {
-//        _error.value = result.error
-//        if (isInitial) _status.value = LoadApiStatus.ERROR
-//        null
-//    }
-//    is Result.Error -> {
-//        _error.value = result.exception.toString()
-//        if (isInitial) _status.value = LoadApiStatus.ERROR
-//        null
-//    }
-//    else -> {
-//        _error.value = getString(R.string.you_know_nothing)
-//        if (isInitial) _status.value = LoadApiStatus.ERROR
-//        null
-//    }
-//}

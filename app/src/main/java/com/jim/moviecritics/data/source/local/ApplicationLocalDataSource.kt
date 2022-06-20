@@ -31,20 +31,31 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun loadMockDataComment(): Result<Comment> {
-//        val comments = FirebaseFirestore.getInstance().collection("comment")
-//        val document = comments.document()
-        val data = Comment(
-            "23456",
-            12344,
-            "tt0343818",
-            Timestamp.now(),
-            "Would Google LaMDA chat robot become a human?",
-            listOf(12345, 45678, 89012),
-            listOf(12345, 45678, 89012)
+    override fun loadMockComment(): Comment {
+        return Comment(
+            id = "",
+            userID = 891031L,
+            imdbID = "tt0343818",
+            createdTime = Timestamp.now(),
+            content = "Would Google LaMDA chat robot become a human?",
+            likes = listOf(12345, 45678, 89012),
+            dislikes = listOf(12345, 45678, 89012)
         )
-//        document.set(data)
-        return Result.Success(data)
+    }
+
+    override fun loadMockScore(): Score {
+        return Score(
+            id = "",
+            userID = 891031L,
+            imdbID = "tt0343818",
+            createdTime = Timestamp.now(),
+            leisure = 3.5F,
+            hit = 2.5F,
+            cast = 2.0F,
+            music = 3.5F,
+            story = 4.0F,
+            average = 3.1F
+        )
     }
 
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {

@@ -32,8 +32,6 @@ class DetailFragment : Fragment() {
 //    }
 //
 //    private lateinit var viewModel: DetailViewModel
-    private lateinit var averageRatingsList: ArrayList<RadarEntry>
-    private lateinit var userRatingsList: ArrayList<RadarEntry>
 
     override fun onCreateView(
         inflater: LayoutInflater,

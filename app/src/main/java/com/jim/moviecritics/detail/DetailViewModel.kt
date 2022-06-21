@@ -35,7 +35,6 @@ class DetailViewModel(
     val scores: LiveData<List<Score>>
         get() = _scores
 
-//    val casts: List<Cast>? = movie.value?.casts
 
         // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()

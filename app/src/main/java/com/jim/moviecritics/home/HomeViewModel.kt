@@ -185,32 +185,28 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
             when (val result = applicationRepository.getMovieDetail(id)) {
                 is Result.Success -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = null
-                        if (isInitial) _status.value = LoadApiStatus.DONE
-                    }
+//                    withContext(Dispatchers.Main) {
+//                        _error.value = null
+//                        if (isInitial) _status.value = LoadApiStatus.DONE
+//                    }
+                    _error.postValue(null)
+                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
                 is Result.Fail -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = result.error
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(result.error)
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = result.exception.toString()
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(result.exception.toString())
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = getString(R.string.you_know_nothing)
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(getString(R.string.you_know_nothing))
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }
@@ -227,32 +223,24 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
             when (val result = applicationRepository.getMovieCredit(id)) {
                 is Result.Success -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = null
-                        if (isInitial) _status.value = LoadApiStatus.DONE
-                    }
+                    _error.postValue(null)
+                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
                 is Result.Fail -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = result.error
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(result.error)
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = result.exception.toString()
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(result.exception.toString())
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
-                    withContext(Dispatchers.Main) {
-                        _error.value = getString(R.string.you_know_nothing)
-                        if (isInitial) _status.value = LoadApiStatus.ERROR
-                    }
+                    _error.postValue(getString(R.string.you_know_nothing))
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }

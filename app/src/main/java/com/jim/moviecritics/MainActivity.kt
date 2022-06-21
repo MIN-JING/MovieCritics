@@ -269,29 +269,29 @@ class MainActivity : BaseActivity() {
 //            null
 //        )
 
-        val data = Movie(
-            12345,
-            "tt0343818",
-            "67890",
-            "I, Robot",
-            "https://m.media-amazon.com/images/M/MV5BNmE1OWI2ZGItMDUyOS00MmU5LWE0MzUtYTQ0YzA1YTE5MGYxXkEyXkFqcGdeQXVyMDM5ODIyNw@@._V1_SX300.jpg",
-            "https://www.imdb.com/video/vi160497945/?playlistId=tt0343818?ref_=ext_shr_lnk",
-            listOf(),
-            "Action, Mystery, Sci-Fi",
-            listOf(),
-            "In 2035, techno-phobic homicide detective Del Spooner of the Chicago PD heads the investigation of the apparent suicide of leading robotics scientist, Dr. Alfred Lanning. Unconvinced of the motive, Spooner's investigation into Lanning's death reveals a trail of secrets and agendas within the USR (United States Robotics) corporation and suspicions of murder. Little does he know that his investigation would lead to uncovering a larger threat to humanity.",
-            "United States, Germany",
-            "Nominated for 1 Oscar. 1 win & 15 nominations total",
-            115,
-            "Jeff Vintar, Akiva Goldsman, Isaac Asimov",
-            listOf(
-                Rating("Internet Movie Database","7.1/10"),
-                Rating("Metacritic", "59/100")
-            ),
-            "$144,801,023",
-            null
-        )
-        document.set(data)
+//        val data = Movie(
+//            12345,
+//            "tt0343818",
+//            "67890",
+//            "I, Robot",
+//            "https://m.media-amazon.com/images/M/MV5BNmE1OWI2ZGItMDUyOS00MmU5LWE0MzUtYTQ0YzA1YTE5MGYxXkEyXkFqcGdeQXVyMDM5ODIyNw@@._V1_SX300.jpg",
+//            "https://www.imdb.com/video/vi160497945/?playlistId=tt0343818?ref_=ext_shr_lnk",
+//            listOf(),
+//            "Action, Mystery, Sci-Fi",
+//            listOf(),
+//            "In 2035, techno-phobic homicide detective Del Spooner of the Chicago PD heads the investigation of the apparent suicide of leading robotics scientist, Dr. Alfred Lanning. Unconvinced of the motive, Spooner's investigation into Lanning's death reveals a trail of secrets and agendas within the USR (United States Robotics) corporation and suspicions of murder. Little does he know that his investigation would lead to uncovering a larger threat to humanity.",
+//            "United States, Germany",
+//            "Nominated for 1 Oscar. 1 win & 15 nominations total",
+//            115,
+//            "Jeff Vintar, Akiva Goldsman, Isaac Asimov",
+//            listOf(
+//                Rating("Internet Movie Database","7.1/10"),
+//                Rating("Metacritic", "59/100")
+//            ),
+//            "$144,801,023",
+//            null
+//        )
+//        document.set(data)
     }
 
     private fun loadMockDataComment() {

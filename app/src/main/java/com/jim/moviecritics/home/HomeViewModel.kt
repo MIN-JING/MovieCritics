@@ -11,12 +11,8 @@ import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import com.jim.moviecritics.util.Util.getString
-
+import kotlinx.coroutines.*
 
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
@@ -39,6 +35,11 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
     val detailItem: LiveData<MovieDetailResult>
         get() = _detailItem
+
+    private val _creditItem = MutableLiveData<CreditResult>()
+
+    val creditItem: LiveData<CreditResult>
+        get() = _creditItem
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -87,6 +88,59 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
     }
 
+//    fun navigateToDetail(movie: Movie) {
+//        _navigateToDetail.value = movie
+//    }
+
+    fun getMovieFull(id: Int) {
+        Logger.i("fun navigateToDetail")
+//        var totalCount = 2
+            val movie = Movie()
+            coroutineScope.launch {
+                _detailItem.value = getMovieDetail(index = 0, id = id)
+                _creditItem.value = getMovieCredit(index = 1, id = id)
+
+                detailItem.value?.let {
+                    Logger.i("detailItem.value = ${detailItem.value}")
+                    movie.id = it.id
+                    movie.imdbID = it.imdbID
+                    movie.awards = null
+                    movie.country = null
+                    movie.genres = it.genres
+                    movie.overview = it.overview
+                    movie.posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri
+                    movie.released = it.releaseDate
+                    movie.runTime = it.runTime
+                    movie.revenue = it.revenue
+                    movie.salesTaiwan = null
+                    movie.title = it.title
+                    movie.trailerUri = null
+                    movie.ratings = listOf()
+                }
+
+                creditItem.value?.let {
+                    Logger.i("creditItem.value = ${creditItem.value}")
+                    movie.casts = it.casts
+                    movie.crews = it.crews
+
+                    val writingList = mutableListOf<String>()
+                    for (value in it.crews) {
+                        if (value.job == "Director") {
+                            movie.director = value.name
+                            Logger.i("movie.director = ${movie.director}")
+                        }
+                        if (value.job == "Story") {
+                            writingList.add(value.name)
+                            Logger.i("writingList = $writingList")
+                        }
+                    }
+                    movie.writing = writingList
+                }
+                Logger.i("movie = $movie")
+                _navigateToDetail.value = movie
+            }
+    }
+
     fun navigateToDetail(movie: Movie) {
         _navigateToDetail.value = movie
     }
@@ -132,37 +186,50 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-    fun getMovieDetail(isInitial: Boolean = false, id: Int) {
-        coroutineScope.launch {
+    private suspend fun getMovieDetail(index:Int, id: Int): MovieDetailResult? {
 
-            if (isInitial) _status.value = LoadApiStatus.LOADING
+        return withContext(Dispatchers.IO) {
 
-            val result = applicationRepository.getMovieDetail(id)
-
-            _detailItem.value = when (result) {
+            when (val result = applicationRepository.getMovieDetail(id)) {
                 is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    Logger.w("child $index result: ${result.data}")
                     result.data
                 }
                 is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
-                    _error.value = getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
         }
     }
+
+    private suspend fun getMovieCredit(index: Int, id: Int): CreditResult? {
+
+        return withContext(Dispatchers.IO) {
+
+            when (val result = applicationRepository.getMovieCredit(id)) {
+                is Result.Success -> {
+                    Logger.w("child $index result: ${result.data}")
+                    result.data
+                }
+                is Result.Fail -> {
+                    null
+                }
+                is Result.Error -> {
+                    null
+                }
+                else -> {
+                    null
+                }
+            }
+        }
+    }
+
 
     private fun getCommentsResult(isInitial: Boolean = false) {
 
@@ -231,3 +298,183 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 }
+
+//fun getMovieFull(id: Int) {
+//        getMovieDetail(isInitial = true, id = id)
+//        getMovieCredit(isInitial = true, id = id)
+//
+//        val movie = Movie()
+//
+//        detailItem.value?.let {
+//            Logger.i("detailItem.value = ${detailItem.value}")
+//            movie.id = it.id
+//            movie.imdbID = it.imdbID
+//            movie.awards = null
+//            movie.country = null
+//            movie.genres = it.genres
+//            movie.overview = it.overview
+//            movie.posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri
+//            movie.released = it.releaseDate
+//            movie.runTime = it.runTime
+//            movie.revenue = it.revenue
+//            movie.salesTaiwan = null
+//            movie.title = it.title
+//            movie.trailerUri = null
+//            movie.ratings = listOf()
+//        }
+//
+//        creditItem.value?.let {
+//            Logger.i("creditItem.value = ${creditItem.value}")
+//            movie.casts = it.casts
+//            movie.crews = it.crews
+//
+//            val writingList = mutableListOf<String>()
+//            for (value in it.crews) {
+//                if (value.job == "Director") {
+//                    movie.director = value.name
+//                    Logger.i("movie.director = ${movie.director}")
+//                }
+//                if (value.job == "Story") {
+//                    writingList.add(value.name)
+//                    Logger.i("writingList = $writingList")
+//                }
+//            }
+//            movie.writing = writingList
+//        }
+//        Logger.i("movie = $movie")
+//}
+
+
+
+//    fun getMovieDetail(isInitial: Boolean = false, id: Int) {
+//        coroutineScope.launch {
+//
+//            if (isInitial) _status.value = LoadApiStatus.LOADING
+//
+//            val result = applicationRepository.getMovieDetail(id)
+//
+//            _detailItem.value = when (result) {
+//                is Result.Success -> {
+//                    _error.value = null
+//                    if (isInitial) _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result.Fail -> {
+//                    _error.value = result.error
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.value = result.exception.toString()
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = getString(R.string.you_know_nothing)
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//        }
+//    }
+//
+//    fun getMovieCredit(isInitial: Boolean = false, id: Int) {
+//        coroutineScope.launch {
+//
+//            if (isInitial) _status.value = LoadApiStatus.LOADING
+//
+//            val result = applicationRepository.getMovieCredit(id)
+//
+//            _creditItem.value = when (result) {
+//                is Result.Success -> {
+//                    _error.value = null
+//                    if (isInitial) _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result.Fail -> {
+//                    _error.value = result.error
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.value = result.exception.toString()
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = getString(R.string.you_know_nothing)
+//                    if (isInitial) _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//        }
+//    }
+
+//    fun getMovieFull(id: Int) {
+//        Logger.i("fun navigateToDetail")
+//        getMovieDetail(isInitial = true, id = id)
+//        getMovieCredit(isInitial = true, id = id)
+//
+//        val movie = Movie()
+//
+//        detailItem.value?.let {
+//            Logger.i("detailItem.value = ${detailItem.value}")
+//            movie.id = it.id
+//            movie.imdbID = it.imdbID
+//            movie.awards = null
+//            movie.country = null
+//            movie.genres = it.genres
+//            movie.overview = it.overview
+//            movie.posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri
+//            movie.released = it.releaseDate
+//            movie.runTime = it.runTime
+//            movie.revenue = it.revenue
+//            movie.salesTaiwan = null
+//            movie.title = it.title
+//            movie.trailerUri = null
+//            movie.ratings = listOf()
+//        }
+//
+//        creditItem.value?.let {
+//            Logger.i("creditItem.value = ${creditItem.value}")
+//            movie.casts = it.casts
+//            movie.crews = it.crews
+//
+//            val writingList = mutableListOf<String>()
+//            for (value in it.crews) {
+//                if (value.job == "Director") {
+//                    movie.director = value.name
+//                    Logger.i("movie.director = ${movie.director}")
+//                }
+//                if (value.job == "Story") {
+//                    writingList.add(value.name)
+//                    Logger.i("writingList = $writingList")
+//                }
+//            }
+//            movie.writing = writingList
+//        }
+//        Logger.i("movie = $movie")
+//    }
+
+
+//        _navigateToDetail.value = detailItem.value?.let {
+//            Movie(
+//                id = it.id,
+//                casts = listOf(),
+//                imdbID = it.imdbID,
+//                awards = null,
+//                country = null,
+//                director = null,
+//                genres = it.genres,
+//                overview = it.overview,
+//                posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri,
+//                released = it.releaseDate,
+//                runTime = it.runTime,
+//                revenue = null,
+//                salesTaiwan = null,
+//                title = it.title,
+//                trailerUri = null,
+//                writing = listOf(),
+//                ratings = listOf(),
+//                crews = listOf())
+//        }

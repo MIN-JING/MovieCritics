@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.Score
 import com.jim.moviecritics.data.source.ApplicationRepository
@@ -95,7 +94,7 @@ class DetailViewModel(
 
             if (isInitial) _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getScore(imdbID)
+            val result = applicationRepository.getScores(imdbID)
 
             _scores.value = when (result) {
                 is Result.Success -> {

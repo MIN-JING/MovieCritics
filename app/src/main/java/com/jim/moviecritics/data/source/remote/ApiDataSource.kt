@@ -22,12 +22,12 @@ object ApiDataSource : ApplicationDataSource {
 
         return try {
             // this will run on a thread managed by Retrofit
-            val listResult = TmdbApi.retrofitService.getPopularMovies()
+            val popularResult = TmdbApi.retrofitService.getPopularMovies()
 
-            listResult.error?.let {
+            popularResult.error?.let {
                 return Result.Fail(it)
             }
-            Result.Success(listResult.toHomeItems())
+            Result.Success(popularResult.toHomeItems())
 //            Result.Success(listResult)
 
         } catch (e: Exception) {
@@ -43,12 +43,12 @@ object ApiDataSource : ApplicationDataSource {
         }
 
         return try {
-            val movieResult = TmdbApi.retrofitService.getMovieDetail(id)
+            val detailResult = TmdbApi.retrofitService.getMovieDetail(id)
 
-            movieResult.error?.let {
+            detailResult.error?.let {
                 return Result.Fail(it)
             }
-            Result.Success(movieResult)
+            Result.Success(detailResult)
 
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
@@ -56,7 +56,26 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
-    override suspend fun getScore(imdbID: String): Result<List<Score>> {
+    override suspend fun getMovieCredit(id: Int): Result<CreditResult> {
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
+        }
+
+        return try {
+            val creditResult = TmdbApi.retrofitService.getMovieCredit(id)
+
+            creditResult.error?.let {
+                return Result.Fail(it)
+            }
+            Result.Success(creditResult)
+
+        } catch (e: Exception) {
+            Logger.w("[${this::class.simpleName}] exception=${e.message}")
+            Result.Error(e)
+        }
+    }
+
+    override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
 

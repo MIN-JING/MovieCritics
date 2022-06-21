@@ -1,6 +1,7 @@
 package com.jim.moviecritics.network
 
 import com.jim.moviecritics.BuildConfig
+import com.jim.moviecritics.data.CreditResult
 import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.PopularMoviesResult
 import com.squareup.moshi.Moshi
@@ -18,6 +19,7 @@ private const val BASE_URL = "https://$HOST_NAME/$API_VERSION/"
 private const val API_KEY = ""
 private const val MEDIA_TYPE = "movie"
 private const val TIME_WINDOW = "week"
+
 
 /**
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
@@ -66,6 +68,12 @@ interface TmdbApiService {
         @Path("movie_id") id: Int,
         @Query("api_key") apiKey: String = API_KEY
     ): MovieDetailResult
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredit(
+        @Path("movie_id") id: Int,
+        @Query("api_key") apiKey: String = API_KEY
+    ): CreditResult
 }
 
 /**

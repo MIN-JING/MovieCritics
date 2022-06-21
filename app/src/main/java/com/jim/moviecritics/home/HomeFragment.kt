@@ -37,7 +37,7 @@ class HomeFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.homeItems.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.homeItems = $it")
+            Logger.i("HomeViewModel.homeItems = $it")
 //            for (value in it) {
 //                Logger.i("value in List<HomeItem> value.id = ${value.id}")
 //            }
@@ -47,38 +47,43 @@ class HomeFragment : Fragment() {
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
                 Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")
-                viewModel.getMovieDetail(isInitial = true, id = it.id)
-                //                viewModel.navigateToDetail(it)
-
-
+//                viewModel.getMovieDetail(isInitial = true, id = it.id)
+//                viewModel.getMovieCredit(isInitial = true, id = it.id)
+                var movie = Movie()
+                viewModel.getMovieFull(it.id)
+//                viewModel.navigateToDetail(movie)
             }
         )
 
         viewModel.detailItem.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.detailItem = $it")
-            viewModel.navigateToDetail(
-                Movie(
-                    id = it.id,
-                    actors = listOf(),
-                    imdbID = it.imdbID,
-                    awards = null,
-                    country = null,
-                    director = null,
-                    genre = it.genres,
-                    overview = it.overview,
-                    posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri,
-                    released = it.releaseDate,
-                    runTime = it.runTime,
-                    sales = null,
-                    salesTaiwan = null,
-                    title = it.title,
-                    trailerUri = null,
-                    writer = null,
-                    ratings = listOf()))
+            Logger.i("HomeViewModel.detailItem = $it")
+//            viewModel.navigateToDetail(
+//                Movie(
+//                    id = it.id,
+//                    casts = listOf(),
+//                    imdbID = it.imdbID,
+//                    awards = null,
+//                    country = null,
+//                    director = null,
+//                    genres = it.genres,
+//                    overview = it.overview,
+//                    posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri,
+//                    released = it.releaseDate,
+//                    runTime = it.runTime,
+//                    sales = null,
+//                    salesTaiwan = null,
+//                    title = it.title,
+//                    trailerUri = null,
+//                    writer = null,
+//                    ratings = listOf()))
+        })
+
+        viewModel.creditItem.observe(viewLifecycleOwner, Observer {
+            Logger.i("HomeViewModel.creditItem = $it")
         })
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.navigateToDetail = $it")
+            Logger.i("HomeViewModel.navigateToDetail = $it")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
                 viewModel.onDetailNavigated()
@@ -86,7 +91,7 @@ class HomeFragment : Fragment() {
         })
 
         viewModel.comments.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.testComments = $it")
+            Logger.i("HomeViewModel.testComments = $it")
         })
 
         return binding.root

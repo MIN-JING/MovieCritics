@@ -18,7 +18,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Score
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentDetailBinding
 import com.jim.moviecritics.util.Logger

@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 data class PopularMoviesResult(
     @Json(name = "status_message")val error: String? = null,
     val page: Int? = null,
-    @Json(name = "results") val trendsList: List<Trend>? = null,
+    @Json(name = "results") val trends: List<Trend>? = null,
     @Json(name = "total_pages") val totalPages: Int,
     @Json(name = "total_results") val totalResults: Int
 ) : Parcelable {
@@ -20,8 +20,8 @@ data class PopularMoviesResult(
         val items = mutableListOf<HomeItem>()
 //        val items = mutableListOf<Trends>()
 
-        trendsList?.let {
-            Logger.i("trendsList = $trendsList")
+        trends?.let {
+            Logger.i("trendsList = $trends")
 
             for (trend in it) {
                 Logger.i("trend = $trend")

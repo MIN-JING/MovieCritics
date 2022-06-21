@@ -14,8 +14,10 @@ interface ApplicationDataSource {
 
     suspend fun getMovieDetail(id: Int): Result<MovieDetailResult>
 
+    suspend fun getMovieCredit(id: Int): Result<CreditResult>
+
     // FirebaseDataSource
-    suspend fun getScore(imdbID: String): Result<List<Score>>
+    suspend fun getScores(imdbID: String): Result<List<Score>>
 
     suspend fun getComments(): Result<List<Comment>>
 

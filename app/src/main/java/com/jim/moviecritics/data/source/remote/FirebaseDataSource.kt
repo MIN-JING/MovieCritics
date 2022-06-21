@@ -31,8 +31,11 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getMovieCredit(id: Int): Result<CreditResult> {
+        TODO("Not yet implemented")
+    }
 
-    override suspend fun getScore(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
+    override suspend fun getScores(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
             .whereEqualTo("imdbID", imdbID)

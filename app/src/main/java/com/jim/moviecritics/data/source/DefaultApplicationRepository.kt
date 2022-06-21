@@ -22,9 +22,13 @@ class DefaultApplicationRepository(
         return apiDataSource.getMovieDetail(id)
     }
 
+    override suspend fun getMovieCredit(id: Int): Result<CreditResult> {
+        return apiDataSource.getMovieCredit(id)
+    }
+
     // FirebaseDataSource
-    override suspend fun getScore(imdbID: String): Result<List<Score>> {
-        return firebaseDataSource.getScore(imdbID)
+    override suspend fun getScores(imdbID: String): Result<List<Score>> {
+        return firebaseDataSource.getScores(imdbID)
     }
 
     override suspend fun getComments(): Result<List<Comment>> {

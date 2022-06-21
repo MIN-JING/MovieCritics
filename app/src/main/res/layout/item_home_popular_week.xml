@@ -9,75 +9,76 @@
             name="trend"
             type="com.jim.moviecritics.data.Trend" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/image_poster_home"
-        android:layout_width="100dp"
-        android:layout_height="130dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:imageUrl="@{trend.posterUri}"
-        tools:srcCompat="@tools:sample/avatars" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/image_user_pic"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_poster_home"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/image_poster_home"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{trend.posterUri}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/image_star"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/image_user_pic"
-        app:layout_constraintStart_toEndOf="@+id/image_user_pic"
-        app:srcCompat="@drawable/ic_star"
-        tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/image_user_pic"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_poster_home"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/text_name"
-        android:layout_width="0dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:gravity="center_vertical"
-        android:text="@{trend.title}"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_user_pic"
-        app:layout_constraintTop_toBottomOf="@+id/image_poster_home" />
-<!--    android:autoSizeTextType="uniform"-->
+        <ImageView
+            android:id="@+id/image_star"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_user_pic"
+            app:layout_constraintStart_toEndOf="@+id/image_user_pic"
+            app:srcCompat="@drawable/ic_star"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/text_score"
-        android:layout_width="20dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="4dp"
-        android:gravity="center_vertical"
-        android:text="@{String.valueOf(trend.average)}"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="@+id/image_star"
-        app:layout_constraintStart_toEndOf="@+id/image_star" />
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:text="@{trend.title}"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_user_pic"
+            app:layout_constraintTop_toBottomOf="@+id/image_poster_home" />
+        <!--    android:autoSizeTextType="uniform"-->
 
-    <ImageView
-        android:id="@+id/image_is_comment"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_score"
-        app:layout_constraintStart_toEndOf="@+id/text_score"
-        app:srcCompat="@drawable/ic_notes"
-        tools:srcCompat="@tools:sample/avatars" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_score"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="4dp"
+            android:gravity="center_vertical"
+            android:text="@{String.valueOf(trend.average)}"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_star"
+            app:layout_constraintStart_toEndOf="@+id/image_star" />
+
+        <ImageView
+            android:id="@+id/image_is_comment"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_score"
+            app:layout_constraintStart_toEndOf="@+id/text_score"
+            app:srcCompat="@drawable/ic_notes"
+            tools:srcCompat="@tools:sample/avatars" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

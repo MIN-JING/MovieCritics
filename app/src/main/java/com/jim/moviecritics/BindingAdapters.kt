@@ -5,7 +5,9 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
+import com.jim.moviecritics.data.Cast
 import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.home.HomeAdapter
 import com.jim.moviecritics.util.Logger
 
@@ -17,6 +19,20 @@ fun bindRecyclerViewWithHomeItems(recyclerView: RecyclerView, homeItems: List<Ho
             when (this) {
                 is HomeAdapter -> { submitList(it)
                     Logger.i("bindRecyclerViewWithHomeItems = $it")
+                }
+            }
+        }
+    }
+}
+
+@BindingAdapter("casts")
+fun bindRecyclerViewWithCasts(recyclerView: RecyclerView, casts: List<Cast>?) {
+    casts?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is CastAdapter -> {
+                    submitList(it)
+                    Logger.i("bindRecyclerViewWithCasts = $it")
                 }
             }
         }

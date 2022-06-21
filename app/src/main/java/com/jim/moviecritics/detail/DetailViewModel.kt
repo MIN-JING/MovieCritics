@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Cast
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.Score
@@ -34,7 +35,9 @@ class DetailViewModel(
     val scores: LiveData<List<Score>>
         get() = _scores
 
-    // status: The internal MutableLiveData that stores the status of the most recent request
+//    val casts: List<Cast>? = movie.value?.casts
+
+        // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>

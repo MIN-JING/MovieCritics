@@ -49,7 +49,6 @@ class HomeFragment : Fragment() {
                 Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")
 //                viewModel.getMovieDetail(isInitial = true, id = it.id)
 //                viewModel.getMovieCredit(isInitial = true, id = it.id)
-                var movie = Movie()
                 viewModel.getMovieFull(it.id)
 //                viewModel.navigateToDetail(movie)
             }
@@ -57,25 +56,6 @@ class HomeFragment : Fragment() {
 
         viewModel.detailItem.observe(viewLifecycleOwner, Observer {
             Logger.i("HomeViewModel.detailItem = $it")
-//            viewModel.navigateToDetail(
-//                Movie(
-//                    id = it.id,
-//                    casts = listOf(),
-//                    imdbID = it.imdbID,
-//                    awards = null,
-//                    country = null,
-//                    director = null,
-//                    genres = it.genres,
-//                    overview = it.overview,
-//                    posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri,
-//                    released = it.releaseDate,
-//                    runTime = it.runTime,
-//                    sales = null,
-//                    salesTaiwan = null,
-//                    title = it.title,
-//                    trailerUri = null,
-//                    writer = null,
-//                    ratings = listOf()))
         })
 
         viewModel.creditItem.observe(viewLifecycleOwner, Observer {
@@ -84,6 +64,7 @@ class HomeFragment : Fragment() {
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
             Logger.i("HomeViewModel.navigateToDetail = $it")
+            Logger.i("HomeViewModel.navigateToDetail it?.runTime = ${it?.runTime}")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
                 viewModel.onDetailNavigated()

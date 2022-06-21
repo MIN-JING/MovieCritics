@@ -88,9 +88,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
     }
 
-//    fun navigateToDetail(movie: Movie) {
-//        _navigateToDetail.value = movie
-//    }
 
     fun getMovieFull(id: Int) {
         Logger.i("fun navigateToDetail")
@@ -120,6 +117,14 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
                 creditItem.value?.let {
                     Logger.i("creditItem.value = ${creditItem.value}")
+
+                    for (cast in it.casts) {
+                        if (cast.profilePath != null) {
+                            cast.profilePath = "https://image.tmdb.org/t/p/w185" + cast.profilePath
+                            Logger.i("cast.profilePath = ${cast.profilePath}")
+                        }
+                    }
+
                     movie.casts = it.casts
                     movie.crews = it.crews
 

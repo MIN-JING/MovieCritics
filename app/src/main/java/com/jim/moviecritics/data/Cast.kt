@@ -13,7 +13,7 @@ data class Cast(
     val name: String,
     @Json(name = "original_name")val originalName: String,
     val popularity: Float,
-    @Json(name = "profile_path")val profilePath: String?,
+    @Json(name = "profile_path")var profilePath: String?,
     @Json(name = "cast_id")val castId: Int,
     val character: String,
     @Json(name = "credit_id")val creditId: String,

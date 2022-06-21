@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Trend
 import com.jim.moviecritics.databinding.ItemHomePopularWeekBinding
 
@@ -14,15 +13,11 @@ import com.jim.moviecritics.databinding.ItemHomePopularWeekBinding
 class HomeAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<HomeItem, RecyclerView.ViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (trend: Trend) -> Unit) {
-        fun onClick(trend: Trend) = clickListener(trend)
-    }
-
     class PopularMovieViewHolder(private var binding: ItemHomePopularWeekBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
             fun bind(trend: Trend, onClickListener: OnClickListener) {
-                binding.trend= trend
+                binding.trend = trend
                 binding.root.setOnClickListener { onClickListener.onClick(trend) }
                 binding.executePendingBindings()
             }
@@ -63,5 +58,9 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
         return when (getItem(position)) {
             is HomeItem.PopularMovie -> ITEM_VIEW_TYPE_MOVIE_POPULAR
         }
+    }
+
+    class OnClickListener(val clickListener: (trend: Trend) -> Unit) {
+        fun onClick(trend: Trend) = clickListener(trend)
     }
 }

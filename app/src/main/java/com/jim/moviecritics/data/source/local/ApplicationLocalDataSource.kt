@@ -15,6 +15,10 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getScore(imdbID: String): Result<List<Score>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getComments(): Result<List<Comment>> {
         TODO("Not yet implemented")
     }

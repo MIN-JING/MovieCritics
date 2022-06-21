@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentProfileBinding
+import com.jim.moviecritics.detail.DetailFragmentArgs
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.home.HomeViewModel
 

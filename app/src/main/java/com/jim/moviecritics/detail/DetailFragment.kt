@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
@@ -19,6 +18,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Score
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentDetailBinding
 import com.jim.moviecritics.util.Logger
@@ -44,24 +44,39 @@ class DetailFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        showRadarChart(
-            binding.radarChartRating,
-            setRadarData(
-            averageLeisure = 4.3F,
-            averageHit = 3.4F,
-            averageCast = 4.9F,
-            averageMusic = 2.1F,
-            averageStory = 3.7F,
-            userLeisure = 3.5F,
-            userHit = 2.5F,
-            userCast = 2.0F,
-            userMusic = 3.5F,
-            userStory = 5.0F)
-        )
 
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             Logger.i("DetailViewModel.movie = $it")
         })
+
+        viewModel.scores.observe(viewLifecycleOwner, Observer {
+            Logger.i("DetailViewModel.scores = $it")
+            Logger.i("DetailViewModel.scores it.first() = ${it.first()}")
+            val scoresFirst = it.first()
+
+            Logger.i("DetailViewModel.scores it.first() = ${scoresFirst.leisure}")
+            Logger.i("DetailViewModel.scores it.first() = ${scoresFirst.hit}")
+            Logger.i("DetailViewModel.scores it.first() = ${scoresFirst.cast}")
+            Logger.i("DetailViewModel.scores it.first() = ${scoresFirst.music}")
+            Logger.i("DetailViewModel.scores it.first() = ${scoresFirst.story}")
+
+            val radarData = setRadarData(
+                averageLeisure = 4.3F,
+                averageHit = 3.4F,
+                averageCast = 4.9F,
+                averageMusic = 2.1F,
+                averageStory = 3.7F,
+                userLeisure = scoresFirst.leisure,
+                userHit = scoresFirst.hit,
+                userCast = scoresFirst.cast,
+                userMusic = scoresFirst.music,
+                userStory = scoresFirst.story
+            )
+
+//            binding.radarChartRating.data = radarData
+            showRadarChart(binding.radarChartRating, radarData)
+        })
+
 
         viewModel.navigateToPending.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -157,7 +172,7 @@ class DetailFragment : Fragment() {
         radarChart.yAxis.axisMinimum = 0F
         radarChart.yAxis.axisMaximum = 5F
         radarChart.data = radarData
-//        radarChart.invalidate()
+        radarChart.invalidate()
     }
 
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -167,3 +182,36 @@ class DetailFragment : Fragment() {
 //    }
 
 }
+
+
+//        scoresFirst?.let {
+//            setRadarData(
+//                averageLeisure = 4.3F,
+//                averageHit = 3.4F,
+//                averageCast = 4.9F,
+//                averageMusic = 2.1F,
+//                averageStory = 3.7F,
+//                userLeisure = it.leisure,
+//                userHit = it.hit,
+//                userCast = it.cast,
+//                userMusic = it.music,
+//                userStory = it.story)
+//        }?.let {
+//            showRadarChart(binding.radarChartRating, it)
+//        }
+
+//        showRadarChart(
+//            binding.radarChartRating,
+//            setRadarData(
+//                averageLeisure = 4.3F,
+//                averageHit = 3.4F,
+//                averageCast = 4.9F,
+//                averageMusic = 2.1F,
+//                averageStory = 3.7F,
+//                userLeisure = 3.5F,
+//                userHit = 2.5F,
+//                userCast = 2.0F,
+//                userMusic = 3.5F,
+//                userStory = 5.0F
+//            )
+//        )

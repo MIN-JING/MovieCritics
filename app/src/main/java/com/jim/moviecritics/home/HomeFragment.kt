@@ -85,7 +85,7 @@ class HomeFragment : Fragment() {
             }
         })
 
-        viewModel.testComments.observe(viewLifecycleOwner, Observer {
+        viewModel.comments.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.testComments = $it")
         })
 

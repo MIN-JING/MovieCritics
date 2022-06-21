@@ -23,6 +23,10 @@ class DefaultApplicationRepository(
     }
 
     // FirebaseDataSource
+    override suspend fun getScore(imdbID: String): Result<List<Score>> {
+        return firebaseDataSource.getScore(imdbID)
+    }
+
     override suspend fun getComments(): Result<List<Comment>> {
         return firebaseDataSource.getComments()
     }

@@ -11,10 +11,10 @@ data class Score(
     val userID: Long = 891031L,
     val imdbID: String = "",
     val createdTime: Timestamp = Timestamp.now(),
-    val leisure: Float = 0F,
-    val hit: Float = 0F,
-    val cast: Float = 0F,
-    val music: Float = 0F,
-    val story: Float = 0F,
-    val average: Float = 0F
+    var leisure: Float = 0F,
+    var hit: Float = 0F,
+    var cast: Float = 0F,
+    var music: Float = 0F,
+    var story: Float = 0F,
+    var average: Float = 0F
 ) : Parcelable

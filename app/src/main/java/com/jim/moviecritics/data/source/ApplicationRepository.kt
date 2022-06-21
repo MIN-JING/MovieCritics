@@ -15,6 +15,8 @@ interface ApplicationRepository {
     suspend fun getMovieDetail(id: Int): Result<MovieDetailResult>
 
     // FirebaseDataSource
+    suspend fun getScore(imdbID: String): Result<List<Score>>
+
     suspend fun getComments(): Result<List<Comment>>
 
     fun getLiveComments(): MutableLiveData<List<Comment>>

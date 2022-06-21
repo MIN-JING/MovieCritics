@@ -21,8 +21,10 @@ import com.jim.moviecritics.util.Util.getString
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
-    val testComments = MutableLiveData<List<Comment>>()
+    private val _comments = MutableLiveData<List<Comment>>()
 
+    val comments: LiveData<List<Comment>>
+        get() = _comments
 
 
     val pushTrend = MutableLiveData<PushTrend>()
@@ -170,7 +172,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
             val result = applicationRepository.getComments()
 
-            testComments.value = when (result) {
+            _comments.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     if (isInitial) _status.value = LoadApiStatus.DONE

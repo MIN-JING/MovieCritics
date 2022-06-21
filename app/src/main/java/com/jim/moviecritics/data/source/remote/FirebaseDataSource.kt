@@ -18,6 +18,7 @@ import com.jim.moviecritics.util.Logger
  */
 object FirebaseDataSource : ApplicationDataSource {
 
+    private const val PATH_SCORES = "score"
     private const val PATH_COMMENTS = "comment"
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val KEY_CREATED_TIME = "createdTime"
@@ -28,6 +29,35 @@ object FirebaseDataSource : ApplicationDataSource {
 
     override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
         TODO("Not yet implemented")
+    }
+
+
+    override suspend fun getScore(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_SCORES)
+            .whereEqualTo("imdbID", imdbID)
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+//                    Logger.d( task.result.documents.first().id + " => " + task.result.documents.first().data)
+//                    val item = task.result.documents.first().toObject(Score::class.java)
+                    val list = mutableListOf<Score>()
+                    for (document in task.result) {
+                        Logger.d( document.id + " => " + document.data)
+                        val score = document.toObject(Score::class.java)
+                        list.add(score)
+                    }
+                    continuation.resume(Result.Success(list))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
     }
 
     override suspend fun getComments(): Result<List<Comment>> = suspendCoroutine { continuation ->
@@ -54,7 +84,6 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
-
     }
 
     override fun getLiveComments(): MutableLiveData<List<Comment>> {

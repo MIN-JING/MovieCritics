@@ -8,6 +8,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -28,6 +29,11 @@ class DetailViewModel(
 
     val movie: LiveData<Movie>
         get() = _movie
+
+    private val _scores = MutableLiveData<List<Score>>()
+
+    val scores: LiveData<List<Score>>
+        get() = _scores
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -67,7 +73,8 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        pushMockScore()
+//        pushMockScore()
+        getScoresResult(isInitial = true, imdbID = "tt0343818")
     }
 
     fun navigateToPending(movie: Movie) {
@@ -80,6 +87,39 @@ class DetailViewModel(
 
     fun leaveDetail() {
         _leaveDetail.value = true
+    }
+
+    private fun getScoresResult(isInitial: Boolean = false, imdbID: String) {
+
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getScore(imdbID)
+
+            _scores.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
     }
 
     private fun pushMockScore() {

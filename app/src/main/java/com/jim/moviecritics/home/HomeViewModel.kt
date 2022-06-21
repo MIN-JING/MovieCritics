@@ -17,29 +17,15 @@ import kotlinx.coroutines.*
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
-    private val _comments = MutableLiveData<List<Comment>>()
-
-    val comments: LiveData<List<Comment>>
-        get() = _comments
-
-
-    val pushTrend = MutableLiveData<PushTrend>()
-
-
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 
     val homeItems: LiveData<List<HomeItem>>
         get() = _homeItems
 
-    private val _detailItem = MutableLiveData<MovieDetailResult>()
+    private val _comments = MutableLiveData<List<Comment>>()
 
-    val detailItem: LiveData<MovieDetailResult>
-        get() = _detailItem
-
-    private val _creditItem = MutableLiveData<CreditResult>()
-
-    val creditItem: LiveData<CreditResult>
-        get() = _creditItem
+    val comments: LiveData<List<Comment>>
+        get() = _comments
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -91,14 +77,13 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
     fun getMovieFull(id: Int) {
         Logger.i("fun navigateToDetail")
-//        var totalCount = 2
             val movie = Movie()
             coroutineScope.launch {
-                _detailItem.value = getMovieDetail(index = 0, id = id)
-                _creditItem.value = getMovieCredit(index = 1, id = id)
+                val detailResult = getMovieDetail(isInitial = true, index = 0, id = id)
+                val creditResult = getMovieCredit(isInitial = true, index = 1, id = id)
 
-                detailItem.value?.let {
-                    Logger.i("detailItem.value = ${detailItem.value}")
+                detailResult?.let {
+                    Logger.i("detailItem.value = $detailResult")
                     movie.id = it.id
                     movie.imdbID = it.imdbID
                     movie.awards = null
@@ -115,8 +100,8 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.ratings = listOf()
                 }
 
-                creditItem.value?.let {
-                    Logger.i("creditItem.value = ${creditItem.value}")
+                creditResult?.let {
+                    Logger.i("creditItem.value = $creditResult")
 
                     for (cast in it.casts) {
                         if (cast.profilePath != null) {
@@ -187,48 +172,87 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     null
                 }
             }
-//            _refreshStatus.value = false
         }
     }
 
-    private suspend fun getMovieDetail(index:Int, id: Int): MovieDetailResult? {
+    private suspend fun getMovieDetail(isInitial: Boolean = false, index:Int, id: Int): MovieDetailResult? {
 
         return withContext(Dispatchers.IO) {
 
+            withContext(Dispatchers.Main) {
+                if (isInitial) _status.value = LoadApiStatus.LOADING
+            }
+
             when (val result = applicationRepository.getMovieDetail(id)) {
                 is Result.Success -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = null
+                        if (isInitial) _status.value = LoadApiStatus.DONE
+                    }
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
                 is Result.Fail -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = result.error
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
                 is Result.Error -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = result.exception.toString()
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
                 else -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = getString(R.string.you_know_nothing)
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
             }
         }
     }
 
-    private suspend fun getMovieCredit(index: Int, id: Int): CreditResult? {
+    private suspend fun getMovieCredit(isInitial: Boolean = false, index: Int, id: Int): CreditResult? {
 
         return withContext(Dispatchers.IO) {
 
+            withContext(Dispatchers.Main) {
+                if (isInitial) _status.value = LoadApiStatus.LOADING
+            }
+
             when (val result = applicationRepository.getMovieCredit(id)) {
                 is Result.Success -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = null
+                        if (isInitial) _status.value = LoadApiStatus.DONE
+                    }
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
                 is Result.Fail -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = result.error
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
                 is Result.Error -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = result.exception.toString()
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
                 else -> {
+                    withContext(Dispatchers.Main) {
+                        _error.value = getString(R.string.you_know_nothing)
+                        if (isInitial) _status.value = LoadApiStatus.ERROR
+                    }
                     null
                 }
             }

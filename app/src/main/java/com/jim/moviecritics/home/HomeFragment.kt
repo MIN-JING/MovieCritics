@@ -38,29 +38,15 @@ class HomeFragment : Fragment() {
 
         viewModel.homeItems.observe(viewLifecycleOwner, Observer {
             Logger.i("HomeViewModel.homeItems = $it")
-//            for (value in it) {
-//                Logger.i("value in List<HomeItem> value.id = ${value.id}")
-//            }
         })
 
         binding.recyclerviewPopular.adapter = HomeAdapter(
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
                 Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")
-//                viewModel.getMovieDetail(isInitial = true, id = it.id)
-//                viewModel.getMovieCredit(isInitial = true, id = it.id)
                 viewModel.getMovieFull(it.id)
-//                viewModel.navigateToDetail(movie)
             }
         )
-
-        viewModel.detailItem.observe(viewLifecycleOwner, Observer {
-            Logger.i("HomeViewModel.detailItem = $it")
-        })
-
-        viewModel.creditItem.observe(viewLifecycleOwner, Observer {
-            Logger.i("HomeViewModel.creditItem = $it")
-        })
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner, Observer {
             Logger.i("HomeViewModel.navigateToDetail = $it")

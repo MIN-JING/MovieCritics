@@ -43,8 +43,9 @@ object FirebaseDataSource : ApplicationDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-//                    Logger.d( task.result.documents.first().id + " => " + task.result.documents.first().data)
-//                    val item = task.result.documents.first().toObject(Score::class.java)
+//                    Logger.d( task.result.first().id + " => " + task.result.documents.first().data)
+//                    val item = task.result.first().toObject(Score::class.java)
+//                    continuation.resume(Result.Success(item))
                     val list = mutableListOf<Score>()
                     for (document in task.result) {
                         Logger.d( document.id + " => " + document.data)
@@ -52,6 +53,33 @@ object FirebaseDataSource : ApplicationDataSource {
                         list.add(score)
                     }
                     continuation.resume(Result.Success(list))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_SCORES)
+            .whereEqualTo("imdbID", imdbID)
+            .whereEqualTo("userID", userID)
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result.size() == 1) {
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val item = task.result.first().toObject(Score::class.java)
+                        continuation.resume(Result.Success(item))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] task.result.size != 1")
+                    }
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")

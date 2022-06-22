@@ -79,6 +79,10 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getComments(): Result<List<Comment>> {
         TODO("Not yet implemented")
     }

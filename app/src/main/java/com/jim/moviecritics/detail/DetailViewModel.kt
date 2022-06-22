@@ -35,6 +35,11 @@ class DetailViewModel(
     val scores: LiveData<List<Score>>
         get() = _scores
 
+    private val _score = MutableLiveData<Score>()
+
+    val score: LiveData<Score>
+        get() = _score
+
 
         // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -76,6 +81,7 @@ class DetailViewModel(
 
 //        pushMockScore()
         getScoresResult(isInitial = true, imdbID = "tt0343818")
+        getScoreResult(isInitial = true, imdbID = "tt0343818", userID = 891031)
     }
 
     fun navigateToPending(movie: Movie) {
@@ -99,6 +105,39 @@ class DetailViewModel(
             val result = applicationRepository.getScores(imdbID)
 
             _scores.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
+    private fun getScoreResult(isInitial: Boolean = false, imdbID: String, userID: Long) {
+
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getScore(imdbID, userID)
+
+            _score.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     if (isInitial) _status.value = LoadApiStatus.DONE

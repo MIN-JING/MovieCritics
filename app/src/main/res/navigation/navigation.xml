@@ -38,17 +38,17 @@
             app:nullable="false" />
     </fragment>
 
-    <fragment
-        android:id="@+id/pendingFragment"
-        android:name="com.jim.moviecritics.pending.PendingFragment"
-        android:label="fragment_pending"
-        tools:layout="@layout/fragment_pending" >
+    <dialog
+        android:id="@+id/pendingDialog"
+        android:name="com.jim.moviecritics.pending.PendingDialog"
+        android:label="dialog_pending"
+        tools:layout="@layout/dialog_pending" >
 
         <argument
             android:name="movie"
             app:argType="com.jim.moviecritics.data.Movie"
             app:nullable="false" />
-    </fragment>
+    </dialog>
 
     <fragment
         android:id="@+id/reviewFragment"
@@ -79,12 +79,9 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true" />
+    <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
 
-
-    <action android:id="@+id/navigate_to_pending_fragment" app:destination="@id/pendingFragment"/>
+    <action android:id="@+id/navigate_to_pending_dialog" app:destination="@id/pendingDialog"/>
 
     <action android:id="@+id/navigate_to_review_fragment" app:destination="@id/reviewFragment"/>
 

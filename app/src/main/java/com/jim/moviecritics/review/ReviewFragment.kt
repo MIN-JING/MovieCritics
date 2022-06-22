@@ -13,7 +13,7 @@ import com.jim.moviecritics.ext.getVmFactory
 
 class ReviewFragment : Fragment() {
 
-    private val viewModel by viewModels<ReviewViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
+    private val viewModel by viewModels<ReviewViewModel> { getVmFactory(ReviewFragmentArgs.fromBundle(requireArguments()).movie) }
 
 //    companion object {
 //        fun newInstance() = ReviewFragment()

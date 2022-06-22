@@ -2,7 +2,7 @@ package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.remote.FirebaseDataSource
+
 
 /**
  * Concrete implementation to load Application sources.
@@ -31,6 +31,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getScores(imdbID)
     }
 
+    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+        return firebaseDataSource.getScore(imdbID, userID)
+    }
+
     override suspend fun getComments(): Result<List<Comment>> {
         return firebaseDataSource.getComments()
     }
@@ -56,7 +60,7 @@ class DefaultApplicationRepository(
     }
 
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
-        return FirebaseDataSource.pushPopularMovies(pushTrend)
+        return firebaseDataSource.pushPopularMovies(pushTrend)
     }
 
 }

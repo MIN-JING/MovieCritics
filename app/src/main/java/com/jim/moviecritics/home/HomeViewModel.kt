@@ -76,7 +76,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
 
     fun getMovieFull(id: Int) {
-        Logger.i("fun navigateToDetail")
             val movie = Movie()
             coroutineScope.launch {
                 val detailResult = getMovieDetail(isInitial = true, index = 0, id = id)
@@ -92,12 +91,13 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.overview = it.overview
                     movie.posterUri = "https://image.tmdb.org/t/p/w185" + it.posterUri
                     movie.released = it.releaseDate
-                    movie.runTime = it.runTime
+                    movie.runtime = it.runtime
                     movie.revenue = it.revenue
                     movie.salesTaiwan = null
                     movie.title = it.title
                     movie.trailerUri = null
                     movie.ratings = listOf()
+                    movie.voteAverage = it.average / 5
                 }
 
                 creditResult?.let {

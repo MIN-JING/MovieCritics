@@ -21,9 +21,10 @@ data class Movie(
     var country: String? = "",
     var awards: String? = "",
 //    val rated: String,
-    var runTime: Int? = 0,
+    var runtime: Int? = 0,
     var writing: List<String?> = listOf(),
     var ratings: List<Rating> = listOf(),
     var revenue: Int? = 0,
-    var salesTaiwan: String? = ""
+    var salesTaiwan: String? = "",
+    var voteAverage: Float = 0F
 ) : Parcelable

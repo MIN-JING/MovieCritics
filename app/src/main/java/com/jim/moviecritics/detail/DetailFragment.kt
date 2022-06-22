@@ -82,18 +82,23 @@ class DetailFragment : Fragment() {
             showRadarChart(binding.radarChartRating, radarData)
         })
 
+        viewModel.score.observe(viewLifecycleOwner, Observer {
+            Logger.i("DetailViewModel.score = $it")
+        })
+
 
         viewModel.navigateToPending.observe(viewLifecycleOwner, Observer {
+            Logger.i("DetailViewModel.navigateToPending = $it")
+            Logger.i("DetailViewModel.navigateToPending runTime = ${it?.runtime}")
             it?.let {
-                Logger.i("DetailViewModel.navigateToPending = $it")
-                findNavController().navigate(NavigationDirections.navigateToPendingFragment(it))
+                findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
                 viewModel.onPendingNavigated()
             }
         })
 
         viewModel.leaveDetail.observe(viewLifecycleOwner, Observer {
+            Logger.i(" DetailViewModel.leaveDetail = $it")
             it?.let {
-                Logger.i(" DetailViewModel.leaveDetail =  $it")
                 if (it) findNavController().popBackStack()
             }
         })

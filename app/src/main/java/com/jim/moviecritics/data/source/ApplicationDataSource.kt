@@ -19,6 +19,8 @@ interface ApplicationDataSource {
     // FirebaseDataSource
     suspend fun getScores(imdbID: String): Result<List<Score>>
 
+    suspend fun getScore(imdbID: String, userID: Long): Result<Score>
+
     suspend fun getComments(): Result<List<Comment>>
 
     fun getLiveComments(): MutableLiveData<List<Comment>>

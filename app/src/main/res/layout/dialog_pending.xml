@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,6 +81,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/toggle_pending_favorite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/toggle_pending_favorite" />
+<!--            android:checked="true"-->
+<!--            android:clickable="false"-->
 
             <ToggleButton
                 android:id="@+id/toggle_pending_favorite"
@@ -206,6 +209,7 @@
                 android:layout_height="0dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="Done"
+                android:onClick="@{() -> viewModel.leave()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

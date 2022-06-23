@@ -175,7 +175,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-    private suspend fun getMovieDetail(isInitial: Boolean = false, index:Int, id: Int): MovieDetailResult? {
+    private suspend fun getMovieDetail(isInitial: Boolean = false, index: Int, id: Int): MovieDetailResult? {
 
         return withContext(Dispatchers.IO) {
 

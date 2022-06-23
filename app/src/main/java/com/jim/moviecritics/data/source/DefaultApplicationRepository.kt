@@ -59,6 +59,10 @@ class DefaultApplicationRepository(
         return localDataSource.loadMockScore()
     }
 
+    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+        return firebaseDataSource.pushWatchedMovie(imdbID, userID)
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         return firebaseDataSource.pushPopularMovies(pushTrend)
     }

@@ -237,9 +237,9 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun loadMockDataMovie() {
-        val movies = FirebaseFirestore.getInstance().collection("movie")
-        val document = movies.document()
+//    private fun loadMockDataMovie() {
+//        val movies = FirebaseFirestore.getInstance().collection("movie")
+//        val document = movies.document()
 //        val data = Movie(
 //            12345,
 //            "tt0343818",
@@ -292,7 +292,7 @@ class MainActivity : BaseActivity() {
 //            null
 //        )
 //        document.set(data)
-    }
+//    }
 
     private fun loadMockDataComment() {
         val comments = FirebaseFirestore.getInstance().collection("comment")
@@ -334,22 +334,22 @@ class MainActivity : BaseActivity() {
         document.set(data)
     }
 
-    private fun loadMockDataUser() {
-        val users = FirebaseFirestore.getInstance().collection("user")
-        val document = users.document()
-        val data = User(
-            12345,
-            "MIN-JING",
-            "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
-            "Taipei City",
-            "instagram.com",
-            "twitter.com",
-            listOf(123, 456, 789),
-            listOf(123, 456, 789),
-            listOf(123, 456, 789),
-            listOf("tt0343818","tt0343818"),
-            listOf("tt0343818","tt0343818")
-        )
-        document.set(data)
-    }
+//    private fun loadMockDataUser() {
+//        val users = FirebaseFirestore.getInstance().collection("user")
+//        val document = users.document()
+//        val data = User(
+//            12345,
+//            "MIN-JING",
+//            "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
+//            "Taipei City",
+//            "instagram.com",
+//            "twitter.com",
+//            listOf(123, 456, 789),
+//            listOf(123, 456, 789),
+//            listOf(123, 456, 789),
+//            listOf("tt0343818","tt0343818"),
+//            listOf("tt0343818","tt0343818")
+//        )
+//        document.set(data)
+//    }
 }

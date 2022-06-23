@@ -33,5 +33,7 @@ interface ApplicationRepository {
 
     fun loadMockScore(): Score
 
+    suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean>
+
     suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
 }

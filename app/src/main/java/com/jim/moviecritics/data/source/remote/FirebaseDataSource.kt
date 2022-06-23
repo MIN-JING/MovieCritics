@@ -21,6 +21,7 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_SCORES = "score"
     private const val PATH_COMMENTS = "comment"
     private const val PATH_POPULAR_MOVIES = "popularMovies"
+    private const val PATH_USERS = "users"
     private const val KEY_CREATED_TIME = "createdTime"
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
@@ -200,6 +201,30 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        val watched = hashMapOf(
+            "watched" to imdbID
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .set(watched)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushWatchedMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>  = suspendCoroutine { continuation ->
         val popularMovies = FirebaseFirestore.getInstance().collection(PATH_POPULAR_MOVIES)
         val document = popularMovies.document()
@@ -211,8 +236,7 @@ object FirebaseDataSource : ApplicationDataSource {
             .set(popularMovies)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Logger.i("popularMovies: $popularMovies")
-
+                    Logger.i("pushPopularMovies task.isSuccessful")
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
@@ -223,6 +247,5 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
-
     }
 }

@@ -348,9 +348,9 @@ class MainActivity : BaseActivity() {
             listOf(123, 456, 789),
             listOf(123, 456, 789),
             listOf(123, 456, 789),
-            listOf("tt0343818","tt0343818"),
-            listOf("tt0343818","tt0343818"),
-            listOf("tt0343818","tt0343818")
+            mutableListOf("tt0343818","tt0343818"),
+            mutableListOf("tt0343818","tt0343818"),
+            mutableListOf("tt0343818","tt0343818")
         )
 
         FirebaseFirestore.getInstance()

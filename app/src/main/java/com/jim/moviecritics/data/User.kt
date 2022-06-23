@@ -15,7 +15,7 @@ data class User(
     val followers: List<Long> = listOf(),
     val followings: List<Long> = listOf(),
     val blocks: List<Long> = listOf(),
-    val watched: List<String> = listOf(),
+    val watched: MutableList<String> = mutableListOf(),
     val favorites: List<String> = listOf(),
     val downshifts: List<String> = listOf()
 ) : Parcelable

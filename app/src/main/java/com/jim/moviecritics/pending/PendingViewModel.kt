@@ -31,10 +31,20 @@ class PendingViewModel(
     val user: LiveData<User>
         get() = _user
 
-    private val _checkWatch = MutableLiveData<Boolean>()
+    private val _isWatch = MutableLiveData<Boolean>()
 
-    val checkWatch: LiveData<Boolean>
-        get() = _checkWatch
+    val isWatch: LiveData<Boolean>
+        get() = _isWatch
+
+    private val _isLike = MutableLiveData<Boolean>()
+
+    val isLike: LiveData<Boolean>
+        get() = _isLike
+
+    private val _isWatchList = MutableLiveData<Boolean>()
+
+    val isWatchList: LiveData<Boolean>
+        get() = _isWatchList
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -70,10 +80,9 @@ class PendingViewModel(
 
         coroutineScope.launch {
             _user.value = getUserResult(isInitial = true, userID = 790926)
-            Logger.i("user.value?.watched = ${user.value?.watched}")
-            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _checkWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-
+            _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+            _isLike.value = user.value?.favorites?.contains(movie.value?.imdbID.toString())
+            _isWatchList.value = user.value?.downshifts?.contains(movie.value?.imdbID.toString())
         }
 
     }
@@ -83,11 +92,7 @@ class PendingViewModel(
 
         return withContext(Dispatchers.IO) {
 
-//            if (isInitial) _status.value = LoadApiStatus.LOADING
-
             if (isInitial) _status.postValue(LoadApiStatus.LOADING)
-
-//            val result = applicationRepository.getUser(userID)
 
             when (val result = applicationRepository.getUser(userID)) {
                 is Result.Success -> {
@@ -141,8 +146,66 @@ class PendingViewModel(
         }
     }
 
-    fun checkWatch() {
-        _checkWatch.value = user.value?.watched?.contains(movie.value?.id.toString()) == true
+    fun onClickWatch(imdbID: String, userID: Long) {
+        if (isWatch.value != true) {
+            Logger.i("isWatch.value != true")
+            Logger.i("user.value?.watched = ${user.value?.watched}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.watched?.add(imdbID)
+            Logger.i("user.value?.watched add = ${user.value?.watched}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.pushWatchedMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isWatch.value = true
+        } else {
+            Logger.i("isWatch.value == false")
+            Logger.i("user.value?.watched = ${user.value?.watched}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.watched?.remove(imdbID)
+            Logger.i("user.value?.watched remove = ${user.value?.watched}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.removeWatchedMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isWatch.value = false
+        }
     }
 
 

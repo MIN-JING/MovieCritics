@@ -115,6 +115,10 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         TODO("Not yet implemented")
     }

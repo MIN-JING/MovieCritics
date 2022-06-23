@@ -10,6 +10,7 @@ import com.jim.moviecritics.data.source.ApplicationDataSource
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
 
@@ -243,17 +244,34 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
-        val watched = hashMapOf(
-            "watched" to imdbID
-        )
-
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID.toString())
-            .set(watched)
+//            .set(watched, SetOptions.merge())
+            .update("watched", FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushWatchedMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .update("watched", FieldValue.arrayRemove(imdbID))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("removeWatchedMovie task.isSuccessful")
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {

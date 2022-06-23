@@ -2,8 +2,6 @@ package com.jim.moviecritics.pending
 
 
 import android.os.Bundle
-import android.os.Handler
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +60,7 @@ class PendingDialog : AppCompatDialogFragment() {
             Logger.i("Pending Dialog user = $it")
         })
 
-        viewModel.checkWatch.observe(viewLifecycleOwner, Observer {
+        viewModel.isWatch.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog checkWatch = $it")
         })
 

@@ -67,6 +67,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.pushWatchedMovie(imdbID, userID)
     }
 
+    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+        return firebaseDataSource.removeWatchedMovie(imdbID, userID)
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         return firebaseDataSource.pushPopularMovies(pushTrend)
     }

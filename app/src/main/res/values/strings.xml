@@ -11,4 +11,7 @@
     <string name="downshift">即將下檔</string>
     <string name="profile">個人頁面</string>
     <string name="detail">電影詳細資料</string>
+
+    <!-- Profile -->
+    <string name="profile_mystic_information">Into the Unknown~</string>
 </resources>

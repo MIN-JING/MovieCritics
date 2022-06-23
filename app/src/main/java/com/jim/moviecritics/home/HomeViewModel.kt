@@ -179,9 +179,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
         return withContext(Dispatchers.IO) {
 
-            withContext(Dispatchers.Main) {
-                if (isInitial) _status.value = LoadApiStatus.LOADING
-            }
+            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
 
             when (val result = applicationRepository.getMovieDetail(id)) {
                 is Result.Success -> {

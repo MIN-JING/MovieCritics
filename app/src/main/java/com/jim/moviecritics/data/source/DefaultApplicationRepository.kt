@@ -35,6 +35,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getScore(imdbID, userID)
     }
 
+    override suspend fun getUser(userID: Long): Result<User> {
+        return firebaseDataSource.getUser(userID)
+    }
+
     override suspend fun getComments(): Result<List<Comment>> {
         return firebaseDataSource.getComments()
     }

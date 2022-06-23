@@ -23,6 +23,7 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val PATH_USERS = "users"
     private const val KEY_CREATED_TIME = "createdTime"
+    private const val KEY_ID = "id"
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
@@ -79,7 +80,7 @@ object FirebaseDataSource : ApplicationDataSource {
                         val item = task.result.first().toObject(Score::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
-                        Logger.w("[${this::class.simpleName}] task.result.size != 1")
+                        Logger.w("[${this::class.simpleName}] getScore task.result.size != 1")
                     }
                 } else {
                     task.exception?.let {
@@ -90,6 +91,48 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
+    }
+
+    override suspend fun getUser(userID: Long): Result<User> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+//            .document(userID.toString())
+            .whereEqualTo("id", userID)
+//            .orderBy(KEY_ID, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result.size() == 1) {
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val item = task.result.first().toObject(User::class.java)
+                        continuation.resume(Result.Success(item))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getUser task.result.size != 1")
+                    }
+//                    //1
+//                    val item = task.result.toObject(User::class.java)
+//                    continuation.resume(Result.Success(item!!))
+//
+//                    //2
+//                    if (task.result.data?.size != null) {
+//                        val item = task.result.toObject(User::class.java)
+//                        continuation.resume(Result.Success(item))
+//                    }
+//                    //3
+//                    task.result?.let {
+//                        continuation.resume(Result.Success(it.toObject(User::class.java)))
+//                    }
+
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+
     }
 
     override suspend fun getComments(): Result<List<Comment>> = suspendCoroutine { continuation ->
@@ -156,8 +199,6 @@ object FirebaseDataSource : ApplicationDataSource {
             .set(comment)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Logger.i("Comment: $comment")
-
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {

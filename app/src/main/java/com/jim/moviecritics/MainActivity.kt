@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
 
 
@@ -72,6 +73,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
+//        setMockUser()
 
     }
 
@@ -294,7 +296,7 @@ class MainActivity : BaseActivity() {
 //        document.set(data)
 //    }
 
-    private fun loadMockDataComment() {
+    private fun setMockComment() {
         val comments = FirebaseFirestore.getInstance().collection("comment")
         val document = comments.document()
         val data = Comment(
@@ -309,7 +311,7 @@ class MainActivity : BaseActivity() {
         document.set(data)
     }
 
-    private fun loadMockDataScore() {
+    private fun setMockScore() {
         val scores = FirebaseFirestore.getInstance().collection("score")
         val document = scores.document()
         val tempLeisure = 5.6F
@@ -334,22 +336,38 @@ class MainActivity : BaseActivity() {
         document.set(data)
     }
 
-//    private fun loadMockDataUser() {
-//        val users = FirebaseFirestore.getInstance().collection("user")
-//        val document = users.document()
-//        val data = User(
-//            12345,
-//            "MIN-JING",
-//            "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
-//            "Taipei City",
-//            "instagram.com",
-//            "twitter.com",
-//            listOf(123, 456, 789),
-//            listOf(123, 456, 789),
-//            listOf(123, 456, 789),
-//            listOf("tt0343818","tt0343818"),
-//            listOf("tt0343818","tt0343818")
-//        )
-//        document.set(data)
-//    }
+    private fun setMockUser() {
+
+        val data = User(
+            790926,
+            "MIN-JING",
+            "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
+            "Taipei City",
+            "instagram.com",
+            "twitter.com",
+            listOf(123, 456, 789),
+            listOf(123, 456, 789),
+            listOf(123, 456, 789),
+            listOf("tt0343818","tt0343818"),
+            listOf("tt0343818","tt0343818"),
+            listOf("tt0343818","tt0343818")
+        )
+
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(790926.toString())
+//            .document()
+            .set(data)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("setMockUser() addSnapshotListener detect")
+
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                    }
+                }
+            }
+
+    }
 }

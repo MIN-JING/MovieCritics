@@ -6,16 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.jim.moviecritics.util.Util
+import kotlinx.coroutines.*
 
 class PendingViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -33,6 +30,11 @@ class PendingViewModel(
 
     val user: LiveData<User>
         get() = _user
+
+    private val _checkWatch = MutableLiveData<Boolean>()
+
+    val checkWatch: LiveData<Boolean>
+        get() = _checkWatch
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -65,9 +67,54 @@ class PendingViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
+
+        coroutineScope.launch {
+            _user.value = getUserResult(isInitial = true, userID = 790926)
+            Logger.i("user.value?.watched = ${user.value?.watched}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _checkWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+
+        }
+
     }
 
-    fun pushWatchedMovie(imdbID: String, userID: Long) {
+
+    private suspend fun getUserResult(isInitial: Boolean = false, userID: Long): User? {
+
+        return withContext(Dispatchers.IO) {
+
+//            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
+
+//            val result = applicationRepository.getUser(userID)
+
+            when (val result = applicationRepository.getUser(userID)) {
+                is Result.Success -> {
+                    _error.postValue(null)
+                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.postValue(result.error)
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                is Result.Error -> {
+                    _error.postValue(result.exception.toString())
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                else -> {
+                    _error.postValue(Util.getString(R.string.you_know_nothing))
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+            }
+        }
+    }
+
+    private fun pushWatchedMovie(imdbID: String, userID: Long) {
 
         coroutineScope.launch {
 
@@ -94,12 +141,10 @@ class PendingViewModel(
         }
     }
 
-    fun onClickWatch() {
-        if (user.value?.watched?.contains(movie.value?.id.toString()) != true) {
-            // write to watchedList
-
-        }
+    fun checkWatch() {
+        _checkWatch.value = user.value?.watched?.contains(movie.value?.id.toString()) == true
     }
+
 
     fun leave() {
         _leave.value = true

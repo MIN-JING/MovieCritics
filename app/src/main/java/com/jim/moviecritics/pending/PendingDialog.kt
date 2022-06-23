@@ -55,11 +55,15 @@ class PendingDialog : AppCompatDialogFragment() {
 
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog movie = $it")
-            it.imdbID?.let { it1 -> viewModel.pushWatchedMovie(imdbID = it1, userID = 790926) }
+//            it.imdbID?.let { it1 -> viewModel.pushWatchedMovie(imdbID = it1, userID = 790926) }
         })
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog user = $it")
+        })
+
+        viewModel.checkWatch.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog checkWatch = $it")
         })
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
@@ -67,8 +71,8 @@ class PendingDialog : AppCompatDialogFragment() {
                     dismiss()
                     viewModel.onLeaveCompleted()
                 }
-            }
-        )
+        })
+
 
         return binding.root
 //        return inflater.inflate(R.layout.fragment_pending, container, false)
@@ -83,7 +87,7 @@ class PendingDialog : AppCompatDialogFragment() {
         }
     }
 
-    fun leave() { dismiss() }
+//    fun leave() { dismiss() }
 
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)

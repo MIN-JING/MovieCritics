@@ -21,6 +21,8 @@ interface ApplicationRepository {
 
     suspend fun getScore(imdbID: String, userID: Long): Result<Score>
 
+    suspend fun getUser(userID: Long): Result<User>
+
     suspend fun getComments(): Result<List<Comment>>
 
     fun getLiveComments(): MutableLiveData<List<Comment>>

@@ -82,6 +82,22 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         TODO("Not yet implemented")
     }

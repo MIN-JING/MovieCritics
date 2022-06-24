@@ -81,8 +81,8 @@ class PendingViewModel(
         coroutineScope.launch {
             _user.value = getUserResult(isInitial = true, userID = 790926)
             _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-            _isLike.value = user.value?.favorites?.contains(movie.value?.imdbID.toString())
-            _isWatchList.value = user.value?.downshifts?.contains(movie.value?.imdbID.toString())
+            _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+            _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
         }
 
     }
@@ -119,33 +119,6 @@ class PendingViewModel(
         }
     }
 
-    private fun pushWatchedMovie(imdbID: String, userID: Long) {
-
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            when (val result = applicationRepository.pushWatchedMovie(imdbID, userID)) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                }
-                else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                }
-            }
-        }
-    }
-
     fun onClickWatch(imdbID: String, userID: Long) {
         if (isWatch.value != true) {
             Logger.i("isWatch.value != true")
@@ -177,7 +150,7 @@ class PendingViewModel(
             }
             _isWatch.value = true
         } else {
-            Logger.i("isWatch.value == false")
+            Logger.i("isWatch.value != false")
             Logger.i("user.value?.watched = ${user.value?.watched}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
             _user.value?.watched?.remove(imdbID)
@@ -205,6 +178,130 @@ class PendingViewModel(
                 }
             }
             _isWatch.value = false
+        }
+    }
+
+    fun onClickLike(imdbID: String, userID: Long) {
+        if (isLike.value != true) {
+            Logger.i("isLike.value != true")
+            Logger.i("user.value?.liked = ${user.value?.liked}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.liked?.add(imdbID)
+            Logger.i("user.value?.liked add = ${user.value?.liked}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.pushLikedMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isLike.value = true
+        } else {
+            Logger.i("isLike.value != false")
+            Logger.i("user.value?.liked = ${user.value?.liked}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.liked?.remove(imdbID)
+            Logger.i("user.value?.liked remove = ${user.value?.liked}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.removeLikedMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isLike.value = false
+        }
+    }
+
+    fun onClickWatchList(imdbID: String, userID: Long) {
+        if (isWatchList.value != true) {
+            Logger.i("isWatchList.value != true")
+            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.watchlist?.add(imdbID)
+            Logger.i("user.value?.watchlist add = ${user.value?.watchlist}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.pushWatchlistMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isWatchList.value = true
+        } else {
+            Logger.i("isWatchList.value != false")
+            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
+            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+            _user.value?.watchlist?.remove(imdbID)
+            Logger.i("user.value?.watchlist remove = ${user.value?.watchlist}")
+            coroutineScope.launch {
+                _status.value = LoadApiStatus.LOADING
+
+                when (val result = applicationRepository.removeWatchlistMovie(imdbID, userID)) {
+                    is Result.Success -> {
+                        _error.value = null
+                        _status.value = LoadApiStatus.DONE
+                    }
+                    is Result.Fail -> {
+                        _error.value = result.error
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    is Result.Error -> {
+                        _error.value = result.exception.toString()
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                    else -> {
+                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _status.value = LoadApiStatus.ERROR
+                    }
+                }
+            }
+            _isWatchList.value = false
         }
     }
 

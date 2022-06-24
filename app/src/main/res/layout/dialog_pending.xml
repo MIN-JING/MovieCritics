@@ -37,6 +37,7 @@
                 android:background="#5100BCD4"
                 android:text="@{viewModel.movie.title}"
                 android:textAlignment="center"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -79,15 +80,15 @@
                 android:textOn="Watched"
                 android:checked="@{viewModel.isWatch}"
                 android:onClick="@{() -> viewModel.onClickWatch(viewModel.movie.imdbID, viewModel.user.id)}"
-                app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_favorite"
-                app:layout_constraintEnd_toStartOf="@+id/toggle_pending_favorite"
+                app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_like"
+                app:layout_constraintEnd_toStartOf="@+id/toggle_pending_like"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/toggle_pending_favorite" />
+                app:layout_constraintTop_toTopOf="@+id/toggle_pending_like" />
 <!--            android:checked="true"-->
 <!--            android:clickable="false"-->
 
             <ToggleButton
-                android:id="@+id/toggle_pending_favorite"
+                android:id="@+id/toggle_pending_like"
                 android:layout_width="110dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
@@ -97,6 +98,7 @@
                 android:textOff="Like"
                 android:textOn="Liked"
                 android:checked="@{viewModel.isLike}"
+                android:onClick="@{() -> viewModel.onClickLike(viewModel.movie.imdbID, viewModel.user.id)}"
                 app:layout_constraintEnd_toStartOf="@+id/toggle_pending_watchlist"
                 app:layout_constraintStart_toEndOf="@+id/toggle_pending_watch"
                 app:layout_constraintTop_toBottomOf="@+id/divider1_pending" />
@@ -112,10 +114,11 @@
                 android:textOff="Watchlist"
                 android:textOn="Added"
                 android:checked="@{viewModel.isWatchList}"
-                app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_favorite"
+                android:onClick="@{() -> viewModel.onClickWatchList(viewModel.movie.imdbID, viewModel.user.id)}"
+                app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_like"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toggle_pending_favorite"
-                app:layout_constraintTop_toTopOf="@+id/toggle_pending_favorite" />
+                app:layout_constraintStart_toEndOf="@+id/toggle_pending_like"
+                app:layout_constraintTop_toTopOf="@+id/toggle_pending_like" />
 
             <View
                 android:id="@+id/divider2_pending"
@@ -125,7 +128,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toggle_pending_favorite" />
+                app:layout_constraintTop_toBottomOf="@+id/toggle_pending_like" />
 
             <TextView
                 android:id="@+id/text_pending_rate"

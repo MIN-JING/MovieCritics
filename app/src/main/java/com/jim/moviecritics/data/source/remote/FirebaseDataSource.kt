@@ -23,6 +23,9 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_COMMENTS = "comment"
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val PATH_USERS = "users"
+    private const val KEY_WATCHED = "watched"
+    private const val KEY_LIKED = "liked"
+    private const val KEY_WATCHLIST = "watchlist"
     private const val KEY_CREATED_TIME = "createdTime"
     private const val KEY_ID = "id"
 
@@ -248,7 +251,7 @@ object FirebaseDataSource : ApplicationDataSource {
             .collection(PATH_USERS)
             .document(userID.toString())
 //            .set(watched, SetOptions.merge())
-            .update("watched", FieldValue.arrayUnion(imdbID))
+            .update(KEY_WATCHED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushWatchedMovie task.isSuccessful")
@@ -268,10 +271,90 @@ object FirebaseDataSource : ApplicationDataSource {
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID.toString())
-            .update("watched", FieldValue.arrayRemove(imdbID))
+            .update(KEY_WATCHED, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("removeWatchedMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .update(KEY_LIKED, FieldValue.arrayUnion(imdbID))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushLikedMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .update(KEY_LIKED, FieldValue.arrayRemove(imdbID))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("removeLikedMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .update(KEY_WATCHLIST, FieldValue.arrayUnion(imdbID))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushWatchlistMovie task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID.toString())
+            .update(KEY_WATCHLIST, FieldValue.arrayRemove(imdbID))
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("removeWatchlistMovie task.isSuccessful")
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {

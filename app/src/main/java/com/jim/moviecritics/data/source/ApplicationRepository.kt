@@ -39,5 +39,13 @@ interface ApplicationRepository {
 
     suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean>
 
+    suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean>
+
+    suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean>
+
+    suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean>
+
+    suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean>
+
     suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
 }

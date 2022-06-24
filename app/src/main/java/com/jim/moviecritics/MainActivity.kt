@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
-//        setMockUser()
+        setMockUser()
 
     }
 

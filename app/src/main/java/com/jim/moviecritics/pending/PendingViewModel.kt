@@ -46,6 +46,17 @@ class PendingViewModel(
     val isWatchList: LiveData<Boolean>
         get() = _isWatchList
 
+    val leisurePending = MutableLiveData<Float>()
+
+    val hitPending = MutableLiveData<Float>()
+
+    val castPending = MutableLiveData<Float>()
+
+    val musicPending = MutableLiveData<Float>()
+
+    val storyPending = MutableLiveData<Float>()
+
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 

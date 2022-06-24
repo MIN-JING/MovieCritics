@@ -71,6 +71,27 @@ class PendingDialog : AppCompatDialogFragment() {
                 }
         })
 
+        viewModel.leisurePending.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog leisurePending = $it")
+        })
+
+        viewModel.hitPending.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog hitPending = $it")
+        })
+
+        viewModel.castPending.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog castPending = $it")
+        })
+
+        viewModel.musicPending.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog musicPending = $it")
+        })
+
+        viewModel.storyPending.observe(viewLifecycleOwner, Observer {
+            Logger.i("Pending Dialog storyPending = $it")
+        })
+
+
 
         return binding.root
 //        return inflater.inflate(R.layout.fragment_pending, container, false)

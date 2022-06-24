@@ -1,6 +1,8 @@
 package com.jim.moviecritics
 
+import android.graphics.drawable.LayerDrawable
 import android.widget.ImageView
+import android.widget.RatingBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -56,6 +58,25 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .into(imgView)
     }
 }
+
+//@BindingAdapter("ratingValue")
+//fun bindRating(ratingBar: RatingBar, rating: Float?) {
+//    rating?.let {
+//        ratingBar.rating = rating
+////        val stars = ratingBar.progressDrawable as LayerDrawable
+////        stars.getDrawable(2).colorFilter
+//        val roundVal = Math.round(rating)
+//        ratingBar.numStars = roundVal
+//    }
+//}
+//
+//@BindingAdapter("ratingFloat")
+//fun setRating(view: RatingBar, rating: String?) {
+//    val rate = rating?.toFloat()
+//    if (rate != null) {
+//        view.rating = rate
+//    }
+//}
 
 /**
  * Displays currency price to [TextView] by [Double]

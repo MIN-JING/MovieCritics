@@ -53,7 +53,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/text_title"
+                    android:id="@+id/text_detail_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -61,56 +61,56 @@
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.title}"
                     android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@+id/image_poster_detail"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Movie Title" />
 
                 <TextView
-                    android:id="@+id/text_released_year"
+                    android:id="@+id/text_detail_released_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{viewModel.movie.released}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_title"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
                     tools:text="Released Date" />
 
                 <TextView
-                    android:id="@+id/text_directed_by"
+                    android:id="@+id/text_detail_directed_by"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:text="。DIRECTED BY"
-                    app:layout_constraintStart_toEndOf="@+id/text_released_year"
-                    app:layout_constraintTop_toTopOf="@+id/text_released_year" />
+                    app:layout_constraintStart_toEndOf="@+id/text_detail_released_year"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_released_year" />
 
                 <TextView
-                    android:id="@+id/text_director"
+                    android:id="@+id/text_detail_director"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.director}"
-                    app:layout_constraintEnd_toStartOf="@+id/image_poster_detail"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_released_year"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year"
                     tools:text="Director Name" />
 
                 <ImageView
-                    android:id="@+id/image_poster_detail"
+                    android:id="@+id/image_detail_poster"
                     android:layout_width="120dp"
                     android:layout_height="150dp"
                     android:layout_marginEnd="16dp"
                     android:scaleType="centerCrop"
                     app:imageUrl="@{viewModel.movie.posterUri}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/text_title"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_title"
                     tools:srcCompat="@tools:sample/avatars[0]" />
 
                 <Button
-                    android:id="@+id/button_trailer"
+                    android:id="@+id/button_detail_trailer"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_marginStart="16dp"
@@ -123,24 +123,24 @@
                     app:iconPadding="8dp"
                     app:iconSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_director" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_director" />
 
 
                 <TextView
-                    android:id="@+id/text_runtime"
+                    android:id="@+id/text_detail_runtime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.runtime.toString()}"
-                    app:layout_constraintBottom_toBottomOf="@+id/button_trailer"
-                    app:layout_constraintEnd_toStartOf="@+id/image_poster_detail"
-                    app:layout_constraintStart_toEndOf="@+id/button_trailer"
-                    app:layout_constraintTop_toTopOf="@+id/button_trailer"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_detail_trailer"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
+                    app:layout_constraintStart_toEndOf="@+id/button_detail_trailer"
+                    app:layout_constraintTop_toTopOf="@+id/button_detail_trailer"
                     tools:text="Runtime: 120 Min" />
 
                 <TextView
-                    android:id="@+id/text_overview"
+                    android:id="@+id/text_detail_overview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -149,26 +149,26 @@
                     android:text="@{viewModel.movie.overview}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_trailer" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer" />
 
                 <TextView
-                    android:id="@+id/text_ratings"
+                    android:id="@+id/text_detail_ratings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="RATINGS"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_overview" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_overview" />
 
                 <TextView
-                    android:id="@+id/text_rating"
+                    android:id="@+id/text_detail_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"
-                    app:layout_constraintStart_toEndOf="@+id/text_ratings"
-                    app:layout_constraintTop_toTopOf="@+id/text_ratings"
+                    app:layout_constraintStart_toEndOf="@+id/text_detail_ratings"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_ratings"
                     tools:text="Score: 4.3" />
 <!--                android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"-->
 
@@ -181,10 +181,10 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_rating" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_rating" />
 
                 <TextView
-                    android:id="@+id/text_cast"
+                    android:id="@+id/text_detail_cast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -194,7 +194,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/radar_chart_rating" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerview_cast"
+                    android:id="@+id/recyclerview_detail_cast"
                     android:layout_width="0dp"
                     android:layout_height="300dp"
                     android:layout_marginStart="16dp"
@@ -206,7 +206,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_cast"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_cast"
                     tools:listitem="@layout/item_detail_cast" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

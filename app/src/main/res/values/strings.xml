@@ -7,10 +7,10 @@
 
     <!-- General -->
     <string name="movie_critics">Movie Critics</string>
-    <string name="search">探索</string>
-    <string name="downshift">即將下檔</string>
-    <string name="profile">個人頁面</string>
-    <string name="detail">電影詳細資料</string>
+    <string name="search">Search</string>
+    <string name="downshift">WatchList</string>
+    <string name="profile">Profile</string>
+    <string name="detail">Detail</string>
 
     <!-- Profile -->
     <string name="profile_mystic_information">Into the Unknown~</string>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="look"
+            type="com.jim.moviecritics.data.Look" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/image_search_movie_poster"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+<!--        app:imageUrl="@{trend.posterUri}"-->
+
+        <TextView
+            android:id="@+id/text_search_movie_title"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/image_search_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_search_movie_poster"
+            tools:text="Movie Title"/>
+<!--        android:text="@{trend.title}"-->
+
+        <TextView
+            android:id="@+id/text_search_movie_released_year"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/text_search_movie_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_movie_title"
+            tools:text="Released Date" />
+<!--        android:text="@{viewModel.movie.released}"-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

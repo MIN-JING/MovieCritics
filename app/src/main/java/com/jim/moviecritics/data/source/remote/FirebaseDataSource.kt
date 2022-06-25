@@ -1,6 +1,7 @@
 package com.jim.moviecritics.data.source.remote
 
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

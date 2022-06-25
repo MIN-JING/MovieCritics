@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/image_poster_home"
+            android:id="@+id/image_home_poster"
             android:layout_width="100dp"
             android:layout_height="130dp"
             android:layout_marginStart="8dp"
@@ -27,27 +27,27 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/image_user_pic"
+            android:id="@+id/image_home_user_pic"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_poster_home"
+            app:layout_constraintTop_toBottomOf="@+id/image_home_poster"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
-            android:id="@+id/image_star"
+            android:id="@+id/image_home_star"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_user_pic"
-            app:layout_constraintStart_toEndOf="@+id/image_user_pic"
+            app:layout_constraintBottom_toBottomOf="@+id/image_home_user_pic"
+            app:layout_constraintStart_toEndOf="@+id/image_home_user_pic"
             app:srcCompat="@drawable/ic_star"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/text_name"
+            android:id="@+id/text_home_name"
             android:layout_width="0dp"
             android:layout_height="10dp"
             android:layout_marginStart="4dp"
@@ -56,28 +56,28 @@
             android:text="@{trend.title}"
             android:textSize="8sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_user_pic"
-            app:layout_constraintTop_toBottomOf="@+id/image_poster_home" />
+            app:layout_constraintStart_toEndOf="@+id/image_home_user_pic"
+            app:layout_constraintTop_toBottomOf="@+id/image_home_poster" />
         <!--    android:autoSizeTextType="uniform"-->
 
         <TextView
-            android:id="@+id/text_score"
+            android:id="@+id/text_home_score"
             android:layout_width="20dp"
             android:layout_height="10dp"
             android:layout_marginStart="4dp"
             android:gravity="center_vertical"
             android:text="@{String.valueOf(trend.average)}"
             android:textSize="8sp"
-            app:layout_constraintBottom_toBottomOf="@+id/image_star"
-            app:layout_constraintStart_toEndOf="@+id/image_star" />
+            app:layout_constraintBottom_toBottomOf="@+id/image_home_star"
+            app:layout_constraintStart_toEndOf="@+id/image_home_star" />
 
         <ImageView
-            android:id="@+id/image_is_comment"
+            android:id="@+id/image_home_is_comment"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/text_score"
-            app:layout_constraintStart_toEndOf="@+id/text_score"
+            app:layout_constraintBottom_toBottomOf="@+id/text_home_score"
+            app:layout_constraintStart_toEndOf="@+id/text_home_score"
             app:srcCompat="@drawable/ic_notes"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,20 +5,25 @@ import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Trend(
-    @Json(name = "poster_path") var posterUri: String?,
-    val adult: Boolean,
+data class KnownFor(
+    @Json(name = "poster_path") val posterPath: String?,
+    val adult: String,
     val overview: String,
     @Json(name = "release_date") val releaseDate: String,
+    @Json(name = "original_title") val originalTitle: String,
     @Json(name = "genre_ids") val genreIds: List<Int>,
     val id: Int,
-    @Json(name = "original_title") val originalTitle: String,
+    @Json(name = "media_type") val type: String,
     @Json(name = "original_language") val originalLanguage: String,
     val title: String,
     @Json(name = "backdrop_path") val backdrop: String?,
     val popularity: Float,
     @Json(name = "vote_count") val count: Int,
-    @Json(name = "vote_average") val average: Float,
     val video: Boolean,
-    @Json(name = "media_type") val type: String
+    @Json(name = "vote_average") val average: Float,
+    //TV
+    @Json(name = "first_air_date") val firstAir: String,
+    @Json(name = "original_country") val originalCountry: List<String>,
+    val name: String,
+    @Json(name = "original_name") val originalName: String,
 ) : Parcelable

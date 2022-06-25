@@ -42,7 +42,7 @@ class DetailFragment : Fragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        binding.recyclerviewCast.adapter = CastAdapter(
+        binding.recyclerviewDetailCast.adapter = CastAdapter(
             CastAdapter.OnClickListener {
                 Logger.i("CastAdapter.OnClickListener it = $it")
             }

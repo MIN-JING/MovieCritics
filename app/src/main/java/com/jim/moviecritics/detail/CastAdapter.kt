@@ -12,10 +12,6 @@ import com.jim.moviecritics.databinding.ItemDetailCastBinding
 class CastAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Cast, CastAdapter.CastViewHolder>(DiffCallback) {
 
-    class OnClickListener(val clickListener: (cast: Cast) -> Unit) {
-        fun onClick(cast: Cast) = clickListener(cast)
-    }
-
     class CastViewHolder(private var binding: ItemDetailCastBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -46,5 +42,7 @@ class CastAdapter(private val onClickListener: OnClickListener) :
         holder.bind((getItem(position)), onClickListener)
     }
 
-
+    class OnClickListener(val clickListener: (cast: Cast) -> Unit) {
+        fun onClick(cast: Cast) = clickListener(cast)
+    }
 }

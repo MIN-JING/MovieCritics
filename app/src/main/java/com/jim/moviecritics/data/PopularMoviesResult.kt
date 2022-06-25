@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PopularMoviesResult(
-    @Json(name = "status_message")val error: String? = null,
+    @Json(name = "status_message")val error: String?,
     val page: Int? = null,
-    @Json(name = "results") val trends: List<Trend>? = null,
+    @Json(name = "results") val trends: List<Trend>?,
     @Json(name = "total_pages") val totalPages: Int,
     @Json(name = "total_results") val totalResults: Int
 ) : Parcelable {

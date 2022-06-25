@@ -13,6 +13,9 @@ import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.*
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 
 class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
@@ -97,7 +100,10 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.title = it.title
                     movie.trailerUri = null
                     movie.ratings = listOf()
-                    movie.voteAverage = it.average / 5
+//                    movie.voteAverage = it.average / 5
+                    Logger.i("it.average = ${it.average}")
+                    movie.voteAverage = ((it.average * 10).roundToInt() / 50).toFloat()
+                    Logger.i("movie.voteAverage = ${movie.voteAverage}")
                 }
 
                 creditResult?.let {

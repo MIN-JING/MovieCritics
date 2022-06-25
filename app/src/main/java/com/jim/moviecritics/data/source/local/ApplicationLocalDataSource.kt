@@ -98,6 +98,10 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun pushScore(score: Score): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         TODO("Not yet implemented")
     }

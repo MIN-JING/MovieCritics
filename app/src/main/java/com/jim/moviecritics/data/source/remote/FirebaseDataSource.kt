@@ -13,6 +13,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * Implementation of the Application source that from network.
@@ -367,12 +369,34 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
+    override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
+        val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
+        val document = scores.document()
+
+        score.id = document.id
+
+        document
+            .set(score)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushScore task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>  = suspendCoroutine { continuation ->
         val popularMovies = FirebaseFirestore.getInstance().collection(PATH_POPULAR_MOVIES)
         val document = popularMovies.document()
 
         pushTrend.documentID = document.id
-
 
         document
             .set(popularMovies)

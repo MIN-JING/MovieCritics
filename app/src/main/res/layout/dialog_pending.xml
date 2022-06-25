@@ -186,8 +186,8 @@
                 android:rating="@={viewModel.hitPending}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_leisure" />
-<!--            android:value="@{viewModel.hitPending}"-->
 <!--            android:rating="@{viewModel.hitPending}"-->
+<!--            android:value="@{viewModel.hitPending}"-->
 <!--            ratingValue="@{viewModel.hitPending}"-->
 
             <TextView
@@ -330,6 +330,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+<!--            android:onClick="@{() -> viewModel.leave()}"-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,5 +47,7 @@ interface ApplicationRepository {
 
     suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean>
 
+    suspend fun pushScore(score: Score): Result<Boolean>
+
     suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
 }

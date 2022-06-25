@@ -170,6 +170,7 @@
                     app:layout_constraintStart_toEndOf="@+id/text_ratings"
                     app:layout_constraintTop_toTopOf="@+id/text_ratings"
                     tools:text="Score: 4.3" />
+<!--                android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"-->
 
                 <com.github.mikephil.charting.charts.RadarChart
                     android:id="@+id/radar_chart_rating"

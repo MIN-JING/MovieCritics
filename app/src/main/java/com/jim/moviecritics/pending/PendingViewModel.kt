@@ -1,18 +1,19 @@
 package com.jim.moviecritics.pending
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
+import kotlin.math.roundToInt
 
 class PendingViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -55,6 +56,19 @@ class PendingViewModel(
     val musicPending = MutableLiveData<Float>()
 
     val storyPending = MutableLiveData<Float>()
+
+    val score = Score()
+
+
+    private val _invalidScore = MutableLiveData<Int>()
+
+    val invalidScore: LiveData<Int>
+        get() = _invalidScore
+
+//    private val _isFillScore = MutableLiveData<Boolean>()
+//
+//    val isFillScore: LiveData<Boolean>
+//        get() = _isFillScore
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -317,11 +331,109 @@ class PendingViewModel(
     }
 
 
+    private fun pushScore() {
+
+        coroutineScope.launch {
+
+            score.imdbID = movie.value?.imdbID.toString()
+
+            user.value?.let {
+                score.userID = it.id
+            }
+
+            score.createdTime = Timestamp.now()
+
+
+            _status.postValue(LoadApiStatus.LOADING)
+
+            when (val result = applicationRepository.pushScore(score)) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
+    }
+
+    fun prepareScore() {
+        when {
+            leisurePending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_LEISURE_EMPTY
+            hitPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_HIT_EMPTY
+            castPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_CAST_EMPTY
+            musicPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_MUSIC_EMPTY
+            storyPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_STORY_EMPTY
+            else -> _invalidScore.value = NO_ONE_KNOWS
+        }
+    }
+
+
     fun leave() {
-        _leave.value = true
+//        _leave.value = true
+
+        if (leisurePending.value!! >= 0.5F
+            && hitPending.value!! >= 0.5F
+            && castPending.value!! >= 0.5
+            && musicPending.value!! >= 0.5
+            && storyPending.value!! >= 0.5) {
+
+            leisurePending.value?.let {
+                score.leisure = it
+            }
+
+            hitPending.value?.let {
+                score.hit = it
+            }
+
+            castPending.value?.let {
+                score.cast = it
+            }
+
+            musicPending.value?.let {
+                score.music = it
+            }
+
+            storyPending. value?.let {
+                score.story = it
+            }
+
+//        score.average = (score.leisure + score.hit + score.cast + score.music + score.story) / 5
+            score.average = (((score.leisure + score.hit + score.cast + score.music + score.story) * 10).roundToInt() / 50).toFloat()
+            Logger.i("score.average = ${score.average}" )
+
+//            _isFillScore.value = true
+            pushScore()
+            _leave.value = true
+
+        } else {
+//            _isFillScore.value = false
+            _leave.value = false
+        }
     }
 
     fun onLeaveCompleted() {
         _leave.value = null
+    }
+
+    companion object {
+
+        const val INVALID_FORMAT_LEISURE_EMPTY = 0x11
+        const val INVALID_FORMAT_HIT_EMPTY = 0x12
+        const val INVALID_FORMAT_CAST_EMPTY = 0x13
+        const val INVALID_FORMAT_MUSIC_EMPTY = 0x14
+        const val INVALID_FORMAT_STORY_EMPTY = 0x15
+
+        const val NO_ONE_KNOWS = 0x21
     }
 }

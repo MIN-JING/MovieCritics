@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -14,9 +15,16 @@ import androidx.lifecycle.lifecycleScope
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.ext.showToast
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_CAST_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_HIT_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LEISURE_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MUSIC_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
 
 class PendingDialog : AppCompatDialogFragment() {
 
@@ -64,11 +72,46 @@ class PendingDialog : AppCompatDialogFragment() {
             Logger.i("Pending Dialog checkWatch = $it")
         })
 
+        viewModel.invalidScore.observe(viewLifecycleOwner, Observer {
+            Logger.i("viewModel.invalidScore.value = ${viewModel.invalidScore.value}")
+            it?.let {
+                when (it) {
+                    INVALID_FORMAT_LEISURE_EMPTY -> {
+                        activity.showToast("Leisure 最低分數為0.5顆星等，請重新選擇")
+                    }
+                    INVALID_FORMAT_HIT_EMPTY -> {
+                        activity.showToast("Hit 最低分數為0.5顆星等，請重新選擇")
+                    }
+                    INVALID_FORMAT_CAST_EMPTY -> {
+                        activity.showToast("Cast 最低分數為0.5顆星等，請重新選擇")
+                    }
+                    INVALID_FORMAT_MUSIC_EMPTY -> {
+                        activity.showToast("Music 最低分數為0.5顆星等，請重新選擇")
+                    }
+                    INVALID_FORMAT_STORY_EMPTY -> {
+                        activity.showToast("Story 最低分數為0.5顆星等，請重新選擇")
+                    }
+                    else -> {}
+                }
+            }
+        })
+
+
         viewModel.leave.observe(viewLifecycleOwner, Observer {
-                it?.let {
+//                it?.let {
+//                    dismiss()
+//                    viewModel.onLeaveCompleted()
+//                }
+            when (viewModel.leave.value) {
+                true -> {
                     dismiss()
                     viewModel.onLeaveCompleted()
+                    Toast.makeText(context, "您的評分已送出", Toast.LENGTH_LONG).show()
                 }
+                false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
+
+                null -> Logger.i("viewModel.leave.value = null")
+            }
         })
 
         viewModel.leisurePending.observe(viewLifecycleOwner, Observer {
@@ -90,6 +133,12 @@ class PendingDialog : AppCompatDialogFragment() {
         viewModel.storyPending.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog storyPending = $it")
         })
+
+//        viewModel.isFillScore.observe(viewLifecycleOwner, Observer {
+//            if (viewModel.isFillScore.value == false) {
+//                Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
+//            }
+//        })
 
 
 

@@ -87,6 +87,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.removeWatchlistMovie(imdbID, userID)
     }
 
+    override suspend fun pushScore(score: Score): Result<Boolean> {
+        return firebaseDataSource.pushScore(score)
+    }
+
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
         return firebaseDataSource.pushPopularMovies(pushTrend)
     }

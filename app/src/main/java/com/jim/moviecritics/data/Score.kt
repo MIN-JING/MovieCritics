@@ -7,10 +7,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Score(
-    val id: String = "",
-    val userID: Long = 0L,
-    val imdbID: String = "",
-    val createdTime: Timestamp = Timestamp.now(),
+    var id: String = "",
+    var userID: Long = 0L,
+    var imdbID: String = "",
+    var createdTime: Timestamp = Timestamp.now(),
     var leisure: Float = 0F,
     var hit: Float = 0F,
     var cast: Float = 0F,

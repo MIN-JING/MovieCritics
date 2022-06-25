@@ -129,6 +129,9 @@ class MainActivity : BaseActivity() {
 
         binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = ""
+
         launch {
 
             val dpi = resources.displayMetrics.densityDpi.toFloat()

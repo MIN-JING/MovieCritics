@@ -75,6 +75,24 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
+    override suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>> {
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
+        }
+
+        return try {
+            val searchResult = TmdbApi.retrofitService.getSearchMulti(queryKey)
+
+            searchResult.error?.let {
+                return  Result.Fail(it)
+            }
+            Result.Success(searchResult.toLookItems())
+        } catch (e: Exception) {
+            Logger.w("[${this::class.simpleName}] exception=${e.message}")
+            Result.Error(e)
+        }
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }

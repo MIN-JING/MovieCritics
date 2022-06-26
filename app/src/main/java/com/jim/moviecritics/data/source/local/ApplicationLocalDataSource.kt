@@ -19,6 +19,10 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }

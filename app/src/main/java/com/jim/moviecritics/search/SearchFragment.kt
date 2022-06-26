@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentSearchBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.home.HomeViewModel
+import com.jim.moviecritics.util.Logger
 
 class SearchFragment : Fragment() {
 
@@ -31,6 +33,10 @@ class SearchFragment : Fragment() {
 
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.lookItems.observe(viewLifecycleOwner, Observer {
+            Logger.i("lookItems = $it")
+        })
 
         return binding.root
 //        return inflater.inflate(R.layout.fragment_search, container, false)

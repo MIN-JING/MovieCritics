@@ -16,6 +16,8 @@ interface ApplicationDataSource {
 
     suspend fun getMovieCredit(id: Int): Result<CreditResult>
 
+    suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>>
+
     // FirebaseDataSource
     suspend fun getScores(imdbID: String): Result<List<Score>>
 

@@ -44,6 +44,10 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)

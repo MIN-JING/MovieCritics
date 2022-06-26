@@ -9,7 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class PopularMoviesResult(
     @Json(name = "status_message")val error: String?,
-    val page: Int? = null,
+    val page: Int?,
     @Json(name = "results") val trends: List<Trend>?,
     @Json(name = "total_pages") val totalPages: Int,
     @Json(name = "total_results") val totalResults: Int
@@ -24,10 +24,11 @@ data class PopularMoviesResult(
             Logger.i("trendsList = $trends")
 
             for (trend in it) {
-                Logger.i("trend = $trend")
-                trend.posterUri = "https://image.tmdb.org/t/p/w185" + trend.posterUri
-                Logger.i("trend.posterUri = ${trend.posterUri}")
+                if (trend.posterUri != null) {
+                    trend.posterUri = "https://image.tmdb.org/t/p/w185" + trend.posterUri
+                }
                 items.add(HomeItem.PopularMovie(trend))
+                Logger.i("trend = $trend")
             }
             Logger.i("items = $items")
         }

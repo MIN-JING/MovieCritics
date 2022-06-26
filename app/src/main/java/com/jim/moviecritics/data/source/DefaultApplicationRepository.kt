@@ -26,6 +26,10 @@ class DefaultApplicationRepository(
         return apiDataSource.getMovieCredit(id)
     }
 
+    override suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>> {
+        return apiDataSource.getSearchMulti(queryKey)
+    }
+
     // FirebaseDataSource
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         return firebaseDataSource.getScores(imdbID)

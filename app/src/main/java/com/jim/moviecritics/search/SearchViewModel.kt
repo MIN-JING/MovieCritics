@@ -1,8 +1,93 @@
 package com.jim.moviecritics.search
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jim.moviecritics.R
+import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.network.LoadApiStatus
+import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.Util
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
-    // TODO: Implement the ViewModel
+    private val _lookItems = MutableLiveData<List<LookItem>>()
+
+    val lookItems: LiveData<List<LookItem>>
+        get() = _lookItems
+
+    // status: The internal MutableLiveData that stores the status of the most recent request
+    private val _status = MutableLiveData<LoadApiStatus>()
+
+    val status: LiveData<LoadApiStatus>
+        get() = _status
+
+    // error: The internal MutableLiveData that stores the error of the most recent request
+    private val _error = MutableLiveData<String?>()
+
+    val error: LiveData<String?>
+        get() = _error
+
+    // Create a Coroutine scope using a job to be able to cancel when needed
+    private var viewModelJob = Job()
+
+    // the Coroutine runs using the Main (UI) dispatcher
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
+    /**
+     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
+     * Retrofit service to stop.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
+
+    /**
+     * Call getMarketingHotsResult() on init so we can display status immediately.
+     */
+    init {
+        Logger.i("------------------------------------")
+        Logger.i("[${this::class.simpleName}]$this")
+        Logger.i("------------------------------------")
+
+        getSearchResult(isInitial = true, queryKey = "simpsons")
+
+    }
+
+    private fun getSearchResult(isInitial: Boolean = false, queryKey: String) {
+        coroutineScope.launch {
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getSearchMulti(queryKey)
+
+            _lookItems.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
 }

@@ -17,22 +17,26 @@
         <EditText
             android:id="@+id/edit_search"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="52dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
             android:ems="10"
-            android:hint="Key in movie title..."
+            android:hint="Imput keywords..."
             android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:text="@={viewModel.searchKey}"
             app:layout_constraintEnd_toStartOf="@+id/button_search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_search"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_search"
+            android:onClick="@{() -> viewModel.prepareSearch()}"
             app:layout_constraintBottom_toBottomOf="@+id/edit_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/edit_search" />

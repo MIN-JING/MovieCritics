@@ -91,7 +91,7 @@ class PendingDialog : AppCompatDialogFragment() {
                     INVALID_FORMAT_STORY_EMPTY -> {
                         activity.showToast("Story 最低分數為0.5顆星等，請重新選擇")
                     }
-                    else -> {}
+                    else -> { Logger.i("Unknown invalidScore value = $it") }
                 }
             }
         })
@@ -106,7 +106,7 @@ class PendingDialog : AppCompatDialogFragment() {
                 true -> {
                     dismiss()
                     viewModel.onLeaveCompleted()
-                    Toast.makeText(context, "您的評分已送出", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "The movie's score was published !", Toast.LENGTH_LONG).show()
                 }
                 false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
 

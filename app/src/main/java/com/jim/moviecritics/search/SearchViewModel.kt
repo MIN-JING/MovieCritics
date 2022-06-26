@@ -21,6 +21,13 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
     val lookItems: LiveData<List<LookItem>>
         get() = _lookItems
 
+    val searchKey = MutableLiveData<String>()
+
+    private val _invalidSearch = MutableLiveData<Int>()
+
+    val invalidSearch: LiveData<Int>
+        get() = _invalidSearch
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -56,7 +63,7 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        getSearchResult(isInitial = true, queryKey = "tom+cruise")
+//        getSearchResult(isInitial = true, queryKey = "tom+cruise")
 
     }
 
@@ -89,5 +96,20 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
                 }
             }
         }
+    }
+
+    fun prepareSearch() {
+        when {
+            searchKey.value.isNullOrEmpty() -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
+            !searchKey.value.isNullOrEmpty() -> searchKey.value?.let{
+                getSearchResult(isInitial = true, it)
+            }
+            else -> _invalidSearch.value = NO_ONE_KNOWS
+        }
+    }
+
+    companion object {
+        const val INVALID_FORMAT_SEARCH_KEY_EMPTY = 0x11
+        const val NO_ONE_KNOWS = 0x21
     }
 }

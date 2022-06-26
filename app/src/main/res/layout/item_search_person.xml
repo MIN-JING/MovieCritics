@@ -31,12 +31,12 @@
         <TextView
             android:id="@+id/text_search_person_name"
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:text="@{look.name}"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/image_search_person_pic"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_search_person_pic"
@@ -44,18 +44,18 @@
 
 
         <TextView
-            android:id="@+id/text_search_person_number"
+            android:id="@+id/text_search_person_popularity"
             android:layout_width="0dp"
-            android:layout_height="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:text="@{look.popularity.toString()}"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/text_search_person_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_search_person_name"
-            tools:text="Person Number" />
+            tools:text="Popularity" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

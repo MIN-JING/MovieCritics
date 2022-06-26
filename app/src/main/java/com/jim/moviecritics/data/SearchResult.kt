@@ -58,7 +58,13 @@ data class SearchResult(
                     else -> { Logger.i("mediaType unknown data = $look") }
                 }
             }
+//            items.sortedBy(LookItem::order).map { it::class.simpleName }
+//            items.sortedBy(LookItem::order)
+            items.sortBy { items -> items.order }
             Logger.i("items = $items")
+            for (item in items) {
+                Logger.i("sorted item = $item")
+            }
         }
         return items
     }

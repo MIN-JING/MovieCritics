@@ -98,6 +98,20 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         }
     }
 
+//    fun toKnownFor() {
+//
+//        lookItems.value?.let {
+//            for (value in it) {
+//                if (value.mediaType == "person") {
+//                    for ( person in value.) {
+//
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+
     fun prepareSearch() {
         when {
             searchKey.value.isNullOrEmpty() -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY

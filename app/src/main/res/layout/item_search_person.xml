@@ -8,12 +8,14 @@
         <variable
             name="look"
             type="com.jim.moviecritics.data.Look" />
+<!--        <variable-->
+<!--            name="knownFor"-->
+<!--            type="com.jim.moviecritics.data.KnownFor" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#5E009688">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image_search_person_pic"
@@ -31,31 +33,47 @@
         <TextView
             android:id="@+id/text_search_person_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.name}"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/image_search_person_pic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_search_person_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_person_pic"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Person Name" />
-
 
         <TextView
             android:id="@+id/text_search_person_popularity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.popularity.toString()}"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/text_search_person_name"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_person_pic"
             app:layout_constraintTop_toBottomOf="@+id/text_search_person_name"
             tools:text="Popularity" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/text_search_person_known_for"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginStart="8dp"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:layout_marginEnd="8dp"-->
+        <!--            android:text="@{}"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/image_search_person_pic"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/text_search_person_popularity"-->
+        <!--            tools:text="Known For"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

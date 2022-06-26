@@ -48,6 +48,12 @@ class SearchFragment : Fragment() {
                 Logger.i("SearchAdapter.OnClickListener it.id = ${it.id}")
             }
         )
+        
+//        binding.recyclerviewSearch.adapter = ExpandAdapter(
+//            onSectionClickListener = { lookItem ->
+//
+//            }
+//        )
 
         viewModel.invalidSearch.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.invalidSearch.value = ${viewModel.invalidSearch.value}")

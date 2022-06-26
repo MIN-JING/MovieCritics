@@ -64,6 +64,8 @@ data class SearchResult(
             Logger.i("items = $items")
             for (item in items) {
                 Logger.i("sorted item = $item")
+                Logger.i("item.id = ${item.id}")
+                Logger.i("item.mediaType = ${item.mediaType}")
             }
         }
         return items

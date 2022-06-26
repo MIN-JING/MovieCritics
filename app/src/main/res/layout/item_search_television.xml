@@ -12,8 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#3E03A9F4">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image_search_tv_poster"
@@ -33,29 +32,47 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.name}"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/image_search_tv_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_search_tv_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_tv_poster"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="TV Title" />
-
 
         <TextView
             android:id="@+id/text_search_tv_first_air_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.firstAirDate}"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/text_search_tv_title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_tv_poster"
             app:layout_constraintTop_toBottomOf="@+id/text_search_tv_title"
             tools:text="First Air Date" />
+
+        <TextView
+            android:id="@+id/text_search_tv_overview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@{look.overview}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_search_tv_poster"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_tv_first_air_date"
+            tools:text="Overview" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

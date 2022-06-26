@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jim.moviecritics.data.KnownFor
 import com.jim.moviecritics.data.Look
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.databinding.*
-
+import com.jim.moviecritics.util.Logger
 
 
 class SearchAdapter(private val onClickListener: OnClickListener) :
@@ -39,6 +40,7 @@ class SearchAdapter(private val onClickListener: OnClickListener) :
 
         fun bind(look: Look, onClickListener: OnClickListener) {
             binding.look = look
+//            binding.knownFor = knownFor
             binding.root.setOnClickListener { onClickListener.onClick(look) }
             binding.executePendingBindings()
         }
@@ -88,7 +90,10 @@ class SearchAdapter(private val onClickListener: OnClickListener) :
                 holder.bind((getItem(position) as LookItem.LookTelevision).look, onClickListener)
             }
             is LookPersonViewHolder -> {
-                holder.bind((getItem(position) as LookItem.LookPerson).look, onClickListener)
+                    holder.bind(
+                        (getItem(position) as LookItem.LookPerson).look,
+//                        (getItem(position) as LookItem.LookPerson).knownFor,
+                        onClickListener)
             }
         }
     }

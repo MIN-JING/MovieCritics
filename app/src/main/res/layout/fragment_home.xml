@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_popular"
+            android:id="@+id/recyclerview_home_popular"
             android:layout_width="match_parent"
             android:layout_height="170dp"
             android:background="#4D00BCD4"
@@ -46,7 +46,7 @@
             android:layout_marginTop="16dp"
             android:text="New from friends"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerview_popular" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerview_home_popular" />
 
         <TextView
             android:id="@+id/title_popular_with_friends"

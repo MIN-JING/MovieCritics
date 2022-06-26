@@ -33,10 +33,18 @@ class SearchFragment : Fragment() {
 
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         viewModel.lookItems.observe(viewLifecycleOwner, Observer {
-            Logger.i("lookItems = $it")
+            Logger.i("viewModel.lookItems = $it")
         })
+
+        binding.recyclerviewSearch.adapter = SearchAdapter(
+            SearchAdapter.OnClickListener {
+                Logger.i("SearchAdapter.OnClickListener it = $it")
+                Logger.i("SearchAdapter.OnClickListener it.id = ${it.id}")
+            }
+        )
 
         return binding.root
 //        return inflater.inflate(R.layout.fragment_search, container, false)

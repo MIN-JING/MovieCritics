@@ -23,7 +23,7 @@ data class Look(
     val video: Boolean?,
     @Json(name = "vote_average") val average: Float?,
     //TV
-    @Json(name = "first_air_date") val firstAir: String?,
+    @Json(name = "first_air_date") val firstAirDate: String?,
     @Json(name = "original_country") val originalCountry: List<String>?,
     val name: String?,
     @Json(name = "original_name") val originalName: String?,

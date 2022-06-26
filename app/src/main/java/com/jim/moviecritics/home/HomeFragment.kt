@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
             Logger.i("HomeViewModel.homeItems = $it")
         })
 
-        binding.recyclerviewPopular.adapter = HomeAdapter(
+        binding.recyclerviewHomePopular.adapter = HomeAdapter(
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
                 Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")

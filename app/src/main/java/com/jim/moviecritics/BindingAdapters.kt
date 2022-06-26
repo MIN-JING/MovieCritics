@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.Cast
 import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.home.HomeAdapter
+import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
 
 
@@ -19,8 +21,23 @@ fun bindRecyclerViewWithHomeItems(recyclerView: RecyclerView, homeItems: List<Ho
     homeItems?.let {
         recyclerView.adapter?.apply {
             when (this) {
-                is HomeAdapter -> { submitList(it)
+                is HomeAdapter -> {
+                    submitList(it)
                     Logger.i("bindRecyclerViewWithHomeItems = $it")
+                }
+            }
+        }
+    }
+}
+
+@BindingAdapter("lookItems")
+fun bindRecyclerViewWithLookItems(recyclerView: RecyclerView, lookItems: List<LookItem>?) {
+    lookItems?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is SearchAdapter -> {
+                    submitList(it)
+                    Logger.i("bindRecyclerViewWithLookItems = $it")
                 }
             }
         }

@@ -56,7 +56,7 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        getSearchResult(isInitial = true, queryKey = "simpsons")
+        getSearchResult(isInitial = true, queryKey = "tom+cruise")
 
     }
 

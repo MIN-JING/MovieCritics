@@ -9,52 +9,54 @@
             name="look"
             type="com.jim.moviecritics.data.Look" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/image_search_tv_poster"
-        android:layout_width="100dp"
-        android:layout_height="130dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3E03A9F4">
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-    <!--        app:imageUrl="@{trend.posterUri}"-->
+        <ImageView
+            android:id="@+id/image_search_tv_poster"
+            android:layout_width="100dp"
+            android:layout_height="130dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{look.posterPath}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/text_search_tv_title"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:gravity="center_vertical"
 
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/image_search_tv_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_search_tv_poster"
-        tools:text="TV Title"/>
-    <!--        android:text="@{trend.title}"-->
+        <TextView
+            android:id="@+id/text_search_tv_title"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:text="@{look.name}"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/image_search_tv_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_search_tv_poster"
+            tools:text="TV Title" />
 
-    <TextView
-        android:id="@+id/text_search_tv_first_air_date"
-        android:layout_width="0dp"
-        android:layout_height="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:gravity="center_vertical"
 
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/text_search_tv_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_search_tv_title"
-        tools:text="First Air Date" />
-    <!--        android:text="@{viewModel.movie.released}"-->
+        <TextView
+            android:id="@+id/text_search_tv_first_air_date"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:text="@{look.firstAirDate}"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="@+id/text_search_tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_search_tv_title"
+            tools:text="First Air Date" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

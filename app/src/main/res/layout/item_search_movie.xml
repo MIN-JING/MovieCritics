@@ -11,8 +11,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6800BCD4">
+
         <ImageView
             android:id="@+id/image_search_movie_poster"
             android:layout_width="100dp"
@@ -20,11 +22,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
-
+            app:imageUrl="@{look.posterPath}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
-<!--        app:imageUrl="@{trend.posterUri}"-->
+
 
         <TextView
             android:id="@+id/text_search_movie_title"
@@ -33,13 +35,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
-
+            android:text="@{look.title}"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/image_search_movie_poster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_search_movie_poster"
-            tools:text="Movie Title"/>
-<!--        android:text="@{trend.title}"-->
+            tools:text="Movie Title" />
+
 
         <TextView
             android:id="@+id/text_search_movie_released_year"
@@ -48,13 +50,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
-
+            android:text="@{look.releaseDate}"
             android:textSize="8sp"
             app:layout_constraintEnd_toEndOf="@+id/text_search_movie_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_search_movie_title"
             tools:text="Released Date" />
-<!--        android:text="@{viewModel.movie.released}"-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

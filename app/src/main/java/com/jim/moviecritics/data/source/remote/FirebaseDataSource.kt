@@ -86,12 +86,15 @@ object FirebaseDataSource : ApplicationDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    if (task.result.size() == 1) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getScore task.result.size >= 1")
                         Logger.d( task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(Score::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
-                        Logger.w("[${this::class.simpleName}] getScore task.result.size != 1")
+                        Logger.w("[${this::class.simpleName}] getScore task.result.size < 1")
+                        val item = Score(imdbID = imdbID, userID = userID)
+                        continuation.resume(Result.Success(item))
                     }
                 } else {
                     task.exception?.let {
@@ -375,6 +378,9 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
+//        FirebaseFirestore.getInstance().collection(PATH_SCORES)
+//            .whereEqualTo("userID", userID)
+//            .whereEqualTo("imdbID", imdbID)
         val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
         val document = scores.document()
 

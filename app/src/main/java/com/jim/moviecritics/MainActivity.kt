@@ -77,6 +77,26 @@ class MainActivity : BaseActivity() {
 
     }
 
+    override fun onStart() {
+        Logger.i("MainActivity onStart()")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Logger.i("MainActivity onResume()")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        Logger.i("MainActivity onPause()")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Logger.i("MainActivity onStop()")
+        super.onStop()
+    }
+
     private fun setupNavController() {
         findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {

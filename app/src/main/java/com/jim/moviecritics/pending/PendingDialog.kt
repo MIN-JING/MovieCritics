@@ -163,4 +163,14 @@ class PendingDialog : AppCompatDialogFragment() {
 //        // TODO: Use the ViewModel
 //    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Logger.i("Pending Dialog onDestroy()")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Logger.i("Pending Dialog onDestroyView()")
+    }
+
 }

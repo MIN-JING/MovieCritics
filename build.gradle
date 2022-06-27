@@ -1,3 +1,18 @@
+buildscript {
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.10'
+        // SafeArgument
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2"
+    }
+    repositories {
+        // Google's Maven repository
+        google()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        // Radar Chart
+        maven { url "https://jitpack.io" }
+    }
+}
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     id 'com.android.application' version '7.1.2' apply false

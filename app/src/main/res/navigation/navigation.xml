@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.jim.moviecritics.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.jim.moviecritics.search.SearchFragment"
+        android:label="search_fragment"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/downshiftFragment"
+        android:name="com.jim.moviecritics.downshift.DownshiftFragment"
+        android:label="downshift_fragment"
+        tools:layout="@layout/fragment_downshift" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jim.moviecritics.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.jim.moviecritics.detail.DetailFragment"
+        android:label="detail_fragment"
+        tools:layout="@layout/fragment_detail" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/pendingDialog"
+        android:name="com.jim.moviecritics.pending.PendingDialog"
+        android:label="dialog_pending"
+        tools:layout="@layout/dialog_pending" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.jim.moviecritics.review.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review" >
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false" />
+    </fragment>
+
+
+    <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_search_fragment" app:destination="@id/searchFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_downshift_fragment" app:destination="@id/downshiftFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
+        app:popUpTo="@id/navigation"
+        app:popUpToInclusive="true" />
+
+    <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
+
+    <action android:id="@+id/navigate_to_pending_dialog" app:destination="@id/pendingDialog"/>
+
+    <action android:id="@+id/navigate_to_review_fragment" app:destination="@id/reviewFragment"/>
+
+
+</navigation>

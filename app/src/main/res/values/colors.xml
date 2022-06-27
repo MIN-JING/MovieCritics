@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="translucent_40">#66000000</color>
+
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -7,4 +9,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="gray_999999">#999999</color>
+
+    <color name="black_3f3a3a">#3f3a3a</color>
+
+    <color name="yellow">#FFFF00</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottom_navigation_item_normal">@color/gray_999999</color>
+    <color name="bottom_navigation_item_selected">@color/black_3f3a3a</color>
 </resources>

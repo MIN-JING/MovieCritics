@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".detail.DetailFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.detail.DetailViewModel" />
+        <variable
+            name="movie"
+            type="com.jim.moviecritics.data.Movie" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/button_detail_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/ic_arrow_back"
+                    android:onClick="@{() -> viewModel.leaveDetail()}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/button_detail_pending"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/ic_pending"
+                    android:onClick="@{() -> viewModel.navigateToPending(viewModel.movie)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_detail_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="100dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.movie.title}"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Movie Title" />
+
+                <TextView
+                    android:id="@+id/text_detail_released_year"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@{viewModel.movie.released}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
+                    tools:text="Released Date" />
+
+                <TextView
+                    android:id="@+id/text_detail_directed_by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="DIRECTED BY"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year" />
+
+                <TextView
+                    android:id="@+id/text_detail_director"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.movie.director}"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_detail_directed_by"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
+                    app:layout_constraintStart_toEndOf="@+id/text_detail_directed_by"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_directed_by"
+                    tools:text="Director Name" />
+
+                <ImageView
+                    android:id="@+id/image_detail_poster"
+                    android:layout_width="120dp"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{viewModel.movie.posterUri}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_title"
+                    tools:srcCompat="@tools:sample/avatars[0]" />
+
+                <Button
+                    android:id="@+id/button_detail_trailer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:includeFontPadding="false"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="4dp"
+                    android:text="TRAILER"
+                    app:icon="@drawable/ic_play_arrow"
+                    app:iconPadding="8dp"
+                    app:iconSize="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_directed_by" />
+
+
+                <TextView
+                    android:id="@+id/text_detail_runtime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.movie.runtime.toString() + `  Min`}"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/button_detail_trailer"
+                    app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
+                    app:layout_constraintStart_toEndOf="@+id/button_detail_trailer"
+                    app:layout_constraintTop_toTopOf="@+id/button_detail_trailer"
+                    tools:text="Runtime: 120 Min" />
+
+                <TextView
+                    android:id="@+id/text_detail_overview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{viewModel.movie.overview}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer" />
+
+                <View
+                    android:id="@+id/divider_detail_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_overview" />
+
+                <TextView
+                    android:id="@+id/text_detail_ratings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="RATINGS"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_detail_2" />
+
+                <TextView
+                    android:id="@+id/text_detail_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_detail_ratings"
+                    app:layout_constraintStart_toEndOf="@+id/text_detail_ratings"
+                    app:layout_constraintTop_toTopOf="@+id/text_detail_ratings"
+                    tools:text="Score: 4.3" />
+<!--                android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"-->
+
+                <com.github.mikephil.charting.charts.RadarChart
+                    android:id="@+id/radar_chart_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_rating" >
+
+                </com.github.mikephil.charting.charts.RadarChart>
+
+                <View
+                    android:id="@+id/divider_detail_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radar_chart_rating" />
+
+                <TextView
+                    android:id="@+id/text_detail_cast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Cast"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_detail_3" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_detail_cast"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:fadeScrollbars="false"
+                    android:orientation="vertical"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    app:casts="@{viewModel.movie.casts}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_cast"
+                    tools:listitem="@layout/item_detail_cast" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

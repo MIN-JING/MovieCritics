@@ -87,8 +87,7 @@ class DetailViewModel(
 
         Logger.i("DetailViewModel init {}")
 //        pushMockScore()
-//        getScoresResult(isInitial = true, imdbID = "tt0343818")
-        movie.value?.imdbID?.let { getScoreResult(isInitial = true, imdbID = it, userID = 790926) }
+        movie.value?.imdbID?.let { getScoreResult(isInitial = true, imdbID = it, userID = 200001) }
 
     }
 

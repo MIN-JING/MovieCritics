@@ -81,7 +81,7 @@ class DetailViewModel(
 
 //        pushMockScore()
         getScoresResult(isInitial = true, imdbID = "tt0343818")
-        getScoreResult(isInitial = true, imdbID = "tt0343818", userID = 891031)
+        getScoreResult(isInitial = true, imdbID = "tt0343818", userID = 200001)
     }
 
     fun navigateToPending(movie: Movie) {

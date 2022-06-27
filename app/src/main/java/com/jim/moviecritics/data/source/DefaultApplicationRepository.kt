@@ -39,6 +39,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getScore(imdbID, userID)
     }
 
+    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+        return firebaseDataSource.getLiveScore(imdbID, userID)
+    }
+
     override suspend fun getUser(userID: Long): Result<User> {
         return firebaseDataSource.getUser(userID)
     }
@@ -57,14 +61,6 @@ class DefaultApplicationRepository(
 
     override suspend fun delete(comment: Comment): Result<Boolean> {
         return firebaseDataSource.delete(comment)
-    }
-
-    override fun loadMockComment(): Comment {
-        return localDataSource.loadMockComment()
-    }
-
-    override fun loadMockScore(): Score {
-        return localDataSource.loadMockScore()
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
@@ -99,4 +95,15 @@ class DefaultApplicationRepository(
         return firebaseDataSource.pushPopularMovies(pushTrend)
     }
 
+    override suspend fun pushMockComment(): Result<Boolean> {
+        return localDataSource.pushMockComment()
+    }
+
+    override suspend fun pushMockScore(): Result<Boolean> {
+        return localDataSource.pushMockScore()
+    }
+
+    override suspend fun pushMockUser(): Result<Boolean> {
+        return localDataSource.pushMockUser()
+    }
 }

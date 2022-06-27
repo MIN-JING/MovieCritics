@@ -10,8 +10,8 @@ import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.google.firebase.firestore.FirebaseFirestore
+import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Cast
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.Score
@@ -45,6 +45,8 @@ class DetailViewModel(
 
     val score: LiveData<Score?>
         get() = _score
+
+    var liveScore = MutableLiveData<Score>()
 
 
         // status: The internal MutableLiveData that stores the status of the most recent request
@@ -85,9 +87,14 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        Logger.i("DetailViewModel init {}")
-//        pushMockScore()
-        movie.value?.imdbID?.let { getScoreResult(isInitial = true, imdbID = it, userID = 200001) }
+        if (MovieApplication.instance.isLiveDataDesign()) {
+            movie.value?.imdbID?.let {
+                getLiveScoreResult(imdbID = it, userID = 200001L)
+            }
+        } else {
+            movie.value?.imdbID?.let {
+                getScoreResult(isInitial = true, imdbID = it, userID = 200001L) }
+        }
 
     }
 
@@ -169,6 +176,11 @@ class DetailViewModel(
         }
     }
 
+    private fun getLiveScoreResult(imdbID: String, userID: Long) {
+        liveScore = applicationRepository.getLiveScore(imdbID, userID)
+        _status.value = LoadApiStatus.DONE
+    }
+
     fun setRadarData(
         averageLeisure: Float,
         averageHit: Float,
@@ -248,10 +260,4 @@ class DetailViewModel(
         radarChart.invalidate()
     }
 
-    private fun pushMockScore() {
-        val result = applicationRepository.loadMockScore()
-        val scores = FirebaseFirestore.getInstance().collection("score")
-        val document = scores.document()
-        document.set(result)
-    }
 }

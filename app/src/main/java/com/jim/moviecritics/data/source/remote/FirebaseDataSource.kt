@@ -1,7 +1,7 @@
 package com.jim.moviecritics.data.source.remote
 
 
-import android.util.Log
+
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -14,8 +14,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
 
 /**
  * Implementation of the Application source that from network.
@@ -30,7 +29,7 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val KEY_LIKED = "liked"
     private const val KEY_WATCHLIST = "watchlist"
     private const val KEY_CREATED_TIME = "createdTime"
-    private const val KEY_ID = "id"
+
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
@@ -56,9 +55,6 @@ object FirebaseDataSource : ApplicationDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-//                    Logger.d( task.result.first().id + " => " + task.result.documents.first().data)
-//                    val item = task.result.first().toObject(Score::class.java)
-//                    continuation.resume(Result.Success(item))
                     val list = mutableListOf<Score>()
                     for (document in task.result) {
                         Logger.d( document.id + " => " + document.data)
@@ -107,36 +103,55 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
+    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+        val liveData = MutableLiveData<Score>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_SCORES)
+            .whereEqualTo("imdbID", imdbID)
+            .whereEqualTo("userID", userID)
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLiveScore addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                val list = mutableListOf<Score>()
+                if (snapshot != null) {
+                    snapshot.forEach { document ->
+                        Logger.d(document.id + " => " + document.data)
+
+                        val comment = document.toObject(Score::class.java)
+                        list.add(comment)
+                    }
+                    Logger.d( list.first().id + " => " + list.first())
+                    liveData.value = list.first()
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
+                }
+            }
+        return liveData
+    }
+
     override suspend fun getUser(userID: Long): Result<User> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-//            .document(userID.toString())
             .whereEqualTo("id", userID)
-//            .orderBy(KEY_ID, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    if (task.result.size() == 1) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
                         Logger.d( task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(User::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size != 1")
+                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
+                        val item = User(id = userID)
+                        continuation.resume(Result.Success(item))
                     }
-//                    //1
-//                    val item = task.result.toObject(User::class.java)
-//                    continuation.resume(Result.Success(item!!))
-//
-//                    //2
-//                    if (task.result.data?.size != null) {
-//                        val item = task.result.toObject(User::class.java)
-//                        continuation.resume(Result.Success(item))
-//                    }
-//                    //3
-//                    task.result?.let {
-//                        continuation.resume(Result.Success(it.toObject(User::class.java)))
-//                    }
-
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -182,7 +197,7 @@ object FirebaseDataSource : ApplicationDataSource {
             .collection(PATH_COMMENTS)
             .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
-                Logger.i("ApplicationRemoteDataSource addSnapshotListener detect")
+                Logger.i("getLiveComments addSnapshotListener detect")
 
                 exception?.let {
                     Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -248,13 +263,7 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-    override fun loadMockComment(): Comment {
-        TODO("Not yet implemented")
-    }
 
-    override fun loadMockScore(): Score {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
@@ -378,9 +387,6 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
-//        FirebaseFirestore.getInstance().collection(PATH_SCORES)
-//            .whereEqualTo("userID", userID)
-//            .whereEqualTo("imdbID", imdbID)
         val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
         val document = scores.document()
 
@@ -424,5 +430,17 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
+    }
+
+    override suspend fun pushMockComment(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockScore(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockUser(): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 }

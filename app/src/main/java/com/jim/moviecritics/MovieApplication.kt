@@ -25,5 +25,5 @@ class MovieApplication : Application() {
         instance = this
     }
 
-//    fun isLiveDataDesign() = true
+    fun isLiveDataDesign() = true
 }

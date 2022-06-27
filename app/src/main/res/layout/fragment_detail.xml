@@ -12,6 +12,9 @@
         <variable
             name="movie"
             type="com.jim.moviecritics.data.Movie" />
+<!--        <variable-->
+<!--            name="isLiveDataDesign"-->
+<!--            type="Boolean" />-->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

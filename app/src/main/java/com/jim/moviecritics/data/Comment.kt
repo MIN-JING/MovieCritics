@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Comment(
     var id: String = "",
-    val userID: Long = 891031L,
+    val userID: Long = 0L,
     val imdbID: String = "",
     var createdTime: Timestamp = Timestamp.now(),
     val content: String = "",

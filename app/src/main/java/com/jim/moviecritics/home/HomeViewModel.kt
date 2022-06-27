@@ -13,8 +13,6 @@ import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.*
-import java.math.BigDecimal
-import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 
@@ -285,12 +283,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-    private fun pushMockComment() {
-        val result = applicationRepository.loadMockComment()
-        val comment = FirebaseFirestore.getInstance().collection("comment")
-        val document = comment.document()
-        document.set(result)
-    }
 
     fun pushPopularMovies(pushTrend: PushTrend) {
 

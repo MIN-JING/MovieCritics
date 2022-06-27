@@ -14,7 +14,6 @@ import com.jim.moviecritics.util.Util.isInternetConnected
 object ApiDataSource : ApplicationDataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
-//        override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
 
         if (!isInternetConnected()) {
             return Result.Fail(getString(R.string.internet_not_connected))
@@ -28,7 +27,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(popularResult.toHomeItems())
-//            Result.Success(listResult)
 
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
@@ -101,6 +99,10 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getUser(userID: Long): Result<User> {
         TODO("Not yet implemented")
     }
@@ -118,14 +120,6 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override suspend fun delete(comment: Comment): Result<Boolean> {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadMockComment(): Comment {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadMockScore(): Score {
         TODO("Not yet implemented")
     }
 
@@ -158,6 +152,18 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockComment(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockScore(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockUser(): Result<Boolean> {
         TODO("Not yet implemented")
     }
 }

@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
-//    AppCompatActivity()
 
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
 
@@ -48,11 +47,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-
-//        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
-//            this, R.layout.activity_main
-//        )
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
@@ -67,35 +61,11 @@ class MainActivity : BaseActivity() {
             }
         )
 
-//        val navController: NavController = Navigation.findNavController(
-//            this, R.id.activity_main_nav_host_fragment
-//        )
         setupToolbar()
         setupBottomNav()
         setupNavController()
-//        setMockUser()
-
     }
 
-    override fun onStart() {
-        Logger.i("MainActivity onStart()")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Logger.i("MainActivity onResume()")
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Logger.i("MainActivity onPause()")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Logger.i("MainActivity onStop()")
-        super.onStop()
-    }
 
     private fun setupNavController() {
         findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
@@ -177,7 +147,6 @@ class MainActivity : BaseActivity() {
                         "Pixel 5" -> { Log.i("Jim","Build.MODEL is ${Build.MODEL}") }
                         else -> { layoutParams.topMargin = statusBarHeight - oriStatusBarHeight }
                     }
-//                    binding.imageToolbarLogo.layoutParams = layoutParams
                     binding.textToolbarTitle.layoutParams = layoutParams
                 }
             }

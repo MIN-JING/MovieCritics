@@ -60,11 +60,11 @@ class DefaultApplicationRepository(
     }
 
     override fun loadMockComment(): Comment {
-        return localDataSource.loadMockComment()
+        return localDataSource.pushMockComment()
     }
 
     override fun loadMockScore(): Score {
-        return localDataSource.loadMockScore()
+        return localDataSource.pushMockScore()
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {

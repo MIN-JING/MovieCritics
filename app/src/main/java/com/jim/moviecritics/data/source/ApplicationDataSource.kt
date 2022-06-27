@@ -33,9 +33,9 @@ interface ApplicationDataSource {
 
     suspend fun delete(comment: Comment): Result<Boolean>
 
-    fun loadMockComment(): Comment
+    fun pushMockComment(): Comment
 
-    fun loadMockScore(): Score
+    fun pushMockScore(): Score
 
     suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean>
 

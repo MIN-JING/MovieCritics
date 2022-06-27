@@ -248,11 +248,11 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-    override fun loadMockComment(): Comment {
+    override fun pushMockComment(): Comment {
         TODO("Not yet implemented")
     }
 
-    override fun loadMockScore(): Score {
+    override fun pushMockScore(): Score {
         TODO("Not yet implemented")
     }
 

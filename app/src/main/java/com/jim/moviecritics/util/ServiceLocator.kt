@@ -5,7 +5,7 @@ import androidx.annotation.VisibleForTesting
 import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.data.source.DefaultApplicationRepository
-import com.jim.moviecritics.data.source.local.ApplicationLocalDataSource
+import com.jim.moviecritics.data.source.local.LocalDataSource
 import com.jim.moviecritics.data.source.remote.ApiDataSource
 import com.jim.moviecritics.data.source.remote.FirebaseDataSource
 
@@ -33,6 +33,6 @@ object ServiceLocator {
     }
 
     private fun createLocalDataSource(context: Context): ApplicationDataSource {
-        return ApplicationLocalDataSource(context)
+        return LocalDataSource(context)
     }
 }

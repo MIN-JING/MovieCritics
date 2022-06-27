@@ -6,7 +6,7 @@ import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
 
-class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
+class LocalDataSource(val context: Context) : ApplicationDataSource {
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
     }
@@ -51,7 +51,7 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun loadMockComment(): Comment {
+    override fun pushMockComment(): Comment {
         return Comment(
             id = "",
             userID = 891031L,
@@ -63,7 +63,7 @@ class ApplicationLocalDataSource(val context: Context) : ApplicationDataSource {
         )
     }
 
-    override fun loadMockScore(): Score {
+    override fun pushMockScore(): Score {
         return Score(
             id = "",
             userID = 891031L,

@@ -22,8 +22,8 @@ import kotlinx.coroutines.withContext
  */
 object FirebaseDataSource : ApplicationDataSource {
 
-    private const val PATH_SCORES = "score"
-    private const val PATH_COMMENTS = "comment"
+    private const val PATH_SCORES = "scores"
+    private const val PATH_COMMENTS = "comments"
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val PATH_USERS = "users"
     private const val KEY_WATCHED = "watched"

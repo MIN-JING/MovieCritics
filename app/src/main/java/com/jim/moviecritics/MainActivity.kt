@@ -320,11 +320,11 @@ class MainActivity : BaseActivity() {
 //    }
 
     private fun setMockComment() {
-        val comments = FirebaseFirestore.getInstance().collection("comment")
+        val comments = FirebaseFirestore.getInstance().collection("comments")
         val document = comments.document()
         val data = Comment(
             "23456",
-            12344,
+            200001,
             "tt0343818",
             Timestamp.now(),
             "Would Google LaMDA chat robot become a human?",
@@ -335,7 +335,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setMockScore() {
-        val scores = FirebaseFirestore.getInstance().collection("score")
+        val scores = FirebaseFirestore.getInstance().collection("scores")
         val document = scores.document()
         val tempLeisure = 5.6F
         val tempHit = 6.5F
@@ -346,7 +346,7 @@ class MainActivity : BaseActivity() {
 
         val data = Score(
             "",
-            67891,
+            200001,
             "tt0343818",
             Timestamp.now(),
             tempLeisure,
@@ -362,7 +362,7 @@ class MainActivity : BaseActivity() {
     private fun setMockUser() {
 
         val data = User(
-            790926,
+            200001,
             "MIN-JING",
             "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
             "Taipei City",
@@ -378,7 +378,7 @@ class MainActivity : BaseActivity() {
 
         FirebaseFirestore.getInstance()
             .collection("users")
-            .document(790926.toString())
+            .document(200001.toString())
 //            .document()
             .set(data)
             .addOnCompleteListener { task ->

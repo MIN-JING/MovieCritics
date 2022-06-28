@@ -2,16 +2,25 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".review.ReviewFragment">
+    tools:context=".review.ReviewDialog">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.review.ReviewViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+<!--        android:onClick="@{() -> viewModel.leave()}"-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/green_adbdb7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -22,7 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Cancel"
+                android:text="@string/button_review_cancel"
+                android:textColor="@color/black"
+                android:onClick="@{() -> viewModel.leave()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,17 +42,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="Save"
-                app:layout_constraintBottom_toBottomOf="@+id/text_review_top_title"
+                android:text="@string/button_review_save"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/text_review_title_top"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_review_top_title" />
+                app:layout_constraintTop_toTopOf="@+id/text_review_title_top" />
 
             <TextView
-                android:id="@+id/text_review_top_title"
+                android:id="@+id/text_review_title_top"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:text="I Watched..."
+                android:text="@string/text_review_title_top"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/button_review_cancel"
                 app:layout_constraintEnd_toStartOf="@+id/button_review_save"
@@ -49,7 +61,7 @@
                 app:layout_constraintTop_toTopOf="@+id/button_review_cancel" />
 
             <View
-                android:id="@+id/divider_review_1"
+                android:id="@+id/divider1_review"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
@@ -63,9 +75,11 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/image_review_poster"
                 android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.movie.posterUri}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_review_1"
+                app:layout_constraintTop_toBottomOf="@+id/divider1_review"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
@@ -74,30 +88,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:text=""
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{viewModel.movie.title}"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_review_poster"
                 app:layout_constraintTop_toTopOf="@+id/image_review_poster"
-                tools:text="Movie Title"/>
+                tools:text="Movie Title" />
 
             <TextView
                 android:id="@+id/text_review_released_year"
-                android:layout_width="0dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text=""
+                android:maxLines="1"
+                android:text="@{viewModel.movie.released.substring(0, 4)}"
+                android:textColor="@color/gray_708090"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/image_review_poster"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_review_poster"
                 app:layout_constraintTop_toBottomOf="@+id/text_review_title"
-                tools:text="Released Year"/>
+                tools:text="Released " />
+
+            <TextView
+                android:id="@+id/text_review_genres"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.toGenres()}"
+                android:textColor="@color/green_486b5e"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_review_released_year"
+                app:layout_constraintTop_toTopOf="@+id/text_review_released_year"
+                tools:text="Genres" />
 
             <View
-                android:id="@+id/divider_review_2"
+                android:id="@+id/divider2_review"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
@@ -112,10 +145,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Date"
+                android:text="@string/text_review_date_title"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_review_2" />
+                app:layout_constraintTop_toBottomOf="@+id/divider2_review" />
 
             <TextView
                 android:id="@+id/text_review_date"
@@ -130,10 +164,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_review_date_title"
                 app:layout_constraintTop_toTopOf="@+id/text_review_date_title"
-                tools:text="Date Today"/>
+                tools:text="Date Today" />
 
             <View
-                android:id="@+id/divider_review_3"
+                android:id="@+id/divider3_review"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="16dp"
@@ -151,11 +185,12 @@
                 android:layout_marginEnd="16dp"
                 android:ems="10"
                 android:gravity="start"
-                android:hint="Add review..."
-                android:inputType="textPersonName"
+                android:hint="@string/edit_review"
+                android:importantForAutofill="no"
+                android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider_review_3" />
+                app:layout_constraintTop_toBottomOf="@+id/divider3_review" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

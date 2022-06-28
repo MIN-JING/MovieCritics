@@ -4,7 +4,6 @@ package com.jim.moviecritics.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
@@ -144,7 +143,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
     }
 
     /**
-     * track [StylishRepository.getMarketingHots]: -> [DefaultStylishRepository] : [StylishRepository] -> [StylishRemoteDataSource] : [StylishDataSource]
+     * track [ApplicationRepository.getPopularMovies]: -> [DefaultApplicationRepository] : [ApplicationRepository] -> [ApiDataSource] : [ApplicationDataSource]
      */
     private fun getPopularMoviesResult(isInitial: Boolean = false) {
 

@@ -11,8 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
 import com.jim.moviecritics.ext.getVmFactory
@@ -153,83 +151,6 @@ class MainActivity : BaseActivity() {
                 }
             }
             Log.i("Jim","====== ${Build.MODEL} ======")
-        }
-    }
-
-    private fun listenData() {
-        val movies = FirebaseFirestore.getInstance()
-            .collection("movie")
-            .orderBy("id", Query.Direction.DESCENDING)
-
-        movies.addSnapshotListener { snapshots, e ->
-            if (e != null) {
-                Log.w("Jim", "movies listen: error", e)
-                return@addSnapshotListener
-            }
-            if (snapshots != null) {
-                for (dc in snapshots.documents) {
-                    Log.d("Jim", "movies snapshots.documents = ${dc.data}")
-                    Log.d("Jim", "movies dc.data?.get(\"title\") = ${dc.data?.get("title")}")
-
-                }
-
-            }
-        }
-
-        val comments = FirebaseFirestore.getInstance()
-            .collection("comment")
-            .orderBy("createdTime", Query.Direction.DESCENDING)
-
-        comments.addSnapshotListener { snapshots, e ->
-            if (e != null) {
-                Log.w("Jim", "comments listen: error", e)
-                return@addSnapshotListener
-            }
-            if (snapshots != null) {
-                for (dc in snapshots.documents) {
-                    Log.d("Jim", "comments snapshots.documents = ${dc.data}")
-                    Log.d("Jim", "comments dc.data?.get(\"content\") = ${dc.data?.get("content")}")
-
-                }
-
-            }
-        }
-
-        val scores = FirebaseFirestore.getInstance()
-            .collection("score")
-            .orderBy("createdTime", Query.Direction.DESCENDING)
-        scores.addSnapshotListener { snapshots, e ->
-            if (e != null) {
-                Log.w("Jim", "scores listen: error", e)
-                return@addSnapshotListener
-            }
-            if (snapshots != null) {
-                for (dc in snapshots.documents) {
-                    Log.d("Jim", "scores snapshots.documents = ${dc.data}")
-                    Log.d("Jim", "scores dc.data?.get(\"average\") = ${dc.data?.get("average")}")
-
-                }
-
-            }
-        }
-
-        val users = FirebaseFirestore.getInstance()
-            .collection("user")
-            .orderBy("id", Query.Direction.DESCENDING)
-
-        users.addSnapshotListener { snapshots, e ->
-            if (e != null) {
-                Log.w("Jim", "users listen: error", e)
-                return@addSnapshotListener
-            }
-            if (snapshots != null) {
-                for (dc in snapshots.documents) {
-                    Log.d("Jim", "users snapshots.documents = ${dc.data}")
-                    Log.d("Jim", "users dc.data?.get(\"name\") = ${dc.data?.get("name")}")
-
-                }
-
-            }
         }
     }
 }

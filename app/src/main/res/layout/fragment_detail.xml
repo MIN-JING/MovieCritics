@@ -41,7 +41,7 @@
                     android:layout_marginTop="25dp"
                     android:background="@drawable/ic_arrow_back"
                     android:contentDescription="@string/button_detail_back"
-                    android:onClick="@{() -> viewModel.leaveDetail()}"
+                    android:onClick="@{() -> viewModel.leave()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,6 +79,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{viewModel.movie.released}"
+                    android:textColor="@color/gray_708090"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
                     tools:text="Released Date" />
@@ -129,9 +130,11 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="4dp"
                     android:text="@string/button_detail_trailer"
+                    android:textColor="@color/black"
                     app:icon="@drawable/ic_play_arrow"
                     app:iconPadding="8dp"
                     app:iconSize="20dp"
+                    app:iconTintMode="add"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_directed_by" />
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +22,12 @@ class ReviewViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
+    private val _leave = MutableLiveData<Boolean?>()
+
+    val leave: LiveData<Boolean?>
+        get() = _leave
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -36,5 +41,32 @@ class ReviewViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
+
+    }
+
+
+
+    fun leave() {
+        _leave.value = true
+    }
+
+    fun onLeaveCompleted() {
+        _leave.value = null
+    }
+
+    fun toGenres(): String {
+
+        var genres = ""
+
+        movie.value?.genres?.let {
+
+            if (it.isNotEmpty()) {
+                for (genre in it) {
+                    genres = genres + genre.name + ", "
+                }
+                Logger.i("genres = $genres")
+            }
+        }
+        return genres
     }
 }

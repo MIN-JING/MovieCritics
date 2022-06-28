@@ -89,6 +89,13 @@ class PendingViewModel(
     val leave: LiveData<Boolean?>
         get() = _leave
 
+
+    private val _navigateToReview = MutableLiveData<Movie?>()
+
+    val navigateToReview: LiveData<Movie?>
+        get() = _navigateToReview
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -424,6 +431,14 @@ class PendingViewModel(
 
     fun onLeaveCompleted() {
         _leave.value = null
+    }
+
+    fun navigateToReview(movie: Movie) {
+        _navigateToReview.value = movie
+    }
+
+    fun onReviewNavigated() {
+        _navigateToReview.value = null
     }
 
     companion object {

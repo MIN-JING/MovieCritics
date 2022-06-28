@@ -94,7 +94,7 @@ class DetailFragment : Fragment() {
             }
         })
 
-        viewModel.leaveDetail.observe(viewLifecycleOwner, Observer {
+        viewModel.leave.observe(viewLifecycleOwner, Observer {
             Logger.i(" DetailViewModel.leaveDetail = $it")
             it?.let {
                 if (it) findNavController().popBackStack()

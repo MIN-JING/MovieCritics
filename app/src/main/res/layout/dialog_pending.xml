@@ -21,6 +21,7 @@
             android:id="@+id/layout_pending"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/green_adbdb7"
             app:layout_constraintBottom_toTopOf="@+id/layout_pending_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -282,6 +283,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/text_pending_review"
                 android:textSize="20sp"
+                android:onClick="@{() -> viewModel.navigateToReview(viewModel.movie)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3_pending" />
@@ -330,6 +332,7 @@
                 android:id="@+id/text_pending_done"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@color/green_708c82"
                 android:gravity="center_horizontal|center_vertical"
                 android:onClick="@{() -> viewModel.leave()}"
                 android:text="@string/text_pending_done"

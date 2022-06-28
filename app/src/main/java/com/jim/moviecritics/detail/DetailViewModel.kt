@@ -60,10 +60,10 @@ class DetailViewModel(
     val error: LiveData<String?>
         get() = _error
 
-    private val _leaveDetail = MutableLiveData<Boolean>()
+    private val _leave = MutableLiveData<Boolean>()
 
-    val leaveDetail: LiveData<Boolean>
-        get() = _leaveDetail
+    val leave: LiveData<Boolean>
+        get() = _leave
 
 
     private val _navigateToPending = MutableLiveData<Movie?>()
@@ -106,8 +106,8 @@ class DetailViewModel(
         _navigateToPending.value = null
     }
 
-    fun leaveDetail() {
-        _leaveDetail.value = true
+    fun leave() {
+        _leave.value = true
     }
 
     private fun getScoresResult(isInitial: Boolean = false, imdbID: String) {

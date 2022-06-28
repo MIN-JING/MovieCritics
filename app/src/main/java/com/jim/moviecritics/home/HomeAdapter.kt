@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.Trend
-import com.jim.moviecritics.databinding.ItemHomePopularWeekBinding
+import com.jim.moviecritics.databinding.ItemHomePopularBinding
 
 
 class HomeAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<HomeItem, RecyclerView.ViewHolder>(DiffCallback) {
 
-    class PopularMovieViewHolder(private var binding: ItemHomePopularWeekBinding) :
+    class PopularMovieViewHolder(private var binding: ItemHomePopularBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
             fun bind(trend: Trend, onClickListener: OnClickListener) {
@@ -38,7 +38,7 @@ class HomeAdapter(private val onClickListener: OnClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_MOVIE_POPULAR -> PopularMovieViewHolder(
-                ItemHomePopularWeekBinding.inflate(
+                ItemHomePopularBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )

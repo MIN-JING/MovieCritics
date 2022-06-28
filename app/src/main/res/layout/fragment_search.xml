@@ -21,14 +21,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
             android:ems="10"
-            android:hint="Input keywords..."
+            android:hint="@string/edit_search"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:text="@={viewModel.searchKey}"
             app:layout_constraintEnd_toStartOf="@+id/button_search"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
 
         <ImageButton
             android:id="@+id/button_search"
@@ -39,7 +40,8 @@
             android:onClick="@{() -> viewModel.prepareSearch()}"
             app:layout_constraintBottom_toBottomOf="@+id/edit_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edit_search" />
+            app:layout_constraintTop_toTopOf="@+id/edit_search"
+            android:contentDescription="@string/button_search" />
 
         <View
             android:id="@+id/divider1_search"

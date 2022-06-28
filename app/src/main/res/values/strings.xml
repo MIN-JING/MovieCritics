@@ -12,6 +12,26 @@
     <string name="profile">Profile</string>
     <string name="detail">Detail</string>
 
+    <!-- Home -->
+    <string name="text_home_popular">Popular</string>
+
+    <!-- Item Home Popular -->
+    <string name="image_home_poster">A movie poster</string>
+    <string name="image_home_star">A rating star picture</string>
+
+    <!-- Search -->
+    <string name="edit_search">Input keywords...</string>
+    <string name="button_search">Click for search request</string>
+
+    <!-- Item Search Movie -->
+    <string name="image_search_movie_poster">A movie poster</string>
+
+    <!-- Item Search Television -->
+    <string name="image_search_tv_poster">A television poster</string>
+
+    <!-- Item Search Person -->
+    <string name="image_search_person_pic">A person profile picture</string>
+
     <!-- Detail -->
     <string name="button_detail_back">Back to Pop-up Page</string>
     <string name="button_detail_pending">Navigate to Pending Page</string>
@@ -20,6 +40,9 @@
     <string name="button_detail_trailer">TRAILER</string>
     <string name="text_detail_ratings">RATINGS</string>
     <string name="text_detail_cast">Cast</string>
+
+    <!-- Item Detail Cast -->
+    <string name="image_cast">A cast profile picture</string>
 
     <!-- Pending -->
     <string name="toggle_pending_watch_off">Watch</string>
@@ -38,7 +61,15 @@
     <string name="text_pending_share">Share</string>
     <string name="text_pending_done">Done</string>
 
+    <!-- Review -->
+    <string name="button_review_cancel">Cancel</string>
+    <string name="button_review_save">Save</string>
+    <string name="text_review_title_top">I Watched...</string>
+    <string name="image_review_poster">A movie poster</string>
+    <string name="text_review_date_title">Date</string>
+    <string name="edit_review">Add review...</string>
+
     <!-- Profile -->
-    <string name="profile_mystic_information">Into the Unknown ~</string>
+    <string name="profile_mystic_information">Into the Unknown~</string>
 
 </resources>

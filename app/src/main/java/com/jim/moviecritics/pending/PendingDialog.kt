@@ -12,6 +12,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
 import com.jim.moviecritics.ext.getVmFactory
@@ -24,7 +26,7 @@ import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_HI
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LEISURE_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MUSIC_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
-import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
+
 
 class PendingDialog : AppCompatDialogFragment() {
 
@@ -61,7 +63,6 @@ class PendingDialog : AppCompatDialogFragment() {
 
         viewModel.movie.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog movie = $it")
-//            it.imdbID?.let { it1 -> viewModel.pushWatchedMovie(imdbID = it1, userID = 790926) }
         })
 
         viewModel.user.observe(viewLifecycleOwner, Observer {
@@ -110,7 +111,15 @@ class PendingDialog : AppCompatDialogFragment() {
                 }
                 false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
 
-                null -> Logger.i("viewModel.leave.value = null")
+                null -> Logger.i("PendingViewModel.leave.value = null")
+            }
+        })
+
+        viewModel.navigateToReview.observe(viewLifecycleOwner, Observer {
+            Logger.i("PendingViewModel.navigateToReview = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigateToReviewDialog(it))
+                viewModel.onReviewNavigated()
             }
         })
 
@@ -162,15 +171,5 @@ class PendingDialog : AppCompatDialogFragment() {
 //        viewModel = ViewModelProvider(this).get(PendingViewModel::class.java)
 //        // TODO: Use the ViewModel
 //    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Logger.i("Pending Dialog onDestroy()")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Logger.i("Pending Dialog onDestroyView()")
-    }
 
 }

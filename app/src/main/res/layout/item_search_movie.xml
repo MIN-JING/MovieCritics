@@ -24,7 +24,8 @@
             app:imageUrl="@{look.posterPath}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/image_search_movie_poster" />
 
 
         <TextView
@@ -34,8 +35,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:gravity="center_vertical"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:lines="3"
             android:text="@{look.title}"
+            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_search_movie_poster"
@@ -51,6 +55,7 @@
             android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.releaseDate}"
+            android:textColor="@color/gray_708090"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_search_movie_poster"
@@ -65,8 +70,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:maxLines="3"
+            android:gravity="start"
+            android:maxLines="2"
             android:text="@{look.overview}"
+            android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,30 +1,22 @@
 package com.jim.moviecritics
 
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
-import android.view.LayoutInflater
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.Navigation
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.jim.moviecritics.data.*
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.CurrentFragmentType
-import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
 
 
@@ -81,7 +73,7 @@ class MainActivity : BaseActivity() {
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.homeFragment -> CurrentFragmentType.HOME
                 R.id.searchFragment -> CurrentFragmentType.SEARCH
-                R.id.downshiftFragment -> CurrentFragmentType.DOWNSHIFT
+                R.id.watchlistFragment -> CurrentFragmentType.WATCHLIST
                 R.id.profileFragment -> CurrentFragmentType.PROFILE
                 R.id.detailFragment -> CurrentFragmentType.DETAIL
                 else -> viewModel.currentFragmentType.value
@@ -102,9 +94,9 @@ class MainActivity : BaseActivity() {
                     findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToSearchFragment())
                     return@setOnItemSelectedListener true
                 }
-                R.id.navigation_downshift-> {
+                R.id.navigation_watchlist-> {
 
-                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToDownshiftFragment())
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToWatchlistFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_profile -> {

@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="@+id/edit_search" />
 
         <View
-            android:id="@+id/divider"
+            android:id="@+id/divider1_search"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
@@ -63,7 +63,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@+id/divider1_search"
             tools:listitem="@layout/item_search_movie"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

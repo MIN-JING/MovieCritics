@@ -1,8 +1,8 @@
-package com.jim.moviecritics.downshift
+package com.jim.moviecritics.watchlist
 
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
 
-class DownshiftViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class WatchlistViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
     // TODO: Implement the ViewModel
 }

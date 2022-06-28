@@ -8,10 +8,37 @@
     <!-- General -->
     <string name="movie_critics">Movie Critics</string>
     <string name="search">Search</string>
-    <string name="downshift">WatchList</string>
+    <string name="watchlist">WatchList</string>
     <string name="profile">Profile</string>
     <string name="detail">Detail</string>
 
+    <!-- Detail -->
+    <string name="button_detail_back">Back to Pop-up Page</string>
+    <string name="button_detail_pending">Navigate to Pending Page</string>
+    <string name="text_detail_directed_by">DIRECTED BY</string>
+    <string name="image_detail_poster">A movie poster</string>
+    <string name="button_detail_trailer">TRAILER</string>
+    <string name="text_detail_ratings">RATINGS</string>
+    <string name="text_detail_cast">Cast</string>
+
+    <!-- Pending -->
+    <string name="toggle_pending_watch_off">Watch</string>
+    <string name="toggle_pending_watch_on">Watched</string>
+    <string name="toggle_pending_like_off">Like</string>
+    <string name="toggle_pending_like_on">Liked</string>
+    <string name="toggle_pending_watchlist_off">Watchlist</string>
+    <string name="toggle_pending_watchlist_on">Added</string>
+    <string name="text_pending_rate">Rate</string>
+    <string name="text_pending_leisure">Leisure</string>
+    <string name="text_pending_hit">Hit</string>
+    <string name="text_pending_cast">Cast</string>
+    <string name="text_pending_music">Music</string>
+    <string name="text_pending_story">Story</string>
+    <string name="text_pending_review">Review</string>
+    <string name="text_pending_share">Share</string>
+    <string name="text_pending_done">Done</string>
+
     <!-- Profile -->
-    <string name="profile_mystic_information">Into the Unknown~</string>
+    <string name="profile_mystic_information">Into the Unknown ~</string>
+
 </resources>

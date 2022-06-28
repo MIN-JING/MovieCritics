@@ -2,7 +2,7 @@ package com.jim.moviecritics.detail
 
 
 
-import android.content.Context
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -45,13 +45,13 @@ class DetailFragment : Fragment() {
         viewModel.liveScore.observe(viewLifecycleOwner, Observer {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
-                val radarData = viewModel.movie.value?.let { it1 ->
+                val radarData = viewModel.movie.value?.let { movie ->
                     viewModel.setRadarData(
-                        averageLeisure = it1.voteAverage,
-                        averageHit = it1.voteAverage,
-                        averageCast = it1.voteAverage,
-                        averageMusic = it1.voteAverage,
-                        averageStory = it1.voteAverage,
+                        averageLeisure = movie.voteAverage,
+                        averageHit = movie.voteAverage,
+                        averageCast = movie.voteAverage,
+                        averageMusic = movie.voteAverage,
+                        averageStory = movie.voteAverage,
                         userLeisure = it.leisure,
                         userHit = it.hit,
                         userCast = it.cast,
@@ -64,13 +64,13 @@ class DetailFragment : Fragment() {
                 }
 
             } else {
-                val radarData = viewModel.movie.value?.let { it1 ->
+                val radarData = viewModel.movie.value?.let { movie ->
                     viewModel.setRadarData(
-                        averageLeisure = it1.voteAverage,
-                        averageHit = it1.voteAverage,
-                        averageCast = it1.voteAverage,
-                        averageMusic = it1.voteAverage,
-                        averageStory = it1.voteAverage,
+                        averageLeisure = movie.voteAverage,
+                        averageHit = movie.voteAverage,
+                        averageCast = movie.voteAverage,
+                        averageMusic = movie.voteAverage,
+                        averageStory = movie.voteAverage,
                         userLeisure = 0F,
                         userHit = 0F,
                         userCast = 0F,

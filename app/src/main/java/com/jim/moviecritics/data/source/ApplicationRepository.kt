@@ -49,7 +49,7 @@ interface ApplicationRepository {
 
     suspend fun pushScore(score: Score): Result<Boolean>
 
-    suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
+    suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>
 
     suspend fun pushMockComment(): Result<Boolean>
 

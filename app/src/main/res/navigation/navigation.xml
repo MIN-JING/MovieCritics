@@ -17,10 +17,10 @@
         android:label="search_fragment"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/downshiftFragment"
-        android:name="com.jim.moviecritics.downshift.DownshiftFragment"
-        android:label="downshift_fragment"
-        tools:layout="@layout/fragment_downshift" />
+        android:id="@+id/watchlistFragment"
+        android:name="com.jim.moviecritics.watchlist.WatchlistFragment"
+        android:label="watchlist_fragment"
+        tools:layout="@layout/fragment_watchlist" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.jim.moviecritics.profile.ProfileFragment"
@@ -71,7 +71,7 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 
-    <action android:id="@+id/navigate_to_downshift_fragment" app:destination="@id/downshiftFragment"
+    <action android:id="@+id/navigate_to_watchlist_fragment" app:destination="@id/watchlistFragment"
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true" />
 

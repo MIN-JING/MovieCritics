@@ -9,7 +9,6 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Movie
@@ -93,9 +92,10 @@ class DetailViewModel(
             }
         } else {
             movie.value?.imdbID?.let {
-                getScoreResult(isInitial = true, imdbID = it, userID = 200001L) }
+                getScoreResult(isInitial = true, imdbID = it, userID = 200001L)
+                getScoresResult(isInitial = false, imdbID = it)
+            }
         }
-
     }
 
     fun navigateToPending(movie: Movie) {
@@ -193,6 +193,7 @@ class DetailViewModel(
         userMusic: Float,
         userStory: Float,
     ): RadarData {
+
         val averageRatingsList: ArrayList<RadarEntry>
                 = arrayListOf(
             RadarEntry(averageLeisure),
@@ -201,6 +202,7 @@ class DetailViewModel(
             RadarEntry(averageMusic),
             RadarEntry(averageStory)
         )
+
         val userRatingsList: ArrayList<RadarEntry>
                 = arrayListOf(
             RadarEntry(userLeisure),

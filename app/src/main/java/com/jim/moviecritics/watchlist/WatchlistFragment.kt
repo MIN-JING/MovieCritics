@@ -1,17 +1,17 @@
-package com.jim.moviecritics.downshift
+package com.jim.moviecritics.watchlist
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.R
-import com.jim.moviecritics.databinding.FragmentDownshiftBinding
+import com.jim.moviecritics.databinding.FragmentWatchlistBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 
-class DownshiftFragment : Fragment() {
+class WatchlistFragment : Fragment() {
 
-    private val viewModel by viewModels<DownshiftViewModel> { getVmFactory() }
+    private val viewModel by viewModels<WatchlistViewModel> { getVmFactory() }
 
 //    companion object {
 //        fun newInstance() = DownshiftFragment()
@@ -48,7 +48,7 @@ class DownshiftFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        val binding = FragmentDownshiftBinding.inflate(inflater, container, false)
+        val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
 

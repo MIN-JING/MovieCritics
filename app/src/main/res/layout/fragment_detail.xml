@@ -40,17 +40,19 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/ic_arrow_back"
+                    android:contentDescription="@string/button_detail_back"
                     android:onClick="@{() -> viewModel.leaveDetail()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
-                    android:id="@+id/button_detail_pending"
+                    android:id="@+id/button_detail_to_pending"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_pending"
+                    android:contentDescription="@string/button_detail_pending"
                     android:onClick="@{() -> viewModel.navigateToPending(viewModel.movie)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:text="DIRECTED BY"
+                    android:text="@string/text_detail_directed_by"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year" />
 
@@ -114,7 +116,8 @@
                     app:imageUrl="@{viewModel.movie.posterUri}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_detail_title"
-                    tools:srcCompat="@tools:sample/avatars[0]" />
+                    tools:srcCompat="@tools:sample/avatars[0]"
+                    android:contentDescription="@string/image_detail_poster" />
 
                 <Button
                     android:id="@+id/button_detail_trailer"
@@ -125,7 +128,7 @@
                     android:includeFontPadding="false"
                     android:paddingStart="0dp"
                     android:paddingEnd="4dp"
-                    android:text="TRAILER"
+                    android:text="@string/button_detail_trailer"
                     app:icon="@drawable/ic_play_arrow"
                     app:iconPadding="8dp"
                     app:iconSize="20dp"
@@ -160,7 +163,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer" />
 
                 <View
-                    android:id="@+id/divider_detail_2"
+                    android:id="@+id/divider1_detail"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
@@ -175,11 +178,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="RATINGS"
+                    android:text="@string/text_detail_ratings"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_detail_2" />
+                    app:layout_constraintTop_toBottomOf="@+id/divider1_detail" />
 
                 <TextView
                     android:id="@+id/text_detail_rating"
@@ -208,7 +211,7 @@
                 </com.github.mikephil.charting.charts.RadarChart>
 
                 <View
-                    android:id="@+id/divider_detail_3"
+                    android:id="@+id/divider2_detail"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
@@ -223,11 +226,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Cast"
+                    android:text="@string/text_detail_cast"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_detail_3" />
+                    app:layout_constraintTop_toBottomOf="@+id/divider2_detail" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_detail_cast"

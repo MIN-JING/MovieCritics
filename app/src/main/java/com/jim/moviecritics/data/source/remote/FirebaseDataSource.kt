@@ -409,27 +409,27 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>  = suspendCoroutine { continuation ->
+    override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>  = suspendCoroutine { continuation ->
         val popularMovies = FirebaseFirestore.getInstance().collection(PATH_POPULAR_MOVIES)
-        val document = popularMovies.document()
 
-        pushTrend.documentID = document.id
-
-        document
-            .set(popularMovies)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Logger.i("pushPopularMovies task.isSuccessful")
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
+        for (trend in trends) {
+            popularMovies
+                .document(trend.id.toString())
+                .set(trend)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Logger.i("pushPopularMovies task.isSuccessful")
+                        continuation.resume(Result.Success(true))
+                    } else {
+                        task.exception?.let {
+                            Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                            continuation.resume(Result.Error(it))
+                            return@addOnCompleteListener
+                        }
+                        continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                     }
-                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
-            }
+        }
     }
 
     override suspend fun pushMockComment(): Result<Boolean> {

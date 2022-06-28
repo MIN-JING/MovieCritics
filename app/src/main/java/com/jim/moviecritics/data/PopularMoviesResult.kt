@@ -18,7 +18,6 @@ data class PopularMoviesResult(
     fun toHomeItems(): List<HomeItem> {
 
         val items = mutableListOf<HomeItem>()
-//        val items = mutableListOf<Trends>()
 
         trends?.let {
             Logger.i("trendsList = $trends")

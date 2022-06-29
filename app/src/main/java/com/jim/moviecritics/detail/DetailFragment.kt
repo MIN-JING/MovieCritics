@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentDetailBinding
@@ -31,10 +32,18 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.isLiveDataDesign = MovieApplication.instance.isLiveDataDesign()
         binding.viewModel = viewModel
+
         binding.recyclerviewDetailCast.adapter = CastAdapter(
             CastAdapter.OnClickListener {
                 Logger.i("CastAdapter.OnClickListener it = $it")
+            }
+        )
+
+        binding.recyclerviewDetailReview.adapter = ReviewAdapter(
+            ReviewAdapter.OnClickListener {
+                Logger.i("ReviewAdapter.OnClickListener it = $it")
             }
         )
 
@@ -84,6 +93,13 @@ class DetailFragment : Fragment() {
             }
         })
 
+        viewModel.liveComments.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.liveComments = $it")
+            it?.let {
+                binding.viewModel = viewModel
+            }
+        }
+
 
         viewModel.navigateToPending.observe(viewLifecycleOwner, Observer {
             Logger.i("DetailViewModel.navigateToPending = $it")
@@ -96,9 +112,9 @@ class DetailFragment : Fragment() {
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
             Logger.i(" DetailViewModel.leaveDetail = $it")
-            it?.let {
-                if (it) findNavController().popBackStack()
-            }
+//            it?.let {
+//                if (it) findNavController().popBackStack()
+//            }
         })
 
         return binding.root

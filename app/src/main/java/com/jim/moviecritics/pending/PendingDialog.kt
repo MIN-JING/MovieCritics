@@ -26,6 +26,7 @@ import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_HI
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LEISURE_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MUSIC_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
+import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
 
 
 class PendingDialog : AppCompatDialogFragment() {
@@ -74,25 +75,28 @@ class PendingDialog : AppCompatDialogFragment() {
         })
 
         viewModel.invalidScore.observe(viewLifecycleOwner, Observer {
-            Logger.i("viewModel.invalidScore.value = ${viewModel.invalidScore.value}")
+            Logger.i("viewModel.invalidScore.value = $it")
             it?.let {
                 when (it) {
                     INVALID_FORMAT_LEISURE_EMPTY -> {
-                        activity.showToast("Leisure 最低分數為0.5顆星等，請重新選擇")
+                        activity.showToast("Leisure minimum score is 0.5 star, please try rating again.")
                     }
                     INVALID_FORMAT_HIT_EMPTY -> {
-                        activity.showToast("Hit 最低分數為0.5顆星等，請重新選擇")
+                        activity.showToast("Hit minimum score is 0.5 star, please try rating again.")
                     }
                     INVALID_FORMAT_CAST_EMPTY -> {
-                        activity.showToast("Cast 最低分數為0.5顆星等，請重新選擇")
+                        activity.showToast("Cast minimum score is 0.5 star, please try rating again.")
                     }
                     INVALID_FORMAT_MUSIC_EMPTY -> {
-                        activity.showToast("Music 最低分數為0.5顆星等，請重新選擇")
+                        activity.showToast("Music minimum score is 0.5 star, please try rating again.")
                     }
                     INVALID_FORMAT_STORY_EMPTY -> {
-                        activity.showToast("Story 最低分數為0.5顆星等，請重新選擇")
+                        activity.showToast("Story minimum score is 0.5 star, please try rating again.")
                     }
-                    else -> { Logger.i("Unknown invalidScore value = $it") }
+                    NO_ONE_KNOWS -> {
+                        Logger.i("Unknown invalidScore value NO_ONE_KNOWS = $it")
+                    }
+                    null -> { Logger.i("Unknown invalidScore value null = $it") }
                 }
             }
         })

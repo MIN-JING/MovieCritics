@@ -11,6 +11,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.Score
@@ -46,6 +47,14 @@ class DetailViewModel(
         get() = _score
 
     var liveScore = MutableLiveData<Score>()
+
+
+    private val _comments = MutableLiveData<List<Comment>>()
+
+    val comments: LiveData<List<Comment>>
+        get() = _comments
+
+    var liveComments = MutableLiveData<List<Comment>>()
 
 
         // status: The internal MutableLiveData that stores the status of the most recent request
@@ -89,11 +98,13 @@ class DetailViewModel(
         if (MovieApplication.instance.isLiveDataDesign()) {
             movie.value?.imdbID?.let {
                 getLiveScoreResult(imdbID = it, userID = 200001L)
+                getLiveCommentsResult(imdbID = it)
             }
         } else {
             movie.value?.imdbID?.let {
                 getScoreResult(isInitial = true, imdbID = it, userID = 200001L)
                 getScoresResult(isInitial = false, imdbID = it)
+                getCommentsResult(isInitial = false, imdbID = it)
             }
         }
     }
@@ -178,6 +189,43 @@ class DetailViewModel(
 
     private fun getLiveScoreResult(imdbID: String, userID: Long) {
         liveScore = applicationRepository.getLiveScore(imdbID, userID)
+        _status.value = LoadApiStatus.DONE
+    }
+
+    private fun getCommentsResult(isInitial: Boolean = false, imdbID: String) {
+        coroutineScope.launch {
+
+            if (isInitial) _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getComments(imdbID)
+
+            _comments.value = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
+
+    private fun getLiveCommentsResult(imdbID: String) {
+        liveComments = applicationRepository.getLiveComments(imdbID)
         _status.value = LoadApiStatus.DONE
     }
 

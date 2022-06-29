@@ -13,8 +13,9 @@ fun Activity.getVmFactory(): ViewModelFactory {
 }
 
 fun Activity?.showToast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).apply {
-        setGravity(Gravity.CENTER, 0, 0)
+    Toast.makeText(this, message, Toast.LENGTH_LONG).apply {
+// starting from Android R, text Toast can no longer be set with these parameters since the setter functions have become no-op functions
+//        setGravity(Gravity.CENTER, 0, 0)
         show()
     }
 }

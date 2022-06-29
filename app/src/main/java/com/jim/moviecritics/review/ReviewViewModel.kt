@@ -1,5 +1,7 @@
 package com.jim.moviecritics.review
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +12,7 @@ import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.ext.showToast
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
@@ -158,8 +161,10 @@ class ReviewViewModel(
     }
 
     fun prepareComment() {
+        _comment.value = _comment.value
         when {
             comment.value?.content?.isEmpty() == true -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
+
             comment.value?.content?.isEmpty() == false -> comment.value?.let{
                 pushComment(it)
             }

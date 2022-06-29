@@ -14,6 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogReviewBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.ext.showToast
+import com.jim.moviecritics.network.LoadApiStatus
+import com.jim.moviecritics.review.ReviewViewModel.Companion.INVALID_FORMAT_COMMENT_EMPTY
+import com.jim.moviecritics.review.ReviewViewModel.Companion.NO_ONE_KNOWS
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,29 +48,59 @@ class ReviewDialog : AppCompatDialogFragment()  {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.observe(viewLifecycleOwner, Observer {
+        viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog movie = $it")
             Logger.i("Review Dialog movie.awards = ${it.awards}")
             Logger.i("Review Dialog movie.genres = ${it.genres}")
-        })
+        }
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
-            dismiss()
+            when (viewModel.leave.value) {
+                true -> {
+                    Logger.i("Review Dialog leave true = $it")
+                    dismiss()
+                    viewModel.onLeaveCompleted()
+
+                }
+                false -> { Logger.i("Review Dialog leave false = $it") }
+                null -> { Logger.i("Review Dialog leave null = $it") }
+            }
+
+        })
+
+        viewModel.comment.observe(viewLifecycleOwner, Observer {
+            Logger.i("Review Dialog comment = $it")
         })
 
         viewModel.invalidComment.observe(viewLifecycleOwner, Observer {
             Logger.i("Review Dialog invalidComment = $it")
+            it?.let {
+                when (it) {
+                    INVALID_FORMAT_COMMENT_EMPTY -> {
+                        activity.showToast("The content of the review was empty, please try key-in again.")
+                    }
+                    NO_ONE_KNOWS -> {
+                        Logger.i("Unknown invalidComment value NO_ONE_KNOWS = $it")
+                    }
+                }
+            }
         })
 
-
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            Logger.i("Review Dialog status = $it")
+            it?.let {
+                when (it) {
+                    LoadApiStatus.DONE -> activity.showToast("The movie's review was published !")
+                    else -> { Logger.i("ReviewViewModel status value else = $it") }
+                }
+            }
+        })
 
         return binding.root
-//        return inflater.inflate(R.layout.fragment_review, container, false)
     }
 
     override fun dismiss() {
 //    if (::binding.isInitialized) { }
-
         binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
         lifecycleScope.launch {
             delay(200)

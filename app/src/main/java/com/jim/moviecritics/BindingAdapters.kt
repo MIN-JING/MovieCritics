@@ -1,16 +1,17 @@
 package com.jim.moviecritics
 
-import android.graphics.drawable.LayerDrawable
+
 import android.widget.ImageView
-import android.widget.RatingBar
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.Cast
+import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.detail.CastAdapter
+import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
@@ -58,6 +59,20 @@ fun bindRecyclerViewWithCasts(recyclerView: RecyclerView, casts: List<Cast>?) {
     }
 }
 
+@BindingAdapter("comments")
+fun bindRecyclerViewWithComments(recyclerView: RecyclerView, comments: List<Comment>?) {
+    comments?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is ReviewAdapter -> {
+                    submitList(it)
+                    Logger.i("bindRecyclerViewWithComments = $it")
+                }
+            }
+        }
+    }
+}
+
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
  */
@@ -95,9 +110,9 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 //    }
 //}
 
-/**
- * Displays currency price to [TextView] by [Double]
- */
+///**
+// * Displays currency price to [TextView] by [Double]
+// */
 //@BindingAdapter("average")
 //fun bindAverage(textView: TextView, average: Double?) {
 //    average?.let { textView.text = MovieApplication.instance.getString(it.toInt()) }

@@ -107,11 +107,11 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getComments(): Result<List<Comment>> {
+    override suspend fun getComments(imdbID: String): Result<List<Comment>> {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveComments(): MutableLiveData<List<Comment>> {
+    override fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>> {
         TODO("Not yet implemented")
     }
 

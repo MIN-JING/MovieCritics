@@ -20,7 +20,7 @@
     <string name="image_home_star">A rating star picture</string>
 
     <!-- Search -->
-    <string name="edit_search">Input keywords...</string>
+    <string name="edit_search">Input keywords…</string>
     <string name="button_search">Click for search request</string>
 
     <!-- Item Search Movie -->
@@ -40,6 +40,7 @@
     <string name="button_detail_trailer">TRAILER</string>
     <string name="text_detail_ratings">RATINGS</string>
     <string name="text_detail_cast">Cast</string>
+    <string name="text_detail_review">Review</string>
 
     <!-- Item Detail Cast -->
     <string name="image_cast">A cast profile picture</string>
@@ -64,10 +65,10 @@
     <!-- Review -->
     <string name="button_review_cancel">Cancel</string>
     <string name="button_review_save">Save</string>
-    <string name="text_review_title_top">I Watched...</string>
+    <string name="text_review_title_top">I Watched…</string>
     <string name="image_review_poster">A movie poster</string>
     <string name="text_review_date_title">Date</string>
-    <string name="edit_review">Add review...</string>
+    <string name="edit_review">Add review…</string>
 
     <!-- Profile -->
     <string name="profile_mystic_information">Into the Unknown~</string>

@@ -27,9 +27,9 @@ interface ApplicationDataSource {
 
     suspend fun getUser(userID: Long): Result<User>
 
-    suspend fun getComments(): Result<List<Comment>>
+    suspend fun getComments(imdbID: String): Result<List<Comment>>
 
-    fun getLiveComments(): MutableLiveData<List<Comment>>
+    fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>>
 
     suspend fun pushComment(comment: Comment): Result<Boolean>
 

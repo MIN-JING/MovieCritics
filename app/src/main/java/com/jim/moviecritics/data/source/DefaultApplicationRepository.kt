@@ -47,12 +47,12 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getUser(userID)
     }
 
-    override suspend fun getComments(): Result<List<Comment>> {
-        return firebaseDataSource.getComments()
+    override suspend fun getComments(imdbID: String): Result<List<Comment>> {
+        return firebaseDataSource.getComments(imdbID)
     }
 
-    override fun getLiveComments(): MutableLiveData<List<Comment>> {
-        return firebaseDataSource.getLiveComments()
+    override fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>> {
+        return firebaseDataSource.getLiveComments(imdbID)
     }
 
     override suspend fun pushComment(comment: Comment): Result<Boolean> {

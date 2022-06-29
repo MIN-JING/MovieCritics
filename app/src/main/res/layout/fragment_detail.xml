@@ -9,12 +9,12 @@
         <variable
             name="viewModel"
             type="com.jim.moviecritics.detail.DetailViewModel" />
-        <variable
-            name="movie"
-            type="com.jim.moviecritics.data.Movie" />
 <!--        <variable-->
-<!--            name="isLiveDataDesign"-->
-<!--            type="Boolean" />-->
+<!--            name="movie"-->
+<!--            type="com.jim.moviecritics.data.Movie" />-->
+        <variable
+            name="isLiveDataDesign"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,7 +163,8 @@
                     android:text="@{viewModel.movie.overview}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer"
+                    tools:text="Overview"/>
 
                 <View
                     android:id="@+id/divider1_detail"
@@ -224,6 +225,43 @@
                     app:layout_constraintTop_toBottomOf="@+id/radar_chart_rating" />
 
                 <TextView
+                    android:id="@+id/text_detail_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/text_detail_review"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2_detail" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_detail_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:comments="@{isLiveDataDesign ? viewModel.liveComments : viewModel.comments}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_detail_review"
+                    tools:listitem="@layout/item_detail_review"/>
+
+                <View
+                    android:id="@+id/divider3_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerview_detail_review" />
+
+                <TextView
                     android:id="@+id/text_detail_cast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -233,17 +271,17 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider2_detail" />
+                    app:layout_constraintTop_toBottomOf="@+id/divider3_detail" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_detail_cast"
                     android:layout_width="0dp"
-                    android:layout_height="300dp"
+                    android:layout_height="200dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:fadeScrollbars="false"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:scrollbarStyle="insideInset"
                     android:scrollbars="vertical"
                     app:casts="@{viewModel.movie.casts}"

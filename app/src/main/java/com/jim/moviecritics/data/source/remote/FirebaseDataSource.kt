@@ -164,9 +164,10 @@ object FirebaseDataSource : ApplicationDataSource {
 
     }
 
-    override suspend fun getComments(): Result<List<Comment>> = suspendCoroutine { continuation ->
+    override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
+            .whereEqualTo("imdbID", imdbID)
             .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
@@ -190,11 +191,12 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override fun getLiveComments(): MutableLiveData<List<Comment>> {
+    override fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>> {
         val liveData = MutableLiveData<List<Comment>>()
 
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
+            .whereEqualTo("imdbID", imdbID)
             .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
                 Logger.i("getLiveComments addSnapshotListener detect")

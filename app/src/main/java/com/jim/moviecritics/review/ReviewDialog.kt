@@ -38,7 +38,7 @@ class ReviewDialog : AppCompatDialogFragment()  {
         savedInstanceState: Bundle?,
     ): View? {
 
-        val binding = DialogReviewBinding.inflate(inflater, container, false)
+        binding = DialogReviewBinding.inflate(inflater, container, false)
         binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -54,6 +54,12 @@ class ReviewDialog : AppCompatDialogFragment()  {
             dismiss()
         })
 
+        viewModel.invalidComment.observe(viewLifecycleOwner, Observer {
+            Logger.i("Review Dialog invalidComment = $it")
+        })
+
+
+
         return binding.root
 //        return inflater.inflate(R.layout.fragment_review, container, false)
     }
@@ -61,14 +67,11 @@ class ReviewDialog : AppCompatDialogFragment()  {
     override fun dismiss() {
 //    if (::binding.isInitialized) { }
 
-            binding = DialogReviewBinding.inflate(LayoutInflater.from(context))
-
-            binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
-            lifecycleScope.launch {
-                delay(200)
-                super.dismiss()
-                viewModel.onLeaveCompleted()
-            }
+        binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        lifecycleScope.launch {
+            delay(200)
+            super.dismiss()
+            viewModel.onLeaveCompleted()
+        }
     }
-
 }

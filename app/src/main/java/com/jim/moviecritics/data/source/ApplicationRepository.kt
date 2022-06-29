@@ -31,7 +31,7 @@ interface ApplicationRepository {
 
     fun getLiveComments(): MutableLiveData<List<Comment>>
 
-    suspend fun comment(comment: Comment): Result<Boolean>
+    suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
 

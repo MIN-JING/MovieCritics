@@ -11,7 +11,7 @@ data class Comment(
     val userID: Long = 0L,
     val imdbID: String = "",
     var createdTime: Timestamp = Timestamp.now(),
-    val content: String = "",
-    val likes: List<Long> = listOf(0L),
-    val dislikes: List<Long> = listOf(0L)
+    var content: String = "",
+    val likes: List<Long> = listOf(),
+    val dislikes: List<Long> = listOf()
 ) : Parcelable

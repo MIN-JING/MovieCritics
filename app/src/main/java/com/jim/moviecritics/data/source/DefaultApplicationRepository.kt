@@ -55,8 +55,8 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveComments()
     }
 
-    override suspend fun comment(comment: Comment): Result<Boolean> {
-        return firebaseDataSource.comment(comment)
+    override suspend fun pushComment(comment: Comment): Result<Boolean> {
+        return firebaseDataSource.pushComment(comment)
     }
 
     override suspend fun delete(comment: Comment): Result<Boolean> {

@@ -217,7 +217,7 @@ object FirebaseDataSource : ApplicationDataSource {
         return liveData
     }
 
-    override suspend fun comment(comment: Comment): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushComment(comment: Comment): Result<Boolean> = suspendCoroutine { continuation ->
         val comments = FirebaseFirestore.getInstance().collection(PATH_COMMENTS)
         val document = comments.document()
 

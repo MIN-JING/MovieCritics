@@ -1,6 +1,6 @@
 package com.jim.moviecritics.pending
 
-import android.widget.Toast
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -350,8 +350,7 @@ class PendingViewModel(
 
             score.createdTime = Timestamp.now()
 
-
-            _status.postValue(LoadApiStatus.LOADING)
+            _status.value = LoadApiStatus.LOADING
 
             when (val result = applicationRepository.pushScore(score)) {
                 is Result.Success -> {

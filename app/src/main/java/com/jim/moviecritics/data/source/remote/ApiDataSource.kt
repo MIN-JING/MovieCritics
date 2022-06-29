@@ -115,7 +115,7 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun comment(comment: Comment): Result<Boolean> {
+    override suspend fun pushComment(comment: Comment): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

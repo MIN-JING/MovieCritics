@@ -78,7 +78,7 @@ class MainActivity : BaseActivity() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestEmail()
+            .requestEmail()
             .build()
 
         // Build a GoogleSignInClient with the options specified by gso.

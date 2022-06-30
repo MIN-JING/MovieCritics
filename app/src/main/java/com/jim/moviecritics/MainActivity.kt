@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+//    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     // get the height of status bar from system
     private val statusBarHeight: Int
@@ -73,21 +73,24 @@ class MainActivity : BaseActivity() {
         setupBottomNav()
         setupNavController()
 
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build()
 
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        binding.buttonMainGoogle.setOnClickListener {
-            Logger.i("buttonMainGoogle onClick")
-            signInGoogle()
-        }
+//        // Configure sign-in to request the user's ID, email address, and basic
+//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+//        // Configure sign-in to request the user's ID, email address, and basic
+//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestEmail()
+//            .requestIdToken(getString(R.string.server_client_id))
+//            .build()
+//
+//        // Build a GoogleSignInClient with the options specified by gso.
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+//        binding.buttonMainGoogle.setOnClickListener {
+//            Logger.i("buttonMainGoogle onClick")
+//            signInGoogle()
+//        }
 
 
     }
@@ -104,13 +107,13 @@ class MainActivity : BaseActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == RC_SIGN_IN) {
+//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            handleSignInResult(task)
+//        }
+//    }
 
     private fun setupNavController() {
         findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
@@ -212,34 +215,35 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun signInGoogle() {
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            val googleId = account?.id ?: ""
-            Logger.i("Google ID = $googleId")
-            val googleFirstName = account?.givenName ?: ""
-            Logger.i("Google First Name = $googleFirstName")
-            val googleLastName = account?.familyName ?: ""
-            Logger.i("Google Last Name = $googleLastName")
-            val googleEmail = account?.email ?: ""
-            Logger.i("Google Email = $googleEmail")
-            val googleProfilePicURL = account?.photoUrl.toString()
-            Logger.i("Google Profile Pic URL = $googleProfilePicURL")
-            val googleIdToken = account?.idToken ?: ""
-            Logger.i("Google ID Token = $googleIdToken")
-
-        } catch (e: ApiException) {
-            // Sign in was unsuccessful
-            Logger.e("failed code = ${e.statusCode.toString()}")
-        }
-    }
-
-    companion object {
-        const val RC_SIGN_IN = 9001
-    }
+//    private fun signInGoogle() {
+//        val signInIntent = mGoogleSignInClient.signInIntent
+//        startActivityForResult(signInIntent, RC_SIGN_IN)
+//    }
+//
+//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+//        try {
+//            val account = completedTask.getResult(ApiException::class.java)
+//            val googleId = account?.id ?: ""
+//            Logger.i("Google ID = $googleId")
+//            val googleFirstName = account?.givenName ?: ""
+//            Logger.i("Google First Name = $googleFirstName")
+//            val googleLastName = account?.familyName ?: ""
+//            Logger.i("Google Last Name = $googleLastName")
+//            val googleEmail = account?.email ?: ""
+//            Logger.i("Google Email = $googleEmail")
+//            val googleProfilePicURL = account?.photoUrl.toString()
+//            Logger.i("Google Profile Pic URL = $googleProfilePicURL")
+//            val googleIdToken = account?.idToken ?: ""
+//            Logger.i("Google ID Token = $googleIdToken")
+//
+//
+//        } catch (e: ApiException) {
+//            // Sign in was unsuccessful
+//            Logger.e("Google log in failed code = ${e.statusCode.toString()}")
+//        }
+//    }
+//
+//    companion object {
+//        const val RC_SIGN_IN = 9001
+//    }
 }

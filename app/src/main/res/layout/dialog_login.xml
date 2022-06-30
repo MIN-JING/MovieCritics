@@ -108,6 +108,7 @@
 <!--        tools:text="@string/button_login_google"-->
 <!--        android:onClick="@{() -> viewModel.login()}"-->
 <!--        android:text='@{viewModel.status != LoadApiStatus.LOADING ? @string/button_login_google : ""}'-->
+<!--        android:onClick="@{() -> viewModel.login()}"-->
 
         <ProgressBar
             android:id="@+id/progressBar_login"

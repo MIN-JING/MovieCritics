@@ -1,5 +1,6 @@
 package com.jim.moviecritics
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -11,10 +12,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import com.jim.moviecritics.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
 
 
@@ -22,8 +30,9 @@ class MainActivity : BaseActivity() {
 //    AppCompatActivity()
 
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
-
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     // get the height of status bar from system
     private val statusBarHeight: Int
@@ -64,6 +73,43 @@ class MainActivity : BaseActivity() {
         setupBottomNav()
         setupNavController()
 
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestEmail()
+            .build()
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        binding.buttonMainGoogle.setOnClickListener {
+            Logger.i("buttonMainGoogle onClick")
+            signInGoogle()
+        }
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        // if account != null , then updateUI(account)
+        Logger.i("Google account = $account")
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
     }
 
     private fun setupNavController() {
@@ -99,10 +145,22 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.navigation_profile -> {
 
-                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
+                    when (viewModel.isLoggedIn) {
+                        true -> {
+                            findNavController(R.id.navHostFragment).navigate(
+                                NavigationDirections.navigateToProfileFragment(
+                                    //viewModel.user.value
+                                )
+                            )
+                        }
+                        false -> {
+                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+                            return@setOnItemSelectedListener false
+                        }
+                    }
+//                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
                     return@setOnItemSelectedListener true
                 }
-
             }
             false
         }
@@ -152,5 +210,36 @@ class MainActivity : BaseActivity() {
             }
             Log.i("Jim","====== ${Build.MODEL} ======")
         }
+    }
+
+    private fun signInGoogle() {
+        val signInIntent = mGoogleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+        try {
+            val account = completedTask.getResult(ApiException::class.java)
+            val googleId = account?.id ?: ""
+            Logger.i("Google ID = $googleId")
+            val googleFirstName = account?.givenName ?: ""
+            Logger.i("Google First Name = $googleFirstName")
+            val googleLastName = account?.familyName ?: ""
+            Logger.i("Google Last Name = $googleLastName")
+            val googleEmail = account?.email ?: ""
+            Logger.i("Google Email = $googleEmail")
+            val googleProfilePicURL = account?.photoUrl.toString()
+            Logger.i("Google Profile Pic URL = $googleProfilePicURL")
+            val googleIdToken = account?.idToken ?: ""
+            Logger.i("Google ID Token = $googleIdToken")
+
+        } catch (e: ApiException) {
+            // Sign in was unsuccessful
+            Logger.e("failed code = ${e.statusCode.toString()}")
+        }
+    }
+
+    companion object {
+        const val RC_SIGN_IN = 9001
     }
 }

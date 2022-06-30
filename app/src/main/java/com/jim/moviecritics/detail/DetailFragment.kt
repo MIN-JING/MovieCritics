@@ -112,9 +112,9 @@ class DetailFragment : Fragment() {
 
         viewModel.leave.observe(viewLifecycleOwner, Observer {
             Logger.i(" DetailViewModel.leaveDetail = $it")
-//            it?.let {
-//                if (it) findNavController().popBackStack()
-//            }
+            it?.let {
+                if (it) findNavController().popBackStack()
+            }
         })
 
         return binding.root

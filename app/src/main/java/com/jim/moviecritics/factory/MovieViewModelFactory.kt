@@ -14,7 +14,6 @@ import com.jim.moviecritics.review.ReviewViewModel
 @Suppress("UNCHECKED_CAST")
 class MovieViewModelFactory(
     private val applicationRepository: ApplicationRepository,
-//    private val movieDetailResult: MovieDetailResult,
     private val movie: Movie
 ) : ViewModelProvider.Factory {
 
@@ -29,7 +28,6 @@ class MovieViewModelFactory(
 
                 isAssignableFrom(ReviewViewModel::class.java) ->
                     ReviewViewModel(applicationRepository, movie)
-
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

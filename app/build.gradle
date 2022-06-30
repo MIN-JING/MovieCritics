@@ -49,6 +49,7 @@ android {
 
         // Determines whether to generate a BuildConfig class.
         buildConfig = true
+        viewBinding true
 
         // Determines whether to support Data Binding.
         // Note that the dataBinding.enabled property is now deprecated.
@@ -70,6 +71,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.annotation:annotation:1.3.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -121,4 +123,7 @@ dependencies {
 
     // Radar Chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
+
+    // Google login
+    implementation "com.google.android.gms:play-services-auth:20.2.0"
 }

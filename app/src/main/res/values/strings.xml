@@ -72,5 +72,18 @@
 
     <!-- Profile -->
     <string name="profile_mystic_information">Into the Unknown~</string>
+    <string name="text_login_title">Please log in.</string>
+    <string name="text_login_description">You could use advanced features after log in.</string>
+    <string name="button_login_google">Google 登入</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 </resources>

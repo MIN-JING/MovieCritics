@@ -19,7 +19,7 @@ object UserManager {
     val user: LiveData<User?>
         get() = _user
 
-    private var userToken: String? = null
+    var userToken: String? = null
         get() = MovieApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
             .getString(USER_TOKEN, null)

@@ -32,7 +32,6 @@ class ReviewDialog : AppCompatDialogFragment()  {
         super.onCreate(savedInstanceState)
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
-
     }
 
 

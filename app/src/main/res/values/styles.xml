@@ -15,4 +15,9 @@
         <item name="android:animation">@null</item>
         <!--        <item name="android:windowCloseOnTouchOutside">true</item>-->
     </style>
+
+    <style name="LoginDialog">
+        <item name="android:windowBackground">@color/translucent_40</item>
+    </style>
+
 </resources>

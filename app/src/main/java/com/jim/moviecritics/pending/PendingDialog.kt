@@ -44,7 +44,6 @@ class PendingDialog : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.PendingDialog)
-
     }
 
     override fun onCreateView(

@@ -1,28 +1,22 @@
-package com.jim.moviecritics
+package com.jim.moviecritics.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
-import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
-import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-class MainViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class LoginViewModel(private val applicationRepository: ApplicationRepository)  : ViewModel() {
 
-    // user: MainViewModel has User info to provide Drawer UI
     private val _user = MutableLiveData<User>()
 
     val user: LiveData<User>
         get() = _user
-
-    // Record current fragment to support data binding
-    val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 
     // Handle navigation to login success
     private val _navigateToLoginSuccess = MutableLiveData<User>()
@@ -30,9 +24,17 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
     val navigateToLoginSuccess: LiveData<User>
         get() = _navigateToLoginSuccess
 
-    // check user login status
-    val isLoggedIn
-        get() = UserManager.isLoggedIn
+    // Handle leave login
+    private val _loginGoogle = MutableLiveData<Boolean?>()
+
+    val loginGoogle: LiveData<Boolean?>
+        get() = _loginGoogle
+
+    // Handle leave login
+    private val _leave = MutableLiveData<Boolean?>()
+
+    val leave: LiveData<Boolean?>
+        get() = _leave
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -52,10 +54,8 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
-     * Retrofit service to stop.
-     */
+//    lateinit var fbCallbackManager: CallbackManager
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
@@ -67,21 +67,22 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("------------------------------------")
     }
 
-    fun setupUser(user: User) {
+    fun login() {}
 
-        _user.value = user
-        Logger.i("=============")
-        Logger.i("| setupUser |")
-        Logger.i("user=$user")
-        Logger.i("MainViewModel=$this")
-        Logger.i("=============")
+    private fun loginGoogle() {
+        _loginGoogle.value = true
     }
 
-    fun checkUser() {
-        if (user.value == null) {
-            UserManager.userToken?.let {
-//                getUserProfile(it)
-            }
-        }
+    fun leave() {
+        _leave.value = true
+    }
+
+    fun onLeaveCompleted() {
+        _leave.value = null
+    }
+
+
+    fun onLoginFacebookCompleted() {
+        _loginGoogle.value = null
     }
 }

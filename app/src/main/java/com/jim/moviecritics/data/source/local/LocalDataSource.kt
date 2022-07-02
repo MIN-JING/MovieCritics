@@ -1,5 +1,6 @@
 package com.jim.moviecritics.data.source.local
 
+
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
@@ -38,15 +39,19 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+    override suspend fun getScore(imdbID: String, userID: String): Result<Score> {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+    override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(userID: Long): Result<User> {
+    override suspend fun userSignIn(user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUser(userID: String): Result<User> {
         TODO("Not yet implemented")
     }
 
@@ -66,27 +71,27 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -133,7 +138,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
     override suspend fun pushMockScore(): Result<Boolean> = suspendCoroutine { continuation ->
         val score = Score(
             id = "",
-            userID = 200001L,
+            userID = "2BLJSIq9AiNS9R4egUZqJLb7Stz2",
             imdbID = "tt0343818",
             createdTime = Timestamp.now(),
             leisure = 3.5F,
@@ -167,15 +172,15 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
 
     override suspend fun pushMockUser(): Result<Boolean> = suspendCoroutine { continuation ->
         val user = User(
-            id = 200001L,
+            id = "2BLJSIq9AiNS9R4egUZqJLb7Stz2",
             name = "REVIEWER",
             pictureUri = "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
             location = "Taipei City",
             instagramUri = "https://www.instagram.com/panboknee/",
             twitterUri = "https://twitter.com/totorojack",
-            followers = listOf(300001L, 300002L, 300003L),
-            followings = listOf(300001L, 300002L, 300003L),
-            blocks = listOf(400001L, 400002L, 400003L),
+            followers = mutableListOf("300001L", "300002L", "300003L"),
+            followings = mutableListOf("300001L", "300002L", "300003L"),
+            blocks = mutableListOf("400001L", "400002L", "400003L"),
             watched = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
             liked = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
             watchlist = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
@@ -187,7 +192,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
 
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(user.id.toString())
+            .document(user.id)
             .set(user)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -203,5 +208,15 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
                 }
             }
     }
+
+//    override fun getGoogleSignInClient(): GoogleSignInClient {
+//
+//        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.server_client_id))
+//            .requestEmail()
+//            .build()
+//
+//        val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+//    }
 
 }

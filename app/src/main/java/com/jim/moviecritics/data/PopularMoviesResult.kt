@@ -20,16 +20,12 @@ data class PopularMoviesResult(
         val items = mutableListOf<HomeItem>()
 
         trends?.let {
-            Logger.i("trendsList = $trends")
-
             for (trend in it) {
                 if (trend.posterUri != null) {
                     trend.posterUri = "https://image.tmdb.org/t/p/w185" + trend.posterUri
                 }
                 items.add(HomeItem.PopularMovie(trend))
-                Logger.i("trend = $trend")
             }
-            Logger.i("items = $items")
         }
         return items
     }

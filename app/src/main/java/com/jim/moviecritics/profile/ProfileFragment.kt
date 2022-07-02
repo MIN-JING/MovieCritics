@@ -1,28 +1,59 @@
 package com.jim.moviecritics.profile
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.viewpager.widget.PagerAdapter
-import com.google.android.material.tabs.TabLayout
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jim.moviecritics.MainViewModel
+import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentProfileBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.util.Logger
 
 
 class ProfileFragment : Fragment() {
 
     private val viewModel by viewModels<ProfileViewModel> { getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey) }
 
+//    private lateinit var googleSignInClient: GoogleSignInClient
 //    companion object {
 //        fun newInstance() = ProfileFragment()
 //    }
 //
 //    private lateinit var viewModel: ProfileViewModel
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.toolbar_menu_log_out, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.toolbar_log_out -> {
+                Logger.i("toolbar_button_log_out onClick")
+
+//                Firebase.auth.signOut()
+//
+//                val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                    .requestIdToken(getString(R.string.server_client_id))
+//                    .requestEmail()
+//                    .build()
+//
+//                googleSignInClient =
+//                    context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }
+//                        ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
+////                googleSignInClient.signOut()
+//                googleSignInClient.signOut().addOnCompleteListener {
+//                    val intent = Intent(context, LoginDialog::class.java)
+//                }
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +63,7 @@ class ProfileFragment : Fragment() {
 
 //        val binding = FragmentProfileBinding.inflate(inflater, container, false)
 //        binding.lifecycleOwner = viewLifecycleOwner
+        setHasOptionsMenu(true)
 
         val tabLayoutArray = arrayOf("Guide", "Favorite")
 
@@ -45,6 +77,15 @@ class ProfileFragment : Fragment() {
                 }.attach()
             }
             return@onCreateView root
+        }
+
+        if (viewModel.user.value == null) {
+            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+            viewModel.user.observe(viewLifecycleOwner) {
+                if (null != it) {
+                    mainViewModel.setupUser(it)
+                }
+            }
         }
 
 //        binding.viewpagerProfile.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)

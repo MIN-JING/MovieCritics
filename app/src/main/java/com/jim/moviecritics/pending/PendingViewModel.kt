@@ -111,7 +111,7 @@ class PendingViewModel(
         Logger.i("------------------------------------")
 
         coroutineScope.launch {
-            _user.value = getUserResult(isInitial = true, userID = 200001)
+            _user.value = getUserResult(isInitial = true, userID = "200001")
             _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
             _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
             _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
@@ -120,7 +120,7 @@ class PendingViewModel(
     }
 
 
-    private suspend fun getUserResult(isInitial: Boolean = false, userID: Long): User? {
+    private suspend fun getUserResult(isInitial: Boolean = false, userID: String): User? {
 
         return withContext(Dispatchers.IO) {
 
@@ -151,7 +151,7 @@ class PendingViewModel(
         }
     }
 
-    fun onClickWatch(imdbID: String, userID: Long) {
+    fun onClickWatch(imdbID: String, userID: String) {
         if (isWatch.value != true) {
             Logger.i("isWatch.value != true")
             Logger.i("user.value?.watched = ${user.value?.watched}")
@@ -213,7 +213,7 @@ class PendingViewModel(
         }
     }
 
-    fun onClickLike(imdbID: String, userID: Long) {
+    fun onClickLike(imdbID: String, userID: String) {
         if (isLike.value != true) {
             Logger.i("isLike.value != true")
             Logger.i("user.value?.liked = ${user.value?.liked}")
@@ -275,7 +275,7 @@ class PendingViewModel(
         }
     }
 
-    fun onClickWatchList(imdbID: String, userID: Long) {
+    fun onClickWatchList(imdbID: String, userID: String) {
         if (isWatchList.value != true) {
             Logger.i("isWatchList.value != true")
             Logger.i("user.value?.watchlist = ${user.value?.watchlist}")

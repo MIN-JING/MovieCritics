@@ -22,7 +22,7 @@
             android:id="@+id/layout_profile_header"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            android:background="#39FF9800"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,33 +36,23 @@
                 android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"
+                android:contentDescription="@string/image_profile_user_pic" />
 
             <TextView
-                android:id="@+id/text_profile_user_name_first"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_profile_user_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/image_profile_user_pic"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="First Name" />
-
-            <TextView
-                android:id="@+id/text_profile_user_name_last"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/text_profile_user_name_first"
-                app:layout_constraintStart_toEndOf="@+id/text_profile_user_name_first"
-                app:layout_constraintTop_toTopOf="@+id/text_profile_user_name_first"
-                tools:text="Last Name" />
+                tools:text="User Name" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

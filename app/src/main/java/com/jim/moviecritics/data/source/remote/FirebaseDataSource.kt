@@ -12,6 +12,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
 
@@ -73,7 +74,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> = suspendCoroutine { continuation ->
+    override suspend fun getScore(imdbID: String, userID: String): Result<Score> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
             .whereEqualTo("imdbID", imdbID)
@@ -103,7 +104,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+    override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
         val liveData = MutableLiveData<Score>()
 
         FirebaseFirestore.getInstance()
@@ -135,23 +136,49 @@ object FirebaseDataSource : ApplicationDataSource {
         return liveData
     }
 
-    override suspend fun getUser(userID: Long): Result<User> = suspendCoroutine { continuation ->
+    override suspend fun userSignIn(user: User): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .whereEqualTo("id", userID)
+            .document(user.id)
+            .set(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushScore task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getUser(userID: String): Result<User> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .document(userID)
+//            .whereEqualTo("firebaseToken", token)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    if (task.result.size() >= 1) {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
-                        val item = task.result.first().toObject(User::class.java)
-                        continuation.resume(Result.Success(item))
-                    } else {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
-                        val item = User(id = userID)
+//                    if (task.result.size() >= 1) {
+//                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
+//                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+//                        val item = task.result.first().toObject(User::class.java)
+//                        continuation.resume(Result.Success(item))
+//                    } else {
+//                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
+//                        val item = User(firebaseToken = "token")
+//                        continuation.resume(Result.Success(item))
+//                    }
+                    val item = task.result.toObject(User::class.java)
+                    if (item != null) {
                         continuation.resume(Result.Success(item))
                     }
+
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -269,10 +296,10 @@ object FirebaseDataSource : ApplicationDataSource {
 
 
 
-    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
 //            .set(watched, SetOptions.merge())
             .update(KEY_WATCHED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
@@ -290,10 +317,10 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
             .update(KEY_WATCHED, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -310,10 +337,10 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
             .update(KEY_LIKED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -330,10 +357,10 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
             .update(KEY_LIKED, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -350,10 +377,10 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
             .update(KEY_WATCHLIST, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -370,10 +397,10 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID.toString())
+            .document(userID)
             .update(KEY_WATCHLIST, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

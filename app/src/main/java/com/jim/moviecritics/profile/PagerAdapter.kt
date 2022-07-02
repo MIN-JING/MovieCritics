@@ -20,6 +20,4 @@ class ProfilePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle
             else -> ItemGuideFragment()
         }
     }
-
-
 }

@@ -97,12 +97,12 @@ class DetailViewModel(
 
         if (MovieApplication.instance.isLiveDataDesign()) {
             movie.value?.imdbID?.let {
-                getLiveScoreResult(imdbID = it, userID = 200001L)
+                getLiveScoreResult(imdbID = it, userID = "200001L")
                 getLiveCommentsResult(imdbID = it)
             }
         } else {
             movie.value?.imdbID?.let {
-                getScoreResult(isInitial = true, imdbID = it, userID = 200001L)
+                getScoreResult(isInitial = true, imdbID = it, userID = "200001L")
                 getScoresResult(isInitial = false, imdbID = it)
                 getCommentsResult(isInitial = false, imdbID = it)
             }
@@ -154,7 +154,7 @@ class DetailViewModel(
         }
     }
 
-    private fun getScoreResult(isInitial: Boolean = false, imdbID: String, userID: Long) {
+    private fun getScoreResult(isInitial: Boolean = false, imdbID: String, userID: String) {
 
         coroutineScope.launch {
 
@@ -187,7 +187,7 @@ class DetailViewModel(
         }
     }
 
-    private fun getLiveScoreResult(imdbID: String, userID: Long) {
+    private fun getLiveScoreResult(imdbID: String, userID: String) {
         liveScore = applicationRepository.getLiveScore(imdbID, userID)
         _status.value = LoadApiStatus.DONE
     }

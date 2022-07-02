@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/toolbar_button_test"
-        android:icon="@drawable/ic_star"
-        android:title="Test"
+        android:id="@+id/toolbar_log_out"
+        android:icon="@drawable/ic_toolbar_logout"
+        android:title="Log out"
         app:showAsAction="always"/>
 </menu>

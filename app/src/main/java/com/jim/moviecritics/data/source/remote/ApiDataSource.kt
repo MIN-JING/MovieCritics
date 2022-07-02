@@ -95,15 +95,19 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+    override suspend fun getScore(imdbID: String, userID: String): Result<Score> {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+    override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(userID: Long): Result<User> {
+    override suspend fun userSignIn(user: User): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUser(userID: String): Result<User> {
         TODO("Not yet implemented")
     }
 
@@ -123,27 +127,27 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

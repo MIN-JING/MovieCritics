@@ -136,18 +136,18 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.navigation_watchlist-> {
 
-                    when (viewModel.isLoggedIn) {
-                        true -> {
-                            findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToWatchlistFragment()
-                            )
-                        }
-                        false -> {
-                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
-                            return@setOnItemSelectedListener false
-                        }
-                    }
-
+//                    when (viewModel.isLoggedIn) {
+//                        true -> {
+//                            findNavController(R.id.navHostFragment).navigate(
+//                                NavigationDirections.navigateToWatchlistFragment()
+//                            )
+//                        }
+//                        false -> {
+//                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+//                            return@setOnItemSelectedListener false
+//                        }
+//                    }
+                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
 //                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToWatchlistFragment())
                     return@setOnItemSelectedListener true
                 }

@@ -8,15 +8,15 @@ import com.google.firebase.Timestamp
 
 @Parcelize
 data class User(
-    var id: Long = 0L,
+    var id: String = "",
     var name: String = "",
     var pictureUri: String = "",
     val location: String = "",
     val instagramUri: String = "",
     val twitterUri: String = "",
-    val followers: List<Long> = listOf(),
-    val followings: List<Long> = listOf(),
-    val blocks: List<Long> = listOf(),
+    val followers: List<String> = mutableListOf(),
+    val followings: List<String> = mutableListOf(),
+    val blocks: List<String> = mutableListOf(),
     val watched: MutableList<String> = mutableListOf(),
     val liked: MutableList<String> = mutableListOf(),
     val watchlist: MutableList<String> = mutableListOf(),

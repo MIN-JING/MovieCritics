@@ -35,15 +35,19 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getScores(imdbID)
     }
 
-    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+    override suspend fun getScore(imdbID: String, userID: String): Result<Score> {
         return firebaseDataSource.getScore(imdbID, userID)
     }
 
-    override fun getLiveScore(imdbID: String, userID: Long): MutableLiveData<Score> {
+    override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
         return firebaseDataSource.getLiveScore(imdbID, userID)
     }
 
-    override suspend fun getUser(userID: Long): Result<User> {
+    override suspend fun userSignIn(user: User): Result<Boolean> {
+        return firebaseDataSource.userSignIn(user)
+    }
+
+    override suspend fun getUser(userID: String): Result<User> {
         return firebaseDataSource.getUser(userID)
     }
 
@@ -63,27 +67,27 @@ class DefaultApplicationRepository(
         return firebaseDataSource.delete(comment)
     }
 
-    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.pushWatchedMovie(imdbID, userID)
     }
 
-    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.removeWatchedMovie(imdbID, userID)
     }
 
-    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.pushLikedMovie(imdbID, userID)
     }
 
-    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.removeLikedMovie(imdbID, userID)
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.pushWatchlistMovie(imdbID, userID)
     }
 
-    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.removeWatchlistMovie(imdbID, userID)
     }
 

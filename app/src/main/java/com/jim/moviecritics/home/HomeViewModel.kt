@@ -108,7 +108,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     for (cast in movieCreditResult.casts) {
                         if (cast.profilePath != null) {
                             cast.profilePath = "https://image.tmdb.org/t/p/w185" + cast.profilePath
-                            Logger.i("cast.profilePath = ${cast.profilePath}")
                         }
                     }
 
@@ -130,7 +129,8 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.writing = writingList
                 }
                 Logger.i("movie = $movie")
-                _navigateToDetail.value = movie
+                navigateToDetail(movie)
+//                _navigateToDetail.value = movie
             }
     }
 

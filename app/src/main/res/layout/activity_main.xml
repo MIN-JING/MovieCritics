@@ -16,17 +16,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_toolbar"
         android:background="@color/white"
         android:elevation="@dimen/elevation_all"
         android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
-        app:navigationIcon="@drawable/ic_toolbar_menu"
+        style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        android:theme="@style/ThemeOverlay_Toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+<!--        app:navigationIcon="@drawable/ic_toolbar_menu"-->
         <TextView
             android:id="@+id/text_toolbar_title"
             android:layout_width="wrap_content"
@@ -41,7 +43,7 @@
             tools:visibility="visible"
             tools:text="Movie Critics"/>
 
-    </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <fragment
         android:id="@+id/navHostFragment"

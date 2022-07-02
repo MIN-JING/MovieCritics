@@ -1,14 +1,16 @@
 package com.jim.moviecritics.data
 
 import android.os.Parcelable
+import android.provider.ContactsContract
 import kotlinx.parcelize.Parcelize
+import com.google.firebase.Timestamp
 
 
 @Parcelize
 data class User(
     var id: Long = 0L,
-    val name: String = "",
-    val pictureUri: String = "",
+    var name: String = "",
+    var pictureUri: String = "",
     val location: String = "",
     val instagramUri: String = "",
     val twitterUri: String = "",
@@ -17,5 +19,9 @@ data class User(
     val blocks: List<Long> = listOf(),
     val watched: MutableList<String> = mutableListOf(),
     val liked: MutableList<String> = mutableListOf(),
-    val watchlist: MutableList<String> = mutableListOf()
+    val watchlist: MutableList<String> = mutableListOf(),
+    var firebaseToken: String = "",
+    var firebaseTokenExpiration: Timestamp = Timestamp.now(),
+    var signInProvider: String = "",
+    var email: String = ""
 ) : Parcelable

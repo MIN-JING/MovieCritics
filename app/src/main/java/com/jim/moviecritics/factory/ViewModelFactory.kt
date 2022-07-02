@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
-import com.jim.moviecritics.watchlist.WatchlistViewModel
 import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.login.LoginViewModel
 import com.jim.moviecritics.search.SearchViewModel
@@ -27,8 +26,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(SearchViewModel::class.java) ->
                     SearchViewModel(applicationRepository)
 
-                isAssignableFrom(WatchlistViewModel::class.java) ->
-                    WatchlistViewModel(applicationRepository)
+//                isAssignableFrom(WatchlistViewModel::class.java) ->
+//                    WatchlistViewModel(applicationRepository)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
                     LoginViewModel(applicationRepository)

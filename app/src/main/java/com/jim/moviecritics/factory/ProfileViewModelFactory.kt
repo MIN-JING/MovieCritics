@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.profile.ProfileViewModel
+import com.jim.moviecritics.watchlist.WatchlistViewModel
 
 
 @Suppress("UNCHECKED_CAST")
@@ -18,6 +19,9 @@ class ProfileViewModelFactory(
         when {
             isAssignableFrom(ProfileViewModel::class.java) ->
                 ProfileViewModel(applicationRepository, user)
+
+            isAssignableFrom(WatchlistViewModel::class.java) ->
+                WatchlistViewModel(applicationRepository, user)
 
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

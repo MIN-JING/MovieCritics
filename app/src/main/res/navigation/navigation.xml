@@ -20,18 +20,28 @@
         android:id="@+id/watchlistFragment"
         android:name="com.jim.moviecritics.watchlist.WatchlistFragment"
         android:label="watchlist_fragment"
-        tools:layout="@layout/fragment_watchlist"/>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.jim.moviecritics.profile.ProfileFragment"
-        android:label="profile_fragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_watchlist">
 
         <argument
             android:name="userKey"
             app:argType="com.jim.moviecritics.data.User"
             app:nullable="true"
             android:defaultValue="@null"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.jim.moviecritics.profile.ProfileFragment"
+        android:label="profile_fragment"
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="userKey"
+            app:argType="com.jim.moviecritics.data.User"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.jim.moviecritics.detail.DetailFragment"

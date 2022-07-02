@@ -12,6 +12,9 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.util.Util.getString
 
 class MainViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
@@ -25,10 +28,16 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
     val currentFragmentType = MutableLiveData<CurrentFragmentType>()
 
     // Handle navigation to login success
-    private val _navigateToLoginSuccess = MutableLiveData<User>()
+    private val _navigateToLoginSuccess = MutableLiveData<User?>()
 
-    val navigateToLoginSuccess: LiveData<User>
+    val navigateToLoginSuccess: LiveData<User?>
         get() = _navigateToLoginSuccess
+
+    // Handle navigation to profile by bottom nav directly which includes icon change
+    private val _navigateToProfileByBottomNav = MutableLiveData<User?>()
+
+    val navigateToProfileByBottomNav: LiveData<User?>
+        get() = _navigateToProfileByBottomNav
 
     // check user login status
     val isLoggedIn
@@ -41,9 +50,9 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         get() = _status
 
     // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String>()
+    private val _error = MutableLiveData<String?>()
 
-    val error: LiveData<String>
+    val error: LiveData<String?>
         get() = _error
 
     // Create a Coroutine scope using a job to be able to cancel when needed
@@ -84,4 +93,57 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
             }
         }
     }
+
+    fun navigateToLoginSuccess(user: User) {
+        _navigateToLoginSuccess.value = user
+    }
+
+    fun onLoginSuccessNavigated() {
+        _navigateToLoginSuccess.value = null
+    }
+
+    fun navigateToProfileByBottomNav(user: User) {
+        _navigateToProfileByBottomNav.value = user
+    }
+
+    fun onProfileNavigated() {
+        _navigateToProfileByBottomNav.value = null
+    }
+
+//    private fun getUser(token: String) {
+//
+//        coroutineScope.launch {
+//
+//            _status.value = LoadApiStatus.LOADING
+//
+//            val result = stylishRepository.getUser(token)
+//
+//            _user.value = when (result) {
+//
+//                is Result.Success -> {
+//                    _error.value = null
+//                    _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result.Fail -> {
+//                    _error.value = result.error
+//                    _status.value = LoadApiStatus.ERROR
+//                    if (result.error.contains("Invalid Access Token", true)) {
+//                        UserManager.clear()
+//                    }
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.value = result.exception.toString()
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = getString(R.string.you_know_nothing)
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//        }
+//    }
 }

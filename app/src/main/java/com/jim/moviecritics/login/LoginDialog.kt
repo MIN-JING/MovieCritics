@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -29,6 +30,8 @@ import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.*
+
 
 class LoginDialog : AppCompatDialogFragment() {
 
@@ -38,8 +41,6 @@ class LoginDialog : AppCompatDialogFragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var account: GoogleSignInAccount
-
-
 
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -54,25 +55,29 @@ class LoginDialog : AppCompatDialogFragment() {
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.LoginDialog)
 
+//        UserManager.userToken = null
 
         // Google log in
-
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
             .requestIdToken(getString(R.string.server_client_id))
+            .requestEmail()
             .build()
 
         // Build a GoogleSignInClient with the options specified by gso.
-        googleSignInClient = context?.let { GoogleSignIn.getClient(it, gso) }!!
-//        googleSignInClient.signOut()
+        googleSignInClient =
+            context?.let { GoogleSignIn.getClient(it, gso) }
+            ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
+        // Google log out
+        googleSignInClient.signOut()
 
         // Firebase auth
         firebaseAuth = Firebase.auth
-//        Firebase.auth.signOut()
+        // Firebase log out
+        Firebase.auth.signOut()
 
     }
 
@@ -95,6 +100,7 @@ class LoginDialog : AppCompatDialogFragment() {
         val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         viewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("Login Dialog viewModel.user = $it")
             it?.let {
                 mainViewModel.setupUser(it)
             }
@@ -107,16 +113,18 @@ class LoginDialog : AppCompatDialogFragment() {
             }
         }
 
+//        viewModel.loginGoogle.observe(viewLifecycleOwner) {
+//            it?.let {
+//                Logger.i("viewModel.loginGoogle = $it")
+//                signInGoogle()
+//                viewModel.onLoginGoogleCompleted()
+//            }
+//        }
+
         viewModel.navigateToLoginSuccess.observe(viewLifecycleOwner) {
             it?.let {
-
-            }
-        }
-
-        viewModel.loginGoogle.observe(viewLifecycleOwner) {
-            it?.let {
-                Logger.i("viewModel.loginGoogle = $it")
-                signInGoogle()
+                mainViewModel.navigateToLoginSuccess(it)
+                dismiss()
             }
         }
 
@@ -162,19 +170,19 @@ class LoginDialog : AppCompatDialogFragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             account = completedTask.getResult(ApiException::class.java)
-            val googleId = account?.id ?: ""
+            val googleId = account.id ?: ""
             Logger.i("Google ID = $googleId")
-            val googleFirstName = account?.givenName ?: ""
+            val googleFirstName = account.givenName ?: ""
             Logger.i("Google First Name = $googleFirstName")
-            val googleLastName = account?.familyName ?: ""
+            val googleLastName = account.familyName ?: ""
             Logger.i("Google Last Name = $googleLastName")
-            val googleEmail = account?.email ?: ""
+            val googleEmail = account.email ?: ""
             Logger.i("Google Email = $googleEmail")
-            val googleProfilePicURL = account?.photoUrl.toString()
+            val googleProfilePicURL = account.photoUrl.toString()
             Logger.i("Google Profile Pic URL = $googleProfilePicURL")
-            val googleIdToken = account?.idToken ?: ""
+            val googleIdToken = account.idToken ?: ""
             Logger.i("Google ID Token = $googleIdToken")
-            val googleIsExpired = account?.isExpired ?: false
+            val googleIsExpired = account.isExpired
             Logger.i("Google isExpired = $googleIsExpired")
 
             account.idToken?.let { firebaseAuthWithGoogle(it) }
@@ -183,6 +191,10 @@ class LoginDialog : AppCompatDialogFragment() {
             // Sign in was unsuccessful
             Logger.e("Google log in failed code = ${e.statusCode}")
         }
+
+        viewModel.user.value?.name = account.givenName + "" + account.familyName
+        viewModel.user.value?.email = account.email.toString()
+        viewModel.user.value?.pictureUri = account.photoUrl.toString()
 
     }
 
@@ -197,6 +209,26 @@ class LoginDialog : AppCompatDialogFragment() {
                     Logger.i("signInWithCredential user.providerId = ${user?.providerId}")
                     Logger.i("signInWithCredential user.tenantId = ${user?.tenantId}")
                     Logger.i("signInWithCredential user.uid = ${user?.uid}")
+                    val firebaseTokenResult = user?.getIdToken(false)?.result
+                    Logger.i("signInWithCredential user.getIdToken.result.token = ${firebaseTokenResult?.token}")
+                    Logger.i("signInWithCredential user.getIdToken.result.expirationTimestamp = ${firebaseTokenResult?.expirationTimestamp}")
+                    Logger.i("signInWithCredential user.getIdToken.result.signInProvider = ${firebaseTokenResult?.signInProvider}")
+
+                    viewModel.user.value?.firebaseToken = firebaseTokenResult?.token.toString()
+
+                    val firebaseDate = firebaseTokenResult?.expirationTimestamp?.let { Date(it) }
+
+                    if (firebaseDate != null) {
+                        viewModel.user.value?.firebaseTokenExpiration = Timestamp(firebaseDate)
+                    }
+
+                    viewModel.user.value?.signInProvider = firebaseTokenResult?.signInProvider.toString()
+
+                    Logger.i("Login Dialog viewModel.user OBSERVE = ${viewModel.user.value}")
+
+                    UserManager.userToken = firebaseTokenResult?.token.toString()
+
+
                 } else {
                     Logger.w("signInWithCredential:failure e = ${task.exception}")
                 }

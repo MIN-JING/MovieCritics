@@ -11,7 +11,7 @@ import com.jim.moviecritics.util.Logger
 
 class WatchlistFragment : Fragment() {
 
-    private val viewModel by viewModels<WatchlistViewModel> { getVmFactory() }
+    private val viewModel by viewModels<WatchlistViewModel> { getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey) }
 
 //    companion object {
 //        fun newInstance() = DownshiftFragment()
@@ -49,7 +49,6 @@ class WatchlistFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
-
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root

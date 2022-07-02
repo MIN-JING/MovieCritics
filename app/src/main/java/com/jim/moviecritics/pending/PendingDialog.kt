@@ -95,7 +95,6 @@ class PendingDialog : AppCompatDialogFragment() {
                     NO_ONE_KNOWS -> {
                         Logger.i("Unknown invalidScore value NO_ONE_KNOWS = $it")
                     }
-                    null -> { Logger.i("Unknown invalidScore value null = $it") }
                 }
             }
         })

@@ -7,15 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.jim.moviecritics.R
+import androidx.viewpager.widget.PagerAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.jim.moviecritics.databinding.FragmentProfileBinding
-import com.jim.moviecritics.detail.DetailFragmentArgs
 import com.jim.moviecritics.ext.getVmFactory
-import com.jim.moviecritics.home.HomeViewModel
+
 
 class ProfileFragment : Fragment() {
 
-    private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
+    private val viewModel by viewModels<ProfileViewModel> { getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey) }
 
 //    companion object {
 //        fun newInstance() = ProfileFragment()
@@ -29,10 +30,33 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        val binding = FragmentProfileBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
+//        val binding = FragmentProfileBinding.inflate(inflater, container, false)
+//        binding.lifecycleOwner = viewLifecycleOwner
 
-        return binding.root
+        val tabLayoutArray = arrayOf("Guide", "Favorite")
+
+        FragmentProfileBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewpagerProfile.let {
+//                tabsProfile.setupWithViewPager(it)
+                it.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
+                TabLayoutMediator(tabsProfile, it) { tab, position ->
+                    tab.text = tabLayoutArray[position]
+                }.attach()
+            }
+            return@onCreateView root
+        }
+
+//        binding.viewpagerProfile.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
+
+//        TabLayoutMediator(binding.tabsProfile, binding.viewpagerProfile) { tab, position ->
+//            tab.text = tabLayoutArray[position]
+//        }.attach()
+
+//        TabLayoutMediator.TabConfigurationStrategy()
+
+
+
 //        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 

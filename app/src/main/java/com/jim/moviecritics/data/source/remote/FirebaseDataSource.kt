@@ -164,6 +164,8 @@ object FirebaseDataSource : ApplicationDataSource {
 
     }
 
+//    override suspend fun pushUser()
+
     override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)

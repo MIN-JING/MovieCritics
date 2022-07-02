@@ -178,8 +178,12 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             blocks = listOf(400001L, 400002L, 400003L),
             watched = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
             liked = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
-            watchlist = mutableListOf("tt0343818", "tt5108870", "tt9419884")
-        )
+            watchlist = mutableListOf("tt0343818", "tt5108870", "tt9419884"),
+            firebaseToken = "eyJhbGc",
+            firebaseTokenExpiration = Timestamp.now(),
+            signInProvider = "google.com",
+            email = "dog@gmail.com")
+
 
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)

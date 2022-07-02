@@ -3,6 +3,7 @@ package com.jim.moviecritics.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.common.api.internal.BasePendingResult
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
@@ -13,10 +14,12 @@ import kotlinx.coroutines.Job
 
 class LoginViewModel(private val applicationRepository: ApplicationRepository)  : ViewModel() {
 
-    private val _user = MutableLiveData<User>()
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
 
-    val user: LiveData<User>
-        get() = _user
+    val user = MutableLiveData<User>()
 
     // Handle navigation to login success
     private val _navigateToLoginSuccess = MutableLiveData<User>()
@@ -24,11 +27,11 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     val navigateToLoginSuccess: LiveData<User>
         get() = _navigateToLoginSuccess
 
-    // Handle leave login
-    private val _loginGoogle = MutableLiveData<Boolean?>()
-
-    val loginGoogle: LiveData<Boolean?>
-        get() = _loginGoogle
+//    // Handle leave login
+//    private val _loginGoogle = MutableLiveData<Boolean?>()
+//
+//    val loginGoogle: LiveData<Boolean?>
+//        get() = _loginGoogle
 
     // Handle leave login
     private val _leave = MutableLiveData<Boolean?>()
@@ -54,7 +57,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-//    lateinit var fbCallbackManager: CallbackManager
+
 
     override fun onCleared() {
         super.onCleared()
@@ -67,11 +70,11 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
         Logger.i("------------------------------------")
     }
 
-    fun login() {}
 
-    private fun loginGoogle() {
-        _loginGoogle.value = true
-    }
+
+//    private fun loginGoogle() {
+//        _loginGoogle.value = true
+//    }
 
     fun leave() {
         _leave.value = true
@@ -82,7 +85,12 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     }
 
 
-    fun onLoginFacebookCompleted() {
-        _loginGoogle.value = null
+//    fun onLoginGoogleCompleted() {
+//        _loginGoogle.value = null
+//    }
+
+    fun nothing() {
+
     }
+
 }

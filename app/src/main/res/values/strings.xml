@@ -78,6 +78,11 @@
 
     <!-- Profile -->
     <string name="image_profile_user_pic">User profile picture</string>
+    <string name="text_profile_following">Following</string>
+    <string name="text_profile_followers">Followers</string>
+    <string name="tabs_profile">Two tab Buttons, one is Guide, another is Favorite</string>
+
+    <string name="text_profile_guide_recent_act">Recent Activity</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -89,7 +94,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="server_client_id"></string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

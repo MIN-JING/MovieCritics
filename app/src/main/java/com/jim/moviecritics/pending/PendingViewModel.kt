@@ -431,13 +431,27 @@ class PendingViewModel(
             score.cast = castPending.value!!
             score.music = musicPending.value!!
             score.story = storyPending.value!!
-            score.average = (((leisurePending.value!! + hitPending.value!! + castPending.value!! + musicPending.value!! + storyPending.value!!) * 10).roundToInt() / 50).toFloat()
+            score.average = (((
+                    leisurePending.value!!
+                    + hitPending.value!!
+                    + castPending.value!!
+                    + musicPending.value!!
+                    + storyPending.value!!) * 10).roundToInt() / 50).toFloat()
+
             Logger.i("score.average = ${score.average}" )
             Logger.i("score = $score" )
             pushScore(score)
             _invalidScore.value = SCORE_IS_FILLED
         } else {
             Logger.i("五個分數有一個是 null")
+            when {
+                leisurePending.value == null -> _invalidScore.value = INVALID_FORMAT_LEISURE_EMPTY
+                hitPending.value == null -> _invalidScore.value = INVALID_FORMAT_HIT_EMPTY
+                castPending.value == null -> _invalidScore.value = INVALID_FORMAT_CAST_EMPTY
+                musicPending.value == null -> _invalidScore.value = INVALID_FORMAT_MUSIC_EMPTY
+                storyPending.value == null -> _invalidScore.value = INVALID_FORMAT_STORY_EMPTY
+                else -> _invalidScore.value = NO_ONE_KNOWS
+            }
         }
 
     }

@@ -137,7 +137,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                 if (task.isSuccessful) {
                     Logger.i("signInWithCredential:success")
 
-                    if (task.result.additionalUserInfo?.isNewUser == true) {
+                    if (task.result.additionalUserInfo?.isNewUser == false) {
                         Logger.i("task.result.additionalUserInfo?.isNewUser == true")
                         val firebaseCurrentUser = firebaseAuth.currentUser
                         Logger.i("signInWithCredential user.providerId = ${firebaseCurrentUser?.providerId}")

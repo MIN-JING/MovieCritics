@@ -67,13 +67,15 @@ class LoginDialog : AppCompatDialogFragment() {
             context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }
             ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
 
+        // Firebase log out
+//        Firebase.auth.signOut()
+
         // Google log out
 //        googleSignInClient.signOut()
 
         // Firebase auth
 //        firebaseAuth = Firebase.auth
-        // Firebase log out
-//        Firebase.auth.signOut()
+
     }
 
     override fun onCreateView(

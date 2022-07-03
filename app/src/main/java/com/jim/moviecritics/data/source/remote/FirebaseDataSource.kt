@@ -2,6 +2,7 @@ package com.jim.moviecritics.data.source.remote
 
 
 
+
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -298,7 +299,7 @@ object FirebaseDataSource : ApplicationDataSource {
     override suspend fun delete(comment: Comment): Result<Boolean> = suspendCoroutine { continuation ->
 
         when (comment.userID) {
-            12344L -> {
+            "12344L" -> {
                 continuation.resume(Result.Fail("You know nothing!! ${comment.userID}"))
             }
             else -> {
@@ -442,6 +443,7 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
+        Logger.i("pushScore in FirebaseDataSource")
         val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
         val document = scores.document()
 

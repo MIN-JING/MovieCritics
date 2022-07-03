@@ -69,6 +69,7 @@ class ProfileFragment : Fragment() {
             val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
             profileViewModel.user.observe(viewLifecycleOwner) {
                 if (null != it) {
+                    Logger.i("Profile Fragment mainViewModel.setupUser(it)")
                     mainViewModel.setupUser(it)
                 }
             }

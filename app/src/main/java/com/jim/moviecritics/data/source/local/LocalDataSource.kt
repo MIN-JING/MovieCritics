@@ -106,12 +106,12 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
     override suspend fun pushMockComment(): Result<Boolean> = suspendCoroutine { continuation ->
         val comment = Comment(
             id = "",
-            userID = 200001L,
+            userID = "200001L",
             imdbID = "tt0343818",
             createdTime = Timestamp.now(),
             content = "Would Google LaMDA chat robot become a human?",
-            likes = listOf("300001L", "300002L", "300003L"),
-            dislikes = listOf("300001L", "300002L", "300003L")
+            likes = mutableListOf("300001L", "300002L", "300003L"),
+            dislikes = mutableListOf("300001L", "300002L", "300003L")
         )
 
         val comments = FirebaseFirestore.getInstance().collection(PATH_COMMENTS)

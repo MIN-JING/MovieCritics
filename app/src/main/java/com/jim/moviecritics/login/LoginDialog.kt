@@ -97,6 +97,7 @@ class LoginDialog : AppCompatDialogFragment() {
         viewModel.liveUser.observe(viewLifecycleOwner) {
             Logger.i("Login Dialog viewModel.user = $it")
             it?.let {
+                Logger.i("Login Dialog mainViewModel.setupUser(it)")
                 mainViewModel.setupUser(it)
                 viewModel.userSignIn(it)
             }

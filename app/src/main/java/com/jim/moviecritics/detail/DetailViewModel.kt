@@ -46,18 +46,21 @@ class DetailViewModel(
     val scores: LiveData<List<Score>?>
         get() = _scores
 
+
     private val _score = MutableLiveData<Score?>()
 
     val score: LiveData<Score?>
         get() = _score
 
-    var liveScore = MutableLiveData<Score>()
+
+    var mutableScore = MutableLiveData<Score>()
 
 
     private val _comments = MutableLiveData<List<Comment>>()
 
     val comments: LiveData<List<Comment>>
         get() = _comments
+
 
     var liveComments = MutableLiveData<List<Comment>>()
 
@@ -103,19 +106,18 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        if (MovieApplication.instance.isLiveDataDesign()) {
-            movie.value?.imdbID?.let {
-                getLiveScoreResult(imdbID = it, userID = "200001L")
-                getLiveCommentsResult(imdbID = it)
-            }
-        } else {
-            movie.value?.imdbID?.let {
-                getScoreResult(isInitial = true, imdbID = it, userID = "200001L")
-                getScoresResult(isInitial = false, imdbID = it)
-                getCommentsResult(isInitial = false, imdbID = it)
-            }
-        }
-
+//        if (MovieApplication.instance.isLiveDataDesign()) {
+//            movie.value?.imdbID?.let {
+//                user.value?.id?.let { userId -> getLiveScoreResult(imdbID = it, userID = userId) }
+//                getLiveCommentsResult(imdbID = it)
+//            }
+//        } else {
+//            movie.value?.imdbID?.let {
+//                user.value?.id?.let { userId -> getScoreResult(isInitial = true, imdbID = it, userID = userId) }
+//                getScoresResult(isInitial = false, imdbID = it)
+//                getCommentsResult(isInitial = false, imdbID = it)
+//            }
+//        }
     }
 
     fun navigateToPending(movie: Movie) {
@@ -201,8 +203,8 @@ class DetailViewModel(
         }
     }
 
-    private fun getLiveScoreResult(imdbID: String, userID: String) {
-        liveScore = applicationRepository.getLiveScore(imdbID, userID)
+    fun getLiveScoreResult(imdbID: String, userID: String) {
+        mutableScore = applicationRepository.getLiveScore(imdbID, userID)
         _status.value = LoadApiStatus.DONE
     }
 
@@ -238,7 +240,7 @@ class DetailViewModel(
         }
     }
 
-    private fun getLiveCommentsResult(imdbID: String) {
+    fun getLiveCommentsResult(imdbID: String) {
         liveComments = applicationRepository.getLiveComments(imdbID)
         _status.value = LoadApiStatus.DONE
     }

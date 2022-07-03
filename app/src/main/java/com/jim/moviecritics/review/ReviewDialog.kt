@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogReviewBinding
 import com.jim.moviecritics.ext.getVmFactory
@@ -32,6 +34,15 @@ class ReviewDialog : AppCompatDialogFragment()  {
         super.onCreate(savedInstanceState)
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
+
+        if (viewModel.user.value == null) {
+            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+            Logger.i("Review mainViewModel.user.value = ${mainViewModel.user.value}")
+            Logger.i("Review viewModel.user.value = ${viewModel.user.value}")
+        }
+        viewModel.initComment()
+
     }
 
 

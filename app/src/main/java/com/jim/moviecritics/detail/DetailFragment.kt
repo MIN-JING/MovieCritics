@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.MovieApplication
@@ -29,6 +28,7 @@ class DetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (viewModel.user.value == null) {
             val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
             mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
@@ -36,6 +36,13 @@ class DetailFragment : Fragment() {
             Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
         }
 
+
+        viewModel.movie.value?.imdbID?.let {
+            viewModel.user.value?.id?.let { userId ->
+                viewModel.getLiveScoreResult(imdbID = it, userID = userId)
+            }
+            viewModel.getLiveCommentsResult(imdbID = it)
+        }
     }
 
     override fun onCreateView(
@@ -71,7 +78,7 @@ class DetailFragment : Fragment() {
             Logger.i("DetailViewModel.user = $it")
         }
 
-        viewModel.liveScore.observe(viewLifecycleOwner) {
+        viewModel.mutableScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
                 val radarData = viewModel.movie.value?.let { movie ->

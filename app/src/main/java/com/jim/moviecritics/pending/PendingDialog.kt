@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -29,6 +27,7 @@ import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LE
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MUSIC_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
+import com.jim.moviecritics.pending.PendingViewModel.Companion.SCORE_IS_FILLED
 
 
 class PendingDialog : AppCompatDialogFragment() {
@@ -46,7 +45,7 @@ class PendingDialog : AppCompatDialogFragment() {
             mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
             Logger.i("Pending mainViewModel.user.value = ${mainViewModel.user.value}")
             Logger.i("Pending viewModel.user.value = ${viewModel.user.value}")
-            viewModel.initToggleStatus()
+            viewModel.initToggleAndScore()
         }
     }
 
@@ -65,16 +64,20 @@ class PendingDialog : AppCompatDialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.observe(viewLifecycleOwner, Observer {
+        viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog movie = $it")
-        })
+        }
 
-        viewModel.user.observe(viewLifecycleOwner, Observer {
+        viewModel.user.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog user = $it")
-        })
-        
+        }
 
-        viewModel.invalidScore.observe(viewLifecycleOwner, Observer {
+//        viewModel.score.observe(viewLifecycleOwner) {
+//            Logger.i("Pending Dialog score = $it")
+//        }
+
+
+        viewModel.invalidScore.observe(viewLifecycleOwner) {
             Logger.i("viewModel.invalidScore.value = $it")
             it?.let {
                 when (it) {
@@ -96,12 +99,15 @@ class PendingDialog : AppCompatDialogFragment() {
                     NO_ONE_KNOWS -> {
                         Logger.i("Unknown invalidScore value NO_ONE_KNOWS = $it")
                     }
+                    SCORE_IS_FILLED -> {
+                        activity.showToast("The movie's score was published !")
+                    }
                 }
             }
-        })
+        }
 
 
-        viewModel.leave.observe(viewLifecycleOwner, Observer {
+        viewModel.leave.observe(viewLifecycleOwner) {
 //                it?.let {
 //                    dismiss()
 //                    viewModel.onLeaveCompleted()
@@ -110,41 +116,41 @@ class PendingDialog : AppCompatDialogFragment() {
                 true -> {
                     dismiss()
                     viewModel.onLeaveCompleted()
-                    Toast.makeText(context, "The movie's score was published !", Toast.LENGTH_LONG).show()
+//                    Toast.makeText(context, "The movie's score was published !", Toast.LENGTH_LONG).show()
                 }
-                false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
-
-                null -> Logger.i("PendingViewModel.leave.value = null")
+//                false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
+//                null -> Logger.i("PendingViewModel.leave.value = null")
+                else -> {}
             }
-        })
+        }
 
-        viewModel.navigateToReview.observe(viewLifecycleOwner, Observer {
+        viewModel.navigateToReview.observe(viewLifecycleOwner) {
             Logger.i("PendingViewModel.navigateToReview = $it")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToReviewDialog(it))
                 viewModel.onReviewNavigated()
             }
-        })
+        }
 
-        viewModel.leisurePending.observe(viewLifecycleOwner, Observer {
+        viewModel.leisurePending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog leisurePending = $it")
-        })
+        }
 
-        viewModel.hitPending.observe(viewLifecycleOwner, Observer {
+        viewModel.hitPending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog hitPending = $it")
-        })
+        }
 
-        viewModel.castPending.observe(viewLifecycleOwner, Observer {
+        viewModel.castPending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog castPending = $it")
-        })
+        }
 
-        viewModel.musicPending.observe(viewLifecycleOwner, Observer {
+        viewModel.musicPending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog musicPending = $it")
-        })
+        }
 
-        viewModel.storyPending.observe(viewLifecycleOwner, Observer {
+        viewModel.storyPending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog storyPending = $it")
-        })
+        }
 
 //        viewModel.isFillScore.observe(viewLifecycleOwner, Observer {
 //            if (viewModel.isFillScore.value == false) {

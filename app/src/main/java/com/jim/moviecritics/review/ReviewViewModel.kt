@@ -1,7 +1,6 @@
 package com.jim.moviecritics.review
 
-import android.content.Context
-import android.widget.Toast
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,8 +10,8 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
-import com.jim.moviecritics.ext.showToast
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
@@ -35,28 +34,25 @@ class ReviewViewModel(
         get() = _movie
 
 
-    private val _comment = MutableLiveData<Comment>().apply {
-        value = arguments.imdbID?.let {
-            Comment(
-                userID = 200001L,
-                imdbID = it
-            )
-        }
-    }
+    private val _user = MutableLiveData<User>()
+
+    val user: LiveData<User>
+        get() = _user
+
+
+    private val _comment = MutableLiveData<Comment>()
+
+//        .apply {
+//        value = arguments.imdbID?.let {
+//            Comment(
+//                userID = "200001L",
+//                imdbID = it
+//            )
+//        }
+//    }
 
     val comment: LiveData<Comment>
         get() = _comment
-
-
-//    private val _liveComment = MutableLiveData<Comment>()
-//
-//    val liveComment: LiveData<Comment>
-//        get() = _liveComment
-//
-//    val test = MutableLiveData<String>()
-//
-//    val test2 = MutableLiveData<Comment>()
-
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -99,6 +95,15 @@ class ReviewViewModel(
 
     }
 
+    fun takeDownUser(user: User) {
+        _user.value = user
+        Logger.i("Review takeDownUser() = ${_user.value}")
+    }
+
+    fun initComment() {
+        _comment.value?.imdbID = movie.value?.imdbID.toString()
+        _comment.value?.userID = user.value?.id.toString()
+    }
 
 
     fun leave() {
@@ -161,7 +166,7 @@ class ReviewViewModel(
     }
 
     fun prepareComment() {
-        _comment.value = _comment.value
+//        _comment.value = _comment.value
         when {
             comment.value?.content?.isEmpty() == true -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
 

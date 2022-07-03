@@ -27,7 +27,7 @@ interface ApplicationRepository {
 
     suspend fun userSignIn(user: User): Result<Boolean>
 
-    suspend fun getUser(userID: String): Result<User>
+    suspend fun getUser(token: String): Result<User>
 
     suspend fun getComments(imdbID: String): Result<List<Comment>>
 

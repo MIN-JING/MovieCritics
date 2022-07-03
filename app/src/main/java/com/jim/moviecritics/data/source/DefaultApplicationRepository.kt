@@ -47,8 +47,8 @@ class DefaultApplicationRepository(
         return firebaseDataSource.userSignIn(user)
     }
 
-    override suspend fun getUser(userID: String): Result<User> {
-        return firebaseDataSource.getUser(userID)
+    override suspend fun getUser(token: String): Result<User> {
+        return firebaseDataSource.getUser(token)
     }
 
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {

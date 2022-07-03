@@ -129,7 +129,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
             googleSignInAccount.idToken?.let { firebaseAuthWithGoogle(it) }
 
-            user.name = googleSignInAccount.givenName + "" + googleSignInAccount.familyName
+            user.name = googleSignInAccount.givenName + "  " + googleSignInAccount.familyName
             Logger.i("user.name = ${user.name}")
             user.email = googleSignInAccount.email.toString()
             Logger.i("user.email = ${user.email}")

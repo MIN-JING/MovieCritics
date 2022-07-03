@@ -34,10 +34,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/image_profile_user_pic"
+                app:imageUrl="@{viewModel.user.pictureUri}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars"
-                android:contentDescription="@string/image_profile_user_pic" />
+                tools:src="@tools:sample/avatars"/>
+
 
             <TextView
                 android:id="@+id/text_profile_user_name"
@@ -46,7 +48,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:text=""
+                android:text="@{viewModel.user.name}"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"

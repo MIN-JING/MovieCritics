@@ -107,7 +107,7 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(userID: String): Result<User> {
+    override suspend fun getUser(token: String): Result<User> {
         TODO("Not yet implemented")
     }
 

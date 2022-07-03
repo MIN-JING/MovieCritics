@@ -15,7 +15,7 @@ import com.jim.moviecritics.util.Logger
 
 class ProfileFragment : Fragment() {
 
-    private val viewModel by viewModels<ProfileViewModel> { getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey) }
+    private val profileViewModel by viewModels<ProfileViewModel> { getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey) }
 
 //    private lateinit var googleSignInClient: GoogleSignInClient
 //    companion object {
@@ -65,10 +65,21 @@ class ProfileFragment : Fragment() {
 //        binding.lifecycleOwner = viewLifecycleOwner
         setHasOptionsMenu(true)
 
+        if (profileViewModel.user.value == null) {
+            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+            profileViewModel.user.observe(viewLifecycleOwner) {
+                if (null != it) {
+                    mainViewModel.setupUser(it)
+                }
+            }
+        }
+
         val tabLayoutArray = arrayOf("Guide", "Favorite")
 
         FragmentProfileBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
+//            viewModel = viewModel
+            viewModel = profileViewModel
             viewpagerProfile.let {
 //                tabsProfile.setupWithViewPager(it)
                 it.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
@@ -79,14 +90,9 @@ class ProfileFragment : Fragment() {
             return@onCreateView root
         }
 
-        if (viewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            viewModel.user.observe(viewLifecycleOwner) {
-                if (null != it) {
-                    mainViewModel.setupUser(it)
-                }
-            }
-        }
+//        binding.viewModel = viewModel
+
+
 
 //        binding.viewpagerProfile.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
 
@@ -97,7 +103,7 @@ class ProfileFragment : Fragment() {
 //        TabLayoutMediator.TabConfigurationStrategy()
 
 
-
+//        return binding.root
 //        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 

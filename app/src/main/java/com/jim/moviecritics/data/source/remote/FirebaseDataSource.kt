@@ -156,28 +156,29 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun getUser(userID: String): Result<User> = suspendCoroutine { continuation ->
+    override suspend fun getUser(token: String): Result<User> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .document(userID)
-//            .whereEqualTo("firebaseToken", token)
+//            .document(userID)
+            .whereEqualTo("firebaseToken", token)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-//                    if (task.result.size() >= 1) {
-//                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
-//                        Logger.d( task.result.first().id + " => " + task.result.first().data)
-//                        val item = task.result.first().toObject(User::class.java)
-//                        continuation.resume(Result.Success(item))
-//                    } else {
-//                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
-//                        val item = User(firebaseToken = "token")
-//                        continuation.resume(Result.Success(item))
-//                    }
-                    val item = task.result.toObject(User::class.java)
-                    if (item != null) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val item = task.result.first().toObject(User::class.java)
+                        continuation.resume(Result.Success(item))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
+                        val item = User(firebaseToken = "token")
                         continuation.resume(Result.Success(item))
                     }
+
+//                    val item = task.result.toObject(User::class.java)
+//                    if (item != null) {
+//                        continuation.resume(Result.Success(item))
+//                    }
 
                 } else {
                     task.exception?.let {

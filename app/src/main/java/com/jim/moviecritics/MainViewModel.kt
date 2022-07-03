@@ -74,6 +74,13 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
+
+//        if (user.value == null) {
+//            UserManager.userToken?.let {
+//                getUser(it)
+//                Logger.i("MainViewModel init user.value = ${user.value}")
+//            }
+//        }
     }
 
     fun setupUser(user: User) {
@@ -89,7 +96,7 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
     fun checkUser() {
         if (user.value == null) {
             UserManager.userToken?.let {
-//                getUserProfile(it)
+//                getUser(it)
             }
         }
     }
@@ -110,40 +117,40 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         _navigateToProfileByBottomNav.value = null
     }
 
-//    private fun getUser(token: String) {
-//
-//        coroutineScope.launch {
-//
-//            _status.value = LoadApiStatus.LOADING
-//
-//            val result = stylishRepository.getUser(token)
-//
-//            _user.value = when (result) {
-//
-//                is Result.Success -> {
-//                    _error.value = null
-//                    _status.value = LoadApiStatus.DONE
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                    if (result.error.contains("Invalid Access Token", true)) {
-//                        UserManager.clear()
-//                    }
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = getString(R.string.you_know_nothing)
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-//        }
-//    }
+    private fun getUser(token: String) {
+
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getUser(token)
+
+            _user.value = when (result) {
+
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    if (result.error.contains("Invalid Access Token", true)) {
+                        UserManager.clear()
+                    }
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+        }
+    }
 }

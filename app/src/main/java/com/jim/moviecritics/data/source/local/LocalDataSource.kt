@@ -110,8 +110,8 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             imdbID = "tt0343818",
             createdTime = Timestamp.now(),
             content = "Would Google LaMDA chat robot become a human?",
-            likes = listOf(300001L, 300002L, 300003L),
-            dislikes = listOf(300001L, 300002L, 300003L)
+            likes = listOf("300001L", "300002L", "300003L"),
+            dislikes = listOf("300001L", "300002L", "300003L")
         )
 
         val comments = FirebaseFirestore.getInstance().collection(PATH_COMMENTS)
@@ -208,15 +208,4 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
                 }
             }
     }
-
-//    override fun getGoogleSignInClient(): GoogleSignInClient {
-//
-//        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.server_client_id))
-//            .requestEmail()
-//            .build()
-//
-//        val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-//    }
-
 }

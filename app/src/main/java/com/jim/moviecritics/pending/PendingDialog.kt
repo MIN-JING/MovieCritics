@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
@@ -34,16 +36,18 @@ class PendingDialog : AppCompatDialogFragment() {
     private val viewModel by viewModels<PendingViewModel> { getVmFactory(PendingDialogArgs.fromBundle(requireArguments()).movie) }
     private lateinit var binding: DialogPendingBinding
 
-//    companion object {
-//        fun newInstance() = PendingFragment()
-//    }
-//
-//    private lateinit var viewModel: PendingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.PendingDialog)
+        if (viewModel.user.value == null) {
+            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+            Logger.i("Pending mainViewModel.user.value = ${mainViewModel.user.value}")
+            Logger.i("Pending viewModel.user.value = ${viewModel.user.value}")
+            viewModel.initToggleStatus()
+        }
     }
 
     override fun onCreateView(
@@ -68,10 +72,7 @@ class PendingDialog : AppCompatDialogFragment() {
         viewModel.user.observe(viewLifecycleOwner, Observer {
             Logger.i("Pending Dialog user = $it")
         })
-
-        viewModel.isWatch.observe(viewLifecycleOwner, Observer {
-            Logger.i("Pending Dialog checkWatch = $it")
-        })
+        
 
         viewModel.invalidScore.observe(viewLifecycleOwner, Observer {
             Logger.i("viewModel.invalidScore.value = $it")
@@ -165,13 +166,4 @@ class PendingDialog : AppCompatDialogFragment() {
             super.dismiss()
         }
     }
-
-//    fun leave() { dismiss() }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(PendingViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
-
 }

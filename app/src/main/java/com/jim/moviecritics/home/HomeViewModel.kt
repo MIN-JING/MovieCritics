@@ -21,10 +21,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
     val homeItems: LiveData<List<HomeItem>>
         get() = _homeItems
 
-    private val _comments = MutableLiveData<List<Comment>>()
-
-    val comments: LiveData<List<Comment>>
-        get() = _comments
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -68,7 +64,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("------------------------------------")
 
         getPopularMoviesResult(true)
-//        getCommentsResult(false)
     }
 
 
@@ -128,13 +123,12 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     }
                     movie.writing = writingList
                 }
-                Logger.i("movie = $movie")
+                Logger.i("getMovieFull() movie = $movie")
                 navigateToDetail(movie)
-//                _navigateToDetail.value = movie
             }
     }
 
-    fun navigateToDetail(movie: Movie) {
+    private fun navigateToDetail(movie: Movie) {
         _navigateToDetail.value = movie
     }
 
@@ -244,37 +238,4 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         }
     }
 
-
-//    private fun getCommentsResult(isInitial: Boolean = false) {
-//
-//        coroutineScope.launch {
-//
-//            if (isInitial) _status.value = LoadApiStatus.LOADING
-//
-//            val result = applicationRepository.getComments()
-//
-//            _comments.value = when (result) {
-//                is Result.Success -> {
-//                    _error.value = null
-//                    if (isInitial) _status.value = LoadApiStatus.DONE
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    if (isInitial) _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    if (isInitial) _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = getString(R.string.you_know_nothing)
-//                    if (isInitial) _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-//        }
-//    }
 }

@@ -11,10 +11,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -27,6 +24,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
+//    private val argumentUser: User?
     ) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
@@ -35,6 +33,13 @@ class DetailViewModel(
 
     val movie: LiveData<Movie>
         get() = _movie
+
+
+    private val _user = MutableLiveData<User>()
+
+    val user: LiveData<User>
+        get() = _user
+
 
     private val _scores = MutableLiveData<List<Score>?>()
 
@@ -55,6 +60,9 @@ class DetailViewModel(
         get() = _comments
 
     var liveComments = MutableLiveData<List<Comment>>()
+
+
+
 
 
         // status: The internal MutableLiveData that stores the status of the most recent request
@@ -107,6 +115,7 @@ class DetailViewModel(
                 getCommentsResult(isInitial = false, imdbID = it)
             }
         }
+
     }
 
     fun navigateToPending(movie: Movie) {
@@ -119,6 +128,11 @@ class DetailViewModel(
 
     fun leave() {
         _leave.value = true
+    }
+
+    fun takeDownUser(user: User) {
+        _user.value = user
+        Logger.i("Detail takeDownUser() = ${_user.value}")
     }
 
     private fun getScoresResult(isInitial: Boolean = false, imdbID: String) {

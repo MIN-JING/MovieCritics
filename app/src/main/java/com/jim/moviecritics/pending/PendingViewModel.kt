@@ -110,46 +110,57 @@ class PendingViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        coroutineScope.launch {
-            _user.value = getUserResult(isInitial = true, userID = "200001")
-            _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-            _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-            _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
-        }
+//        coroutineScope.launch {
+////            _user.value = getUserResult(isInitial = true, userID = "200001")
+//            _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+//            _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+//            _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+//        }
 
     }
 
-
-    private suspend fun getUserResult(isInitial: Boolean = false, userID: String): User? {
-
-        return withContext(Dispatchers.IO) {
-
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
-
-            when (val result = applicationRepository.getUser(userID)) {
-                is Result.Success -> {
-                    _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                is Result.Error -> {
-                    _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                else -> {
-                    _error.postValue(Util.getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-            }
-        }
+    fun takeDownUser(user: User) {
+        _user.value = user
+        Logger.i("Detail takeDownUser() = ${_user.value}")
     }
+
+    fun initToggleStatus() {
+        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+    }
+
+
+//    private suspend fun getUserResult(isInitial: Boolean = false, userID: String): User? {
+//
+//        return withContext(Dispatchers.IO) {
+//
+//            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
+//
+//            when (val result = applicationRepository.getUser(userID)) {
+//                is Result.Success -> {
+//                    _error.postValue(null)
+//                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
+//                    result.data
+//                }
+//                is Result.Fail -> {
+//                    _error.postValue(result.error)
+//                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.postValue(result.exception.toString())
+//                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+//                    null
+//                }
+//                else -> {
+//                    _error.postValue(Util.getString(R.string.you_know_nothing))
+//                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+//                    null
+//                }
+//            }
+//        }
+//    }
 
     fun onClickWatch(imdbID: String, userID: String) {
         if (isWatch.value != true) {

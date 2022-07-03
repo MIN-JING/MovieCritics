@@ -47,11 +47,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     val navigateToLoginSuccess: LiveData<User>
         get() = _navigateToLoginSuccess
 
-//    // Handle leave login
-//    private val _loginGoogle = MutableLiveData<Boolean?>()
-//
-//    val loginGoogle: LiveData<Boolean?>
-//        get() = _loginGoogle
 
     // Handle leave login
     private val _leave = MutableLiveData<Boolean?>()
@@ -91,11 +86,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     }
 
 
-
-//    private fun loginGoogle() {
-//        _loginGoogle.value = true
-//    }
-
     fun leave() {
         _leave.value = true
     }
@@ -103,11 +93,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     fun onLeaveCompleted() {
         _leave.value = null
     }
-
-
-//    fun onLoginGoogleCompleted() {
-//        _loginGoogle.value = null
-//    }
 
     fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
@@ -140,14 +125,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
             // Sign in was unsuccessful
             Logger.e("Google log in failed code = ${e.statusCode}")
         }
-
-//        _user.value?.name = googleSignInAccount.givenName + "" + googleSignInAccount.familyName
-//        Logger.i("_user.value?.name = ${_user.value?.name}")
-//        _user.value?.email = googleSignInAccount.email.toString()
-//        Logger.i("_user.value?.email = ${_user.value?.email}")
-//        _user.value?.pictureUri = googleSignInAccount.photoUrl.toString()
-//        Logger.i("_user.value?.pictureUri = ${_user.value?.pictureUri}")
-
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {
@@ -160,35 +137,39 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                 if (task.isSuccessful) {
                     Logger.i("signInWithCredential:success")
 
-                    val firebaseCurrentUser = firebaseAuth.currentUser
-                    Logger.i("signInWithCredential user.providerId = ${firebaseCurrentUser?.providerId}")
-                    Logger.i("signInWithCredential user.uid = ${firebaseCurrentUser?.uid}")
+                    if (task.result.additionalUserInfo?.isNewUser == true) {
+                        Logger.i("task.result.additionalUserInfo?.isNewUser == true")
+                        val firebaseCurrentUser = firebaseAuth.currentUser
+                        Logger.i("signInWithCredential user.providerId = ${firebaseCurrentUser?.providerId}")
+                        Logger.i("signInWithCredential user.uid = ${firebaseCurrentUser?.uid}")
 
-                    user.id = firebaseCurrentUser?.uid.toString()
-                    Logger.i("user.id = ${user.id}")
+                        user.id = firebaseCurrentUser?.uid.toString()
+                        Logger.i("user.id = ${user.id}")
 
-                    val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
-                    Logger.i("signInWithCredential user.getIdToken.result.token = ${firebaseTokenResult?.token}")
-                    Logger.i("signInWithCredential user.getIdToken.result.expirationTimestamp = ${firebaseTokenResult?.expirationTimestamp}")
-                    Logger.i("signInWithCredential user.getIdToken.result.signInProvider = ${firebaseTokenResult?.signInProvider}")
+                        val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
+                        Logger.i("signInWithCredential user.getIdToken.result.token = ${firebaseTokenResult?.token}")
+                        Logger.i("signInWithCredential user.getIdToken.result.expirationTimestamp = ${firebaseTokenResult?.expirationTimestamp}")
+                        Logger.i("signInWithCredential user.getIdToken.result.signInProvider = ${firebaseTokenResult?.signInProvider}")
 
-                    user.firebaseToken = firebaseTokenResult?.token.toString()
-                    Logger.i("user.firebaseToken = ${user.firebaseToken}")
+                        user.firebaseToken = firebaseTokenResult?.token.toString()
+                        Logger.i("user.firebaseToken = ${user.firebaseToken}")
 
-                    val firebaseDate = firebaseTokenResult?.expirationTimestamp?.let { Date(it) }
+                        val firebaseDate = firebaseTokenResult?.expirationTimestamp?.let { Date(it) }
 
-                    if (firebaseDate != null) {
-                        user.firebaseTokenExpiration = Timestamp(firebaseDate)
-                        Logger.i("user.firebaseTokenExpiration = ${user.firebaseTokenExpiration}")
+                        if (firebaseDate != null) {
+                            user.firebaseTokenExpiration = Timestamp(firebaseDate)
+                            Logger.i("user.firebaseTokenExpiration = ${user.firebaseTokenExpiration}")
+                        }
+
+                        user.signInProvider = firebaseTokenResult?.signInProvider.toString()
+                        Logger.i("user.signInProvider = ${user.signInProvider}")
+
+                        UserManager.userToken = firebaseTokenResult?.token.toString()
+
+                        liveUser.value = user
+                    } else {
+                        Logger.i("task.result.additionalUserInfo?.isNewUser == false")
                     }
-
-                    user.signInProvider = firebaseTokenResult?.signInProvider.toString()
-                    Logger.i("user.signInProvider = ${user.signInProvider}")
-
-                    UserManager.userToken = firebaseTokenResult?.token.toString()
-
-//                    _user.value = _user.value
-                    liveUser.value = user
 
                 } else {
                     Logger.w("signInWithCredential:failure e = ${task.exception}")
@@ -222,5 +203,4 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
         }
 
     }
-
 }

@@ -52,6 +52,12 @@
             android:name="movie"
             app:argType="com.jim.moviecritics.data.Movie"
             app:nullable="false"/>
+
+<!--        <argument-->
+<!--            android:name="userKey"-->
+<!--            app:argType="com.jim.moviecritics.data.User"-->
+<!--            app:nullable="true"-->
+<!--            android:defaultValue="@null"/>-->
     </fragment>
 
     <dialog

@@ -9,18 +9,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
-import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentDetailBinding
+import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 
 class DetailFragment : Fragment() {
 
-    private val viewModel by viewModels<DetailViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
+    private val viewModel by viewModels<DetailViewModel> {
+        getVmFactory(
+            DetailFragmentArgs.fromBundle(requireArguments()).movie
+//            DetailFragmentArgs.fromBundle(requireArguments()).userKey
+        ) }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (viewModel.user.value == null) {
+            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+            Logger.i("Detail mainViewModel.user.value = ${mainViewModel.user.value}")
+            Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +63,15 @@ class DetailFragment : Fragment() {
             }
         )
 
-        viewModel.movie.observe(viewLifecycleOwner, Observer {
+        viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.movie = $it")
-        })
+        }
 
-        viewModel.liveScore.observe(viewLifecycleOwner, Observer {
+        viewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.user = $it")
+        }
+
+        viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
                 val radarData = viewModel.movie.value?.let { movie ->
@@ -91,7 +111,7 @@ class DetailFragment : Fragment() {
                     viewModel.showRadarChart(binding.radarChartRating, radarData)
                 }
             }
-        })
+        }
 
         viewModel.liveComments.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveComments = $it")
@@ -100,22 +120,27 @@ class DetailFragment : Fragment() {
             }
         }
 
+//        if (viewModel.user.value == null) {
+//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+//        }
 
-        viewModel.navigateToPending.observe(viewLifecycleOwner, Observer {
+
+        viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")
             Logger.i("DetailViewModel.navigateToPending runTime = ${it?.runtime}")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
                 viewModel.onPendingNavigated()
             }
-        })
+        }
 
-        viewModel.leave.observe(viewLifecycleOwner, Observer {
+        viewModel.leave.observe(viewLifecycleOwner) {
             Logger.i(" DetailViewModel.leaveDetail = $it")
             it?.let {
                 if (it) findNavController().popBackStack()
             }
-        })
+        }
 
         return binding.root
     }

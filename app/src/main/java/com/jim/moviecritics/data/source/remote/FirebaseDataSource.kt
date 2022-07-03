@@ -12,7 +12,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.SetOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.util.Logger
 
@@ -56,13 +55,21 @@ object FirebaseDataSource : ApplicationDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val list = mutableListOf<Score>()
-                    for (document in task.result) {
-                        Logger.d( document.id + " => " + document.data)
-                        val score = document.toObject(Score::class.java)
-                        list.add(score)
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getScores task.result.size >= 1")
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val list = mutableListOf<Score>()
+                        for (document in task.result) {
+                            Logger.d( document.id + " => " + document.data)
+                            val score = document.toObject(Score::class.java)
+                            list.add(score)
+                        }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getScores task.result.size < 1")
+                        val list = listOf(Score(imdbID = imdbID))
+                        continuation.resume(Result.Success(list))
                     }
-                    continuation.resume(Result.Success(list))
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -119,16 +126,20 @@ object FirebaseDataSource : ApplicationDataSource {
                     Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                 }
 
-                val list = mutableListOf<Score>()
                 if (snapshot != null) {
-                    snapshot.forEach { document ->
-                        Logger.d(document.id + " => " + document.data)
-
-                        val comment = document.toObject(Score::class.java)
-                        list.add(comment)
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<Score>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val comment = document.toObject(Score::class.java)
+                            list.add(comment)
+                        }
+                        Logger.d( list.first().id + " => " + list.first())
+                        liveData.value = list.first()
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLiveScore task.result.size < 1")
+                        liveData.value = Score(imdbID = imdbID, userID = userID)
                     }
-                    Logger.d( list.first().id + " => " + list.first())
-                    liveData.value = list.first()
                 } else {
                     Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
                 }
@@ -137,6 +148,7 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun userSignIn(user: User): Result<Boolean> = suspendCoroutine { continuation ->
+
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(user.id)
@@ -174,12 +186,10 @@ object FirebaseDataSource : ApplicationDataSource {
                         val item = User(firebaseToken = "token")
                         continuation.resume(Result.Success(item))
                     }
-
 //                    val item = task.result.toObject(User::class.java)
 //                    if (item != null) {
 //                        continuation.resume(Result.Success(item))
 //                    }
-
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -192,8 +202,6 @@ object FirebaseDataSource : ApplicationDataSource {
 
     }
 
-//    override suspend fun pushUser()
-
     override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
@@ -202,14 +210,22 @@ object FirebaseDataSource : ApplicationDataSource {
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val list = mutableListOf<Comment>()
-                    for (document in task.result) {
-                        Logger.d( document.id + " => " + document.data)
-
-                        val comment = document.toObject(Comment::class.java)
-                        list.add(comment)
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getComments task.result.size >= 1")
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val list = mutableListOf<Comment>()
+                        for (document in task.result) {
+                            Logger.d( document.id + " => " + document.data)
+                            val comment = document.toObject(Comment::class.java)
+                            list.add(comment)
+                        }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getComments task.result.size < 1")
+//                        val list = listOf(Comment())
+//                        continuation.resume(Result.Success(list))
                     }
-                    continuation.resume(Result.Success(list))
+
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -235,15 +251,22 @@ object FirebaseDataSource : ApplicationDataSource {
                     Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
                 }
 
-                val list = mutableListOf<Comment>()
                 if (snapshot != null) {
-                    snapshot.forEach { document ->
-                        Logger.d(document.id + " => " + document.data)
 
-                        val comment = document.toObject(Comment::class.java)
-                        list.add(comment)
+                    if (snapshot.size() >=1 ) {
+                        val list = mutableListOf<Comment>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val comment = document.toObject(Comment::class.java)
+                            list.add(comment)
+                        }
+                        liveData.value = list
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLiveComments task.result.size < 1")
                     }
-                    liveData.value = list
+
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLiveComments snapshot == null")
                 }
             }
         return liveData

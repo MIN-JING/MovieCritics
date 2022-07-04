@@ -21,6 +21,23 @@
 
     <color name="yellow">#FFFF00</color>
 
+    <color name="primary">#006A6A</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#6FF7F7</color>
+
+    <color name="secondary">#4A6363</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#CCE8E7</color>
+
+    <color name="primary_night">#4CDADA</color>
+    <color name="onPrimary_night">#003737</color>
+    <color name="primaryContainer_night">#004F50</color>
+
+    <color name="secondary_night">#B0CCC8</color>
+    <color name="onSecondary_night">#1B3434</color>
+    <color name="secondaryContainer_night">#324B4B</color>
+    
+
     <!-- Bottom Navigation -->
     <color name="bottom_navigation_item_normal">@color/gray_999999</color>
     <color name="bottom_navigation_item_selected">@color/black_3f3a3a</color>

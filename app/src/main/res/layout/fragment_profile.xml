@@ -5,17 +5,132 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".profile.ProfileFragment">
 
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.profile.ProfileViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#518BC34A">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="600dp"
-            android:text="Profile"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_profile_header"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/image_profile_user_pic"
+                android:layout_width="70dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/image_profile_user_pic"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.user.pictureUri}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+
+            <TextView
+                android:id="@+id/text_profile_user_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{viewModel.user.name}"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_profile_user_pic"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="User Name" />
+
+            <TextView
+                android:id="@+id/text_profile_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/text_profile_following"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/text_profile_following_num"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/image_profile_user_pic"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_user_name" />
+
+            <TextView
+                android:id="@+id/text_profile_following_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{String.valueOf(viewModel.user.followings.size())}"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_following"
+                app:layout_constraintEnd_toStartOf="@+id/text_profile_followers"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_following"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_following"
+                tools:text="3" />
+
+            <TextView
+                android:id="@+id/text_profile_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/text_profile_followers"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/text_profile_followers_num"
+                app:layout_constraintEnd_toStartOf="@+id/text_profile_followers_num"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_following_num"
+                app:layout_constraintTop_toTopOf="@+id/text_profile_followers_num" />
+
+            <TextView
+                android:id="@+id/text_profile_followers_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{String.valueOf(viewModel.user.followers.size())}"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/text_profile_followers"
+                app:layout_constraintTop_toBottomOf="@+id/text_profile_user_name"
+                tools:text="6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_profile_header"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs_profile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:contentDescription="@string/tabs_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_profile_header" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

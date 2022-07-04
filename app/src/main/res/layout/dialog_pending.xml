@@ -13,18 +13,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-<!--        android:onClick="@{() -> viewModel.leave()}"-->
-
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_pending"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#8BC34A"
+            android:background="@color/green_adbdb7"
             app:layout_constraintBottom_toTopOf="@+id/layout_pending_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
@@ -34,10 +32,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:background="#5100BCD4"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:text="@{viewModel.movie.title}"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -50,9 +51,10 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:background="#322196F3"
                 android:text="@{viewModel.movie.released.substring(0, 4)}"
                 android:textAlignment="center"
+                android:textColor="#424242"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_pending_title"
@@ -77,9 +79,9 @@
                 android:drawableTop="@drawable/ic_watch_selector"
                 android:includeFontPadding="false"
                 android:onClick="@{() -> viewModel.onClickWatch(viewModel.movie.imdbID, viewModel.user.id)}"
-                android:textColor="@color/black_3f3a3a"
-                android:textOff="Watch"
-                android:textOn="Watched"
+                android:textColor="#455A64"
+                android:textOff="@string/toggle_pending_watch_off"
+                android:textOn="@string/toggle_pending_watch_on"
                 app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_like"
                 app:layout_constraintEnd_toStartOf="@+id/toggle_pending_like"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,9 +98,9 @@
                 android:drawableTop="@drawable/ic_favorite_selector"
                 android:includeFontPadding="false"
                 android:onClick="@{() -> viewModel.onClickLike(viewModel.movie.imdbID, viewModel.user.id)}"
-                android:textColor="@color/black_3f3a3a"
-                android:textOff="Like"
-                android:textOn="Liked"
+                android:textColor="#455A64"
+                android:textOff="@string/toggle_pending_like_off"
+                android:textOn="@string/toggle_pending_like_on"
                 app:layout_constraintEnd_toStartOf="@+id/toggle_pending_watchlist"
                 app:layout_constraintStart_toEndOf="@+id/toggle_pending_watch"
                 app:layout_constraintTop_toBottomOf="@+id/divider1_pending" />
@@ -112,9 +114,9 @@
                 android:drawableTop="@drawable/ic_watchlist_selector"
                 android:includeFontPadding="false"
                 android:onClick="@{() -> viewModel.onClickWatchList(viewModel.movie.imdbID, viewModel.user.id)}"
-                android:textColor="@color/black_3f3a3a"
-                android:textOff="Watchlist"
-                android:textOn="Added"
+                android:textColor="#455A64"
+                android:textOff="@string/toggle_pending_watchlist_off"
+                android:textOn="@string/toggle_pending_watchlist_on"
                 app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_like"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/toggle_pending_like"
@@ -135,7 +137,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Rate"
+                android:text="@string/text_pending_rate"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider2_pending" />
@@ -145,7 +148,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Leisure"
+                android:text="@string/text_pending_leisure"
+                android:textColor="#424242"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar_pending_leisure"
                 app:layout_constraintEnd_toStartOf="@+id/ratingBar_pending_leisure"
                 app:layout_constraintStart_toStartOf="parent"
@@ -158,18 +163,20 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:numStars="5"
-                android:stepSize="0.5"
                 android:rating="@={viewModel.leisurePending}"
+                android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_pending_rate" />
-<!--            android:rating="@{viewModel.leisurePending}"-->
+                app:layout_constraintTop_toBottomOf="@+id/text_pending_rate"
+                android:contentDescription="@string/ratingBar_pending_leisure"/>
 
             <TextView
                 android:id="@+id/text_pending_hit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Hit"
+                android:text="@string/text_pending_hit"
+                android:textColor="#424242"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar_pending_hit"
                 app:layout_constraintEnd_toStartOf="@+id/ratingBar_pending_hit"
                 app:layout_constraintStart_toStartOf="parent"
@@ -182,20 +189,23 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:numStars="5"
-                android:stepSize="0.5"
                 android:rating="@={viewModel.hitPending}"
+                android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_leisure" />
-<!--            android:rating="@{viewModel.hitPending}"-->
-<!--            android:value="@{viewModel.hitPending}"-->
-<!--            ratingValue="@{viewModel.hitPending}"-->
+                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_leisure"
+                android:contentDescription="@string/ratingBar_pending_hit"/>
+            <!--            android:rating="@{viewModel.hitPending}"-->
+            <!--            android:value="@{viewModel.hitPending}"-->
+            <!--            ratingValue="@{viewModel.hitPending}"-->
 
             <TextView
                 android:id="@+id/text_pending_cast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Cast"
+                android:text="@string/text_pending_cast"
+                android:textColor="#424242"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar_pending_cast"
                 app:layout_constraintEnd_toStartOf="@+id/ratingBar_pending_cast"
                 app:layout_constraintStart_toStartOf="parent"
@@ -208,17 +218,20 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:numStars="5"
-                android:stepSize="0.5"
                 android:rating="@={viewModel.castPending}"
+                android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_hit" />
+                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_hit"
+                android:contentDescription="@string/ratingBar_pending_cast"/>
 
             <TextView
                 android:id="@+id/text_pending_music"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Music"
+                android:text="@string/text_pending_music"
+                android:textColor="#424242"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar_pending_music"
                 app:layout_constraintEnd_toStartOf="@+id/ratingBar_pending_music"
                 app:layout_constraintStart_toStartOf="parent"
@@ -231,17 +244,20 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:numStars="5"
-                android:stepSize="0.5"
                 android:rating="@={viewModel.musicPending}"
+                android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_cast" />
+                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_cast"
+                android:contentDescription="@string/ratingBar_pending_music"/>
 
             <TextView
                 android:id="@+id/text_pending_story"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Story"
+                android:text="@string/text_pending_story"
+                android:textColor="#424242"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ratingBar_pending_story"
                 app:layout_constraintEnd_toStartOf="@+id/ratingBar_pending_story"
                 app:layout_constraintStart_toStartOf="parent"
@@ -254,10 +270,11 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:numStars="5"
-                android:stepSize="0.5"
                 android:rating="@={viewModel.storyPending}"
+                android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_music" />
+                app:layout_constraintTop_toBottomOf="@id/ratingBar_pending_music"
+                android:contentDescription="@string/ratingBar_pending_story"/>
 
             <View
                 android:id="@+id/divider3_pending"
@@ -275,7 +292,9 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Review"
+                android:text="@string/text_pending_review"
+                android:textSize="20sp"
+                android:onClick="@{() -> viewModel.navigateToReview(viewModel.movie)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider3_pending" />
@@ -294,7 +313,8 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Share"
+                android:text="@string/text_pending_share"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider4_pending" />
@@ -323,14 +343,17 @@
                 android:id="@+id/text_pending_done"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@color/green_708c82"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Done"
                 android:onClick="@{() -> viewModel.leave()}"
+                android:text="@string/text_pending_done"
+                android:textColor="#263238"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-<!--            android:onClick="@{() -> viewModel.leave()}"-->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
 package com.jim.moviecritics.pending
 
-import android.widget.Toast
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +11,6 @@ import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
@@ -57,18 +56,12 @@ class PendingViewModel(
 
     val storyPending = MutableLiveData<Float>()
 
-    val score = Score()
-
+    private val score = Score()
 
     private val _invalidScore = MutableLiveData<Int>()
 
     val invalidScore: LiveData<Int>
         get() = _invalidScore
-
-//    private val _isFillScore = MutableLiveData<Boolean>()
-//
-//    val isFillScore: LiveData<Boolean>
-//        get() = _isFillScore
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -89,6 +82,13 @@ class PendingViewModel(
     val leave: LiveData<Boolean?>
         get() = _leave
 
+
+    private val _navigateToReview = MutableLiveData<Movie?>()
+
+    val navigateToReview: LiveData<Movie?>
+        get() = _navigateToReview
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -102,49 +102,23 @@ class PendingViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
-        coroutineScope.launch {
-            _user.value = getUserResult(isInitial = true, userID = 200001)
-            _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-            _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-            _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
-        }
-
     }
 
-
-    private suspend fun getUserResult(isInitial: Boolean = false, userID: Long): User? {
-
-        return withContext(Dispatchers.IO) {
-
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
-
-            when (val result = applicationRepository.getUser(userID)) {
-                is Result.Success -> {
-                    _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                is Result.Error -> {
-                    _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                else -> {
-                    _error.postValue(Util.getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-            }
-        }
+    fun takeDownUser(user: User) {
+        _user.value = user
+        Logger.i("Detail takeDownUser() = ${_user.value}")
     }
 
-    fun onClickWatch(imdbID: String, userID: Long) {
+    fun initToggleAndScore() {
+        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+
+        score.imdbID = movie.value?.imdbID.toString()
+        score.userID = user.value?.id.toString()
+    }
+
+    fun onClickWatch(imdbID: String, userID: String) {
         if (isWatch.value != true) {
             Logger.i("isWatch.value != true")
             Logger.i("user.value?.watched = ${user.value?.watched}")
@@ -206,7 +180,7 @@ class PendingViewModel(
         }
     }
 
-    fun onClickLike(imdbID: String, userID: Long) {
+    fun onClickLike(imdbID: String, userID: String) {
         if (isLike.value != true) {
             Logger.i("isLike.value != true")
             Logger.i("user.value?.liked = ${user.value?.liked}")
@@ -268,7 +242,7 @@ class PendingViewModel(
         }
     }
 
-    fun onClickWatchList(imdbID: String, userID: Long) {
+    fun onClickWatchList(imdbID: String, userID: String) {
         if (isWatchList.value != true) {
             Logger.i("isWatchList.value != true")
             Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
@@ -330,21 +304,13 @@ class PendingViewModel(
         }
     }
 
-
-    private fun pushScore() {
+    private fun pushScore(score: Score) {
 
         coroutineScope.launch {
 
-            score.imdbID = movie.value?.imdbID.toString()
-
-            user.value?.let {
-                score.userID = it.id
-            }
-
             score.createdTime = Timestamp.now()
 
-
-            _status.postValue(LoadApiStatus.LOADING)
+            _status.value = LoadApiStatus.LOADING
 
             when (val result = applicationRepository.pushScore(score)) {
                 is Result.Success -> {
@@ -367,63 +333,60 @@ class PendingViewModel(
         }
     }
 
-    fun prepareScore() {
-        when {
-            leisurePending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_LEISURE_EMPTY
-            hitPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_HIT_EMPTY
-            castPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_CAST_EMPTY
-            musicPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_MUSIC_EMPTY
-            storyPending.value?.isNaN() == true -> _invalidScore.value = INVALID_FORMAT_STORY_EMPTY
-            else -> _invalidScore.value = NO_ONE_KNOWS
+    private fun prepareScore() {
+        Logger.i("prepareScore()")
+
+        if (leisurePending.value != null
+            && hitPending.value != null
+            && castPending.value != null
+            && musicPending.value != null
+            && storyPending.value != null) {
+
+            Logger.i("五個分數都不是 null")
+            score.leisure = leisurePending.value!!
+            score.hit = hitPending.value!!
+            score.cast = castPending.value!!
+            score.music = musicPending.value!!
+            score.story = storyPending.value!!
+            score.average = (((
+                    leisurePending.value!!
+                    + hitPending.value!!
+                    + castPending.value!!
+                    + musicPending.value!!
+                    + storyPending.value!!) * 10).roundToInt() / 50).toFloat()
+
+            Logger.i("score.average = ${score.average}" )
+            Logger.i("score = $score" )
+            pushScore(score)
+            _invalidScore.value = SCORE_IS_FILLED
+        } else {
+            Logger.i("五個分數有一個是 null")
+            when {
+                leisurePending.value == null -> _invalidScore.value = INVALID_FORMAT_LEISURE_EMPTY
+                hitPending.value == null -> _invalidScore.value = INVALID_FORMAT_HIT_EMPTY
+                castPending.value == null -> _invalidScore.value = INVALID_FORMAT_CAST_EMPTY
+                musicPending.value == null -> _invalidScore.value = INVALID_FORMAT_MUSIC_EMPTY
+                storyPending.value == null -> _invalidScore.value = INVALID_FORMAT_STORY_EMPTY
+                else -> _invalidScore.value = NO_ONE_KNOWS
+            }
         }
     }
 
-
     fun leave() {
-//        _leave.value = true
-
-        if (leisurePending.value!! >= 0.5F
-            && hitPending.value!! >= 0.5F
-            && castPending.value!! >= 0.5
-            && musicPending.value!! >= 0.5
-            && storyPending.value!! >= 0.5) {
-
-            leisurePending.value?.let {
-                score.leisure = it
-            }
-
-            hitPending.value?.let {
-                score.hit = it
-            }
-
-            castPending.value?.let {
-                score.cast = it
-            }
-
-            musicPending.value?.let {
-                score.music = it
-            }
-
-            storyPending. value?.let {
-                score.story = it
-            }
-
-//        score.average = (score.leisure + score.hit + score.cast + score.music + score.story) / 5
-            score.average = (((score.leisure + score.hit + score.cast + score.music + score.story) * 10).roundToInt() / 50).toFloat()
-            Logger.i("score.average = ${score.average}" )
-
-//            _isFillScore.value = true
-            pushScore()
-            _leave.value = true
-
-        } else {
-//            _isFillScore.value = false
-            _leave.value = false
-        }
+        prepareScore()
+        _leave.value = true
     }
 
     fun onLeaveCompleted() {
         _leave.value = null
+    }
+
+    fun navigateToReview(movie: Movie) {
+        _navigateToReview.value = movie
+    }
+
+    fun onReviewNavigated() {
+        _navigateToReview.value = null
     }
 
     companion object {
@@ -435,5 +398,7 @@ class PendingViewModel(
         const val INVALID_FORMAT_STORY_EMPTY = 0x15
 
         const val NO_ONE_KNOWS = 0x21
+
+        const val SCORE_IS_FILLED = 0x31
     }
 }

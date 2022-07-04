@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class Movie(
     var id: Int = 0,
     var imdbID: String? = "",
-//    val customID: String,
     var title: String = "",
     var posterUri: String? = "",
     var trailerUri: String? = "",
@@ -20,7 +19,6 @@ data class Movie(
     var overview: String? = "",
     var country: String? = "",
     var awards: String? = "",
-//    val rated: String,
     var runtime: Int? = 0,
     var writing: List<String?> = listOf(),
     var ratings: List<Rating> = listOf(),

@@ -11,15 +11,16 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/image_cast"
-            android:layout_width="50dp"
-            android:layout_height="70dp"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/image_cast"
             android:scaleType="centerCrop"
             app:imageUrl="@{cast.profilePath}"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,30 +31,32 @@
             android:id="@+id/text_cast_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:lines="3"
+            android:maxLines="3"
             android:text="@{cast.name}"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/image_cast"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/image_cast"
+            app:layout_constraintStart_toStartOf="@+id/image_cast"
+            app:layout_constraintTop_toBottomOf="@+id/image_cast"
             tools:text="Cast Name" />
 
         <TextView
             android:id="@+id/text_character"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="2"
             android:text="@{cast.character}"
             android:textAlignment="textStart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_cast"
+            android:textColor="#546E7A"
+            app:layout_constraintEnd_toEndOf="@+id/text_cast_name"
+            app:layout_constraintStart_toStartOf="@+id/text_cast_name"
             app:layout_constraintTop_toBottomOf="@+id/text_cast_name"
             tools:text="Character" />
     </androidx.constraintlayout.widget.ConstraintLayout>

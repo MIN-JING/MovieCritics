@@ -10,80 +10,126 @@
         android:id="@+id/homeFragment"
         android:name="com.jim.moviecritics.home.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home"/>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.jim.moviecritics.search.SearchFragment"
         android:label="search_fragment"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search"/>
     <fragment
-        android:id="@+id/downshiftFragment"
-        android:name="com.jim.moviecritics.downshift.DownshiftFragment"
-        android:label="downshift_fragment"
-        tools:layout="@layout/fragment_downshift" />
+        android:id="@+id/watchlistFragment"
+        android:name="com.jim.moviecritics.watchlist.WatchlistFragment"
+        android:label="watchlist_fragment"
+        tools:layout="@layout/fragment_watchlist">
+
+        <argument
+            android:name="userKey"
+            app:argType="com.jim.moviecritics.data.User"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.jim.moviecritics.profile.ProfileFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="userKey"
+            app:argType="com.jim.moviecritics.data.User"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/itemGuideFragment"-->
+<!--        android:name="com.jim.moviecritics.profile.ItemGuideFragment"-->
+<!--        android:label="ItemGuideFragment" >-->
+<!--        -->
+<!--        <argument-->
+<!--            android:name="userKey"-->
+<!--            app:argType="com.jim.moviecritics.data.User"-->
+<!--            app:nullable="true"-->
+<!--            android:defaultValue="@null"/>-->
+<!--    </fragment>-->
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.jim.moviecritics.detail.DetailFragment"
         android:label="detail_fragment"
-        tools:layout="@layout/fragment_detail" >
+        tools:layout="@layout/fragment_detail">
 
         <argument
             android:name="movie"
             app:argType="com.jim.moviecritics.data.Movie"
-            app:nullable="false" />
+            app:nullable="false"/>
+
+<!--        <argument-->
+<!--            android:name="userKey"-->
+<!--            app:argType="com.jim.moviecritics.data.User"-->
+<!--            app:nullable="true"-->
+<!--            android:defaultValue="@null"/>-->
     </fragment>
 
     <dialog
         android:id="@+id/pendingDialog"
         android:name="com.jim.moviecritics.pending.PendingDialog"
         android:label="dialog_pending"
-        tools:layout="@layout/dialog_pending" >
+        tools:layout="@layout/dialog_pending">
 
         <argument
             android:name="movie"
             app:argType="com.jim.moviecritics.data.Movie"
-            app:nullable="false" />
+            app:nullable="false"/>
     </dialog>
 
-    <fragment
-        android:id="@+id/reviewFragment"
-        android:name="com.jim.moviecritics.review.ReviewFragment"
-        android:label="fragment_review"
-        tools:layout="@layout/fragment_review" >
+    <dialog
+        android:id="@+id/reviewDialog"
+        android:name="com.jim.moviecritics.review.ReviewDialog"
+        android:label="dialog_review"
+        tools:layout="@layout/dialog_review">
 
         <argument
             android:name="movie"
             app:argType="com.jim.moviecritics.data.Movie"
-            app:nullable="false" />
-    </fragment>
+            app:nullable="false"/>
+    </dialog>
+
+    <dialog
+        android:id="@+id/loginDialog"
+        android:name="com.jim.moviecritics.login.LoginDialog"
+        android:label="dialog_login"
+        tools:layout="@layout/dialog_login">
+    </dialog>
 
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"/>
 
     <action android:id="@+id/navigate_to_search_fragment" app:destination="@id/searchFragment"
         app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"/>
 
-    <action android:id="@+id/navigate_to_downshift_fragment" app:destination="@id/downshiftFragment"
+    <action android:id="@+id/navigate_to_watchlist_fragment" app:destination="@id/watchlistFragment"
         app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"/>
 
     <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
         app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"/>
 
     <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
 
     <action android:id="@+id/navigate_to_pending_dialog" app:destination="@id/pendingDialog"/>
+<!--    app:popUpTo="@id/navigation"-->
+<!--    app:popUpToInclusive="true"-->
 
-    <action android:id="@+id/navigate_to_review_fragment" app:destination="@id/reviewFragment"/>
+    <action android:id="@+id/navigate_to_review_dialog" app:destination="@id/reviewDialog"/>
+
+    <action android:id="@+id/navigation_to_login_dialog" app:destination="@+id/loginDialog"/>
+
 
 
 </navigation>

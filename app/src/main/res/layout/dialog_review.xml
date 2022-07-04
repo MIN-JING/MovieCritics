@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".review.ReviewDialog">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.review.ReviewViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}">
+<!--        android:onClick="@{() -> viewModel.leave()}"-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_adbdb7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button_review_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/button_review_cancel"
+                android:textColor="@color/black"
+                android:onClick="@{() -> viewModel.leave()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_review_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/button_review_save"
+                android:textColor="@color/black"
+                android:onClick="@{() -> viewModel.prepareComment()}"
+                app:layout_constraintBottom_toBottomOf="@+id/text_review_title_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_review_title_top" />
+
+            <TextView
+                android:id="@+id/text_review_title_top"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="@string/text_review_title_top"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/button_review_cancel"
+                app:layout_constraintEnd_toStartOf="@+id/button_review_save"
+                app:layout_constraintStart_toEndOf="@+id/button_review_cancel"
+                app:layout_constraintTop_toTopOf="@+id/button_review_cancel" />
+
+            <View
+                android:id="@+id/divider1_review"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintTop_toBottomOf="@+id/button_review_cancel"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <ImageView
+                android:id="@+id/image_review_poster"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/image_review_poster"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.movie.posterUri}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider1_review"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/text_review_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{viewModel.movie.title}"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_review_poster"
+                app:layout_constraintTop_toTopOf="@+id/image_review_poster"
+                tools:text="Movie Title" />
+
+            <TextView
+                android:id="@+id/text_review_released_year"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:maxLines="1"
+                android:text="@{viewModel.movie.released.substring(0, 4)}"
+                android:textColor="#37474F"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/image_review_poster"
+                app:layout_constraintStart_toEndOf="@+id/image_review_poster"
+                app:layout_constraintTop_toBottomOf="@+id/text_review_title"
+                tools:text="Released " />
+
+            <TextView
+                android:id="@+id/text_review_genres"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.toGenres()}"
+                android:textColor="#004D40"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_review_released_year"
+                app:layout_constraintTop_toTopOf="@+id/text_review_released_year"
+                tools:text="Genres" />
+
+            <View
+                android:id="@+id/divider2_review"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_review_poster" />
+
+            <TextView
+                android:id="@+id/text_review_date_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/text_review_date_title"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2_review" />
+
+            <TextView
+                android:id="@+id/text_review_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="end"
+                android:text="@{viewModel.dateToday()}"
+                android:textColor="#424242"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_review_date_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_review_date_title"
+                app:layout_constraintTop_toTopOf="@+id/text_review_date_title"
+                tools:text="Date Today" />
+
+            <View
+                android:id="@+id/divider3_review"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_review_date_title" />
+
+            <EditText
+                android:id="@+id/edit_review"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/edit_review"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:text="@={viewModel.content}"
+                android:textColorHint="#37474F"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider3_review" />
+<!--            android:inputType="text"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:ems="10"-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

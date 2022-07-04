@@ -9,7 +9,6 @@ data class MovieDetailResult(
     @Json(name = "status_message")val error: String?,
     val adult: Boolean,
     @Json(name = "backdrop_path") val backdrop: String?,
-//    @Json(name = "belongs_to_collection") val belongsTo: List<Any>?,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String?,

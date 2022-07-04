@@ -6,6 +6,6 @@
     <item
         android:id="@+id/toolbar_log_out"
         android:icon="@drawable/ic_toolbar_logout"
-        android:title="Log out"
+        android:title="@string/toolbar_log_out"
         app:showAsAction="always"/>
 </menu>

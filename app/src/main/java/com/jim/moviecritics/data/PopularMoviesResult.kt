@@ -1,7 +1,6 @@
 package com.jim.moviecritics.data
 
 import android.os.Parcelable
-import com.jim.moviecritics.util.Logger
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
@@ -16,7 +15,6 @@ data class PopularMoviesResult(
 ) : Parcelable {
 
     fun toHomeItems(): List<HomeItem> {
-
         val items = mutableListOf<HomeItem>()
 
         trends?.let {

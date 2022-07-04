@@ -40,19 +40,9 @@ class ReviewViewModel(
         get() = _user
 
 
-    private val _comment = MutableLiveData<Comment>()
+    private val comment = Comment()
 
-//        .apply {
-//        value = arguments.imdbID?.let {
-//            Comment(
-//                userID = "200001L",
-//                imdbID = it
-//            )
-//        }
-//    }
-
-    val comment: LiveData<Comment>
-        get() = _comment
+    val content = MutableLiveData<String>()
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -92,7 +82,6 @@ class ReviewViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
     }
 
     fun takeDownUser(user: User) {
@@ -101,8 +90,8 @@ class ReviewViewModel(
     }
 
     fun initComment() {
-        _comment.value?.imdbID = movie.value?.imdbID.toString()
-        _comment.value?.userID = user.value?.id.toString()
+        comment.imdbID = movie.value?.imdbID.toString()
+        comment.userID = user.value?.id.toString()
     }
 
 
@@ -140,7 +129,7 @@ class ReviewViewModel(
 
         coroutineScope.launch {
 
-            _comment.value?.createdTime = Timestamp.now()
+            comment.createdTime = Timestamp.now()
 
             _status.value = LoadApiStatus.LOADING
 
@@ -166,13 +155,16 @@ class ReviewViewModel(
     }
 
     fun prepareComment() {
-//        _comment.value = _comment.value
         when {
-            comment.value?.content?.isEmpty() == true -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
+            content.value == null -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
 
-            comment.value?.content?.isEmpty() == false -> comment.value?.let{
-                pushComment(it)
+            content.value != null -> {
+                comment.content = content.value.toString()
+                Logger.i("testComment = $comment")
+                pushComment(comment)
+                leave()
             }
+
             else -> _invalidComment.value = NO_ONE_KNOWS
         }
     }

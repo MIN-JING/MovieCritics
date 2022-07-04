@@ -26,9 +26,6 @@ class ViewModelFactory constructor(
                 isAssignableFrom(SearchViewModel::class.java) ->
                     SearchViewModel(applicationRepository)
 
-//                isAssignableFrom(WatchlistViewModel::class.java) ->
-//                    WatchlistViewModel(applicationRepository)
-
                 isAssignableFrom(LoginViewModel::class.java) ->
                     LoginViewModel(applicationRepository)
 

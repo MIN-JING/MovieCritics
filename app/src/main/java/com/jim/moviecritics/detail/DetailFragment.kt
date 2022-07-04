@@ -1,8 +1,5 @@
 package com.jim.moviecritics.detail
 
-
-
-
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,11 +17,7 @@ import com.jim.moviecritics.util.Logger
 
 class DetailFragment : Fragment() {
 
-    private val viewModel by viewModels<DetailViewModel> {
-        getVmFactory(
-            DetailFragmentArgs.fromBundle(requireArguments()).movie
-//            DetailFragmentArgs.fromBundle(requireArguments()).userKey
-        ) }
+    private val viewModel by viewModels<DetailViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +44,6 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        Logger.i("Detail Fragment onCreateView()")
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -127,12 +119,6 @@ class DetailFragment : Fragment() {
             }
         }
 
-//        if (viewModel.user.value == null) {
-//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-//        }
-
-
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")
             Logger.i("DetailViewModel.navigateToPending runTime = ${it?.runtime}")
@@ -148,7 +134,6 @@ class DetailFragment : Fragment() {
                 if (it) findNavController().popBackStack()
             }
         }
-
         return binding.root
     }
 }

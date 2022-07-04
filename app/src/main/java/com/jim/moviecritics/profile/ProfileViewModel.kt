@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
@@ -30,6 +31,8 @@ class ProfileViewModel(
 
     val user: LiveData<User>
         get() = _user
+
+    private var livePersonalComments = MutableLiveData<List<Comment>>()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -108,5 +111,10 @@ class ProfileViewModel(
                 }
             }
         }
+    }
+
+    fun getLivePersonalCommentsResult(userID: String) {
+        livePersonalComments = applicationRepository.getLivePersonalComments(userID)
+        _status.value = LoadApiStatus.DONE
     }
 }

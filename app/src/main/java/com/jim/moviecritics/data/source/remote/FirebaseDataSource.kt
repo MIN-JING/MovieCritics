@@ -132,8 +132,8 @@ object FirebaseDataSource : ApplicationDataSource {
                         val list = mutableListOf<Score>()
                         snapshot.forEach { document ->
                             Logger.d(document.id + " => " + document.data)
-                            val comment = document.toObject(Score::class.java)
-                            list.add(comment)
+                            val score = document.toObject(Score::class.java)
+                            list.add(score)
                         }
                         Logger.d( list.first().id + " => " + list.first())
                         liveData.value = list.first()
@@ -172,7 +172,6 @@ object FirebaseDataSource : ApplicationDataSource {
     override suspend fun getUser(token: String): Result<User> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-//            .document(userID)
             .whereEqualTo("firebaseToken", token)
             .get()
             .addOnCompleteListener { task ->
@@ -187,10 +186,6 @@ object FirebaseDataSource : ApplicationDataSource {
                         val item = User(firebaseToken = "token")
                         continuation.resume(Result.Success(item))
                     }
-//                    val item = task.result.toObject(User::class.java)
-//                    if (item != null) {
-//                        continuation.resume(Result.Success(item))
-//                    }
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -200,7 +195,6 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
-
     }
 
     override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
@@ -223,10 +217,7 @@ object FirebaseDataSource : ApplicationDataSource {
                         continuation.resume(Result.Success(list))
                     } else {
                         Logger.w("[${this::class.simpleName}] getComments task.result.size < 1")
-//                        val list = listOf(Comment())
-//                        continuation.resume(Result.Success(list))
                     }
-
                 } else {
                     task.exception?.let {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -253,7 +244,6 @@ object FirebaseDataSource : ApplicationDataSource {
                 }
 
                 if (snapshot != null) {
-
                     if (snapshot.size() >=1 ) {
                         val list = mutableListOf<Comment>()
                         snapshot.forEach { document ->
@@ -265,9 +255,41 @@ object FirebaseDataSource : ApplicationDataSource {
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveComments task.result.size < 1")
                     }
-
                 } else {
                     Logger.w("[${this::class.simpleName}] getLiveComments snapshot == null")
+                }
+            }
+        return liveData
+    }
+
+    override fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>> {
+        val liveData = MutableLiveData<List<Comment>>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_COMMENTS)
+            .whereEqualTo("userID", userID)
+            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLivePersonalComments addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                if (snapshot != null) {
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<Comment>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val comment = document.toObject(Comment::class.java)
+                            list.add(comment)
+                        }
+                        liveData.value = list
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLivePersonalComments task.result.size < 1")
+                    }
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
                 }
             }
         return liveData
@@ -309,7 +331,6 @@ object FirebaseDataSource : ApplicationDataSource {
                     .delete()
                     .addOnSuccessListener {
                         Logger.i("Delete: $comment")
-
                         continuation.resume(Result.Success(true))
                     }.addOnFailureListener {
                         Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
@@ -319,13 +340,10 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-
-
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID)
-//            .set(watched, SetOptions.merge())
             .update(KEY_WATCHED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

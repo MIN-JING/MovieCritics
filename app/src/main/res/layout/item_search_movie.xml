@@ -38,6 +38,7 @@
             android:ellipsize="end"
             android:gravity="start"
             android:lines="3"
+            android:maxLines="3"
             android:text="@{look.title}"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -55,7 +56,7 @@
             android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
             android:text="@{look.releaseDate}"
-            android:textColor="@color/gray_708090"
+            android:textColor="#546E7A"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_search_movie_poster"
@@ -71,6 +72,7 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:gravity="start"
+            android:lines="2"
             android:maxLines="2"
             android:text="@{look.overview}"
             android:textColor="@color/black"
@@ -80,7 +82,6 @@
             app:layout_constraintStart_toEndOf="@+id/image_search_movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/text_search_movie_released_year"
             tools:text="Overview" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

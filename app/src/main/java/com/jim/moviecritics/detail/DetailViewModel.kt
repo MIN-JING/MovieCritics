@@ -9,22 +9,19 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+
 
 class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
-//    private val argumentUser: User?
     ) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
@@ -65,10 +62,7 @@ class DetailViewModel(
     var liveComments = MutableLiveData<List<Comment>>()
 
 
-
-
-
-        // status: The internal MutableLiveData that stores the status of the most recent request
+    // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
@@ -137,107 +131,9 @@ class DetailViewModel(
         Logger.i("Detail takeDownUser() = ${_user.value}")
     }
 
-    private fun getScoresResult(isInitial: Boolean = false, imdbID: String) {
-
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getScores(imdbID)
-
-            _scores.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
-    }
-
-    private fun getScoreResult(isInitial: Boolean = false, imdbID: String, userID: String) {
-
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getScore(imdbID, userID)
-
-            _score.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
-    }
-
     fun getLiveScoreResult(imdbID: String, userID: String) {
         mutableScore = applicationRepository.getLiveScore(imdbID, userID)
         _status.value = LoadApiStatus.DONE
-    }
-
-    private fun getCommentsResult(isInitial: Boolean = false, imdbID: String) {
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getComments(imdbID)
-
-            _comments.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
     }
 
     fun getLiveCommentsResult(imdbID: String) {
@@ -325,5 +221,4 @@ class DetailViewModel(
         radarChart.data = radarData
         radarChart.invalidate()
     }
-
 }

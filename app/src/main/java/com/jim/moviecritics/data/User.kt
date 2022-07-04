@@ -1,7 +1,6 @@
 package com.jim.moviecritics.data
 
 import android.os.Parcelable
-import android.provider.ContactsContract
 import kotlinx.parcelize.Parcelize
 import com.google.firebase.Timestamp
 

@@ -33,6 +33,8 @@ interface ApplicationDataSource {
 
     fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>>
 
+    fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>>
+
     suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>

@@ -9,7 +9,6 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.jim.moviecritics.MainViewModel
@@ -32,6 +31,7 @@ class ReviewDialog : AppCompatDialogFragment()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
 
@@ -42,9 +42,7 @@ class ReviewDialog : AppCompatDialogFragment()  {
             Logger.i("Review viewModel.user.value = ${viewModel.user.value}")
         }
         viewModel.initComment()
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,25 +62,23 @@ class ReviewDialog : AppCompatDialogFragment()  {
             Logger.i("Review Dialog movie.genres = ${it.genres}")
         }
 
-        viewModel.leave.observe(viewLifecycleOwner, Observer {
+        viewModel.leave.observe(viewLifecycleOwner) {
             when (viewModel.leave.value) {
                 true -> {
                     Logger.i("Review Dialog leave true = $it")
                     dismiss()
                     viewModel.onLeaveCompleted()
-
                 }
                 false -> { Logger.i("Review Dialog leave false = $it") }
                 null -> { Logger.i("Review Dialog leave null = $it") }
             }
+        }
 
-        })
+        viewModel.content.observe(viewLifecycleOwner) {
+            Logger.i("Review Dialog content = $it")
+        }
 
-        viewModel.comment.observe(viewLifecycleOwner, Observer {
-            Logger.i("Review Dialog comment = $it")
-        })
-
-        viewModel.invalidComment.observe(viewLifecycleOwner, Observer {
+        viewModel.invalidComment.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog invalidComment = $it")
             it?.let {
                 when (it) {
@@ -94,9 +90,9 @@ class ReviewDialog : AppCompatDialogFragment()  {
                     }
                 }
             }
-        })
+        }
 
-        viewModel.status.observe(viewLifecycleOwner, Observer {
+        viewModel.status.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog status = $it")
             it?.let {
                 when (it) {
@@ -104,7 +100,7 @@ class ReviewDialog : AppCompatDialogFragment()  {
                     else -> { Logger.i("ReviewViewModel status value else = $it") }
                 }
             }
-        })
+        }
 
         return binding.root
     }

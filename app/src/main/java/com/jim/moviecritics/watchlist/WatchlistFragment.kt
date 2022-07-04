@@ -13,22 +13,9 @@ class WatchlistFragment : Fragment() {
 
     private val viewModel by viewModels<WatchlistViewModel> { getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey) }
 
-//    companion object {
-//        fun newInstance() = DownshiftFragment()
-//    }
-//
-//    private lateinit var viewModel: DownshiftViewModel
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setHasOptionsMenu(true)
-//    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.toolbar_menu, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,13 +39,5 @@ class WatchlistFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
-//        return inflater.inflate(R.layout.fragment_downshift, container, false)
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(DownshiftViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
-
 }

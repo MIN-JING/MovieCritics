@@ -2,7 +2,6 @@ package com.jim.moviecritics
 
 import android.graphics.Rect
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
 import android.view.DisplayCutout
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +18,6 @@ open class BaseActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     suspend fun getCutoutHeight(): Int {
         return withContext(Dispatchers.IO) {

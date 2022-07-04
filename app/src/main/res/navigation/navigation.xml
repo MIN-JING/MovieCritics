@@ -42,6 +42,18 @@
             android:defaultValue="@null"/>
     </fragment>
 
+<!--    <fragment-->
+<!--        android:id="@+id/itemGuideFragment"-->
+<!--        android:name="com.jim.moviecritics.profile.ItemGuideFragment"-->
+<!--        android:label="ItemGuideFragment" >-->
+<!--        -->
+<!--        <argument-->
+<!--            android:name="userKey"-->
+<!--            app:argType="com.jim.moviecritics.data.User"-->
+<!--            app:nullable="true"-->
+<!--            android:defaultValue="@null"/>-->
+<!--    </fragment>-->
+
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.jim.moviecritics.detail.DetailFragment"
@@ -117,6 +129,7 @@
     <action android:id="@+id/navigate_to_review_dialog" app:destination="@id/reviewDialog"/>
 
     <action android:id="@+id/navigation_to_login_dialog" app:destination="@+id/loginDialog"/>
+
 
 
 </navigation>

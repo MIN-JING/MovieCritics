@@ -59,6 +59,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveComments(imdbID)
     }
 
+    override fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>> {
+        return firebaseDataSource.getLivePersonalComments(userID)
+    }
+
     override suspend fun pushComment(comment: Comment): Result<Boolean> {
         return firebaseDataSource.pushComment(comment)
     }

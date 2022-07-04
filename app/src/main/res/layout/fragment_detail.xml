@@ -79,7 +79,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{viewModel.movie.released}"
-                    android:textColor="@color/gray_708090"
+                    android:textColor="#546E7A"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
                     tools:text="Released Date" />
@@ -101,6 +101,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.director}"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_detail_directed_by"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
@@ -130,7 +131,7 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="4dp"
                     android:text="@string/button_detail_trailer"
-                    android:textColor="@color/black"
+                    android:textColor="#263238"
                     app:icon="@drawable/ic_play_arrow"
                     app:iconPadding="8dp"
                     app:iconSize="20dp"
@@ -146,6 +147,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.runtime.toString() + `  Min`}"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/button_detail_trailer"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
@@ -161,10 +163,11 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.overview}"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer"
-                    tools:text="Overview"/>
+                    tools:text="Overview" />
 
                 <View
                     android:id="@+id/divider1_detail"
@@ -192,8 +195,9 @@
                     android:id="@+id/text_detail_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
                     android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_detail_ratings"
                     app:layout_constraintStart_toEndOf="@+id/text_detail_ratings"

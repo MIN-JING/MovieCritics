@@ -26,27 +26,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/username"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:hint="@string/prompt_email"-->
-        <!--            android:inputType="textEmailAddress"-->
-        <!--            android:selectAllOnFocus="true"-->
-        <!--            tools:layout_editor_absoluteX="24dp"-->
-        <!--            tools:layout_editor_absoluteY="96dp" />-->
-
-        <!--        <EditText-->
-        <!--            android:id="@+id/password"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:hint="@string/prompt_password"-->
-        <!--            android:imeActionLabel="@string/action_sign_in_short"-->
-        <!--            android:imeOptions="actionDone"-->
-        <!--            android:inputType="textPassword"-->
-        <!--            android:selectAllOnFocus="true"-->
-        <!--            tools:layout_editor_absoluteX="24dp"-->
-        <!--            tools:layout_editor_absoluteY="149dp" />-->
         <TextView
             android:id="@+id/text_login_title"
             android:layout_width="wrap_content"
@@ -106,9 +85,7 @@
 <!--        android:layout_gravity="start"-->
 <!--        android:enabled="false"-->
 <!--        tools:text="@string/button_login_google"-->
-<!--        android:onClick="@{() -> viewModel.login()}"-->
 <!--        android:text='@{viewModel.status != LoadApiStatus.LOADING ? @string/button_login_google : ""}'-->
-<!--        android:onClick="@{() -> viewModel.login()}"-->
 
         <ProgressBar
             android:id="@+id/progressBar_login"

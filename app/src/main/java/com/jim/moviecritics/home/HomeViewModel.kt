@@ -68,7 +68,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
 
 
     fun getMovieFull(id: Int) {
-
             val movie = Movie()
             coroutineScope.launch {
                 val detailResult = getMovieDetail(isInitial = true, index = 0, id = id)
@@ -237,5 +236,4 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             }
         }
     }
-
 }

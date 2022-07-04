@@ -13,6 +13,7 @@ import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
+import com.jim.moviecritics.profile.GuideItemReviewAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
 
@@ -66,7 +67,11 @@ fun bindRecyclerViewWithComments(recyclerView: RecyclerView, comments: List<Comm
             when (this) {
                 is ReviewAdapter -> {
                     submitList(it)
-                    Logger.i("bindRecyclerViewWithComments = $it")
+                    Logger.i("is ReviewAdapter bindRecyclerViewWithComments = $it")
+                }
+                is GuideItemReviewAdapter -> {
+                    submitList(it)
+                    Logger.i("is GuideItemReviewAdapter bindRecyclerViewWithComments = $it")
                 }
             }
         }

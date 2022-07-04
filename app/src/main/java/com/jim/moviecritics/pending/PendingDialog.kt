@@ -60,7 +60,6 @@ class PendingDialog : AppCompatDialogFragment() {
 //        dialog?.setCancelable(true)
 //        dialog?.setCanceledOnTouchOutside(true)
 
-
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
@@ -71,11 +70,6 @@ class PendingDialog : AppCompatDialogFragment() {
         viewModel.user.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog user = $it")
         }
-
-//        viewModel.score.observe(viewLifecycleOwner) {
-//            Logger.i("Pending Dialog score = $it")
-//        }
-
 
         viewModel.invalidScore.observe(viewLifecycleOwner) {
             Logger.i("viewModel.invalidScore.value = $it")
@@ -108,19 +102,12 @@ class PendingDialog : AppCompatDialogFragment() {
 
 
         viewModel.leave.observe(viewLifecycleOwner) {
-//                it?.let {
-//                    dismiss()
-//                    viewModel.onLeaveCompleted()
-//                }
             when (viewModel.leave.value) {
                 true -> {
                     dismiss()
                     viewModel.onLeaveCompleted()
-//                    Toast.makeText(context, "The movie's score was published !", Toast.LENGTH_LONG).show()
                 }
-//                false -> Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
-//                null -> Logger.i("PendingViewModel.leave.value = null")
-                else -> {}
+                else -> { Logger.i("viewModel.leave.value != true") }
             }
         }
 
@@ -152,21 +139,12 @@ class PendingDialog : AppCompatDialogFragment() {
             Logger.i("Pending Dialog storyPending = $it")
         }
 
-//        viewModel.isFillScore.observe(viewLifecycleOwner, Observer {
-//            if (viewModel.isFillScore.value == false) {
-//                Toast.makeText(context, "5個評分構面最低分數為0.5顆星等，請重新選擇", Toast.LENGTH_LONG).show()
-//            }
-//        })
-
-
-
         return binding.root
-//        return inflater.inflate(R.layout.fragment_pending, container, false)
     }
 
     override fun dismiss() {
         binding.layoutPending.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
-//        Handler().postDelayed({ super.dismiss() }, 200)
+
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

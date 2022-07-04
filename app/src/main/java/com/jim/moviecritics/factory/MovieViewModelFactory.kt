@@ -2,9 +2,7 @@ package com.jim.moviecritics.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.MovieDetailResult
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.pending.PendingViewModel

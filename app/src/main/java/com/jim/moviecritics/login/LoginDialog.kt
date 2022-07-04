@@ -13,16 +13,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogLoginBinding
@@ -30,7 +22,7 @@ import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
+
 
 
 class LoginDialog : AppCompatDialogFragment() {
@@ -39,7 +31,6 @@ class LoginDialog : AppCompatDialogFragment() {
     private lateinit var binding: DialogLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
 
-
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
@@ -47,9 +38,9 @@ class LoginDialog : AppCompatDialogFragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.LoginDialog)
 
@@ -75,7 +66,6 @@ class LoginDialog : AppCompatDialogFragment() {
 
         // Firebase auth
 //        firebaseAuth = Firebase.auth
-
     }
 
     override fun onCreateView(
@@ -101,7 +91,7 @@ class LoginDialog : AppCompatDialogFragment() {
             it?.let {
                 Logger.i("Login Dialog mainViewModel.setupUser(it)")
                 mainViewModel.setupUser(it)
-                viewModel.userSignIn(it)
+//                viewModel.userSignIn(it)
             }
         }
 

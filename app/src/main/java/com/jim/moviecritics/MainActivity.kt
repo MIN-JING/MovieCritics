@@ -9,7 +9,6 @@ import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -20,12 +19,9 @@ import kotlinx.coroutines.launch
 
 
 class MainActivity : BaseActivity() {
-//    AppCompatActivity()
 
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
-
-//    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     // get the height of status bar from system
     private val statusBarHeight: Int
@@ -40,73 +36,22 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-
-//        val binding: ActivityMainBinding = DataBindingUtil.setContentView(
-//            this, R.layout.activity_main
-//        )
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.currentFragmentType.observe(
-            this,
-            Observer {
+        viewModel.currentFragmentType.observe(this) {
                 Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 Log.i("Jim","[${viewModel.currentFragmentType.value}]")
                 Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            }
-        )
+        }
 
-//        val navController: NavController = Navigation.findNavController(
-//            this, R.id.activity_main_nav_host_fragment
-//        )
         setupToolbar()
         setupBottomNav()
         setupNavController()
-
-
-
-//        // Configure sign-in to request the user's ID, email address, and basic
-//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-//        // Configure sign-in to request the user's ID, email address, and basic
-//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestEmail()
-//            .requestIdToken(getString(R.string.server_client_id))
-//            .build()
-//
-//        // Build a GoogleSignInClient with the options specified by gso.
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-//        binding.buttonMainGoogle.setOnClickListener {
-//            Logger.i("buttonMainGoogle onClick")
-//            signInGoogle()
-//        }
-
-
     }
 
-    override fun onStart() {
-        super.onStart()
-//        // Check for existing Google Sign In account, if the user is already signed in
-//        // the GoogleSignInAccount will be non-null.
-//        // Check for existing Google Sign In account, if the user is already signed in
-//        // the GoogleSignInAccount will be non-null.
-//        val account = GoogleSignIn.getLastSignedInAccount(this)
-//        // if account != null , then updateUI(account)
-//        Logger.i("Google account = $account")
-
-    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == RC_SIGN_IN) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            handleSignInResult(task)
-//        }
-//    }
 
     private fun setupNavController() {
         findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
@@ -136,19 +81,17 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.navigation_watchlist-> {
 
-//                    when (viewModel.isLoggedIn) {
-//                        true -> {
-//                            findNavController(R.id.navHostFragment).navigate(
-//                                NavigationDirections.navigateToWatchlistFragment()
-//                            )
-//                        }
-//                        false -> {
-//                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
-//                            return@setOnItemSelectedListener false
-//                        }
-//                    }
-                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
-//                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToWatchlistFragment())
+                    when (viewModel.isLoggedIn) {
+                        true -> {
+                            findNavController(R.id.navHostFragment).navigate(
+                                NavigationDirections.navigateToWatchlistFragment()
+                            )
+                        }
+                        false -> {
+                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+                            return@setOnItemSelectedListener false
+                        }
+                    }
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_profile -> {
@@ -166,7 +109,6 @@ class MainActivity : BaseActivity() {
                             return@setOnItemSelectedListener false
                         }
                     }
-//                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToProfileFragment())
                     return@setOnItemSelectedListener true
                 }
             }
@@ -219,36 +161,4 @@ class MainActivity : BaseActivity() {
             Log.i("Jim","====== ${Build.MODEL} ======")
         }
     }
-
-//    private fun signInGoogle() {
-//        val signInIntent = mGoogleSignInClient.signInIntent
-//        startActivityForResult(signInIntent, RC_SIGN_IN)
-//    }
-//
-//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-//        try {
-//            val account = completedTask.getResult(ApiException::class.java)
-//            val googleId = account?.id ?: ""
-//            Logger.i("Google ID = $googleId")
-//            val googleFirstName = account?.givenName ?: ""
-//            Logger.i("Google First Name = $googleFirstName")
-//            val googleLastName = account?.familyName ?: ""
-//            Logger.i("Google Last Name = $googleLastName")
-//            val googleEmail = account?.email ?: ""
-//            Logger.i("Google Email = $googleEmail")
-//            val googleProfilePicURL = account?.photoUrl.toString()
-//            Logger.i("Google Profile Pic URL = $googleProfilePicURL")
-//            val googleIdToken = account?.idToken ?: ""
-//            Logger.i("Google ID Token = $googleIdToken")
-//
-//
-//        } catch (e: ApiException) {
-//            // Sign in was unsuccessful
-//            Logger.e("Google log in failed code = ${e.statusCode.toString()}")
-//        }
-//    }
-//
-//    companion object {
-//        const val RC_SIGN_IN = 9001
-//    }
 }

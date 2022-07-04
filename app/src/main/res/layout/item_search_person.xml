@@ -30,7 +30,6 @@
             tools:srcCompat="@tools:sample/avatars"
             android:contentDescription="@string/image_search_person_pic" />
 
-
         <TextView
             android:id="@+id/text_search_person_name"
             android:layout_width="0dp"
@@ -38,7 +37,10 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:ellipsize="end"
             android:gravity="center_vertical"
+            android:lines="3"
+            android:maxLines="3"
             android:text="@{look.name}"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -55,8 +57,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center_vertical"
+            android:lines="1"
+            android:maxLines="1"
             android:text="@{look.popularity.toString()}"
-            android:textColor="@color/gray_708090"
+            android:textColor="#546E7A"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +81,6 @@
         <!--            app:layout_constraintStart_toEndOf="@+id/image_search_person_pic"-->
         <!--            app:layout_constraintTop_toBottomOf="@+id/text_search_person_popularity"-->
         <!--            tools:text="Known For"/>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

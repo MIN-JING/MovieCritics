@@ -12,6 +12,9 @@
     <string name="profile">Profile</string>
     <string name="detail">Detail</string>
 
+    <!-- Toolbar -->
+    <string name="toolbar_log_out">Log out</string>
+
     <!-- Home -->
     <string name="text_home_popular">Popular</string>
 
@@ -21,7 +24,7 @@
 
     <!-- Search -->
     <string name="edit_search">Input keywords…</string>
-    <string name="button_search">Click for search request</string>
+    <string name="button_search">For search request</string>
 
     <!-- Item Search Movie -->
     <string name="image_search_movie_poster">Movie poster</string>
@@ -61,6 +64,11 @@
     <string name="text_pending_review">Review</string>
     <string name="text_pending_share">Share</string>
     <string name="text_pending_done">Done</string>
+    <string name="ratingBar_pending_leisure">Leisure score rating bar</string>
+    <string name="ratingBar_pending_hit">Hit score rating bar</string>
+    <string name="ratingBar_pending_cast">Cast score rating bar</string>
+    <string name="ratingBar_pending_music">Music score rating bar</string>
+    <string name="ratingBar_pending_story">Story score rating bar</string>
 
     <!-- Review -->
     <string name="button_review_cancel">Cancel</string>

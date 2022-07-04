@@ -11,8 +11,8 @@
         android:title=""/>
 
     <item
-        android:id="@+id/navigation_downshift"
-        android:icon="@drawable/ic_nav_downshift_selector"
+        android:id="@+id/navigation_watchlist"
+        android:icon="@drawable/ic_nav_watchlist_selector"
         android:title=""/>
 
     <item

@@ -6,7 +6,6 @@
     <item
         android:id="@+id/toolbar_button_test"
         android:icon="@drawable/ic_star"
-        android:title="測試按鈕"
+        android:title="Test"
         app:showAsAction="always"/>
-
 </menu>

@@ -9,20 +9,15 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Cast
-import com.jim.moviecritics.data.Movie
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+
 
 class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -36,10 +31,18 @@ class DetailViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
+
+    private val _user = MutableLiveData<User>()
+
+    val user: LiveData<User>
+        get() = _user
+
+
     private val _scores = MutableLiveData<List<Score>?>()
 
     val scores: LiveData<List<Score>?>
         get() = _scores
+
 
     private val _score = MutableLiveData<Score?>()
 
@@ -47,7 +50,19 @@ class DetailViewModel(
         get() = _score
 
 
-        // status: The internal MutableLiveData that stores the status of the most recent request
+    var mutableScore = MutableLiveData<Score>()
+
+
+    private val _comments = MutableLiveData<List<Comment>>()
+
+    val comments: LiveData<List<Comment>>
+        get() = _comments
+
+
+    var liveComments = MutableLiveData<List<Comment>>()
+
+
+    // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
@@ -59,10 +74,10 @@ class DetailViewModel(
     val error: LiveData<String?>
         get() = _error
 
-    private val _leaveDetail = MutableLiveData<Boolean>()
+    private val _leave = MutableLiveData<Boolean>()
 
-    val leaveDetail: LiveData<Boolean>
-        get() = _leaveDetail
+    val leave: LiveData<Boolean>
+        get() = _leave
 
 
     private val _navigateToPending = MutableLiveData<Movie?>()
@@ -85,10 +100,18 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        Logger.i("DetailViewModel init {}")
-//        pushMockScore()
-        movie.value?.imdbID?.let { getScoreResult(isInitial = true, imdbID = it, userID = 200001) }
-
+//        if (MovieApplication.instance.isLiveDataDesign()) {
+//            movie.value?.imdbID?.let {
+//                user.value?.id?.let { userId -> getLiveScoreResult(imdbID = it, userID = userId) }
+//                getLiveCommentsResult(imdbID = it)
+//            }
+//        } else {
+//            movie.value?.imdbID?.let {
+//                user.value?.id?.let { userId -> getScoreResult(isInitial = true, imdbID = it, userID = userId) }
+//                getScoresResult(isInitial = false, imdbID = it)
+//                getCommentsResult(isInitial = false, imdbID = it)
+//            }
+//        }
     }
 
     fun navigateToPending(movie: Movie) {
@@ -99,74 +122,23 @@ class DetailViewModel(
         _navigateToPending.value = null
     }
 
-    fun leaveDetail() {
-        _leaveDetail.value = true
+    fun leave() {
+        _leave.value = true
     }
 
-    private fun getScoresResult(isInitial: Boolean = false, imdbID: String) {
-
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getScores(imdbID)
-
-            _scores.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
+    fun takeDownUser(user: User) {
+        _user.value = user
+        Logger.i("Detail takeDownUser() = ${_user.value}")
     }
 
-    private fun getScoreResult(isInitial: Boolean = false, imdbID: String, userID: Long) {
+    fun getLiveScoreResult(imdbID: String, userID: String) {
+        mutableScore = applicationRepository.getLiveScore(imdbID, userID)
+        _status.value = LoadApiStatus.DONE
+    }
 
-        coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getScore(imdbID, userID)
-
-            _score.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
+    fun getLiveCommentsResult(imdbID: String) {
+        liveComments = applicationRepository.getLiveComments(imdbID)
+        _status.value = LoadApiStatus.DONE
     }
 
     fun setRadarData(
@@ -181,6 +153,7 @@ class DetailViewModel(
         userMusic: Float,
         userStory: Float,
     ): RadarData {
+
         val averageRatingsList: ArrayList<RadarEntry>
                 = arrayListOf(
             RadarEntry(averageLeisure),
@@ -189,6 +162,7 @@ class DetailViewModel(
             RadarEntry(averageMusic),
             RadarEntry(averageStory)
         )
+
         val userRatingsList: ArrayList<RadarEntry>
                 = arrayListOf(
             RadarEntry(userLeisure),
@@ -246,12 +220,5 @@ class DetailViewModel(
         radarChart.yAxis.axisMaximum = 5F
         radarChart.data = radarData
         radarChart.invalidate()
-    }
-
-    private fun pushMockScore() {
-        val result = applicationRepository.loadMockScore()
-        val scores = FirebaseFirestore.getInstance().collection("score")
-        val document = scores.document()
-        document.set(result)
     }
 }

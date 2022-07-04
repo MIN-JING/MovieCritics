@@ -1,6 +1,5 @@
 package com.jim.moviecritics.data.source.remote
 
-
 import androidx.lifecycle.MutableLiveData
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
@@ -14,7 +13,6 @@ import com.jim.moviecritics.util.Util.isInternetConnected
 object ApiDataSource : ApplicationDataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
-//        override suspend fun getPopularMovies(): Result<PopularMoviesResult> {
 
         if (!isInternetConnected()) {
             return Result.Fail(getString(R.string.internet_not_connected))
@@ -28,7 +26,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(popularResult.toHomeItems())
-//            Result.Success(listResult)
 
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
@@ -97,23 +94,35 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getScore(imdbID: String, userID: Long): Result<Score> {
+    override suspend fun getScore(imdbID: String, userID: String): Result<Score> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(userID: Long): Result<User> {
+    override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getComments(): Result<List<Comment>> {
+    override suspend fun userSignIn(user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override fun getLiveComments(): MutableLiveData<List<Comment>> {
+    override suspend fun getUser(token: String): Result<User> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun comment(comment: Comment): Result<Boolean> {
+    override suspend fun getComments(imdbID: String): Result<List<Comment>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushComment(comment: Comment): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -121,35 +130,27 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override fun pushMockComment(): Comment {
+    override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override fun pushMockScore(): Score {
+    override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean> {
+    override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -157,7 +158,19 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean> {
+    override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockComment(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockScore(): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushMockUser(): Result<Boolean> {
         TODO("Not yet implemented")
     }
 }

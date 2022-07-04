@@ -21,35 +21,43 @@ interface ApplicationDataSource {
     // FirebaseDataSource
     suspend fun getScores(imdbID: String): Result<List<Score>>
 
-    suspend fun getScore(imdbID: String, userID: Long): Result<Score>
+    suspend fun getScore(imdbID: String, userID: String): Result<Score>
 
-    suspend fun getUser(userID: Long): Result<User>
+    fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score>
 
-    suspend fun getComments(): Result<List<Comment>>
+    suspend fun userSignIn(user: User): Result<Boolean>
 
-    fun getLiveComments(): MutableLiveData<List<Comment>>
+    suspend fun getUser(token: String): Result<User>
 
-    suspend fun comment(comment: Comment): Result<Boolean>
+    suspend fun getComments(imdbID: String): Result<List<Comment>>
+
+    fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>>
+
+    fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>>
+
+    suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
 
-    fun pushMockComment(): Comment
+    suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 
-    fun pushMockScore(): Score
+    suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 
-    suspend fun pushWatchedMovie(imdbID: String, userID: Long): Result<Boolean>
+    suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean>
 
-    suspend fun removeWatchedMovie(imdbID: String, userID: Long): Result<Boolean>
+    suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean>
 
-    suspend fun pushLikedMovie(imdbID: String, userID: Long): Result<Boolean>
+    suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean>
 
-    suspend fun removeLikedMovie(imdbID: String, userID: Long): Result<Boolean>
-
-    suspend fun pushWatchlistMovie(imdbID: String, userID: Long): Result<Boolean>
-
-    suspend fun removeWatchlistMovie(imdbID: String, userID: Long): Result<Boolean>
+    suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean>
 
     suspend fun pushScore(score: Score): Result<Boolean>
 
-    suspend fun pushPopularMovies(pushTrend: PushTrend): Result<Boolean>
+    suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>
+
+    suspend fun pushMockComment(): Result<Boolean>
+
+    suspend fun pushMockScore(): Result<Boolean>
+
+    suspend fun pushMockUser(): Result<Boolean>
 }

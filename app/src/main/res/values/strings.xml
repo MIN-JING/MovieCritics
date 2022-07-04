@@ -8,10 +8,100 @@
     <!-- General -->
     <string name="movie_critics">Movie Critics</string>
     <string name="search">Search</string>
-    <string name="downshift">WatchList</string>
+    <string name="watchlist">WatchList</string>
     <string name="profile">Profile</string>
     <string name="detail">Detail</string>
 
-    <!-- Profile -->
+    <!-- Toolbar -->
+    <string name="toolbar_log_out">Log out</string>
+
+    <!-- Home -->
+    <string name="text_home_popular">Popular</string>
+
+    <!-- Item Home Popular -->
+    <string name="image_home_poster">Movie poster</string>
+    <string name="image_home_star">Rating star picture</string>
+
+    <!-- Search -->
+    <string name="edit_search">Input keywords…</string>
+    <string name="button_search">For search request</string>
+
+    <!-- Item Search Movie -->
+    <string name="image_search_movie_poster">Movie poster</string>
+
+    <!-- Item Search Television -->
+    <string name="image_search_tv_poster">Television poster</string>
+
+    <!-- Item Search Person -->
+    <string name="image_search_person_pic">Person profile picture</string>
+
+    <!-- Detail -->
+    <string name="button_detail_back">Back to Pop-up Page</string>
+    <string name="button_detail_pending">Navigate to Pending Page</string>
+    <string name="text_detail_directed_by">DIRECTED BY</string>
+    <string name="image_detail_poster">Movie poster</string>
+    <string name="button_detail_trailer">TRAILER</string>
+    <string name="text_detail_ratings">RATINGS</string>
+    <string name="text_detail_cast">Cast</string>
+    <string name="text_detail_review">Review</string>
+
+    <!-- Item Detail Cast -->
+    <string name="image_cast">Cast profile picture</string>
+
+    <!-- Pending -->
+    <string name="toggle_pending_watch_off">Watch</string>
+    <string name="toggle_pending_watch_on">Watched</string>
+    <string name="toggle_pending_like_off">Like</string>
+    <string name="toggle_pending_like_on">Liked</string>
+    <string name="toggle_pending_watchlist_off">Watchlist</string>
+    <string name="toggle_pending_watchlist_on">Added</string>
+    <string name="text_pending_rate">Rate</string>
+    <string name="text_pending_leisure">Leisure</string>
+    <string name="text_pending_hit">Hit</string>
+    <string name="text_pending_cast">Cast</string>
+    <string name="text_pending_music">Music</string>
+    <string name="text_pending_story">Story</string>
+    <string name="text_pending_review">Review</string>
+    <string name="text_pending_share">Share</string>
+    <string name="text_pending_done">Done</string>
+    <string name="ratingBar_pending_leisure">Leisure score rating bar</string>
+    <string name="ratingBar_pending_hit">Hit score rating bar</string>
+    <string name="ratingBar_pending_cast">Cast score rating bar</string>
+    <string name="ratingBar_pending_music">Music score rating bar</string>
+    <string name="ratingBar_pending_story">Story score rating bar</string>
+
+    <!-- Review -->
+    <string name="button_review_cancel">Cancel</string>
+    <string name="button_review_save">Save</string>
+    <string name="text_review_title_top">I Watched…</string>
+    <string name="image_review_poster">Movie poster</string>
+    <string name="text_review_date_title">Date</string>
+    <string name="edit_review">Add review…</string>
+
+    <!-- Login -->
     <string name="profile_mystic_information">Into the Unknown~</string>
+    <string name="text_login_title">Please log in.</string>
+    <string name="text_login_description">You could use advanced features after log in.</string>
+    <!--    <string name="button_login_google">Google 登入</string>-->
+
+    <!-- Profile -->
+    <string name="image_profile_user_pic">User profile picture</string>
+    <string name="text_profile_following">Following</string>
+    <string name="text_profile_followers">Followers</string>
+    <string name="tabs_profile">Two tab Buttons, one is Guide, another is Favorite</string>
+
+    <string name="text_profile_guide_recent_act">Recent Activity</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="server_client_id"></string>
+
+
 </resources>

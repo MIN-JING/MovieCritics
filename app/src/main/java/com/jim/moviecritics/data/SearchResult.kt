@@ -15,14 +15,12 @@ data class SearchResult(
 ) : Parcelable {
 
     fun toLookItems(): List<LookItem> {
-
         val items = mutableListOf<LookItem>()
 
         looks?.let {
             Logger.i("looksList = $looks")
 
             for (look in it) {
-
                 when (look.mediaType) {
                     "movie" -> {
                         if (look.posterPath != null) {
@@ -58,8 +56,6 @@ data class SearchResult(
                     else -> { Logger.i("mediaType unknown data = $look") }
                 }
             }
-//            items.sortedBy(LookItem::order).map { it::class.simpleName }
-//            items.sortedBy(LookItem::order)
             items.sortBy { items -> items.order }
             Logger.i("items = $items")
             for (item in items) {

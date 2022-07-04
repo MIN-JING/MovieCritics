@@ -1,34 +1,21 @@
-package com.jim.moviecritics.downshift
+package com.jim.moviecritics.watchlist
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.R
-import com.jim.moviecritics.databinding.FragmentDownshiftBinding
+import com.jim.moviecritics.databinding.FragmentWatchlistBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 
-class DownshiftFragment : Fragment() {
+class WatchlistFragment : Fragment() {
 
-    private val viewModel by viewModels<DownshiftViewModel> { getVmFactory() }
-
-//    companion object {
-//        fun newInstance() = DownshiftFragment()
-//    }
-//
-//    private lateinit var viewModel: DownshiftViewModel
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setHasOptionsMenu(true)
-//    }
+    private val viewModel by viewModels<WatchlistViewModel> { getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey) }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.toolbar_menu, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -48,18 +35,9 @@ class DownshiftFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        val binding = FragmentDownshiftBinding.inflate(inflater, container, false)
-
+        val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
-//        return inflater.inflate(R.layout.fragment_downshift, container, false)
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProvider(this).get(DownshiftViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
-
 }

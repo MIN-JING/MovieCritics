@@ -62,9 +62,6 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
-//        getSearchResult(isInitial = true, queryKey = "tom+cruise")
-
     }
 
     private fun getSearchResult(isInitial: Boolean = false, queryKey: String) {
@@ -97,20 +94,6 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
             }
         }
     }
-
-//    fun toKnownFor() {
-//
-//        lookItems.value?.let {
-//            for (value in it) {
-//                if (value.mediaType == "person") {
-//                    for ( person in value.) {
-//
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
 
     fun prepareSearch() {
         when {

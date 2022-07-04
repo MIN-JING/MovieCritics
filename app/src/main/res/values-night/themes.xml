@@ -2,15 +2,16 @@
     <!-- Base application theme. -->
     <style name="Theme.MovieCritics" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/primary_night</item>
+        <item name="colorPrimaryVariant">@color/primaryContainer_night</item>
+        <item name="colorOnPrimary">@color/onPrimary_night</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/secondary_night</item>
+        <item name="colorSecondaryVariant">@color/secondaryContainer_night</item>
+        <item name="colorOnSecondary">@color/onSecondary_night</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/roboto_n</item>
     </style>
 </resources>

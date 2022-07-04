@@ -15,12 +15,12 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/title_popular"
+            android:id="@+id/text_home_popular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Popular"
+            android:text="@string/text_home_popular"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,11 +43,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_popular"
-            tools:listitem="@layout/item_home_popular_week" />
+            app:layout_constraintTop_toBottomOf="@+id/text_home_popular"
+            tools:listitem="@layout/item_home_popular" />
 
-
-        <!--        android:onClick="@{() -> viewModel.pushPopularMovies()}"-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

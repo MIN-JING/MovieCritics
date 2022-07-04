@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jim.moviecritics.data.KnownFor
 import com.jim.moviecritics.data.Look
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.databinding.*
-import com.jim.moviecritics.util.Logger
+
 
 
 class SearchAdapter(private val onClickListener: OnClickListener) :

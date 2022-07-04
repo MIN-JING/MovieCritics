@@ -3,9 +3,7 @@ package com.jim.moviecritics.data
 sealed class LookItem(val order: Int) {
 
     abstract val id: Int
-
     abstract val mediaType: String
-
 
     data class LookMovie(val look: Look) : LookItem(0) {
         override val id: Int

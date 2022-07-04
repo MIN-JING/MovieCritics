@@ -20,82 +20,62 @@
             android:layout_height="240dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/image_home_poster"
             android:scaleType="centerCrop"
             app:imageUrl="@{trend.posterUri}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <ImageView
-            android:id="@+id/image_home_user_pic"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_home_poster"
-            tools:srcCompat="@tools:sample/avatars" />
-
         <TextView
-            android:id="@+id/text_home_name"
+            android:id="@+id/text_home_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:lines="3"
+            android:maxLines="3"
             android:text="@{trend.title}"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_home_user_pic"
-            app:layout_constraintTop_toBottomOf="@+id/image_home_poster" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_home_poster"
+            tools:text="Movie Title" />
 
         <ImageView
             android:id="@+id/image_home_star"
             android:layout_width="15dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/image_home_star"
             app:layout_constraintEnd_toStartOf="@+id/text_home_score"
-            app:layout_constraintStart_toEndOf="@+id/image_home_user_pic"
-            app:layout_constraintTop_toBottomOf="@+id/text_home_name"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_home_title"
             app:srcCompat="@drawable/ic_star"
             tools:srcCompat="@tools:sample/avatars" />
-
         <!--    android:autoSizeTextType="uniform"-->
 
         <TextView
             android:id="@+id/text_home_score"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
+            android:gravity="start|center_vertical"
             android:text="@{String.format(`%.01f`, trend.average)}"
+            android:textColor="#546E7A"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image_home_is_comment"
-            app:layout_constraintStart_toEndOf="@+id/image_home_star"
-            app:layout_constraintTop_toBottomOf="@+id/text_home_name" />
-
-        <ImageView
-            android:id="@+id/image_home_is_comment"
-            android:layout_width="15dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_home_score"
-            app:layout_constraintTop_toBottomOf="@+id/text_home_name"
-            app:srcCompat="@drawable/ic_notes"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/image_home_star"
+            app:layout_constraintTop_toBottomOf="@+id/text_home_title"
+            tools:text="7.8" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

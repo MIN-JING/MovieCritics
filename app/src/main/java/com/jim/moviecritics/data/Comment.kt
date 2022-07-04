@@ -8,10 +8,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Comment(
     var id: String = "",
-    val userID: Long = 891031L,
-    val imdbID: String = "",
+    var userID: String = "",
+    var imdbID: String = "",
     var createdTime: Timestamp = Timestamp.now(),
-    val content: String = "",
-    val likes: List<Long> = listOf(0L),
-    val dislikes: List<Long> = listOf(0L)
+    var content: String = "",
+    val likes: MutableList<String> = mutableListOf(),
+    val dislikes: MutableList<String> = mutableListOf()
 ) : Parcelable

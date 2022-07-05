@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.ItemProfileFavoriteBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.util.Logger
 
 
 class ItemFavoriteFragment : Fragment() {
@@ -23,6 +24,11 @@ class ItemFavoriteFragment : Fragment() {
         val binding = ItemProfileFavoriteBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        viewModel.livePersonalFavorites.observe(viewLifecycleOwner) {
+            Logger.i("viewModel.livePersonalFavorites = $it")
+            viewModel.getFavoritesFull(it)
+        }
 
 
         return binding.root

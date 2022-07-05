@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.databinding.FragmentDetailBinding
@@ -22,20 +20,20 @@ class DetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (viewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-            Logger.i("Detail mainViewModel.user.value = ${mainViewModel.user.value}")
-            Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
-        }
-
-
-        viewModel.movie.value?.imdbID?.let {
-            viewModel.user.value?.id?.let { userId ->
-                viewModel.getLiveScoreResult(imdbID = it, userID = userId)
-            }
-            viewModel.getLiveCommentsResult(imdbID = it)
-        }
+//        if (viewModel.user.value == null) {
+//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+//            Logger.i("Detail mainViewModel.user.value = ${mainViewModel.user.value}")
+//            Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
+//        }
+//
+//
+//        viewModel.movie.value?.imdbID?.let {
+//            viewModel.user.value?.id?.let { userId ->
+//                viewModel.getLiveScoreResult(imdbID = it, userID = userId)
+//            }
+//            viewModel.getLiveCommentsResult(imdbID = it)
+//        }
     }
 
     override fun onCreateView(
@@ -64,10 +62,6 @@ class DetailFragment : Fragment() {
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.movie = $it")
-        }
-
-        viewModel.user.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.user = $it")
         }
 
         viewModel.mutableScore.observe(viewLifecycleOwner) {

@@ -30,6 +30,10 @@ class DefaultApplicationRepository(
         return apiDataSource.getSearchMulti(queryKey)
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        return apiDataSource.getFind(imdbID)
+    }
+
     // FirebaseDataSource
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         return firebaseDataSource.getScores(imdbID)
@@ -69,6 +73,10 @@ class DefaultApplicationRepository(
 
     override suspend fun delete(comment: Comment): Result<Boolean> {
         return firebaseDataSource.delete(comment)
+    }
+
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        return firebaseDataSource.getLivePersonalFavorites(userID)
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {

@@ -15,10 +15,6 @@ class ItemGuideFragment : Fragment() {
 
     private val viewModel by viewModels<ItemGuideViewModel> { getVmFactory() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +35,4 @@ class ItemGuideFragment : Fragment() {
 
         return binding.root
     }
-
-
 }

@@ -1,10 +1,7 @@
 package com.jim.moviecritics.network
 
 import com.jim.moviecritics.BuildConfig
-import com.jim.moviecritics.data.CreditResult
-import com.jim.moviecritics.data.MovieDetailResult
-import com.jim.moviecritics.data.PopularMoviesResult
-import com.jim.moviecritics.data.SearchResult
+import com.jim.moviecritics.data.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -20,6 +17,7 @@ private const val BASE_URL = "https://$HOST_NAME/$API_VERSION/"
 private const val API_KEY = ""
 private const val MEDIA_TYPE = "movie"
 private const val TIME_WINDOW = "week"
+private const val EXTERNAL_SOURCE = "imdb_id"
 
 
 
@@ -82,6 +80,13 @@ interface TmdbApiService {
         @Query("query") queryKey: String,
         @Query("api_key") apiKey: String = API_KEY
     ): SearchResult
+
+    @GET("find/{external_id}")
+    suspend fun getFind(
+        @Path("external_id") id: String,
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("external_source") externalSource: String = EXTERNAL_SOURCE
+    ): FindResult
 }
 
 /**

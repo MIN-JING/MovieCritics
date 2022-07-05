@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentProfileBinding
 import com.jim.moviecritics.ext.getVmFactory

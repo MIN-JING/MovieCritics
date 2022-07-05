@@ -35,6 +35,10 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
@@ -72,6 +76,10 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
     }
 
     override suspend fun delete(comment: Comment): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
         TODO("Not yet implemented")
     }
 

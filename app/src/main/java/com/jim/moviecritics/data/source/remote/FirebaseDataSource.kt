@@ -48,6 +48,10 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
@@ -289,7 +293,7 @@ object FirebaseDataSource : ApplicationDataSource {
                         Logger.w("[${this::class.simpleName}] getLivePersonalComments task.result.size < 1")
                     }
                 } else {
-                    Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
+                    Logger.w("[${this::class.simpleName}] getLivePersonalComments snapshot == null")
                 }
             }
         return liveData
@@ -338,6 +342,38 @@ object FirebaseDataSource : ApplicationDataSource {
                     }
             }
         }
+    }
+
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        val liveData = MutableLiveData<List<String>>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .whereEqualTo("id", userID)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLivePersonalFavorites addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                if (snapshot != null) {
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<User>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val user= document.toObject(User::class.java)
+                            list.add(user)
+                        }
+                        liveData.value = list.first().liked
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLivePersonalFavorites task.result.size < 1")
+                    }
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLivePersonalFavorites snapshot == null")
+                }
+            }
+        return liveData
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->

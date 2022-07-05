@@ -35,13 +35,13 @@ class ReviewDialog : AppCompatDialogFragment()  {
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
 
-        if (viewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-            Logger.i("Review mainViewModel.user.value = ${mainViewModel.user.value}")
-            Logger.i("Review viewModel.user.value = ${viewModel.user.value}")
-        }
-        viewModel.initComment()
+//        if (viewModel.user.value == null) {
+//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
+//            Logger.i("Review mainViewModel.user.value = ${mainViewModel.user.value}")
+//            Logger.i("Review viewModel.user.value = ${viewModel.user.value}")
+//        }
+//        viewModel.initComment()
     }
 
     override fun onCreateView(

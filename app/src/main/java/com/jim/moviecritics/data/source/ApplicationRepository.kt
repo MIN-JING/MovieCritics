@@ -18,6 +18,8 @@ interface ApplicationRepository {
 
     suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>>
 
+    suspend fun getFind(imdbID: String): Result<FindResult>
+
     // FirebaseDataSource
     suspend fun getScores(imdbID: String): Result<List<Score>>
 
@@ -38,6 +40,8 @@ interface ApplicationRepository {
     suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
+
+    fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>>
 
     suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 

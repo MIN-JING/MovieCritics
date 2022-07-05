@@ -91,6 +91,25 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
+        }
+
+        return try {
+            val searchResult = TmdbApi.retrofitService.getFind(imdbID)
+
+            searchResult.error?.let {
+                return Result.Fail(it)
+            }
+            Result.Success(searchResult)
+
+        } catch (e: Exception) {
+            Logger.w("[${this::class.simpleName}] exception=${e.message}")
+            Result.Error(e)
+        }
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
@@ -128,6 +147,10 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override suspend fun delete(comment: Comment): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
         TODO("Not yet implemented")
     }
 

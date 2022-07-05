@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
 
 class ItemGuideViewModel(
-    private val applicationRepository: ApplicationRepository,
-    private val profileType: ProfileTypeFilter
+    private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
 }

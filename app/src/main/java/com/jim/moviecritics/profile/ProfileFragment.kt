@@ -61,7 +61,8 @@ class ProfileFragment : Fragment() {
             viewpagerProfile.let {
                 it.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
                 TabLayoutMediator(tabsProfile, it) { tab, position ->
-                    tab.text = tabLayoutArray[position]
+//                    tab.text = tabLayoutArray[position]
+                    tab.text = ProfileTypeFilter.values()[position].value
                 }.attach()
             }
             return@onCreateView root

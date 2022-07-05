@@ -87,7 +87,7 @@ class LoginDialog : AppCompatDialogFragment() {
         val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         viewModel.liveUser.observe(viewLifecycleOwner) {
-            Logger.i("Login Dialog viewModel.user = $it")
+            Logger.i("Login Dialog viewModel liveUser = $it")
             it?.let {
                 Logger.i("Login Dialog mainViewModel.setupUser(it)")
                 mainViewModel.setupUser(it)
@@ -107,6 +107,10 @@ class LoginDialog : AppCompatDialogFragment() {
                 mainViewModel.navigateToLoginSuccess(it)
                 dismiss()
             }
+        }
+
+        viewModel.statusLogIn.observe(viewLifecycleOwner) {
+            Logger.i("Login Dialog viewModel statusLogIn = $it")
         }
 
         return binding.root

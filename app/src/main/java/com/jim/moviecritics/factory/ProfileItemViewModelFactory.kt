@@ -15,11 +15,11 @@ class ProfileItemViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
-                isAssignableFrom(ItemGuideViewModel::class.java) ->
-                    ItemGuideViewModel(applicationRepository)
-
-                isAssignableFrom(ItemFavoriteViewModel::class.java) ->
-                    ItemFavoriteViewModel(applicationRepository)
+//                isAssignableFrom(ItemGuideViewModel::class.java) ->
+//                    ItemGuideViewModel(applicationRepository)
+//
+//                isAssignableFrom(ItemFavoriteViewModel::class.java) ->
+//                    ItemFavoriteViewModel(applicationRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

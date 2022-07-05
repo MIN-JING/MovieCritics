@@ -40,19 +40,11 @@ class ProfileFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        if (profileViewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            profileViewModel.user.observe(viewLifecycleOwner) {
-                if (null != it) {
-                    Logger.i("Profile Fragment mainViewModel.setupUser(it)")
-                    mainViewModel.setupUser(it)
-                }
-            }
+//        val tabLayoutArray = arrayOf("Guide", "Favorite")
+
+        profileViewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("profileViewModel.user observe it = $it")
         }
-
-        profileViewModel.user.value?.id?.let { profileViewModel.getLivePersonalCommentsResult(it) }
-
-        val tabLayoutArray = arrayOf("Guide", "Favorite")
 
         FragmentProfileBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner

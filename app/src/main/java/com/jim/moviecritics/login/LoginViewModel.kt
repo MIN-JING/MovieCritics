@@ -148,8 +148,8 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                     UserManager.userToken = firebaseTokenResult?.token.toString()
                     Logger.i("UserManager.userToken = ${UserManager.userToken}")
 
-                    UserManager.user.value = user
-                    Logger.i("UserManager.user.value = ${UserManager.user.value}")
+                    UserManager.userId = firebaseCurrentUser?.uid.toString()
+                    Logger.i("UserManager.userId = ${UserManager.userId}")
 
                     liveUser.value = user
                     Logger.i("Login user = $user")

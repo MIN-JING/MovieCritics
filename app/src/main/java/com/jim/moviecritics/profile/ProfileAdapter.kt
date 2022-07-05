@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.jim.moviecritics.util.Logger
+
 
 class ProfilePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
@@ -16,7 +16,6 @@ class ProfilePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle
     }
 
     override fun createFragment(position: Int): Fragment {
-        Logger.i("createFragment position = $position")
         return when (position) {
             0 -> ItemGuideFragment()
             1 -> ItemFavoriteFragment()

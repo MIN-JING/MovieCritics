@@ -5,9 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.jim.moviecritics.detail.DetailViewModel" />-->
         <variable
             name="comment"
             type="com.jim.moviecritics.data.Comment" />

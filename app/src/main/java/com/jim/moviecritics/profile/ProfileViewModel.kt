@@ -32,7 +32,7 @@ class ProfileViewModel(
     val user: LiveData<User>
         get() = _user
 
-    private var livePersonalComments = MutableLiveData<List<Comment>>()
+
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -70,9 +70,12 @@ class ProfileViewModel(
         Logger.i("------------------------------------")
 
         if (user.value == null) {
+            Logger.i("ProfileViewModel user.value == null")
             UserManager.userToken?.let {
                 getUser(it)
             }
+        } else {
+            Logger.i("ProfileViewModel user.value != null")
         }
     }
 
@@ -111,10 +114,5 @@ class ProfileViewModel(
                 }
             }
         }
-    }
-
-    fun getLivePersonalCommentsResult(userID: String) {
-        livePersonalComments = applicationRepository.getLivePersonalComments(userID)
-        _status.value = LoadApiStatus.DONE
     }
 }

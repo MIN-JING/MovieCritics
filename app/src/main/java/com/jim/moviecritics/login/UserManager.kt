@@ -10,6 +10,7 @@ object UserManager {
 
     private const val USER_DATA = "user_data"
     private const val USER_TOKEN = "user_token"
+    private const val USER_ID = "user_id"
 
 //    private val _user = MutableLiveData<User?>()
 //
@@ -35,6 +36,29 @@ object UserManager {
                     MovieApplication.instance
                         .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
                         .putString(USER_TOKEN, value)
+                        .apply()
+                    value
+                }
+            }
+        }
+
+    var userId: String? = null
+        get() = MovieApplication.instance
+            .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
+            .getString(USER_ID, null)
+        set(value) {
+            field = when (value) {
+                null -> {
+                    MovieApplication.instance
+                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+                        .remove(USER_ID)
+                        .apply()
+                    null
+                }
+                else -> {
+                    MovieApplication.instance
+                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+                        .putString(USER_ID, value)
                         .apply()
                     value
                 }

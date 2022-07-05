@@ -114,15 +114,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager_profile"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_profile_header"/>
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs_profile"
             android:layout_width="match_parent"
@@ -131,6 +122,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_profile_header" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs_profile"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,7 @@
 package com.jim.moviecritics.login
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.data.User
@@ -12,12 +13,12 @@ object UserManager {
     private const val USER_TOKEN = "user_token"
     private const val USER_ID = "user_id"
 
-//    private val _user = MutableLiveData<User?>()
-//
-//    val user: LiveData<User?>
-//        get() = _user
+    private val _user = MutableLiveData<User?>()
 
-    val user = MutableLiveData<User?>()
+    val user: LiveData<User?>
+        get() = _user
+
+//    val user = MutableLiveData<User?>()
 
     var userToken: String? = null
         get() = MovieApplication.instance
@@ -76,7 +77,7 @@ object UserManager {
      */
     fun clear() {
         userToken = null
-//        _user.value = null
-        user.value = null
+        _user.value = null
+//        user.value = null
     }
 }

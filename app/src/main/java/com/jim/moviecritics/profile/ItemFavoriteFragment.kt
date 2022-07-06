@@ -25,14 +25,16 @@ class ItemFavoriteFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        binding.recyclerProfileFavoriteChild.adapter = FavoriteItemAdapter(
+            FavoriteItemAdapter.OnClickListener {
+                Logger.i("FavoriteItemAdapter.OnClickListener it = $it")
+            }
+        )
+
         viewModel.livePersonalFavorites.observe(viewLifecycleOwner) {
             Logger.i("viewModel.livePersonalFavorites = $it")
             viewModel.getFavoritesFull(it)
         }
-
-
         return binding.root
     }
-
-
 }

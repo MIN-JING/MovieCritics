@@ -20,6 +20,12 @@ class ItemFavoriteViewModel(
 
     var livePersonalFavorites = MutableLiveData<List<String>>()
 
+
+    private val _finds = MutableLiveData<List<Find>>()
+
+    val finds: LiveData<List<Find>>
+        get() = _finds
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -47,9 +53,6 @@ class ItemFavoriteViewModel(
         viewModelJob.cancel()
     }
 
-    /**
-     * Get [User] profile data when user is null
-     */
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
@@ -58,7 +61,6 @@ class ItemFavoriteViewModel(
         UserManager.userId?.let {
             getLivePersonalFavoritesResult(it)
         }
-
     }
 
     private fun getLivePersonalFavoritesResult(userID: String) {
@@ -68,37 +70,31 @@ class ItemFavoriteViewModel(
 
 
     fun getFavoritesFull(favorites: List<String>) {
-
-        var totalCount = favorites.size
-        Logger.i("totalCount = $totalCount")
-
         val list = mutableListOf<Find>()
 
         coroutineScope.launch {
-
-            for (index in 0 until totalCount) {
+            for (index in favorites.indices) {
                 Logger.i("Item Favorite request child $index")
                 Logger.i("favorites[index] = ${favorites[index]}")
                 val result =
-                    getFindResult(isInitial = true, index = index, imdbID = favorites[index])
+                    getFindResult(isInitial = true, imdbID = favorites[index], index = index)
                 Logger.i("getFavoritesFull result = $result")
 
                 if (result?.finds != null) {
                     for (value in result.finds) {
                         Logger.i("result?.finds value = $value")
+                        if (value.posterUri != null) {
+                            value.posterUri = "https://image.tmdb.org/t/p/w185" + value.posterUri
+                        }
+                        if (value.backdrop != null) {
+                            value.backdrop = "https://image.tmdb.org/t/p/w185" + value.backdrop
+                        }
                         list.add(value)
                         Logger.i("getFavoritesFull list = $list")
                     }
                 }
-                delay(200)
-//                totalCount--
-
-                if (totalCount == 0) {
-                    Logger.d("Item Favorite request the last one")
-                    Logger.i("Item Favorite request result all = $list")
-                }
             }
-
+            _finds.value = list
         }
     }
 

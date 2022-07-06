@@ -57,10 +57,11 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/home_fragment.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_detail_cast.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_detail_review.xml" value="0.3522873022659256" />
-        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_home_popular.xml" value="0.3522873022659256" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_home_popular.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_home_popular_week.xml" value="0.5" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_home_popularweek.xml" value="0.7333333333333334" />
-        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_profile_favorite.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_profile_favorite.xml" value="0.22" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_profile_favorite_child.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_profile_guide.xml" value="0.3522873022659256" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_profile_guide_comment.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_search_media_type.xml" value="0.2535271483539974" />

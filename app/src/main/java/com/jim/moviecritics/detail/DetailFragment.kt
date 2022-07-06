@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
@@ -19,15 +20,12 @@ class DetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 //        if (viewModel.user.value == null) {
 //            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 //            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
 //            Logger.i("Detail mainViewModel.user.value = ${mainViewModel.user.value}")
 //            Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
 //        }
-//
-//
 //        viewModel.movie.value?.imdbID?.let {
 //            viewModel.user.value?.id?.let { userId ->
 //                viewModel.getLiveScoreResult(imdbID = it, userID = userId)
@@ -64,9 +62,23 @@ class DetailFragment : Fragment() {
             Logger.i("DetailViewModel.movie = $it")
         }
 
-        viewModel.mutableScore.observe(viewLifecycleOwner) {
+
+        viewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.user = $it")
+            viewModel.movie.value?.imdbID?.let { imdbID ->
+                viewModel.user.value?.id?.let { userID ->
+                    Logger.i("userID = $userID")
+                    Logger.i("imdbID = $imdbID")
+                    viewModel.getLiveScoreResult(imdbID = imdbID, userID = userID)
+                }
+//                binding.radarChartRating.invalidate()
+            }
+        }
+
+        viewModel.liveScore.observe(viewLifecycleOwner, Observer {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
+                Logger.i("viewModel.liveScore != null")
                 val radarData = viewModel.movie.value?.let { movie ->
                     viewModel.setRadarData(
                         averageLeisure = movie.voteAverage,
@@ -86,6 +98,7 @@ class DetailFragment : Fragment() {
                 }
 
             } else {
+                Logger.i("viewModel.liveScore == null")
                 val radarData = viewModel.movie.value?.let { movie ->
                     viewModel.setRadarData(
                         averageLeisure = movie.voteAverage,
@@ -104,14 +117,14 @@ class DetailFragment : Fragment() {
                     viewModel.showRadarChart(binding.radarChartRating, radarData)
                 }
             }
-        }
+        })
 
-        viewModel.liveComments.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.liveComments = $it")
-            it?.let {
-                binding.viewModel = viewModel
-            }
-        }
+//        viewModel.liveComments.observe(viewLifecycleOwner) {
+//            Logger.i("DetailViewModel.liveComments = $it")
+//            it?.let {
+//                binding.viewModel = viewModel
+//            }
+//        }
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")

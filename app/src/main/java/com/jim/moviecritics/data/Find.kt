@@ -15,7 +15,7 @@ data class Find(
     @Json(name = "original_title") val originalTitle: String,
     @Json(name = "original_language") val originalLanguage: String,
     val title: String,
-    @Json(name = "backdrop_path") val backdrop: String?,
+    @Json(name = "backdrop_path") var backdrop: String?,
     val popularity: Float,
     @Json(name = "vote_count") val count: Int,
     @Json(name = "vote_average") val average: Float,

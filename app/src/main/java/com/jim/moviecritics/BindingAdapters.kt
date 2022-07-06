@@ -6,13 +6,11 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
-import com.jim.moviecritics.data.Cast
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
+import com.jim.moviecritics.profile.FavoriteItemAdapter
 import com.jim.moviecritics.profile.GuideItemReviewAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
@@ -72,6 +70,20 @@ fun bindRecyclerViewWithComments(recyclerView: RecyclerView, comments: List<Comm
                 is GuideItemReviewAdapter -> {
                     submitList(it)
                     Logger.i("is GuideItemReviewAdapter bindRecyclerViewWithComments = $it")
+                }
+            }
+        }
+    }
+}
+
+@BindingAdapter("finds")
+fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
+    finds?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is FavoriteItemAdapter -> {
+                    submitList(it)
+                    Logger.i("is FavoriteItemAdapter bindRecyclerViewWithFinds = $it")
                 }
             }
         }

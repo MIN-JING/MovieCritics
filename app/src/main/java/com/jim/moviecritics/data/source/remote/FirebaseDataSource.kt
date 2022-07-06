@@ -141,9 +141,11 @@ object FirebaseDataSource : ApplicationDataSource {
                         }
                         Logger.d( list.first().id + " => " + list.first())
                         liveData.value = list.first()
+                        Logger.i("live score snapshot.size() >= 1 liveData = ${liveData.value}")
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveScore task.result.size < 1")
                         liveData.value = Score(imdbID = imdbID, userID = userID)
+                        Logger.i("live score snapshot.size() < 1 liveData = ${liveData.value}")
                     }
                 } else {
                     Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")

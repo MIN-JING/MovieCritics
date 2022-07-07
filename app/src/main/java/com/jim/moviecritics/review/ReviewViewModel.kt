@@ -40,6 +40,9 @@ class ReviewViewModel(
 //    val user: LiveData<User>
 //        get() = _user
 
+//    private val movie = arguments
+
+    private val user = UserManager.user
 
     private val comment = Comment()
 
@@ -84,7 +87,9 @@ class ReviewViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        initComment()
+        comment.imdbID = movie.value?.imdbID.toString()
+        comment.userID = user?.id.toString()
+//        initComment()
     }
 
 //    fun takeDownUser(user: User) {
@@ -92,10 +97,10 @@ class ReviewViewModel(
 //        Logger.i("Review takeDownUser() = ${_user.value}")
 //    }
 
-    private fun initComment() {
-        comment.imdbID = movie.value?.imdbID.toString()
-        comment.userID = UserManager.userId.toString()
-    }
+//    private fun initComment() {
+//        comment.imdbID = movie.value?.imdbID.toString()
+//        comment.userID = UserManager.userId.toString()
+//    }
 
 
     fun leave() {
@@ -107,11 +112,9 @@ class ReviewViewModel(
     }
 
     fun toGenres(): String {
-
         var genres = ""
 
         movie.value?.genres?.let {
-
             if (it.isNotEmpty()) {
                 for (genre in it) {
                     genres = genres + genre.name + ", "

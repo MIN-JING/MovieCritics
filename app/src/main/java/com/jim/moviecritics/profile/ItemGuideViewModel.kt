@@ -17,10 +17,12 @@ class ItemGuideViewModel(
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
 
-    private val _user = MutableLiveData<User>()
+    private val user = UserManager.user
 
-    val user: LiveData<User>
-        get() = _user
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
 
 
     var livePersonalComments = MutableLiveData<List<Comment>>()
@@ -60,14 +62,16 @@ class ItemGuideViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        if (livePersonalComments.value == null) {
-            Logger.i("livePersonalComments.value == null")
-            UserManager.userId?.let {
-                getLivePersonalCommentsResult(it)
-            }
-        } else {
-            Logger.i("livePersonalComments.value != null")
-        }
+        user?.id?.let { getLivePersonalCommentsResult(it) }
+
+//        if (livePersonalComments.value == null) {
+//            Logger.i("livePersonalComments.value == null")
+//            UserManager.userId?.let {
+//                getLivePersonalCommentsResult(it)
+//            }
+//        } else {
+//            Logger.i("livePersonalComments.value != null")
+//        }
     }
 
     private fun getLivePersonalCommentsResult(userID: String) {

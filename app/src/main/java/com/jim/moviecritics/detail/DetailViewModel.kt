@@ -16,7 +16,6 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 
@@ -24,6 +23,10 @@ class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
     ) : ViewModel() {
+
+//    private val movie = arguments
+
+    private val user = UserManager.user
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -33,10 +36,10 @@ class DetailViewModel(
         get() = _movie
 
 
-    private val _user = MutableLiveData<User>()
-
-    val user: LiveData<User>
-        get() = _user
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
 
 
     private val _scores = MutableLiveData<List<Score>?>()
@@ -101,18 +104,10 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.userToken?.let {
-            getUser(it)
+        movie.value?.imdbID?.let {
+            getLiveCommentsResult(imdbID = it)
+            user?.id?.let { userID -> getLiveScoreResult(imdbID = it, userID = userID) }
         }
-
-        movie.value?.imdbID?.let { imdbID ->
-            getLiveCommentsResult(imdbID = imdbID)
-//            user.value?.id?.let { userID -> getLiveScoreResult(imdbID = imdbID, userID = userID) }
-        }
-
-//        movie.value?.imdbID?.let {
-//            UserManager.userId?.let { userID -> getLiveScoreResult(imdbID = it, userID = userID) }
-//        }
 
     }
 
@@ -137,14 +132,18 @@ class DetailViewModel(
         Logger.i("getLiveScoreResult()")
         Logger.i("getLiveScoreResult() userID = $userID")
         Logger.i("getLiveScoreResult() imdbID = $imdbID")
+        liveScore.value = applicationRepository.getLiveScore(imdbID, userID).value
         liveScore = applicationRepository.getLiveScore(imdbID, userID)
-        Logger.i("getLiveScoreResult() liveScore = ${liveScore.value}")
+        Logger.i("getLiveScoreResult() liveScore = $liveScore")
+        Logger.i("getLiveScoreResult() liveScore.value = ${liveScore.value}")
         _status.value = LoadApiStatus.DONE
     }
 
 
     private fun getLiveCommentsResult(imdbID: String) {
         liveComments = applicationRepository.getLiveComments(imdbID)
+        Logger.i("getLiveCommentsResult() liveComments = $liveComments")
+        Logger.i("getLiveCommentsResult() liveComments.value = ${liveComments.value}")
         _status.value = LoadApiStatus.DONE
     }
 
@@ -228,75 +227,4 @@ class DetailViewModel(
         radarChart.data = radarData
         radarChart.invalidate()
     }
-
-    private fun getUser(token: String) {
-
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getUser(token)
-
-            _user.value = when (result) {
-
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    if (result.error.contains("Invalid Access Token", true)) {
-                        UserManager.clear()
-                    }
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-        }
-    }
-
-//    private suspend fun getUser(token: String): User? {
-//
-//        return withContext(Dispatchers.IO) {
-//
-//            _status.postValue(LoadApiStatus.LOADING)
-//
-//            when (val result = applicationRepository.getUser(token)) {
-//                is Result.Success -> {
-//                    _error.postValue(null)
-//                    _status.postValue(LoadApiStatus.DONE)
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.postValue(result.error)
-//                    _status.postValue(LoadApiStatus.ERROR)
-//                    if (result.error.contains("Invalid Access Token", true)) {
-//                        UserManager.clear()
-//                    }
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.postValue(result.exception.toString())
-//                    _status.postValue(LoadApiStatus.ERROR)
-//                    null
-//                }
-//                else -> {
-//                    _error.postValue(Util.getString(R.string.you_know_nothing))
-//                    _status.postValue(LoadApiStatus.ERROR)
-//                    null
-//                }
-//            }
-//        }
-//    }
 }

@@ -47,12 +47,16 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveScore(imdbID, userID)
     }
 
-    override suspend fun userSignIn(user: User): Result<Boolean> {
-        return firebaseDataSource.userSignIn(user)
+    override suspend fun pushUserInfo(user: User): Result<Boolean> {
+        return firebaseDataSource.pushUserInfo(user)
     }
 
-    override suspend fun getUser(token: String): Result<User> {
-        return firebaseDataSource.getUser(token)
+    override suspend fun getUserByToken(token: String): Result<User> {
+        return firebaseDataSource.getUserByToken(token)
+    }
+
+    override suspend fun getUserById(id: String): Result<User> {
+        return firebaseDataSource.getUserById(id)
     }
 
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {

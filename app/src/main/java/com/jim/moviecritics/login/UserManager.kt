@@ -13,12 +13,14 @@ object UserManager {
     private const val USER_TOKEN = "user_token"
     private const val USER_ID = "user_id"
 
-    private val _user = MutableLiveData<User?>()
-
-    val user: LiveData<User?>
-        get() = _user
+//    private val _user = MutableLiveData<User?>()
+//
+//    val user: LiveData<User?>
+//        get() = _user
 
 //    val user = MutableLiveData<User?>()
+
+    var user: User? = null
 
     var userToken: String? = null
         get() = MovieApplication.instance
@@ -43,41 +45,44 @@ object UserManager {
             }
         }
 
-    var userId: String? = null
-        get() = MovieApplication.instance
-            .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
-            .getString(USER_ID, null)
-        set(value) {
-            field = when (value) {
-                null -> {
-                    MovieApplication.instance
-                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
-                        .remove(USER_ID)
-                        .apply()
-                    null
-                }
-                else -> {
-                    MovieApplication.instance
-                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
-                        .putString(USER_ID, value)
-                        .apply()
-                    value
-                }
-            }
-        }
+//    var userId: String? = null
+//        get() = MovieApplication.instance
+//            .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
+//            .getString(USER_ID, null)
+//        set(value) {
+//            field = when (value) {
+//                null -> {
+//                    MovieApplication.instance
+//                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+//                        .remove(USER_ID)
+//                        .apply()
+//                    null
+//                }
+//                else -> {
+//                    MovieApplication.instance
+//                        .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
+//                        .putString(USER_ID, value)
+//                        .apply()
+//                    value
+//                }
+//            }
+//        }
+
+
 
     /**
      * It can be use to check login status directly
      */
     val isLoggedIn: Boolean
-        get() = userToken != null
+        get() = user != null
+//        get() = userToken != null
 
     /**
      * Clear the [userToken] and the [user]/[_user] data
      */
     fun clear() {
         userToken = null
-        _user.value = null
+//        _user.value = null
 //        user.value = null
     }
 }

@@ -9,9 +9,6 @@
         <variable
             name="viewModel"
             type="com.jim.moviecritics.detail.DetailViewModel" />
-<!--        <variable-->
-<!--            name="movie"-->
-<!--            type="com.jim.moviecritics.data.Movie" />-->
         <variable
             name="isLiveDataDesign"
             type="Boolean" />

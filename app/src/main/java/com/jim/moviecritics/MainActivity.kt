@@ -84,7 +84,7 @@ class MainActivity : BaseActivity() {
                     when (viewModel.isLoggedIn) {
                         true -> {
                             findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToWatchlistFragment()
+                                NavigationDirections.navigateToWatchlistFragment(viewModel.user.value)
                             )
                         }
                         false -> {
@@ -99,9 +99,7 @@ class MainActivity : BaseActivity() {
                     when (viewModel.isLoggedIn) {
                         true -> {
                             findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToProfileFragment(
-                                    //viewModel.user.value
-                                )
+                                NavigationDirections.navigateToProfileFragment(viewModel.user.value)
                             )
                         }
                         false -> {

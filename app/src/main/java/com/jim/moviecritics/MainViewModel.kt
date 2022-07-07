@@ -92,14 +92,14 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("MainViewModel=$this")
         Logger.i("=============")
     }
-
-    fun checkUser() {
-        if (user.value == null) {
-            UserManager.userToken?.let {
+//
+//    fun checkUser() {
+//        if (user.value == null) {
+//            UserManager.userToken?.let {
 //                getUser(it)
-            }
-        }
-    }
+//            }
+//        }
+//    }
 
     fun navigateToLoginSuccess(user: User) {
         _navigateToLoginSuccess.value = user
@@ -123,7 +123,7 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getUser(token)
+            val result = applicationRepository.getUserByToken(token)
 
             _user.value = when (result) {
 

@@ -27,9 +27,11 @@ interface ApplicationRepository {
 
     fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score>
 
-    suspend fun userSignIn(user: User): Result<Boolean>
+    suspend fun pushUserInfo(user: User): Result<Boolean>
 
-    suspend fun getUser(token: String): Result<User>
+    suspend fun getUserByToken(token: String): Result<User>
+
+    suspend fun getUserById(id: String): Result<User>
 
     suspend fun getComments(imdbID: String): Result<List<Comment>>
 

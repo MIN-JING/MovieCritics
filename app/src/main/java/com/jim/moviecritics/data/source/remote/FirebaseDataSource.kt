@@ -141,7 +141,8 @@ object FirebaseDataSource : ApplicationDataSource {
                         }
                         Logger.d( list.first().id + " => " + list.first())
                         liveData.value = list.first()
-                        Logger.i("live score snapshot.size() >= 1 liveData = ${liveData.value}")
+                        Logger.i("live score snapshot.size() >= 1 liveData.value = ${liveData.value}")
+                        Logger.i("live score snapshot.size() >= 1 liveData = $liveData")
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveScore task.result.size < 1")
                         liveData.value = Score(imdbID = imdbID, userID = userID)
@@ -151,10 +152,12 @@ object FirebaseDataSource : ApplicationDataSource {
                     Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
                 }
             }
+        Logger.i("return liveData.value = ${liveData.value}")
+        Logger.i("return liveData = $liveData")
         return liveData
     }
 
-    override suspend fun userSignIn(user: User): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushUserInfo(user: User): Result<Boolean> = suspendCoroutine { continuation ->
 
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
@@ -175,7 +178,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun getUser(token: String): Result<User> = suspendCoroutine { continuation ->
+    override suspend fun getUserByToken(token: String): Result<User> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .whereEqualTo("firebaseToken", token)
@@ -183,13 +186,41 @@ object FirebaseDataSource : ApplicationDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
+                        Logger.w("[${this::class.simpleName}] getUserByToken task.result.size >= 1")
                         Logger.d( task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(User::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
+                        Logger.w("[${this::class.simpleName}] getUserByToken task.result.size < 1")
                         val item = User(firebaseToken = "token")
+                        continuation.resume(Result.Success(item))
+                    }
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getUserById(id: String): Result<User> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .whereEqualTo("id", id)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getUserById task.result.size >= 1")
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val item = task.result.first().toObject(User::class.java)
+                        continuation.resume(Result.Success(item))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getUserById task.result.size < 1")
+                        val item = User(id = id)
                         continuation.resume(Result.Success(item))
                     }
                 } else {

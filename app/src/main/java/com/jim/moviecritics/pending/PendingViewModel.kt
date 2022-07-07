@@ -28,10 +28,21 @@ class PendingViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-    private val _user = MutableLiveData<User>()
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
+
+//    private val movie = arguments
+
+    private val _user = MutableLiveData<User>().apply {
+        value = UserManager.user
+    }
 
     val user: LiveData<User>
         get() = _user
+
+
 
     private val _isWatch = MutableLiveData<Boolean>()
 
@@ -105,15 +116,23 @@ class PendingViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        if (user.value == null) {
-            Logger.i("PendingViewModel user.value == null")
-            UserManager.userToken?.let {
-                getUser(it)
-            }
-        } else {
-            Logger.i("PendingViewModel user.value != null")
-            initToggleAndScore()
-        }
+
+        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+
+        score.imdbID = movie.value?.imdbID.toString()
+        score.userID = user.value?.id.toString()
+
+//        if (user.value == null) {
+//            Logger.i("PendingViewModel user.value == null")
+//            UserManager.userToken?.let {
+//                getUser(it)
+//            }
+//        } else {
+//            Logger.i("PendingViewModel user.value != null")
+//            initToggleAndScore()
+//        }
 
 //        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
 //        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
@@ -129,21 +148,22 @@ class PendingViewModel(
 //        Logger.i("Detail takeDownUser() = ${_user.value}")
 //    }
 
-    private fun initToggleAndScore() {
-        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
 
-        score.imdbID = movie.value?.imdbID.toString()
-        score.userID = user.value?.id.toString()
-    }
+//    private fun initToggleAndScore() {
+//        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
+//        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+//        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+//
+//        score.imdbID = movie.value?.imdbID.toString()
+//        score.userID = user.value?.id.toString()
+//    }
 
     fun onClickWatch(imdbID: String, userID: String) {
         if (isWatch.value != true) {
             Logger.i("isWatch.value != true")
             Logger.i("user.value?.watched = ${user.value?.watched}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.watched?.add(imdbID)
+            user.value?.watched?.add(imdbID)
             Logger.i("user.value?.watched add = ${user.value?.watched}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -172,7 +192,7 @@ class PendingViewModel(
             Logger.i("isWatch.value != false")
             Logger.i("user.value?.watched = ${user.value?.watched}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.watched?.remove(imdbID)
+            user.value?.watched?.remove(imdbID)
             Logger.i("user.value?.watched remove = ${user.value?.watched}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -205,7 +225,7 @@ class PendingViewModel(
             Logger.i("isLike.value != true")
             Logger.i("user.value?.liked = ${user.value?.liked}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.liked?.add(imdbID)
+            user.value?.liked?.add(imdbID)
             Logger.i("user.value?.liked add = ${user.value?.liked}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -234,7 +254,7 @@ class PendingViewModel(
             Logger.i("isLike.value != false")
             Logger.i("user.value?.liked = ${user.value?.liked}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.liked?.remove(imdbID)
+            user.value?.liked?.remove(imdbID)
             Logger.i("user.value?.liked remove = ${user.value?.liked}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -267,7 +287,7 @@ class PendingViewModel(
             Logger.i("isWatchList.value != true")
             Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.watchlist?.add(imdbID)
+            user.value?.watchlist?.add(imdbID)
             Logger.i("user.value?.watchlist add = ${user.value?.watchlist}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -296,7 +316,7 @@ class PendingViewModel(
             Logger.i("isWatchList.value != false")
             Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
             Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            _user.value?.watchlist?.remove(imdbID)
+            user.value?.watchlist?.remove(imdbID)
             Logger.i("user.value?.watchlist remove = ${user.value?.watchlist}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
@@ -422,41 +442,41 @@ class PendingViewModel(
         const val SCORE_IS_FILLED = 0x31
     }
 
-    private fun getUser(token: String) {
-
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getUser(token)
-
-            _user.value = when (result) {
-
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    if (result.error.contains("Invalid Access Token", true)) {
-                        UserManager.clear()
-                    }
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-            initToggleAndScore()
-        }
-    }
+//    private fun getUser(token: String) {
+//
+//        coroutineScope.launch {
+//
+//            _status.value = LoadApiStatus.LOADING
+//
+//            val result = applicationRepository.getUserByToken(token)
+//
+//            _user.value = when (result) {
+//
+//                is Result.Success -> {
+//                    _error.value = null
+//                    _status.value = LoadApiStatus.DONE
+//                    result.data
+//                }
+//                is Result.Fail -> {
+//                    _error.value = result.error
+//                    _status.value = LoadApiStatus.ERROR
+//                    if (result.error.contains("Invalid Access Token", true)) {
+//                        UserManager.clear()
+//                    }
+//                    null
+//                }
+//                is Result.Error -> {
+//                    _error.value = result.exception.toString()
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//                else -> {
+//                    _error.value = Util.getString(R.string.you_know_nothing)
+//                    _status.value = LoadApiStatus.ERROR
+//                    null
+//                }
+//            }
+//            initToggleAndScore()
+//        }
+//    }
 }

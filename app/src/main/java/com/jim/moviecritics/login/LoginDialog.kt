@@ -91,7 +91,6 @@ class LoginDialog : AppCompatDialogFragment() {
             it?.let {
                 Logger.i("Login Dialog mainViewModel.setupUser(it)")
                 mainViewModel.setupUser(it)
-//                viewModel.userSignIn(it)
             }
         }
 
@@ -102,9 +101,10 @@ class LoginDialog : AppCompatDialogFragment() {
             }
         }
 
+
         viewModel.navigateToLoginSuccess.observe(viewLifecycleOwner) {
             it?.let {
-                mainViewModel.navigateToLoginSuccess(it)
+//                mainViewModel.navigateToLoginSuccess(it)
                 dismiss()
             }
         }

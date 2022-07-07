@@ -65,9 +65,9 @@ class PendingDialog : AppCompatDialogFragment() {
             Logger.i("Pending Dialog movie = $it")
         }
 
-        viewModel.user.observe(viewLifecycleOwner) {
-            Logger.i("Pending Dialog user = $it")
-        }
+//        viewModel.user.observe(viewLifecycleOwner) {
+//            Logger.i("Pending Dialog user = $it")
+//        }
 
         viewModel.invalidScore.observe(viewLifecycleOwner) {
             Logger.i("viewModel.invalidScore.value = $it")

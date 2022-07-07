@@ -31,10 +31,10 @@ class ItemFavoriteFragment : Fragment() {
             }
         )
 
-        viewModel.livePersonalFavorites.observe(viewLifecycleOwner) {
-            Logger.i("viewModel.livePersonalFavorites = $it")
-            viewModel.getFavoritesFull(it)
-        }
+//        viewModel.livePersonalFavorites.observe(viewLifecycleOwner) {
+//            Logger.i("viewModel.livePersonalFavorites = $it")
+//            viewModel.getFavoritesFull(it)
+//        }
         return binding.root
     }
 }

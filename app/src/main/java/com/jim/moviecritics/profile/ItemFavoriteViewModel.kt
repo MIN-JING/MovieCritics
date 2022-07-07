@@ -18,7 +18,9 @@ class ItemFavoriteViewModel(
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
 
-    var livePersonalFavorites = MutableLiveData<List<String>>()
+    private val user = UserManager.user
+
+//    private var livePersonalFavorites = MutableLiveData<List<String>>()
 
 
     private val _finds = MutableLiveData<List<Find>>()
@@ -58,18 +60,21 @@ class ItemFavoriteViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.userId?.let {
-            getLivePersonalFavoritesResult(it)
-        }
+//        getLivePersonalFavoritesResult(user.id)
+        user?.liked?.let { getFavoritesFull(it) }
+        
+//        UserManager.userId?.let {
+//            getLivePersonalFavoritesResult(it)
+//        }
     }
 
-    private fun getLivePersonalFavoritesResult(userID: String) {
-        livePersonalFavorites = applicationRepository.getLivePersonalFavorites(userID)
-        _status.value = LoadApiStatus.DONE
-    }
+//    private fun getLivePersonalFavoritesResult(userID: String) {
+//        livePersonalFavorites = applicationRepository.getLivePersonalFavorites(userID)
+//        _status.value = LoadApiStatus.DONE
+//    }
 
 
-    fun getFavoritesFull(favorites: List<String>) {
+    private fun getFavoritesFull(favorites: List<String>) {
         val list = mutableListOf<Find>()
 
         coroutineScope.launch {

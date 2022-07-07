@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
@@ -70,22 +69,26 @@ class ProfileViewModel(
         Logger.i("------------------------------------")
 
         if (user.value == null) {
-            Logger.i("ProfileViewModel user.value == null")
-            UserManager.userToken?.let {
-                getUser(it)
-            }
-        } else {
-            Logger.i("ProfileViewModel user.value != null")
+            _user.value = UserManager.user
         }
+
+//        if (user.value == null) {
+//            Logger.i("ProfileViewModel user.value == null")
+//            UserManager.userToken?.let {
+//                getUserByToken(it)
+//            }
+//        } else {
+//            Logger.i("ProfileViewModel user.value != null")
+//        }
     }
 
-    private fun getUser(token: String) {
+    private fun getUserByToken(token: String) {
 
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getUser(token)
+            val result = applicationRepository.getUserByToken(token)
 
             _user.value = when (result) {
 

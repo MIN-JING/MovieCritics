@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
@@ -17,22 +16,6 @@ import com.jim.moviecritics.util.Logger
 class DetailFragment : Fragment() {
 
     private val viewModel by viewModels<DetailViewModel> { getVmFactory(DetailFragmentArgs.fromBundle(requireArguments()).movie) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        if (viewModel.user.value == null) {
-//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-//            Logger.i("Detail mainViewModel.user.value = ${mainViewModel.user.value}")
-//            Logger.i("Detail viewModel.user.value = ${viewModel.user.value}")
-//        }
-//        viewModel.movie.value?.imdbID?.let {
-//            viewModel.user.value?.id?.let { userId ->
-//                viewModel.getLiveScoreResult(imdbID = it, userID = userId)
-//            }
-//            viewModel.getLiveCommentsResult(imdbID = it)
-//        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,19 +46,19 @@ class DetailFragment : Fragment() {
         }
 
 
-        viewModel.user.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.user = $it")
-            viewModel.movie.value?.imdbID?.let { imdbID ->
-                viewModel.user.value?.id?.let { userID ->
-                    Logger.i("userID = $userID")
-                    Logger.i("imdbID = $imdbID")
-                    viewModel.getLiveScoreResult(imdbID = imdbID, userID = userID)
-                }
-//                binding.radarChartRating.invalidate()
-            }
-        }
+//        viewModel.user.observe(viewLifecycleOwner) {
+//            Logger.i("DetailViewModel.user = $it")
+//
+//            viewModel.movie.value?.imdbID?.let { imdbID ->
+//                viewModel.user.value?.id?.let { userID ->
+//                    Logger.i("userID = $userID")
+//                    Logger.i("imdbID = $imdbID")
+//                    viewModel.getLiveScoreResult(imdbID = imdbID, userID = userID)
+//                }
+//            }
+//        }
 
-        viewModel.liveScore.observe(viewLifecycleOwner, Observer {
+        viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
                 Logger.i("viewModel.liveScore != null")
@@ -117,14 +100,14 @@ class DetailFragment : Fragment() {
                     viewModel.showRadarChart(binding.radarChartRating, radarData)
                 }
             }
-        })
+        }
 
-//        viewModel.liveComments.observe(viewLifecycleOwner) {
-//            Logger.i("DetailViewModel.liveComments = $it")
+        viewModel.liveComments.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.liveComments = $it")
 //            it?.let {
 //                binding.viewModel = viewModel
 //            }
-//        }
+        }
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")

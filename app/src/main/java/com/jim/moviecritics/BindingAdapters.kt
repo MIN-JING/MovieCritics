@@ -14,6 +14,7 @@ import com.jim.moviecritics.profile.FavoriteItemAdapter
 import com.jim.moviecritics.profile.GuideItemReviewAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.watchlist.WatchlistAdapter
 
 
 @BindingAdapter("homeItems")
@@ -84,6 +85,10 @@ fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
                 is FavoriteItemAdapter -> {
                     submitList(it)
                     Logger.i("is FavoriteItemAdapter bindRecyclerViewWithFinds = $it")
+                }
+                is WatchlistAdapter -> {
+                    submitList(it)
+                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
                 }
             }
         }

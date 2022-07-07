@@ -69,6 +69,7 @@ class ProfileViewModel(
         Logger.i("------------------------------------")
 
         if (user.value == null) {
+            Logger.i("Profile ViewModel init if user.value == null")
             _user.value = UserManager.user
         }
 

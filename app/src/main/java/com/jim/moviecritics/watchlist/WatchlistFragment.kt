@@ -37,6 +37,17 @@ class WatchlistFragment : Fragment() {
 
         val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+
+        binding.recyclerWatchlist.adapter = WatchlistAdapter(
+            WatchlistAdapter.OnClickListener {
+                Logger.i("WatchlistAdapter.OnClickListener it = $it")
+            }
+        )
+
+        viewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("Watchlist ViewModel.user = $it")
+        }
 
         return binding.root
     }

@@ -92,6 +92,12 @@
     <string name="image_profile_item_favorite_poster">Movie poster</string>
     <string name="text_profile_guide_recent_description">Recent Reviews</string>
 
+    <!-- Watchlist -->
+    <string name="image_watchlist_poster">Movie poster</string>
+    <string name="text_watchlist_expiration">Expiration Date</string>
+    <string name="toggle_watchlist_calendar_off">Add</string>
+    <string name="toggle_watchlist_calendar_on">Added</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

@@ -128,7 +128,7 @@ class DetailViewModel(
 //        Logger.i("Detail takeDownUser() = ${_user.value}")
 //    }
 
-    fun getLiveScoreResult(imdbID: String, userID: String) {
+    private fun getLiveScoreResult(imdbID: String, userID: String) {
         Logger.i("getLiveScoreResult()")
         Logger.i("getLiveScoreResult() userID = $userID")
         Logger.i("getLiveScoreResult() imdbID = $imdbID")

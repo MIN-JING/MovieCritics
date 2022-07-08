@@ -113,7 +113,7 @@
                 android:checked="@{viewModel.isWatchList}"
                 android:drawableTop="@drawable/ic_watchlist_selector"
                 android:includeFontPadding="false"
-                android:onClick="@{() -> viewModel.onClickWatchList(viewModel.movie.imdbID, viewModel.user.id)}"
+                android:onClick="@{() -> viewModel.onClickWatchList()}"
                 android:textColor="#455A64"
                 android:textOff="@string/toggle_pending_watchlist_off"
                 android:textOn="@string/toggle_pending_watchlist_on"

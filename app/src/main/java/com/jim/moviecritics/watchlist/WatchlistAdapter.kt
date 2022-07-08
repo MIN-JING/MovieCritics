@@ -17,7 +17,10 @@ class WatchlistAdapter(private val onClickListener: OnClickListener):
 
         fun bind(find: Find, onClickListener: OnClickListener) {
             binding.find = find
-            binding.root.setOnClickListener { onClickListener.onClick(find) }
+            binding.toggleWatchlistCalendar.setOnClickListener {
+                onClickListener.onClick(find)
+            }
+//            binding.root.setOnClickListener { onClickListener.onClick(find) }
             binding.executePendingBindings()
         }
     }

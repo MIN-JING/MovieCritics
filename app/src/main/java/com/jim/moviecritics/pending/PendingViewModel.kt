@@ -12,7 +12,6 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
@@ -28,12 +27,6 @@ class PendingViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-
-//    private val movie = arguments
 
     private val _user = MutableLiveData<User>().apply {
         value = UserManager.user
@@ -41,6 +34,8 @@ class PendingViewModel(
 
     val user: LiveData<User>
         get() = _user
+
+    var liveWatchList = MutableLiveData<Watch>()
 
 
 
@@ -75,6 +70,8 @@ class PendingViewModel(
 
     val invalidScore: LiveData<Int>
         get() = _invalidScore
+
+    val watch = Watch()
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -119,44 +116,27 @@ class PendingViewModel(
 
         _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
         _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+//        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
+        _isWatchList.value = false
+
+        coroutineScope.launch {
+            getLiveWatchListResult(movie.value?.imdbID.toString(), user.value?.id.toString())
+        }
+
 
         score.imdbID = movie.value?.imdbID.toString()
         score.userID = user.value?.id.toString()
 
-//        if (user.value == null) {
-//            Logger.i("PendingViewModel user.value == null")
-//            UserManager.userToken?.let {
-//                getUser(it)
-//            }
-//        } else {
-//            Logger.i("PendingViewModel user.value != null")
-//            initToggleAndScore()
-//        }
+        movie.value?.imdbID.toString().let {
+            score.imdbID = it
+            watch.imdbID = it
+        }
 
-//        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-//        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-//        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
-//
-//        score.imdbID = movie.value?.imdbID.toString()
-//        score.userID = user.value?.id.toString()
-
+        user.value?.id.toString().let {
+            score.userID = it
+            watch.userID = it
+        }
     }
-
-//    fun takeDownUser(user: User) {
-//        _user.value = user
-//        Logger.i("Detail takeDownUser() = ${_user.value}")
-//    }
-
-
-//    private fun initToggleAndScore() {
-//        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-//        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
-//        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
-//
-//        score.imdbID = movie.value?.imdbID.toString()
-//        score.userID = user.value?.id.toString()
-//    }
 
     fun onClickWatch(imdbID: String, userID: String) {
         if (isWatch.value != true) {
@@ -282,17 +262,17 @@ class PendingViewModel(
         }
     }
 
-    fun onClickWatchList(imdbID: String, userID: String) {
+    fun onClickWatchList() {
         if (isWatchList.value != true) {
             Logger.i("isWatchList.value != true")
-            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
-            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            user.value?.watchlist?.add(imdbID)
-            Logger.i("user.value?.watchlist add = ${user.value?.watchlist}")
+//            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
+//            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+//            user.value?.watchlist?.add(imdbID)
+//            Logger.i("user.value?.watchlist add = ${user.value?.watchlist}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.pushWatchlistMovie(imdbID, userID)) {
+                when (val result = applicationRepository.pushWatchlistMovie(watch)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -314,14 +294,14 @@ class PendingViewModel(
             _isWatchList.value = true
         } else {
             Logger.i("isWatchList.value != false")
-            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
-            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
-            user.value?.watchlist?.remove(imdbID)
-            Logger.i("user.value?.watchlist remove = ${user.value?.watchlist}")
+//            Logger.i("user.value?.watchlist = ${user.value?.watchlist}")
+//            Logger.i("movie.value?.imdbID = ${movie.value?.imdbID}")
+//            user.value?.watchlist?.remove(imdbID)
+//            Logger.i("user.value?.watchlist remove = ${user.value?.watchlist}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.removeWatchlistMovie(imdbID, userID)) {
+                when (val result = applicationRepository.removeWatchlistMovie(imdbID = watch.imdbID, userID = watch.userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -412,6 +392,13 @@ class PendingViewModel(
         }
     }
 
+    private fun getLiveWatchListResult(imdbID: String, userID: String) {
+        liveWatchList = applicationRepository.getLiveWatchList(imdbID, userID)
+        Logger.i("getLiveWatchListResult() liveComments = $liveWatchList")
+        Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchList.value}")
+        _status.value = LoadApiStatus.DONE
+    }
+
     fun leave() {
         prepareScore()
         _leave.value = true
@@ -441,42 +428,4 @@ class PendingViewModel(
 
         const val SCORE_IS_FILLED = 0x31
     }
-
-//    private fun getUser(token: String) {
-//
-//        coroutineScope.launch {
-//
-//            _status.value = LoadApiStatus.LOADING
-//
-//            val result = applicationRepository.getUserByToken(token)
-//
-//            _user.value = when (result) {
-//
-//                is Result.Success -> {
-//                    _error.value = null
-//                    _status.value = LoadApiStatus.DONE
-//                    result.data
-//                }
-//                is Result.Fail -> {
-//                    _error.value = result.error
-//                    _status.value = LoadApiStatus.ERROR
-//                    if (result.error.contains("Invalid Access Token", true)) {
-//                        UserManager.clear()
-//                    }
-//                    null
-//                }
-//                is Result.Error -> {
-//                    _error.value = result.exception.toString()
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//                else -> {
-//                    _error.value = Util.getString(R.string.you_know_nothing)
-//                    _status.value = LoadApiStatus.ERROR
-//                    null
-//                }
-//            }
-//            initToggleAndScore()
-//        }
-//    }
 }

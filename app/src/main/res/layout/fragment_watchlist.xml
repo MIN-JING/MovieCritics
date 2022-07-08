@@ -35,7 +35,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:finds="@{viewModel.finds}"
-            tools:listitem="@layout/item_watchlist" />
+            tools:listitem="@layout/item_watchlist" >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#AD00BCD4"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="337dp"
+            tools:layout_editor_absoluteY="8dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

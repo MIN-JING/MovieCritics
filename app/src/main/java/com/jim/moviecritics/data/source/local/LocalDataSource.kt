@@ -39,6 +39,10 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
@@ -103,7 +107,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
@@ -203,7 +207,8 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             firebaseToken = "eyJhbGc",
             firebaseTokenExpiration = Timestamp.now(),
             signInProvider = "google.com",
-            email = "dog@gmail.com")
+            email = "dog@gmail.com"
+            )
 
 
         FirebaseFirestore.getInstance()

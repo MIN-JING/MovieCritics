@@ -35,6 +35,10 @@ class DefaultApplicationRepository(
     }
 
     // FirebaseDataSource
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        return firebaseDataSource.getLiveWatchList(imdbID, userID)
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         return firebaseDataSource.getScores(imdbID)
     }
@@ -99,8 +103,8 @@ class DefaultApplicationRepository(
         return firebaseDataSource.removeLikedMovie(imdbID, userID)
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
-        return firebaseDataSource.pushWatchlistMovie(imdbID, userID)
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
+        return firebaseDataSource.pushWatchlistMovie(watch)
     }
 
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {

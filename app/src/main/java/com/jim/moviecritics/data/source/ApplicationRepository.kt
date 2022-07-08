@@ -21,6 +21,8 @@ interface ApplicationRepository {
     suspend fun getFind(imdbID: String): Result<FindResult>
 
     // FirebaseDataSource
+    fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch>
+
     suspend fun getScores(imdbID: String): Result<List<Score>>
 
     suspend fun getScore(imdbID: String, userID: String): Result<Score>
@@ -53,7 +55,7 @@ interface ApplicationRepository {
 
     suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean>
 
-    suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean>
+    suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean>
 
     suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean>
 

@@ -110,6 +110,10 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
@@ -174,7 +178,7 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

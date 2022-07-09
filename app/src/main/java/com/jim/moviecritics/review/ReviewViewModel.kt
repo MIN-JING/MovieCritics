@@ -10,7 +10,6 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus

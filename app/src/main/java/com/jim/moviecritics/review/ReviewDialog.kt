@@ -9,9 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogReviewBinding
 import com.jim.moviecritics.ext.getVmFactory

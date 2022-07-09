@@ -123,11 +123,6 @@ class DetailViewModel(
         _leave.value = true
     }
 
-//    fun takeDownUser(user: User) {
-//        _user.value = user
-//        Logger.i("Detail takeDownUser() = ${_user.value}")
-//    }
-
     private fun getLiveScoreResult(imdbID: String, userID: String) {
         Logger.i("getLiveScoreResult()")
         Logger.i("getLiveScoreResult() userID = $userID")

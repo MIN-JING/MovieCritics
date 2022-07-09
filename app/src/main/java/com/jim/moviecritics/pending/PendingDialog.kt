@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
@@ -60,6 +61,11 @@ class PendingDialog : AppCompatDialogFragment() {
 
         viewModel.liveWatchList.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog liveWatchList = $it")
+            if (it.id == "") {
+                viewModel.isWatchListEqualFalse()
+            } else {
+                viewModel.isWatchListEqualTrue()
+            }
         }
 
         viewModel.invalidScore.observe(viewLifecycleOwner) {

@@ -9,5 +9,5 @@ data class Watch(
     var id: String = "",
     var userID: String = "",
     var imdbID: String = "",
-    var expiration: Timestamp = Timestamp.now()
+    var expiration: Timestamp? = null
 ) : Parcelable

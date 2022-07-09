@@ -43,6 +43,18 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp,
+    ): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }

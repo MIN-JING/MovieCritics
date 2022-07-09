@@ -1,6 +1,7 @@
 package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 
 
@@ -22,6 +23,10 @@ interface ApplicationDataSource {
 
     // FirebaseDataSource
     fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch>
+
+    fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>>
+
+    suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean>
 
     suspend fun getScores(imdbID: String): Result<List<Score>>
 

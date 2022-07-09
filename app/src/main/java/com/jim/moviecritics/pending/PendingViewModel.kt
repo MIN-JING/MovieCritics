@@ -117,12 +117,8 @@ class PendingViewModel(
         _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
         _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
 //        _isWatchList.value = user.value?.watchlist?.contains(movie.value?.imdbID.toString())
-        _isWatchList.value = false
-
-        coroutineScope.launch {
-            getLiveWatchListResult(movie.value?.imdbID.toString(), user.value?.id.toString())
-        }
-
+//        _isWatchList.value = false
+        getLiveWatchListResult(movie.value?.imdbID.toString(), user.value?.id.toString())
 
         score.imdbID = movie.value?.imdbID.toString()
         score.userID = user.value?.id.toString()
@@ -394,9 +390,15 @@ class PendingViewModel(
 
     private fun getLiveWatchListResult(imdbID: String, userID: String) {
         liveWatchList = applicationRepository.getLiveWatchList(imdbID, userID)
-        Logger.i("getLiveWatchListResult() liveComments = $liveWatchList")
-        Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchList.value}")
         _status.value = LoadApiStatus.DONE
+    }
+
+    fun isWatchListEqualFalse() {
+        _isWatchList.value = false
+    }
+
+    fun isWatchListEqualTrue() {
+        _isWatchList.value = true
     }
 
     fun leave() {

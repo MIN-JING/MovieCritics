@@ -2,6 +2,7 @@ package com.jim.moviecritics.data.source.remote
 
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
@@ -111,6 +112,18 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp,
+    ): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

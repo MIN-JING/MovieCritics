@@ -1,19 +1,22 @@
 package com.jim.moviecritics.watchlist
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Find
-import com.jim.moviecritics.data.FindResult
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
+import java.util.*
+
 
 class WatchlistViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -35,6 +38,13 @@ class WatchlistViewModel(
 
     val finds: LiveData<List<Find>>
         get() = _finds
+
+    var liveWatchListByUser = MutableLiveData<List<Watch>>()
+
+    private val _timeStamp = MutableLiveData<Timestamp>()
+
+    val timeStamp: LiveData<Timestamp>
+        get() = _timeStamp
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -77,10 +87,12 @@ class WatchlistViewModel(
             _user.value = UserManager.user
         }
 
-        user.value?.watchlist?.let { getWatchListFull(it) }
+//        user.value?.watchlist?.let { getWatchListFull(it) }
+        user.value?.id?.let { getLiveWatchListByUserResult(it) }
+
     }
 
-    private fun getWatchListFull(watchList: List<String>) {
+    fun getWatchListFull(watchList: List<String>) {
         val list = mutableListOf<Find>()
 
         coroutineScope.launch {
@@ -139,5 +151,74 @@ class WatchlistViewModel(
                 }
             }
         }
+    }
+
+    private fun getLiveWatchListByUserResult(userID: String) {
+        liveWatchListByUser = applicationRepository.getLiveWatchListByUser(userID)
+        Logger.i("getLiveWatchListResult() liveComments = $liveWatchListByUser")
+        Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchListByUser.value}")
+        _status.value = LoadApiStatus.DONE
+    }
+
+    fun showDateTimeDialog(context: Context) {
+        val calendar = Calendar.getInstance()
+        val nowYear = calendar.get(Calendar.YEAR)
+        val nowMonth = calendar.get(Calendar.MONTH)
+        val nowDay = calendar.get(Calendar.DAY_OF_MONTH)
+        val nowHour = calendar.get(Calendar.HOUR_OF_DAY)
+        val nowMinute = calendar.get(Calendar.MINUTE)
+
+        var showYear = 0
+        var showMonth = 0
+        var showDay = 0
+        var showHour: Int
+        var showMinute: Int
+
+//        var timestamp: Timestamp
+
+
+        val timePickerOnDataSetListener =
+            TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                showHour = hour
+                showMinute = minute
+                Logger.i("hour: $showHour, minute: $showMinute")
+                Logger.i("Dialog selected time year: $showYear, month: $showMonth, day: $showDay, hour: $showHour, minute: $showMinute")
+                calendar.set(Calendar.YEAR, showYear)
+                calendar.set(Calendar.MONTH, showMonth)
+                calendar.set(Calendar.DAY_OF_MONTH, showDay)
+                calendar.set(Calendar.HOUR_OF_DAY, showHour)
+                calendar.set(Calendar.MINUTE, showMinute)
+                Logger.i("Dialog selected calendar.time = ${calendar.time}")
+                _timeStamp.value = Timestamp(calendar.time)
+//                Logger.i("timeStamp = $timestamp")
+            }
+
+        val datePickerOnDataSetListener =
+            DatePickerDialog.OnDateSetListener { _, year, month, day ->
+//                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE)
+//                setText(sdf.format(calendar.time))
+                showYear = year
+                showMonth = month
+                showDay = day
+                Logger.i("year: $showYear, month: $showMonth, day: $showDay")
+
+                TimePickerDialog(
+                    context,
+                    timePickerOnDataSetListener,
+                    nowHour,
+                    nowMinute,
+                    true).show()
+            }
+
+        DatePickerDialog(
+            context,
+            datePickerOnDataSetListener,
+            nowYear,
+            nowMonth,
+            nowDay).show()
+
+
+        Logger.i("nowYear = $nowYear, nowMonth = $nowMonth, nowDay = $nowDay, nowHour = $nowHour, nowMinute = $nowMinute")
+//        Logger.i("Dialog selected time year: $showYear, month: $showMonth, day: $showDay, hour: $showHour, minute: $showMinute")
     }
 }

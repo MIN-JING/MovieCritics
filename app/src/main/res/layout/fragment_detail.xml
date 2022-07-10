@@ -80,6 +80,7 @@
                     android:layout_marginTop="8dp"
                     android:text="@{viewModel.movie.released}"
                     android:textColor="#546E7A"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
                     tools:text="Released Date" />
@@ -91,6 +92,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/text_detail_directed_by"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year" />
 
@@ -105,7 +107,7 @@
                     android:maxLines="1"
                     android:text="@{viewModel.movie.director}"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_detail_directed_by"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
                     app:layout_constraintStart_toEndOf="@+id/text_detail_directed_by"
@@ -151,7 +153,7 @@
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.runtime.toString() + `  Min`}"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/button_detail_trailer"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
                     app:layout_constraintStart_toStartOf="@+id/text_detail_director"
@@ -168,6 +170,7 @@
                     android:lines="3"
                     android:text="@{viewModel.movie.overview}"
                     android:textColor="@color/black"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer"

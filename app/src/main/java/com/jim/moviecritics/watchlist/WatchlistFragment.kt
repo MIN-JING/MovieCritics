@@ -8,12 +8,11 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentWatchlistBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
-import kotlin.time.Duration.Companion.milliseconds
+
 
 
 class WatchlistFragment : Fragment() {
@@ -82,8 +81,6 @@ class WatchlistFragment : Fragment() {
 
         viewModel.timeStamp.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.timeStamp = $it")
-            Logger.i("Watchlist ViewModel.timeStamp.seconds = ${it.seconds}")
-            Logger.i("Watchlist ViewModel.timeStamp.nanoseconds = ${it.nanoseconds}")
 //            intent.putExtra(CalendarContract.Events.DTSTART, it.seconds * 1000)
 //            intent.putExtra(CalendarContract.Events.DTSTART, 1660959000000)
 //            intent.putExtra(CalendarContract.Events.DTEND, it.seconds + 2.5 * 3600L)

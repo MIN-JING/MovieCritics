@@ -47,6 +47,24 @@ class MainActivity : BaseActivity() {
                 Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         }
 
+        viewModel.navigateToLoginSuccess.observe(this) {
+            it?.let {
+                viewModel.onLoginSuccessNavigated()
+
+                when (viewModel.currentFragmentType.value) {
+                    CurrentFragmentType.PROFILE -> viewModel.navigateToProfileByBottomNav(it)
+                    else -> viewModel.navigateToProfileByBottomNav(it)
+                }
+            }
+        }
+
+        viewModel.navigateToProfileByBottomNav.observe(this) {
+            it?.let {
+                binding.bottomNavView.selectedItemId = R.id.navigation_profile
+                viewModel.onProfileNavigated()
+            }
+        }
+
         setupToolbar()
         setupBottomNav()
         setupNavController()

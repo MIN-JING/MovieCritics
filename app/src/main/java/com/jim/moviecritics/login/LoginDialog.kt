@@ -104,7 +104,8 @@ class LoginDialog : AppCompatDialogFragment() {
 
         viewModel.navigateToLoginSuccess.observe(viewLifecycleOwner) {
             it?.let {
-//                mainViewModel.navigateToLoginSuccess(it)
+                Logger.i("Login Dialog viewModel.navigateToLoginSuccess = $it")
+                mainViewModel.navigateToLoginSuccess(it)
                 dismiss()
             }
         }

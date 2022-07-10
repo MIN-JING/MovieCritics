@@ -5,6 +5,8 @@
         <item name="colorOnPrimary">@color/translucent_40</item>
     </style>
 
+    
+
 
     <style name="PendingDialog">
         <item name="android:windowEnterAnimation">@null</item>

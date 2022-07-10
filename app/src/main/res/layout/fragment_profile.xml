@@ -30,12 +30,12 @@
             <ImageView
                 android:id="@+id/image_profile_user_pic"
                 android:layout_width="70dp"
-                android:layout_height="80dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/image_profile_user_pic"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.user.pictureUri}"
+                app:imageUrlWithCircleCrop="@{viewModel.user.pictureUri}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />

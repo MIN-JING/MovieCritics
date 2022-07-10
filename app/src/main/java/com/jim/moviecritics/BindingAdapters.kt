@@ -113,6 +113,22 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     }
 }
 
+@BindingAdapter("imageUrlWithCircleCrop")
+fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = it.toUri().buildUpon().build()
+        GlideApp.with(imgView.context)
+            .load(imgUri)
+            .circleCrop()
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+            )
+            .into(imgView)
+    }
+}
+
 //@BindingAdapter("ratingValue")
 //fun bindRating(ratingBar: RatingBar, rating: Float?) {
 //    rating?.let {

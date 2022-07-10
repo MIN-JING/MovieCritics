@@ -15,8 +15,14 @@
     <!-- Toolbar -->
     <string name="toolbar_log_out">Log out</string>
 
+    <!-- ButtonNavigation Bar -->
+    <string name="navigation_home">Home</string>
+    <string name="navigation_search">Search</string>
+    <string name="navigation_watchlist">WatchList</string>
+    <string name="navigation_profile">Profile</string>
+
     <!-- Home -->
-    <string name="text_home_popular">Popular</string>
+    <string name="text_home_popular">Popular movie for the week</string>
 
     <!-- Item Home Popular -->
     <string name="image_home_poster">Movie poster</string>
@@ -108,6 +114,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="server_client_id"></string>
+
 
 
 </resources>

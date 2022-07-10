@@ -23,19 +23,23 @@
 
     <color name="primary">#006A6A</color>
     <color name="onPrimary">#FFFFFF</color>
-    <color name="primaryContainer">#6FF7F7</color>
+    <color name="primaryContainer">#C5EAE9</color>
+    <color name="onPrimaryContainer">#002020</color>
+    <color name="primaryVariant">#00A1A2</color>
 
     <color name="secondary">#4A6363</color>
     <color name="onSecondary">#FFFFFF</color>
-    <color name="secondaryContainer">#CCE8E7</color>
+    <color name="secondaryContainer">#DDE4E3</color>
+    <color name="onSecondaryContainer">#161D1D</color>
+    <color name="secondaryVariant">#CCE8E7</color>
 
-    <color name="primary_night">#4CDADA</color>
+    <color name="primary_night">#00A1A2</color>
     <color name="onPrimary_night">#003737</color>
-    <color name="primaryContainer_night">#004F50</color>
+    <color name="primaryVariant_night">#004F50</color>
 
     <color name="secondary_night">#B0CCC8</color>
     <color name="onSecondary_night">#1B3434</color>
-    <color name="secondaryContainer_night">#324B4B</color>
+    <color name="secondaryVariant_night">#324B4B</color>
     
 
     <!-- Bottom Navigation -->

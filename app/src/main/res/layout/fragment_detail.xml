@@ -9,9 +9,6 @@
         <variable
             name="viewModel"
             type="com.jim.moviecritics.detail.DetailViewModel" />
-<!--        <variable-->
-<!--            name="movie"-->
-<!--            type="com.jim.moviecritics.data.Movie" />-->
         <variable
             name="isLiveDataDesign"
             type="Boolean" />
@@ -35,8 +32,8 @@
 
                 <ImageButton
                     android:id="@+id/button_detail_back"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/ic_arrow_back"
@@ -47,8 +44,8 @@
 
                 <ImageButton
                     android:id="@+id/button_detail_to_pending"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_pending"
@@ -64,6 +61,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="100dp"
                     android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:lines="2"
+                    android:maxLines="2"
                     android:text="@{viewModel.movie.title}"
                     android:textColor="@color/black"
                     android:textSize="24sp"
@@ -77,20 +77,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:text="@{viewModel.movie.released}"
                     android:textColor="#546E7A"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_title"
                     tools:text="Released Date" />
 
                 <TextView
                     android:id="@+id/text_detail_directed_by"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/text_detail_directed_by"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year" />
 
@@ -100,9 +102,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:maxLines="1"
                     android:text="@{viewModel.movie.director}"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/text_detail_directed_by"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
                     app:layout_constraintStart_toEndOf="@+id/text_detail_directed_by"
@@ -112,18 +117,18 @@
                 <ImageView
                     android:id="@+id/image_detail_poster"
                     android:layout_width="120dp"
-                    android:layout_height="150dp"
+                    android:layout_height="160dp"
                     android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/image_detail_poster"
                     android:scaleType="centerCrop"
                     app:imageUrl="@{viewModel.movie.posterUri}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_detail_title"
-                    tools:srcCompat="@tools:sample/avatars[0]"
-                    android:contentDescription="@string/image_detail_poster" />
+                    tools:srcCompat="@tools:sample/avatars[0]" />
 
                 <Button
                     android:id="@+id/button_detail_trailer"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
@@ -131,11 +136,12 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="4dp"
                     android:text="@string/button_detail_trailer"
-                    android:textColor="#263238"
+                    android:textColor="#FFFFFF"
                     app:icon="@drawable/ic_play_arrow"
                     app:iconPadding="8dp"
                     app:iconSize="20dp"
-                    app:iconTintMode="add"
+                    app:iconTintMode="src_in"
+                    app:layout_constraintEnd_toEndOf="@+id/text_detail_directed_by"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_directed_by" />
 
@@ -144,14 +150,13 @@
                     android:id="@+id/text_detail_runtime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{viewModel.movie.runtime.toString() + `  Min`}"
                     android:textColor="@color/black"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/button_detail_trailer"
                     app:layout_constraintEnd_toStartOf="@+id/image_detail_poster"
-                    app:layout_constraintStart_toEndOf="@+id/button_detail_trailer"
+                    app:layout_constraintStart_toStartOf="@+id/text_detail_director"
                     app:layout_constraintTop_toTopOf="@+id/button_detail_trailer"
                     tools:text="Runtime: 120 Min" />
 
@@ -162,8 +167,10 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:lines="3"
                     android:text="@{viewModel.movie.overview}"
                     android:textColor="@color/black"
+                    android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_detail_trailer"
@@ -173,7 +180,7 @@
                     android:id="@+id/divider1_detail"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:background="?android:attr/listDivider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -243,14 +250,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_detail_cast"
                     android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_height="220dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:fadeScrollbars="false"
                     android:orientation="horizontal"
-                    android:scrollbarStyle="insideInset"
-                    android:scrollbars="vertical"
+                    android:scrollbarStyle="outsideInset"
+                    android:scrollbars="horizontal"
                     app:casts="@{viewModel.movie.casts}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -283,11 +288,14 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_detail_review"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:fadeScrollbars="false"
                     android:orientation="vertical"
+                    android:scrollbarStyle="outsideInset"
+                    android:scrollbars="vertical"
                     app:comments="@{isLiveDataDesign ? viewModel.liveComments : viewModel.comments}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"

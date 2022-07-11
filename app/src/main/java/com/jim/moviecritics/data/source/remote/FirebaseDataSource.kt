@@ -23,10 +23,15 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_COMMENTS = "comments"
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val PATH_USERS = "users"
-    private const val KEY_WATCHED = "watched"
-    private const val KEY_LIKED = "liked"
-    private const val KEY_WATCHLIST = "watchlist"
-    private const val KEY_CREATED_TIME = "createdTime"
+    private const val PATH_WATCHLIST = "watchlist"
+    private const val FIELD_IMDB_ID = "imdbID"
+    private const val FIELD_USER_ID = "userID"
+    private const val FIELD_WATCHED = "watched"
+    private const val FIELD_LIKED = "liked"
+    private const val FIELD_CREATED_TIME = "createdTime"
+    private const val FIELD_ID = "id"
+    private const val FIELD_FIREBASE_TOKEN = "firebaseToken"
+    private const val FIELD_EXPIRATION = "expiration"
 
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
@@ -45,11 +50,118 @@ object FirebaseDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        val liveData = MutableLiveData<Watch>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_WATCHLIST)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .whereEqualTo(FIELD_USER_ID, userID)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLiveWatchList addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                if (snapshot != null) {
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<Watch>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val watch = document.toObject(Watch::class.java)
+                            list.add(watch)
+                        }
+                        Logger.d( list.first().id + " => " + list.first())
+                        liveData.value = list.first()
+                        Logger.i("live watchList snapshot.size() >= 1 liveData.value = ${liveData.value}")
+                        Logger.i("live watchList snapshot.size() >= 1 liveData = $liveData")
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLiveWatchList task.result.size < 1")
+                        liveData.value = Watch()
+                        Logger.i("live watchList snapshot.size() < 1 liveData = ${liveData.value}")
+                    }
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLiveWatchList snapshot == null")
+                }
+            }
+        return liveData
+    }
+
+    override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+        val liveData = MutableLiveData<List<Watch>>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_WATCHLIST)
+            .whereEqualTo(FIELD_USER_ID, userID)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLiveWatchListByUser addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                if (snapshot != null) {
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<Watch>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val watch = document.toObject(Watch::class.java)
+                            list.add(watch)
+                        }
+                        liveData.value = list
+                        Logger.i("live watchList By User snapshot.size() >= 1 liveData.value = ${liveData.value}")
+                        Logger.i("live watchList By User snapshot.size() >= 1 liveData = $liveData")
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLiveWatchListByUser task.result.size < 1")
+                        liveData.value = listOf(Watch())
+                        Logger.i("live watchList By User snapshot.size() < 1 liveData = ${liveData.value}")
+                    }
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLiveWatchListByUser snapshot == null")
+                }
+            }
+        return liveData
+    }
+
+    override suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> = suspendCoroutine { continuation ->
+        val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
+        val query =  itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
+
+        query.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Logger.w("[${this::class.simpleName}] pushWatchListExpiration get() task.result.size = ${task.result.size()}")
+                for (document in task.result) {
+                    Logger.i("Update: ${document.id} => ${document.data}")
+                    itemRef.document(document.id).update(FIELD_EXPIRATION, expiration)
+                        .addOnSuccessListener {
+                            Logger.i("pushWatchListExpiration update() Success")
+                            continuation.resume(Result.Success(true))
+                        }.addOnFailureListener {
+                            Logger.w("pushWatchListExpiration update() Failure, Error = ${it.message}")
+                            continuation.resume(Result.Error(it))
+                        }
+                }
+            } else {
+                task.exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                    continuation.resume(Result.Error(it))
+                    return@addOnCompleteListener
+                }
+                continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+            }
+        }
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
-            .whereEqualTo("imdbID", imdbID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -82,9 +194,9 @@ object FirebaseDataSource : ApplicationDataSource {
     override suspend fun getScore(imdbID: String, userID: String): Result<Score> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
-            .whereEqualTo("imdbID", imdbID)
-            .whereEqualTo("userID", userID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .whereEqualTo(FIELD_USER_ID, userID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -114,9 +226,9 @@ object FirebaseDataSource : ApplicationDataSource {
 
         FirebaseFirestore.getInstance()
             .collection(PATH_SCORES)
-            .whereEqualTo("imdbID", imdbID)
-            .whereEqualTo("userID", userID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .whereEqualTo(FIELD_USER_ID, userID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
                 Logger.i("getLiveScore addSnapshotListener detect")
 
@@ -134,9 +246,12 @@ object FirebaseDataSource : ApplicationDataSource {
                         }
                         Logger.d( list.first().id + " => " + list.first())
                         liveData.value = list.first()
+                        Logger.i("live score snapshot.size() >= 1 liveData.value = ${liveData.value}")
+                        Logger.i("live score snapshot.size() >= 1 liveData = $liveData")
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveScore task.result.size < 1")
                         liveData.value = Score(imdbID = imdbID, userID = userID)
+                        Logger.i("live score snapshot.size() < 1 liveData = ${liveData.value}")
                     }
                 } else {
                     Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
@@ -145,7 +260,7 @@ object FirebaseDataSource : ApplicationDataSource {
         return liveData
     }
 
-    override suspend fun userSignIn(user: User): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushUserInfo(user: User): Result<Boolean> = suspendCoroutine { continuation ->
 
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
@@ -166,21 +281,49 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun getUser(token: String): Result<User> = suspendCoroutine { continuation ->
+    override suspend fun getUserByToken(token: String): Result<User> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
-            .whereEqualTo("firebaseToken", token)
+            .whereEqualTo(FIELD_FIREBASE_TOKEN, token)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size >= 1")
+                        Logger.w("[${this::class.simpleName}] getUserByToken task.result.size >= 1")
                         Logger.d( task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(User::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
-                        Logger.w("[${this::class.simpleName}] getUser task.result.size < 1")
+                        Logger.w("[${this::class.simpleName}] getUserByToken task.result.size < 1")
                         val item = User(firebaseToken = "token")
+                        continuation.resume(Result.Success(item))
+                    }
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun getUserById(id: String): Result<User> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .whereEqualTo(FIELD_ID, id)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getUserById task.result.size >= 1")
+                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        val item = task.result.first().toObject(User::class.java)
+                        continuation.resume(Result.Success(item))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getUserById task.result.size < 1")
+                        val item = User(id = id)
                         continuation.resume(Result.Success(item))
                     }
                 } else {
@@ -197,8 +340,8 @@ object FirebaseDataSource : ApplicationDataSource {
     override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
-            .whereEqualTo("imdbID", imdbID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -231,8 +374,8 @@ object FirebaseDataSource : ApplicationDataSource {
 
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
-            .whereEqualTo("imdbID", imdbID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_IMDB_ID, imdbID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
                 Logger.i("getLiveComments addSnapshotListener detect")
 
@@ -264,8 +407,8 @@ object FirebaseDataSource : ApplicationDataSource {
 
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)
-            .whereEqualTo("userID", userID)
-            .orderBy(KEY_CREATED_TIME, Query.Direction.DESCENDING)
+            .whereEqualTo(FIELD_USER_ID, userID)
+            .orderBy(FIELD_CREATED_TIME, Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, exception ->
                 Logger.i("getLivePersonalComments addSnapshotListener detect")
 
@@ -286,7 +429,7 @@ object FirebaseDataSource : ApplicationDataSource {
                         Logger.w("[${this::class.simpleName}] getLivePersonalComments task.result.size < 1")
                     }
                 } else {
-                    Logger.w("[${this::class.simpleName}] getLiveScore snapshot == null")
+                    Logger.w("[${this::class.simpleName}] getLivePersonalComments snapshot == null")
                 }
             }
         return liveData
@@ -337,11 +480,43 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        val liveData = MutableLiveData<List<String>>()
+
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .whereEqualTo(FIELD_ID, userID)
+            .addSnapshotListener { snapshot, exception ->
+                Logger.i("getLivePersonalFavorites addSnapshotListener detect")
+
+                exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                }
+
+                if (snapshot != null) {
+                    if (snapshot.size() >= 1) {
+                        val list = mutableListOf<User>()
+                        snapshot.forEach { document ->
+                            Logger.d(document.id + " => " + document.data)
+                            val user= document.toObject(User::class.java)
+                            list.add(user)
+                        }
+                        liveData.value = list.first().liked
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getLivePersonalFavorites task.result.size < 1")
+                    }
+                } else {
+                    Logger.w("[${this::class.simpleName}] getLivePersonalFavorites snapshot == null")
+                }
+            }
+        return liveData
+    }
+
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID)
-            .update(KEY_WATCHED, FieldValue.arrayUnion(imdbID))
+            .update(FIELD_WATCHED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushWatchedMovie task.isSuccessful")
@@ -361,7 +536,7 @@ object FirebaseDataSource : ApplicationDataSource {
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID)
-            .update(KEY_WATCHED, FieldValue.arrayRemove(imdbID))
+            .update(FIELD_WATCHED, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("removeWatchedMovie task.isSuccessful")
@@ -381,7 +556,7 @@ object FirebaseDataSource : ApplicationDataSource {
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID)
-            .update(KEY_LIKED, FieldValue.arrayUnion(imdbID))
+            .update(FIELD_LIKED, FieldValue.arrayUnion(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushLikedMovie task.isSuccessful")
@@ -401,7 +576,7 @@ object FirebaseDataSource : ApplicationDataSource {
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .document(userID)
-            .update(KEY_LIKED, FieldValue.arrayRemove(imdbID))
+            .update(FIELD_LIKED, FieldValue.arrayRemove(imdbID))
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("removeLikedMovie task.isSuccessful")
@@ -417,11 +592,14 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
-        FirebaseFirestore.getInstance()
-            .collection(PATH_USERS)
-            .document(userID)
-            .update(KEY_WATCHLIST, FieldValue.arrayUnion(imdbID))
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> = suspendCoroutine { continuation ->
+        val watchList = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
+        val document = watchList.document()
+
+        watch.id = document.id
+
+        document
+            .set(watch)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushWatchlistMovie task.isSuccessful")
@@ -435,26 +613,71 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
+
+//        FirebaseFirestore.getInstance()
+//            .collection(PATH_USERS)
+//            .document(userID)
+//            .update(KEY_WATCHLIST, FieldValue.arrayUnion(imdbID))
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Logger.i("pushWatchlistMovie task.isSuccessful")
+//                    continuation.resume(Result.Success(true))
+//                } else {
+//                    task.exception?.let {
+//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+//                        continuation.resume(Result.Error(it))
+//                        return@addOnCompleteListener
+//                    }
+//                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+//                }
+//            }
     }
 
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
-        FirebaseFirestore.getInstance()
-            .collection(PATH_USERS)
-            .document(userID)
-            .update(KEY_WATCHLIST, FieldValue.arrayRemove(imdbID))
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Logger.i("removeWatchlistMovie task.isSuccessful")
-                    continuation.resume(Result.Success(true))
-                } else {
-                    task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-                        continuation.resume(Result.Error(it))
-                        return@addOnCompleteListener
-                    }
-                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+        val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
+        val query =  itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
+
+        query.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Logger.w("[${this::class.simpleName}] removeWatchlistMovie get() task.result.size = ${task.result.size()}")
+                for (document in task.result) {
+                    Logger.i("Delete: ${document.id} => ${document.data}")
+                    itemRef.document(document.id).delete()
+                        .addOnSuccessListener {
+                            Logger.i("removeWatchlistMovie delete() Success")
+                            continuation.resume(Result.Success(true))
+                        }.addOnFailureListener {
+                            Logger.w("removeWatchlistMovie delete() Failure, Error = ${it.message}")
+                            continuation.resume(Result.Error(it))
+                        }
                 }
+            } else {
+                task.exception?.let {
+                    Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                    continuation.resume(Result.Error(it))
+                    return@addOnCompleteListener
+                }
+                continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
             }
+        }
+
+//        FirebaseFirestore.getInstance()
+//            .collection(PATH_USERS)
+//            .document(userID)
+//            .update(KEY_WATCHLIST, FieldValue.arrayRemove(imdbID))
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    Logger.i("removeWatchlistMovie task.isSuccessful")
+//                    continuation.resume(Result.Success(true))
+//                } else {
+//                    task.exception?.let {
+//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+//                        continuation.resume(Result.Error(it))
+//                        return@addOnCompleteListener
+//                    }
+//                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+//                }
+//            }
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->

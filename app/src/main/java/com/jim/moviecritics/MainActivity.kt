@@ -4,7 +4,6 @@ package com.jim.moviecritics
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
@@ -15,6 +14,7 @@ import androidx.navigation.findNavController
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
 
 
@@ -42,9 +42,27 @@ class MainActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         viewModel.currentFragmentType.observe(this) {
-                Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                Log.i("Jim","[${viewModel.currentFragmentType.value}]")
-                Log.i("Jim","~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                Logger.i("[${viewModel.currentFragmentType.value}]")
+                Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        }
+
+        viewModel.navigateToLoginSuccess.observe(this) {
+            it?.let {
+                viewModel.onLoginSuccessNavigated()
+
+                when (viewModel.currentFragmentType.value) {
+                    CurrentFragmentType.PROFILE -> viewModel.navigateToProfileByBottomNav(it)
+                    else -> viewModel.navigateToProfileByBottomNav(it)
+                }
+            }
+        }
+
+        viewModel.navigateToProfileByBottomNav.observe(this) {
+            it?.let {
+                binding.bottomNavView.selectedItemId = R.id.navigation_profile
+                viewModel.onProfileNavigated()
+            }
         }
 
         setupToolbar()
@@ -84,7 +102,7 @@ class MainActivity : BaseActivity() {
                     when (viewModel.isLoggedIn) {
                         true -> {
                             findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToWatchlistFragment()
+                                NavigationDirections.navigateToWatchlistFragment(viewModel.user.value)
                             )
                         }
                         false -> {
@@ -99,9 +117,7 @@ class MainActivity : BaseActivity() {
                     when (viewModel.isLoggedIn) {
                         true -> {
                             findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToProfileFragment(
-                                    //viewModel.user.value
-                                )
+                                NavigationDirections.navigateToProfileFragment(viewModel.user.value)
                             )
                         }
                         false -> {
@@ -124,6 +140,7 @@ class MainActivity : BaseActivity() {
 
     private fun setupToolbar() {
 
+//        binding.toolbar.setPadding(0, 0, 0, 0)
         binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
 
         setSupportActionBar(binding.toolbar)
@@ -136,28 +153,29 @@ class MainActivity : BaseActivity() {
 
             val cutoutHeight = getCutoutHeight()
 
-            Log.i("Jim","====== ${Build.MODEL} ======")
-            Log.i("Jim","$dpi dpi (${dpiMultiple}x)")
-            Log.i("Jim","statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
+            Logger.i("====== ${Build.MODEL} ======")
+            Logger.i("$dpi dpi (${dpiMultiple}x)")
+            Logger.i("statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
 
             when {
                 cutoutHeight > 0 -> {
-                    Log.i("Jim","cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
+                    Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
 
                     val oriStatusBarHeight = resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
-
-                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                    Logger.i("oriStatusBarHeight: $oriStatusBarHeight")
+//                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
+                    binding.toolbar.setPadding(0, 0, 0, 0)
                     val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
                     layoutParams.gravity = Gravity.CENTER
 
                     when (Build.MODEL) {
-                        "Pixel 5" -> { Log.i("Jim","Build.MODEL is ${Build.MODEL}") }
+                        "Pixel 5" -> { Logger.i("Build.MODEL is ${Build.MODEL}") }
                         else -> { layoutParams.topMargin = statusBarHeight - oriStatusBarHeight }
                     }
                     binding.textToolbarTitle.layoutParams = layoutParams
                 }
             }
-            Log.i("Jim","====== ${Build.MODEL} ======")
+            Logger.i("====== ${Build.MODEL} ======")
         }
     }
 }

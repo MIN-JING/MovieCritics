@@ -9,10 +9,9 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
@@ -40,13 +39,6 @@ class PendingDialog : AppCompatDialogFragment() {
         super.onCreate(savedInstanceState)
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.PendingDialog)
-        if (viewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-            Logger.i("Pending mainViewModel.user.value = ${mainViewModel.user.value}")
-            Logger.i("Pending viewModel.user.value = ${viewModel.user.value}")
-            viewModel.initToggleAndScore()
-        }
     }
 
     override fun onCreateView(
@@ -67,8 +59,13 @@ class PendingDialog : AppCompatDialogFragment() {
             Logger.i("Pending Dialog movie = $it")
         }
 
-        viewModel.user.observe(viewLifecycleOwner) {
-            Logger.i("Pending Dialog user = $it")
+        viewModel.liveWatchList.observe(viewLifecycleOwner) {
+            Logger.i("Pending Dialog liveWatchList = $it")
+            if (it.id == "") {
+                viewModel.isWatchListEqualFalse()
+            } else {
+                viewModel.isWatchListEqualTrue()
+            }
         }
 
         viewModel.invalidScore.observe(viewLifecycleOwner) {

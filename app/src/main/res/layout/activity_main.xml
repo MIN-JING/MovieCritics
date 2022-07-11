@@ -23,25 +23,28 @@
         android:background="@color/white"
         android:elevation="@dimen/elevation_all"
         android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
         android:theme="@style/ThemeOverlay_Toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 <!--        app:navigationIcon="@drawable/ic_toolbar_menu"-->
+<!--        style="@style/Widget.MaterialComponents.Toolbar.Primary"-->
+<!--        android:theme="@style/ThemeOverlay_Toolbar"-->
         <TextView
             android:id="@+id/text_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black_3f3a3a"
             android:letterSpacing="0.15"
+            android:text="@{viewModel.currentFragmentType.value}"
+            android:textColor="@color/black_3f3a3a"
             android:textSize="20sp"
             android:textStyle="bold"
             android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
-            android:text="@{viewModel.currentFragmentType.value}"
-            android:layout_gravity="center"
-            tools:visibility="visible"
-            tools:text="Movie Critics"/>
+            tools:text="Movie Critics"
+            tools:visibility="visible" />
+<!--            tools:layout_editor_absoluteX="128dp"-->
+<!--            tools:layout_editor_absoluteY="26dp"-->
+<!--        android:layout_gravity="center"-->
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -65,7 +68,7 @@
         android:elevation="@dimen/elevation_all"
         android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
         app:itemIconTint="@drawable/bottom_nav_item_selector"
-        app:labelVisibilityMode="unlabeled"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

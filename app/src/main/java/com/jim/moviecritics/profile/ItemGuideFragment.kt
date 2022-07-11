@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.ItemProfileGuideBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
@@ -14,7 +13,8 @@ import com.jim.moviecritics.util.Logger
 
 class ItemGuideFragment : Fragment() {
 
-    private val viewModel by viewModels<ProfileViewModel> { getVmFactory() }
+    private val viewModel by viewModels<ItemGuideViewModel> { getVmFactory() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,17 +23,16 @@ class ItemGuideFragment : Fragment() {
     ): View? {
 
         val binding = ItemProfileGuideBinding.inflate(inflater, container, false)
-//        binding.lifecycleOwner = viewLifecycleOwner
-//        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        binding.recyclerProfileGuide.adapter = GuideItemReviewAdapter(
+        binding.recyclerProfileGuideReview.adapter = GuideItemReviewAdapter(
             GuideItemReviewAdapter.OnClickListener {
-                Logger.i("GuideItemReviewAdapter.OnClickListener = $it")
+                Logger.i("GuideItemReviewAdapter.OnClickListener it = $it")
             }
         )
 
+
         return binding.root
     }
-
-
 }

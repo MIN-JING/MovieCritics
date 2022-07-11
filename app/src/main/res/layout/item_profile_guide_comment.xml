@@ -5,9 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable-->
-<!--            name="viewModel"-->
-<!--            type="com.jim.moviecritics.profile.ProfileViewModel" />-->
         <variable
             name="comment"
             type="com.jim.moviecritics.data.Comment" />
@@ -15,14 +12,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#46CDDC39">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/text_profile_item_review_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text=""
             app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +28,7 @@
             android:id="@+id/text_profile_item_review_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:maxLines="6"
             android:text="@{comment.content}"

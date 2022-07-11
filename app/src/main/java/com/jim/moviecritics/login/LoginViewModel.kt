@@ -29,9 +29,22 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     private lateinit var googleSignInAccount: GoogleSignInAccount
     private lateinit var firebaseAuth: FirebaseAuth
 
-    val user = User()
+    var user = User()
 
-    val liveUser = MutableLiveData<User>()
+//    private val _user = MutableLiveData<User>()
+
+//    val user: LiveData<User>
+//        get() = _user
+//
+    private val _liveUser = MutableLiveData<User>()
+
+    val liveUser: LiveData<User>
+        get() = _liveUser
+
+    private val _statusLogIn = MutableLiveData<Int>()
+
+    val statusLogIn: LiveData<Int>
+        get() = _statusLogIn
 
 
     // Handle navigation to login success
@@ -90,27 +103,12 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
             googleSignInAccount = completedTask.getResult(ApiException::class.java)
             val googleId = googleSignInAccount.id ?: ""
             Logger.i("Google ID = $googleId")
-            val googleFirstName = googleSignInAccount.givenName ?: ""
-            Logger.i("Google First Name = $googleFirstName")
-            val googleLastName = googleSignInAccount.familyName ?: ""
-            Logger.i("Google Last Name = $googleLastName")
-            val googleEmail = googleSignInAccount.email ?: ""
-            Logger.i("Google Email = $googleEmail")
-            val googleProfilePicURL = googleSignInAccount.photoUrl.toString()
-            Logger.i("Google Profile Pic URL = $googleProfilePicURL")
-            val googleIdToken = googleSignInAccount.idToken ?: ""
-            Logger.i("Google ID Token = $googleIdToken")
-            val googleIsExpired = googleSignInAccount.isExpired
-            Logger.i("Google isExpired = $googleIsExpired")
 
             googleSignInAccount.idToken?.let { firebaseAuthWithGoogle(it) }
 
             user.name = googleSignInAccount.givenName + "  " + googleSignInAccount.familyName
-            Logger.i("user.name = ${user.name}")
             user.email = googleSignInAccount.email.toString()
-            Logger.i("user.email = ${user.email}")
             user.pictureUri = googleSignInAccount.photoUrl.toString()
-            Logger.i("user.pictureUri = ${user.pictureUri}")
 
         } catch (e: ApiException) {
             // Sign in was unsuccessful
@@ -133,76 +131,62 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
                     user.id = firebaseCurrentUser?.uid.toString()
                     user.firebaseToken = firebaseTokenResult?.token.toString()
-                    Logger.i("~~~~~~開始~~~~~~firebaseTokenResult?.token.toString() = ${firebaseTokenResult?.token.toString()}")
+                    Logger.i("Firebase Token = ${firebaseTokenResult?.token}")
 
                     val firebaseDate = firebaseTokenResult?.expirationTimestamp?.let { Date(it) }
-                    Logger.i("firebaseDate = $firebaseDate")
 
                     if (firebaseDate != null) {
                         user.firebaseTokenExpiration = Timestamp(firebaseDate)
-                        Logger.i("user.firebaseTokenExpiration = ${user.firebaseTokenExpiration}")
                     }
 
                     user.signInProvider = firebaseTokenResult?.signInProvider.toString()
-                    Logger.i("firebaseDate = $firebaseDate")
 
                     UserManager.userToken = firebaseTokenResult?.token.toString()
-                    Logger.i("firebaseTokenResult?.token.toString() = ${firebaseTokenResult?.token.toString()}")
                     Logger.i("UserManager.userToken = ${UserManager.userToken}")
-                    UserManager.user.value = user
-                    Logger.i("UserManager.user.value = ${UserManager.user.value}")
-                    liveUser.value = user
-                    Logger.i("Login user = $user")
+
+//                    UserManager.userId = firebaseCurrentUser?.uid.toString()
+//                    Logger.i("UserManager.userId = ${UserManager.userId}")
+
+//                    liveUser.value = user
+
+
+                    _navigateToLoginSuccess.value = user
 
                     if (task.result.additionalUserInfo?.isNewUser == true) {
-                        Logger.i("task.result.additionalUserInfo?.isNewUser == true")
-
-//                        val firebaseCurrentUser = firebaseAuth.currentUser
-                        Logger.i("signInWithCredential user.providerId = ${firebaseCurrentUser?.providerId}")
+                        Logger.i("Firebase additionalUserInfo.isNewUser == true")
                         Logger.i("signInWithCredential user.uid = ${firebaseCurrentUser?.uid}")
 
-//                        user.id = firebaseCurrentUser?.uid.toString()
-                        Logger.i("user.id = ${user.id}")
 
-//                        val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
-                        Logger.i("signInWithCredential user.getIdToken.result.token = ${firebaseTokenResult?.token}")
-                        Logger.i("signInWithCredential user.getIdToken.result.expirationTimestamp = ${firebaseTokenResult?.expirationTimestamp}")
-                        Logger.i("signInWithCredential user.getIdToken.result.signInProvider = ${firebaseTokenResult?.signInProvider}")
-
-//                        user.firebaseToken = firebaseTokenResult?.token.toString()
-                        Logger.i("user.firebaseToken = ${user.firebaseToken}")
-
-//                        val firebaseDate = firebaseTokenResult?.expirationTimestamp?.let { Date(it) }
-//
-//                        if (firebaseDate != null) {
-//                            user.firebaseTokenExpiration = Timestamp(firebaseDate)
-//                            Logger.i("user.firebaseTokenExpiration = ${user.firebaseTokenExpiration}")
-//                        }
-
-//                        user.signInProvider = firebaseTokenResult?.signInProvider.toString()
-                        Logger.i("user.signInProvider = ${user.signInProvider}")
-
-//                        UserManager.userToken = firebaseTokenResult?.token.toString()
-//                        UserManager.user.value = user
-//                        liveUser.value = user
-
-                        userSignIn(user)
+                        Logger.i("isNewUser == true, user = $user")
+                        pushUserInfo(user)
+                        UserManager.user = user
+                        _liveUser.value = user
+//                        UserManager.user = liveUser.value
+                        _statusLogIn.value = FIREBASE_LOG_IN_FIRST
+                        leave()
                     } else {
-                        Logger.i("task.result.additionalUserInfo?.isNewUser == false")
-                    }
+                        Logger.i("Firebase additionalUserInfo.isNewUser == false")
 
+                        Logger.i("isNewUser == false, user = $user")
+                        getUserById(user.id)
+//                        UserManager.user = user
+
+//                        UserManager.user = user
+                        _statusLogIn.value = FIREBASE_LOG_IN_EVER
+                        leave()
+                    }
                 } else {
                     Logger.w("signInWithCredential:failure e = ${task.exception}")
+                    _statusLogIn.value = NO_ONE_KNOWS
                 }
             }
     }
 
-    fun userSignIn(user: User) {
+    private fun pushUserInfo(user: User) {
         coroutineScope.launch {
-
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.userSignIn(user)) {
+            when (val result = applicationRepository.pushUserInfo(user)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -221,5 +205,50 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                 }
             }
         }
+    }
+
+    private fun getUserById(id: String) {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getUserById(id)
+            UserManager.user = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+//                    if (result.error.contains("Invalid Access Token", true)) {
+//                        UserManager.clear()
+//                    }
+                    null
+                    User()
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                    User()
+                }
+                else -> {
+                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                    User()
+                }
+            }
+            _liveUser.value = UserManager.user
+        }
+    }
+
+    companion object {
+
+        const val FIREBASE_LOG_IN_FIRST = 0x11
+        const val FIREBASE_LOG_IN_EVER = 0x12
+
+        const val NO_ONE_KNOWS = 0x21
     }
 }

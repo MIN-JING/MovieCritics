@@ -5,19 +5,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".watchlist.WatchlistFragment">
 
+    <data>
+        <import type="android.view.View"/>
+<!--        <import type="android.text.TextUtils"/>-->
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.watchlist.WatchlistViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#1D009688">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="600dp"
-            android:text="Watchlist"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_watchlist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fadeScrollbars="false"
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
+            app:finds="@{viewModel.finds}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_watchlist">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

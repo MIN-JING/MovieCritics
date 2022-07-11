@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jim.moviecritics.profile.ProfileViewModel" />
+            type="com.jim.moviecritics.profile.ItemGuideViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,28 +19,32 @@
             android:id="@+id/text_profile_guide_recent_act"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/text_profile_guide_recent_act"
+            android:text="@string/text_profile_guide_recent_description"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_profile_guide"
+            android:id="@+id/recycler_profile_guide_review"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fadeScrollbars="false"
             android:orientation="vertical"
-
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
+            app:comments="@{viewModel.livePersonalComments}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_guide_recent_act"
             tools:listitem="@layout/item_profile_guide_comment" />
-<!--        app:comments="@{viewModel.livePersonalComments}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

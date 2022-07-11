@@ -93,6 +93,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.ratings = listOf()
                     Logger.i("it.average = ${movieDetailResult.average}")
                     movie.voteAverage = ((movieDetailResult.average * 10).roundToInt() / 50).toFloat()
+//                    movie.voteAverage = movieDetailResult.average
                     Logger.i("movie.voteAverage = ${movie.voteAverage}")
                 }
 

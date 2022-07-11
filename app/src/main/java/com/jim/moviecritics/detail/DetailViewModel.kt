@@ -1,5 +1,6 @@
 package com.jim.moviecritics.detail
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,17 +13,20 @@ import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 
 class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
     ) : ViewModel() {
+
+//    private val movie = arguments
+
+    private val user = UserManager.user
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -32,10 +36,10 @@ class DetailViewModel(
         get() = _movie
 
 
-    private val _user = MutableLiveData<User>()
-
-    val user: LiveData<User>
-        get() = _user
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
 
 
     private val _scores = MutableLiveData<List<Score>?>()
@@ -50,7 +54,7 @@ class DetailViewModel(
         get() = _score
 
 
-    var mutableScore = MutableLiveData<Score>()
+    var liveScore = MutableLiveData<Score>()
 
 
     private val _comments = MutableLiveData<List<Comment>>()
@@ -100,18 +104,11 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-//        if (MovieApplication.instance.isLiveDataDesign()) {
-//            movie.value?.imdbID?.let {
-//                user.value?.id?.let { userId -> getLiveScoreResult(imdbID = it, userID = userId) }
-//                getLiveCommentsResult(imdbID = it)
-//            }
-//        } else {
-//            movie.value?.imdbID?.let {
-//                user.value?.id?.let { userId -> getScoreResult(isInitial = true, imdbID = it, userID = userId) }
-//                getScoresResult(isInitial = false, imdbID = it)
-//                getCommentsResult(isInitial = false, imdbID = it)
-//            }
-//        }
+        movie.value?.imdbID?.let {
+            getLiveCommentsResult(imdbID = it)
+            user?.id?.let { userID -> getLiveScoreResult(imdbID = it, userID = userID) }
+        }
+
     }
 
     fun navigateToPending(movie: Movie) {
@@ -126,18 +123,22 @@ class DetailViewModel(
         _leave.value = true
     }
 
-    fun takeDownUser(user: User) {
-        _user.value = user
-        Logger.i("Detail takeDownUser() = ${_user.value}")
-    }
-
-    fun getLiveScoreResult(imdbID: String, userID: String) {
-        mutableScore = applicationRepository.getLiveScore(imdbID, userID)
+    private fun getLiveScoreResult(imdbID: String, userID: String) {
+        Logger.i("getLiveScoreResult()")
+        Logger.i("getLiveScoreResult() userID = $userID")
+        Logger.i("getLiveScoreResult() imdbID = $imdbID")
+        liveScore.value = applicationRepository.getLiveScore(imdbID, userID).value
+        liveScore = applicationRepository.getLiveScore(imdbID, userID)
+        Logger.i("getLiveScoreResult() liveScore = $liveScore")
+        Logger.i("getLiveScoreResult() liveScore.value = ${liveScore.value}")
         _status.value = LoadApiStatus.DONE
     }
 
-    fun getLiveCommentsResult(imdbID: String) {
+
+    private fun getLiveCommentsResult(imdbID: String) {
         liveComments = applicationRepository.getLiveComments(imdbID)
+        Logger.i("getLiveCommentsResult() liveComments = $liveComments")
+        Logger.i("getLiveCommentsResult() liveComments.value = ${liveComments.value}")
         _status.value = LoadApiStatus.DONE
     }
 

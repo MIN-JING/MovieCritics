@@ -1,6 +1,7 @@
 package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 
 
@@ -30,7 +31,23 @@ class DefaultApplicationRepository(
         return apiDataSource.getSearchMulti(queryKey)
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        return apiDataSource.getFind(imdbID)
+    }
+
     // FirebaseDataSource
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        return firebaseDataSource.getLiveWatchList(imdbID, userID)
+    }
+
+    override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+        return firebaseDataSource.getLiveWatchListByUser(userID)
+    }
+
+    override suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> {
+        return firebaseDataSource.pushWatchListExpiration(imdbID, userID, expiration)
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         return firebaseDataSource.getScores(imdbID)
     }
@@ -43,12 +60,16 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveScore(imdbID, userID)
     }
 
-    override suspend fun userSignIn(user: User): Result<Boolean> {
-        return firebaseDataSource.userSignIn(user)
+    override suspend fun pushUserInfo(user: User): Result<Boolean> {
+        return firebaseDataSource.pushUserInfo(user)
     }
 
-    override suspend fun getUser(token: String): Result<User> {
-        return firebaseDataSource.getUser(token)
+    override suspend fun getUserByToken(token: String): Result<User> {
+        return firebaseDataSource.getUserByToken(token)
+    }
+
+    override suspend fun getUserById(id: String): Result<User> {
+        return firebaseDataSource.getUserById(id)
     }
 
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {
@@ -71,6 +92,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.delete(comment)
     }
 
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        return firebaseDataSource.getLivePersonalFavorites(userID)
+    }
+
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.pushWatchedMovie(imdbID, userID)
     }
@@ -87,8 +112,8 @@ class DefaultApplicationRepository(
         return firebaseDataSource.removeLikedMovie(imdbID, userID)
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
-        return firebaseDataSource.pushWatchlistMovie(imdbID, userID)
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
+        return firebaseDataSource.pushWatchlistMovie(watch)
     }
 
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {

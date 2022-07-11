@@ -12,19 +12,19 @@ import com.jim.moviecritics.watchlist.WatchlistViewModel
 class ProfileViewModelFactory(
     private val applicationRepository: ApplicationRepository,
     private val user: User?
-)   : ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>)=
         with(modelClass) {
-        when {
-            isAssignableFrom(ProfileViewModel::class.java) ->
-                ProfileViewModel(applicationRepository, user)
+            when {
+                isAssignableFrom(ProfileViewModel::class.java) ->
+                    ProfileViewModel(applicationRepository, user)
 
-            isAssignableFrom(WatchlistViewModel::class.java) ->
-                WatchlistViewModel(applicationRepository, user)
+                isAssignableFrom(WatchlistViewModel::class.java) ->
+                    WatchlistViewModel(applicationRepository, user)
 
-            else ->
-                throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-        }
-    } as T
+                else ->
+                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+            }
+        } as T
 }

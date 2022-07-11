@@ -6,16 +6,15 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
-import com.jim.moviecritics.data.Cast
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.HomeItem
-import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
+import com.jim.moviecritics.profile.FavoriteItemAdapter
 import com.jim.moviecritics.profile.GuideItemReviewAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.watchlist.WatchlistAdapter
 
 
 @BindingAdapter("homeItems")
@@ -78,6 +77,24 @@ fun bindRecyclerViewWithComments(recyclerView: RecyclerView, comments: List<Comm
     }
 }
 
+@BindingAdapter("finds")
+fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
+    finds?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is FavoriteItemAdapter -> {
+                    submitList(it)
+                    Logger.i("is FavoriteItemAdapter bindRecyclerViewWithFinds = $it")
+                }
+                is WatchlistAdapter -> {
+                    submitList(it)
+                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
+                }
+            }
+        }
+    }
+}
+
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
  */
@@ -87,6 +104,22 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         val imgUri = it.toUri().buildUpon().build()
         GlideApp.with(imgView.context)
             .load(imgUri)
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+            )
+            .into(imgView)
+    }
+}
+
+@BindingAdapter("imageUrlWithCircleCrop")
+fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        val imgUri = it.toUri().buildUpon().build()
+        GlideApp.with(imgView.context)
+            .load(imgUri)
+            .circleCrop()
             .apply(
                 RequestOptions()
                     .placeholder(R.drawable.ic_launcher_background)

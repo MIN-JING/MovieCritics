@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.databinding.ItemProfileGuideBinding
 import com.jim.moviecritics.databinding.ItemProfileGuideCommentBinding
 
 
@@ -46,5 +45,4 @@ class GuideItemReviewAdapter(private val onClickListener: OnClickListener) :
     class OnClickListener(val clickListener: (comment: Comment) -> Unit) {
         fun onClick(comment: Comment) = clickListener(comment)
     }
-
 }

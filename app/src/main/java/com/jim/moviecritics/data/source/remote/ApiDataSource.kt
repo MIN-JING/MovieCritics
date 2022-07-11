@@ -1,6 +1,7 @@
 package com.jim.moviecritics.data.source.remote
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
@@ -90,6 +91,41 @@ object ApiDataSource : ApplicationDataSource {
         }
     }
 
+    override suspend fun getFind(imdbID: String): Result<FindResult> {
+        if (!isInternetConnected()) {
+            return Result.Fail(getString(R.string.internet_not_connected))
+        }
+
+        return try {
+            val searchResult = TmdbApi.retrofitService.getFind(imdbID)
+
+            searchResult.error?.let {
+                return Result.Fail(it)
+            }
+            Result.Success(searchResult)
+
+        } catch (e: Exception) {
+            Logger.w("[${this::class.simpleName}] exception=${e.message}")
+            Result.Error(e)
+        }
+    }
+
+    override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp,
+    ): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getScores(imdbID: String): Result<List<Score>> {
         TODO("Not yet implemented")
     }
@@ -102,11 +138,15 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun userSignIn(user: User): Result<Boolean> {
+    override suspend fun pushUserInfo(user: User): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUser(token: String): Result<User> {
+    override suspend fun getUserByToken(token: String): Result<User> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserById(id: String): Result<User> {
         TODO("Not yet implemented")
     }
 
@@ -130,6 +170,10 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -146,7 +190,7 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
+    override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

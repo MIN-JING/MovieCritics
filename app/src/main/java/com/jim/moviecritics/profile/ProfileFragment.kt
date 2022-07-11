@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentProfileBinding
 import com.jim.moviecritics.ext.getVmFactory
@@ -40,19 +38,11 @@ class ProfileFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        if (profileViewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            profileViewModel.user.observe(viewLifecycleOwner) {
-                if (null != it) {
-                    Logger.i("Profile Fragment mainViewModel.setupUser(it)")
-                    mainViewModel.setupUser(it)
-                }
-            }
+//        val tabLayoutArray = arrayOf("Guide", "Favorite")
+
+        profileViewModel.user.observe(viewLifecycleOwner) {
+            Logger.i("profileViewModel.user observe it = $it")
         }
-
-        profileViewModel.user.value?.id?.let { profileViewModel.getLivePersonalCommentsResult(it) }
-
-        val tabLayoutArray = arrayOf("Guide", "Favorite")
 
         FragmentProfileBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
@@ -61,7 +51,8 @@ class ProfileFragment : Fragment() {
             viewpagerProfile.let {
                 it.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
                 TabLayoutMediator(tabsProfile, it) { tab, position ->
-                    tab.text = tabLayoutArray[position]
+//                    tab.text = tabLayoutArray[position]
+                    tab.text = ProfileTypeFilter.values()[position].value
                 }.attach()
             }
             return@onCreateView root

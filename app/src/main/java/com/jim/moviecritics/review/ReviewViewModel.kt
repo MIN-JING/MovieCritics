@@ -10,8 +10,8 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
@@ -34,11 +34,14 @@ class ReviewViewModel(
         get() = _movie
 
 
-    private val _user = MutableLiveData<User>()
+//    private val _user = MutableLiveData<User>()
+//
+//    val user: LiveData<User>
+//        get() = _user
 
-    val user: LiveData<User>
-        get() = _user
+//    private val movie = arguments
 
+    private val user = UserManager.user
 
     private val comment = Comment()
 
@@ -82,17 +85,21 @@ class ReviewViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-    }
 
-    fun takeDownUser(user: User) {
-        _user.value = user
-        Logger.i("Review takeDownUser() = ${_user.value}")
-    }
-
-    fun initComment() {
         comment.imdbID = movie.value?.imdbID.toString()
-        comment.userID = user.value?.id.toString()
+        comment.userID = user?.id.toString()
+//        initComment()
     }
+
+//    fun takeDownUser(user: User) {
+//        _user.value = user
+//        Logger.i("Review takeDownUser() = ${_user.value}")
+//    }
+
+//    private fun initComment() {
+//        comment.imdbID = movie.value?.imdbID.toString()
+//        comment.userID = UserManager.userId.toString()
+//    }
 
 
     fun leave() {
@@ -104,11 +111,9 @@ class ReviewViewModel(
     }
 
     fun toGenres(): String {
-
         var genres = ""
 
         movie.value?.genres?.let {
-
             if (it.isNotEmpty()) {
                 for (genre in it) {
                     genres = genres + genre.name + ", "

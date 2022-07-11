@@ -30,12 +30,12 @@
             <ImageView
                 android:id="@+id/image_profile_user_pic"
                 android:layout_width="70dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="16dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/image_profile_user_pic"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.user.pictureUri}"
+                app:imageUrlWithCircleCrop="@{viewModel.user.pictureUri}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
@@ -114,23 +114,25 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager_profile"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_profile_header"/>
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs_profile"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:background="@color/secondaryVariant"
             android:contentDescription="@string/tabs_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_profile_header" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

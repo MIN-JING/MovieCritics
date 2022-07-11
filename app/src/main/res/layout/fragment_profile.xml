@@ -31,7 +31,7 @@
                 android:id="@+id/image_profile_user_pic"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:contentDescription="@string/image_profile_user_pic"
                 android:scaleType="centerCrop"
@@ -118,6 +118,7 @@
             android:id="@+id/tabs_profile"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:background="@color/secondaryVariant"
             android:contentDescription="@string/tabs_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -127,10 +128,11 @@
             android:id="@+id/viewpager_profile"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabs_profile"/>
+            app:layout_constraintTop_toBottomOf="@id/tabs_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

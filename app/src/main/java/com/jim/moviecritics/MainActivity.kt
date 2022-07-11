@@ -13,6 +13,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
@@ -68,6 +69,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
+//        UserManager.clear()
     }
 
 

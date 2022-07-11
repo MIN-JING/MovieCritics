@@ -1,6 +1,5 @@
 package com.jim.moviecritics.data.source.remote
 
-
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.R

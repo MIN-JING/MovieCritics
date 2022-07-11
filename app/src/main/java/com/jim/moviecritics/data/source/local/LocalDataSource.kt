@@ -1,14 +1,13 @@
 package com.jim.moviecritics.data.source.local
 
-
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
+import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -16,6 +15,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val PATH_SCORES = "scores"
 private const val PATH_COMMENTS = "comments"
 private const val PATH_USERS = "users"
+
 
 class LocalDataSource(val context: Context) : ApplicationDataSource {
 

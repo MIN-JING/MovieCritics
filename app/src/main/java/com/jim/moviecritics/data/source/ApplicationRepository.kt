@@ -38,7 +38,7 @@ interface ApplicationRepository {
 
     suspend fun getUserByToken(token: String): Result<User>
 
-    suspend fun getUserById(id: String): Result<User>
+    suspend fun getUserById(id: String): Result<User?>
 
     suspend fun getComments(imdbID: String): Result<List<Comment>>
 

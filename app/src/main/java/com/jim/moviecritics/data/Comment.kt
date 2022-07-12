@@ -14,4 +14,5 @@ data class Comment(
     var content: String = "",
     val likes: MutableList<String> = mutableListOf(),
     val dislikes: MutableList<String> = mutableListOf()
+//    val reportAbuse: MutableList<String> = mutableListOf()
 ) : Parcelable

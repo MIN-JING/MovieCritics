@@ -309,7 +309,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun getUserById(id: String): Result<User> = suspendCoroutine { continuation ->
+    override suspend fun getUserById(id: String): Result<User?> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
             .whereEqualTo(FIELD_ID, id)
@@ -613,24 +613,6 @@ object FirebaseDataSource : ApplicationDataSource {
                     continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
                 }
             }
-
-//        FirebaseFirestore.getInstance()
-//            .collection(PATH_USERS)
-//            .document(userID)
-//            .update(KEY_WATCHLIST, FieldValue.arrayUnion(imdbID))
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    Logger.i("pushWatchlistMovie task.isSuccessful")
-//                    continuation.resume(Result.Success(true))
-//                } else {
-//                    task.exception?.let {
-//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-//                        continuation.resume(Result.Error(it))
-//                        return@addOnCompleteListener
-//                    }
-//                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
-//                }
-//            }
     }
 
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
@@ -660,24 +642,6 @@ object FirebaseDataSource : ApplicationDataSource {
                 continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
             }
         }
-
-//        FirebaseFirestore.getInstance()
-//            .collection(PATH_USERS)
-//            .document(userID)
-//            .update(KEY_WATCHLIST, FieldValue.arrayRemove(imdbID))
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    Logger.i("removeWatchlistMovie task.isSuccessful")
-//                    continuation.resume(Result.Success(true))
-//                } else {
-//                    task.exception?.let {
-//                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
-//                        continuation.resume(Result.Error(it))
-//                        return@addOnCompleteListener
-//                    }
-//                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
-//                }
-//            }
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->

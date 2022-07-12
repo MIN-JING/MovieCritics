@@ -68,7 +68,7 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getUserByToken(token)
     }
 
-    override suspend fun getUserById(id: String): Result<User> {
+    override suspend fun getUserById(id: String): Result<User?> {
         return firebaseDataSource.getUserById(id)
     }
 

@@ -86,8 +86,8 @@
 
     <!-- Login -->
     <string name="profile_mystic_information">Into the Unknown~</string>
-    <string name="text_login_title">Please log in.</string>
-    <string name="text_login_description">You could use advanced features after log in.</string>
+    <string name="text_login_title">Please log in</string>
+    <string name="text_login_description">You could use advanced features after log in</string>
     <!--    <string name="button_login_google">Google 登入</string>-->
 
     <!-- Profile -->
@@ -115,6 +115,18 @@
     <string name="login_failed">"Login failed"</string>
     <string name="server_client_id"></string>
 
+    <!-- Report -->
+    <string name="button_report_cancel">Cancel</string>
+    <string name="button_report_send">Send</string>
+    <string name="text_report_title_top">Report Review</string>
+    <string name="text_report_title_reason">REASON</string>
+    <string name="text_report_reason_abuse">Abuse</string>
+    <string name="text_report_reason_spoilers">Contains spoilers</string>
+    <string name="text_report_reason_spam">Spam</string>
+    <string name="text_report_reason_plagiarism">Plagiarism</string>
+    <string name="text_report_reason_other">Other reason</string>
+    <string name="text_report_title_message">MESSAGE</string>
+    <string name="edit_report_message">Key in…, and provide more details such as the original URL if appropriate.</string>
 
 
 </resources>

@@ -38,25 +38,13 @@ class DetailFragment : Fragment() {
         binding.recyclerviewDetailReview.adapter = ReviewAdapter(
             ReviewAdapter.OnClickListener {
                 Logger.i("ReviewAdapter.OnClickListener it = $it")
-            }
+            },
+            viewModel
         )
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.movie = $it")
         }
-
-
-//        viewModel.user.observe(viewLifecycleOwner) {
-//            Logger.i("DetailViewModel.user = $it")
-//
-//            viewModel.movie.value?.imdbID?.let { imdbID ->
-//                viewModel.user.value?.id?.let { userID ->
-//                    Logger.i("userID = $userID")
-//                    Logger.i("imdbID = $imdbID")
-//                    viewModel.getLiveScoreResult(imdbID = imdbID, userID = userID)
-//                }
-//            }
-//        }
 
         viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
@@ -104,9 +92,17 @@ class DetailFragment : Fragment() {
 
         viewModel.liveComments.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveComments = $it")
-//            it?.let {
-//                binding.viewModel = viewModel
-//            }
+            it?.let {
+                val list = mutableListOf<String>()
+                for (value in it) {
+                    list.add(value.userID)
+                }
+                viewModel.getUserNames(list)
+            }
+        }
+
+        viewModel.userNames.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.userNames = $it")
         }
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
@@ -115,6 +111,14 @@ class DetailFragment : Fragment() {
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
                 viewModel.onPendingNavigated()
+            }
+        }
+
+        viewModel.navigateToReport.observe(viewLifecycleOwner) {
+            Logger.i("ReportViewModel.navigateToReport = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
+                viewModel.onReportNavigated()
             }
         }
 

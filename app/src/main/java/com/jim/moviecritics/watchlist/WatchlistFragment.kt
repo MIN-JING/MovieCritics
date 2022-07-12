@@ -71,7 +71,7 @@ class WatchlistFragment : Fragment() {
 
         viewModel.liveWatchListByUser.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.liveWatchListByUser = $it")
-            if (it != null) {
+            it?.let {
                 val list = mutableListOf<String>()
                 for (value in it) {
                     list.add(value.imdbID)

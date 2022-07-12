@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".report.ReportDialog">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.report.ReportViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.leave()}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_dialog_corner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/button_report_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:onClick="@{() -> viewModel.leave()}"
+                android:text="@string/button_report_cancel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_report_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+
+                android:text="@string/button_report_send"
+                app:layout_constraintBottom_toBottomOf="@+id/text_report_title_top"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_report_title_top" />
+<!--            android:onClick="@{() -> viewModel.prepareComment()}"-->
+
+            <TextView
+                android:id="@+id/text_report_title_top"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="@string/text_report_title_top"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/button_report_cancel"
+                app:layout_constraintEnd_toStartOf="@+id/button_report_send"
+                app:layout_constraintStart_toEndOf="@+id/button_report_cancel"
+                app:layout_constraintTop_toTopOf="@+id/button_report_cancel" />
+
+            <TextView
+                android:id="@+id/text_report_title_reason"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/text_report_title_reason"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_title_top" />
+
+            <CheckedTextView
+                android:id="@+id/text_report_reason_abuse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                android:text="@string/text_report_reason_abuse"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_title_reason" />
+
+            <CheckedTextView
+                android:id="@+id/text_report_reason_spoilers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                android:text="@string/text_report_reason_spoilers"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_abuse" />
+
+            <CheckedTextView
+                android:id="@+id/text_report_reason_spam"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                android:text="@string/text_report_reason_spam"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spoilers" />
+
+            <CheckedTextView
+                android:id="@+id/text_report_reason_plagiarism"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                android:text="@string/text_report_reason_plagiarism"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spam" />
+
+            <CheckedTextView
+                android:id="@+id/text_report_reason_other"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:checkMark="?android:attr/listChoiceIndicatorSingle"
+                android:text="@string/text_report_reason_other"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_plagiarism" />
+
+            <TextView
+                android:id="@+id/text_report_title_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/text_report_title_message"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_other" />
+
+            <EditText
+                android:id="@+id/edit_report_message"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/edit_report_message"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_report_title_message" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -15,6 +15,9 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_event.xml" value="0.328" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_favorite_selected.xml" value="0.1875" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_favorite_selector.xml" value="0.354" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_flag.xml" value="0.303" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_flag_selected.xml" value="0.303" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_flag_selector.xml" value="0.303" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_launcher_background.xml" value="0.365" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_menu.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_downshift.xml" value="0.338" />
@@ -46,6 +49,7 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/dialog_login.xml" value="0.3522873022659256" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/dialog_login_delete.xml" value="0.3522873022659256" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/dialog_pending.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/dialog_report.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/dialog_review.xml" value="0.3522873022659256" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/downshift_fragment.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/fragment_detail.xml" value="0.3524590163934426" />
@@ -78,6 +82,7 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_search_tv.xml" value="0.2535271483539974" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/item_watchlist.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/profile_fragment.xml" value="0.42916666666666664" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/report_dialog.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/layout/search_fragment.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/menu/bottom_nav_menu.xml" value="0.42916666666666664" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/menu/toolbar_menu.xml" value="0.3522873022659256" />

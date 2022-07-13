@@ -12,6 +12,9 @@
     <dimen name="size_bottom_nav_icon">36dp</dimen>
     <dimen name="design_bottom_navigation_margin" tools:ignore="PrivateResource">0dp</dimen>
 
+    <!-- Message Dialog -->
+    <dimen name="size_message">150dp</dimen>
+
     <!-- General -->
     <dimen name="elevation_all">4dp</dimen>
     <dimen name="height_all_bottom_layout">80dp</dimen>

@@ -33,7 +33,7 @@ class DetailViewModel(
         get() = _movie
 
 
-    private val user = UserManager.user
+    val user = UserManager.user
 
     private var users = listOf<User>()
 
@@ -116,8 +116,12 @@ class DetailViewModel(
         Logger.i("------------------------------------")
 
         movie.value?.imdbID?.let {
-            user?.id?.let { userID -> getLiveScoreResult(imdbID = it, userID = userID) }
-            getLiveCommentsResult(imdbID = it)
+            user?.let { user ->
+                getLiveScoreResult(imdbID = it, userID = user.id)
+                getLiveCommentsExcludeBlocks(imdbID = it, blocks = user.blocks)
+            }
+//            getLiveCommentsResult(imdbID = it)
+
         }
 
     }
@@ -166,6 +170,13 @@ class DetailViewModel(
         liveComments = applicationRepository.getLiveComments(imdbID)
         Logger.i("getLiveCommentsResult() liveComments = $liveComments")
         Logger.i("getLiveCommentsResult() liveComments.value = ${liveComments.value}")
+        _status.value = LoadApiStatus.DONE
+    }
+
+    private fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>) {
+        liveComments = applicationRepository.getLiveCommentsExcludeBlocks(imdbID, blocks)
+        Logger.i("getLiveCommentsExcludeBlocks() liveComments = $liveComments")
+        Logger.i("getLiveCommentsExcludeBlocks() liveComments.value = ${liveComments.value}")
         _status.value = LoadApiStatus.DONE
     }
 

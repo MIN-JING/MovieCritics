@@ -100,6 +100,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLivePersonalFavorites(userID)
     }
 
+    override fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>> {
+        return firebaseDataSource.getLiveCommentsExcludeBlocks(imdbID, blocks)
+    }
+
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         return firebaseDataSource.pushWatchedMovie(imdbID, userID)
     }
@@ -130,6 +134,10 @@ class DefaultApplicationRepository(
 
     override suspend fun pushReport(report: Report): Result<Boolean> {
         return firebaseDataSource.pushReport(report)
+    }
+
+    override suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean> {
+        return firebaseDataSource.pushBlockUser(userID, blockedID)
     }
 
     override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {

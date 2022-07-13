@@ -1,33 +1,31 @@
-package com.jim.moviecritics.follow
+package com.jim.moviecritics.block
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jim.moviecritics.MovieApplication
+import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class FollowViewModel(
+class BlockViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: User?
 ) : ViewModel() {
-
     private val _user = MutableLiveData<User>().apply {
         value = arguments
     }
 
     val user: LiveData<User>
         get() = _user
-
-
-    private val _navigateToBlock = MutableLiveData<User?>()
-
-    val navigateToBlock: LiveData<User?>
-        get() = _navigateToBlock
 
     // Handle leave login
     private val _leave = MutableLiveData<Boolean?>()
@@ -74,11 +72,35 @@ class FollowViewModel(
         _leave.value = null
     }
 
-    fun navigateToBlock(user: User) {
-        _navigateToBlock.value = user
-    }
+    fun pushBlockUser() {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
 
-    fun onBlockNavigated() {
-        _navigateToBlock.value = null
+            when (val result =
+                UserManager.user?.id?.let { userID ->
+                    user.value?.id?.let { blockedID ->
+                    applicationRepository.pushBlockUser(
+                        userID = userID,
+                        blockedID = blockedID)
+                } }) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+            _leave.value = true
+        }
     }
 }

@@ -54,6 +54,8 @@ interface ApplicationDataSource {
 
     fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>>
 
+    fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>>
+
     suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 
     suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean>
@@ -69,6 +71,8 @@ interface ApplicationDataSource {
     suspend fun pushScore(score: Score): Result<Boolean>
 
     suspend fun pushReport(report: Report): Result<Boolean>
+
+    suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean>
 
     suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>
 

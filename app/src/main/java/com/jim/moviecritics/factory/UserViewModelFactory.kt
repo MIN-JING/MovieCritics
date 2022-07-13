@@ -2,6 +2,7 @@ package com.jim.moviecritics.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.jim.moviecritics.block.BlockViewModel
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.follow.FollowViewModel
@@ -26,6 +27,9 @@ class UserViewModelFactory(
 
                 isAssignableFrom(FollowViewModel::class.java) ->
                     FollowViewModel(applicationRepository, user)
+
+                isAssignableFrom(BlockViewModel::class.java) ->
+                    BlockViewModel(applicationRepository, user)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

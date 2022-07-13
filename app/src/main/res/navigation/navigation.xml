@@ -109,6 +109,18 @@
             app:nullable="true" />
     </dialog>
 
+    <dialog
+        android:id="@+id/blockDialog"
+        android:name="com.jim.moviecritics.block.BlockDialog"
+        android:label="dialog_block"
+        tools:layout="@layout/dialog_block">
+
+        <argument
+            android:name="userKey"
+            app:argType="com.jim.moviecritics.data.User"
+            app:nullable="true" />
+    </dialog>
+
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
@@ -137,5 +149,7 @@
     <action android:id="@+id/navigation_to_report_dialog" app:destination="@+id/reportDialog"/>
 
     <action android:id="@+id/navigation_to_follow_dialog" app:destination="@+id/followDialog"/>
+
+    <action android:id="@+id/navigation_to_block_dialog" app:destination="@+id/blockDialog"/>
 
 </navigation>

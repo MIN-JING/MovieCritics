@@ -107,6 +107,13 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override fun getLiveCommentsExcludeBlocks(
+        imdbID: String,
+        blocks: List<String>,
+    ): MutableLiveData<List<Comment>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -136,6 +143,10 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
     }
 
     override suspend fun pushReport(report: Report): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

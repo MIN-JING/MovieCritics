@@ -48,6 +48,8 @@ interface ApplicationRepository {
 
     fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>>
 
+    fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>>
+
     suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
@@ -69,6 +71,8 @@ interface ApplicationRepository {
     suspend fun pushScore(score: Score): Result<Boolean>
 
     suspend fun pushReport(report: Report): Result<Boolean>
+
+    suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean>
 
     suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>
 

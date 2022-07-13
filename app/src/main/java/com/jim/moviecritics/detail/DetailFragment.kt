@@ -101,10 +101,15 @@ class DetailFragment : Fragment() {
 
         viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
             Logger.i("DetailViewModel.liveComments = $comments")
+
+//            val blocks = viewModel.user?.blocks
+//            comments.filterNot { it.userID in blocks }
+
             comments?.let {
                 val list = mutableListOf<String>()
-                for (value in it) {
-                    list.add(value.userID)
+
+                for (comment in it) {
+                    list.add(comment.userID)
                 }
                 Logger.i("DetailViewModel.liveComment userID = $list")
                 viewModel.getUsersResult(false, list)

@@ -20,22 +20,13 @@
         android:focusable="true">
 
         <TextView
-            android:id="@+id/text_detail_item_review_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="@+id/text_detail_item_review_user_name"
-            app:layout_constraintStart_toEndOf="@+id/text_detail_item_review_user_name"
-            app:layout_constraintTop_toTopOf="@+id/text_detail_item_review_user_name"
-            tools:text="4.7 Star" />
-
-        <TextView
             android:id="@+id/text_detail_item_review_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text=""
+            android:layout_marginBottom="16dp"
+            android:text="@{viewModel.usersMap[comment.userID].name}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_content"
             tools:text="User Name" />
@@ -54,6 +45,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Review" />
+
+        <ImageView
+            android:id="@+id/image_detail_item_review_user_pic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            app:imageUrlWithCircleCrop="@{viewModel.usersMap[comment.userID].pictureUri}"
+            app:layout_constraintBottom_toBottomOf="@+id/text_detail_item_review_user_name"
+            app:layout_constraintStart_toEndOf="@+id/text_detail_item_review_user_name"
+            app:layout_constraintTop_toTopOf="@+id/text_detail_item_review_user_name"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
             android:id="@+id/image_detail_item_review_report"

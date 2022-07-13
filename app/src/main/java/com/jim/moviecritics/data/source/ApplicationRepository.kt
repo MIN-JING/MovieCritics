@@ -40,6 +40,8 @@ interface ApplicationRepository {
 
     suspend fun getUserById(id: String): Result<User?>
 
+    suspend fun getUsersByIdList(idList: List<String>): Result<List<User>>
+
     suspend fun getComments(imdbID: String): Result<List<Comment>>
 
     fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>>

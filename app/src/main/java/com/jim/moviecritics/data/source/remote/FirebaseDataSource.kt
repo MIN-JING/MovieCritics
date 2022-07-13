@@ -338,6 +338,37 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
+    override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_USERS)
+            .whereIn(FIELD_ID, idList)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result.size() >= 1) {
+                        Logger.w("[${this::class.simpleName}] getUsersByIdList task.result.size >= 1")
+                        Logger.d( "First element is " + task.result.first().id + " => " + task.result.first().data)
+                        val list = mutableListOf<User>()
+                        for (document in task.result) {
+                            Logger.d( document.id + " => " + document.data)
+                            val user = document.toObject(User::class.java)
+                            list.add(user)
+                        }
+                        continuation.resume(Result.Success(list))
+                    } else {
+                        Logger.w("[${this::class.simpleName}] getUserById task.result.size < 1")
+                    }
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
     override suspend fun getComments(imdbID: String): Result<List<Comment>> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_COMMENTS)

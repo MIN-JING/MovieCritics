@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemDetailReviewBinding
+import com.jim.moviecritics.util.Logger
 
 
 class ReviewAdapter(
@@ -23,6 +24,11 @@ class ReviewAdapter(
             binding.viewModel = viewModel
             binding.root.setOnClickListener { onClickListener.onClick(comment) }
             binding.executePendingBindings()
+            Logger.i("bind comment = $comment")
+            Logger.i("bind comment.userID = ${comment.userID}")
+            Logger.i("comment userMap = ${viewModel.usersMap[comment.userID]}")
+            Logger.i("comment userName = ${viewModel.usersMap[comment.userID]?.name}")
+            Logger.i("comment userPic = ${viewModel.usersMap[comment.userID]?.pictureUri}")
         }
     }
 

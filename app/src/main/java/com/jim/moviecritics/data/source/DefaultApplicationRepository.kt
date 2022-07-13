@@ -72,6 +72,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getUserById(id)
     }
 
+    override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> {
+        return firebaseDataSource.getUsersByIdList(idList)
+    }
+
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {
         return firebaseDataSource.getComments(imdbID)
     }

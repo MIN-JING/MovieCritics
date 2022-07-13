@@ -79,6 +79,10 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {
         TODO("Not yet implemented")
     }

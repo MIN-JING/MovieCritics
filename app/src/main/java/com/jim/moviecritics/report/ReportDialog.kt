@@ -82,5 +82,4 @@ class ReportDialog : AppCompatDialogFragment() {
             viewModel.onLeaveCompleted()
         }
     }
-
 }

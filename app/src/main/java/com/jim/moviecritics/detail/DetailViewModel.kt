@@ -95,6 +95,12 @@ class DetailViewModel(
         get() = _navigateToReport
 
 
+    private val _navigateToUserInfo = MutableLiveData<User?>()
+
+    val navigateToUserInfo: LiveData<User?>
+        get() = _navigateToUserInfo
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -130,6 +136,14 @@ class DetailViewModel(
 
     fun onReportNavigated() {
         _navigateToReport.value = null
+    }
+
+    fun navigateToUserInfo(user: User) {
+        _navigateToUserInfo.value = user
+    }
+
+    fun onUserInfoNavigated() {
+        _navigateToUserInfo.value = null
     }
 
     fun leave() {

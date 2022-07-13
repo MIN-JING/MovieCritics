@@ -131,5 +131,9 @@
     <string name="edit_report_message">Key in…, and provide more details such as the original URL if appropriate.</string>
     <string name="image_detail_item_review_report_description">Report review</string>
 
+    <!-- Follow -->
+    <string name="image_follow_user_pic">User profile picture</string>
+    <string name="image_follow_block">Block User</string>
+
 
 </resources>

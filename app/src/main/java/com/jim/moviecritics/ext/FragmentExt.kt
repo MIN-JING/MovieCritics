@@ -7,7 +7,7 @@ import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.factory.CommentViewModelFactory
 import com.jim.moviecritics.factory.MovieViewModelFactory
-import com.jim.moviecritics.factory.ProfileViewModelFactory
+import com.jim.moviecritics.factory.UserViewModelFactory
 import com.jim.moviecritics.factory.ViewModelFactory
 
 
@@ -21,9 +21,9 @@ fun Fragment.getVmFactory(movie: Movie): MovieViewModelFactory {
     return MovieViewModelFactory(repository, movie)
 }
 
-fun Fragment.getVmFactory(user: User?): ProfileViewModelFactory {
+fun Fragment.getVmFactory(user: User?): UserViewModelFactory {
     val repository = (requireContext().applicationContext as MovieApplication).applicationRepository
-    return ProfileViewModelFactory(repository, user)
+    return UserViewModelFactory(repository, user)
 }
 
 fun Fragment.getVmFactory(comment: Comment): CommentViewModelFactory {

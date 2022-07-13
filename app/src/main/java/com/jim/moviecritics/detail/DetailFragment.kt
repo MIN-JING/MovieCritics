@@ -127,10 +127,18 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.navigateToReport.observe(viewLifecycleOwner) {
-            Logger.i("ReportViewModel.navigateToReport = $it")
+            Logger.i("DetailViewModel.navigateToReport = $it")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
                 viewModel.onReportNavigated()
+            }
+        }
+
+        viewModel.navigateToUserInfo.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.navigateToUserInfo = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
+                viewModel.onUserInfoNavigated()
             }
         }
 

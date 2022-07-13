@@ -88,18 +88,7 @@ class ReviewViewModel(
 
         comment.imdbID = movie.value?.imdbID.toString()
         comment.userID = user?.id.toString()
-//        initComment()
     }
-
-//    fun takeDownUser(user: User) {
-//        _user.value = user
-//        Logger.i("Review takeDownUser() = ${_user.value}")
-//    }
-
-//    private fun initComment() {
-//        comment.imdbID = movie.value?.imdbID.toString()
-//        comment.userID = UserManager.userId.toString()
-//    }
 
 
     fun leave() {
@@ -165,7 +154,6 @@ class ReviewViewModel(
 
             content.value != null -> {
                 comment.content = content.value.toString()
-                Logger.i("testComment = $comment")
                 pushComment(comment)
                 leave()
             }

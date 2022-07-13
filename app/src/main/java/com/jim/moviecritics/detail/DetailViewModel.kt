@@ -214,12 +214,6 @@ class DetailViewModel(
         }
     }
 
-    fun reportReview(comment: Comment) {
-        coroutineScope.launch {
-
-        }
-    }
-
     fun setRadarData(
         averageLeisure: Float,
         averageHit: Float,

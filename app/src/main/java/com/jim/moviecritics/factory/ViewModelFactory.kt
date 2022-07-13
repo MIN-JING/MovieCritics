@@ -38,8 +38,8 @@ class ViewModelFactory constructor(
                 isAssignableFrom(ItemFavoriteViewModel::class.java) ->
                     ItemFavoriteViewModel(applicationRepository)
 
-                isAssignableFrom(ReportViewModel::class.java) ->
-                    ReportViewModel(applicationRepository)
+//                isAssignableFrom(ReportViewModel::class.java) ->
+//                    ReportViewModel(applicationRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

@@ -122,11 +122,14 @@
     <string name="text_report_title_reason">REASON</string>
     <string name="text_report_reason_abuse">Abuse</string>
     <string name="text_report_reason_spoilers">Contains spoilers</string>
+    <string name="text_report_reason_spoilers_label">Spoiler</string>
     <string name="text_report_reason_spam">Spam</string>
     <string name="text_report_reason_plagiarism">Plagiarism</string>
     <string name="text_report_reason_other">Other reason</string>
+    <string name="text_report_reason_other_label">Other</string>
     <string name="text_report_title_message">MESSAGE</string>
     <string name="edit_report_message">Key in…, and provide more details such as the original URL if appropriate.</string>
+    <string name="image_detail_item_review_report_description">Report review</string>
 
 
 </resources>

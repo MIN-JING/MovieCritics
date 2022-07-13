@@ -202,6 +202,10 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
+    override suspend fun pushReport(report: Report): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {
         TODO("Not yet implemented")
     }

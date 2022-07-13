@@ -24,6 +24,7 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val PATH_POPULAR_MOVIES = "popularMovies"
     private const val PATH_USERS = "users"
     private const val PATH_WATCHLIST = "watchlist"
+    private const val PATH_REPORTS = "reports"
     private const val FIELD_IMDB_ID = "imdbID"
     private const val FIELD_USER_ID = "userID"
     private const val FIELD_WATCHED = "watched"
@@ -645,7 +646,6 @@ object FirebaseDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
-        Logger.i("pushScore in FirebaseDataSource")
         val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
         val document = scores.document()
 
@@ -656,6 +656,29 @@ object FirebaseDataSource : ApplicationDataSource {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Logger.i("pushScore task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
+    }
+
+    override suspend fun pushReport(report: Report): Result<Boolean>  = suspendCoroutine { continuation ->
+        val reports = FirebaseFirestore.getInstance().collection(PATH_REPORTS)
+        val document = reports.document()
+
+        report.id = document.id
+
+        document
+            .set(report)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushReport task.isSuccessful")
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {

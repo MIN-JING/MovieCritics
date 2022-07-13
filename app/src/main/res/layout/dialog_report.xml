@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".report.ReportDialog">
+<!--    tools:context=".report.ReportDialog"-->
     <data>
         <variable
             name="viewModel"
@@ -11,8 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="@{() -> viewModel.leave()}">
+        android:layout_height="match_parent">
+<!--        android:onClick="@{() -> viewModel.leave()}"-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_report"
@@ -39,7 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-
+                android:onClick="@{() -> viewModel.prepareReport()}"
                 android:text="@string/button_report_send"
                 app:layout_constraintBottom_toBottomOf="@+id/text_report_title_top"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,75 +72,138 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_report_title_top" />
 
-            <CheckedTextView
-                android:id="@+id/text_report_reason_abuse"
-                android:layout_width="0dp"
+            <RadioGroup
+                android:id="@+id/radios_report_reason"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:checkMark="?android:attr/listChoiceIndicatorSingle"
-                android:text="@string/text_report_reason_abuse"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:checkedButton="@={viewModel.selectedReasonRadio}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_title_reason" />
+                app:layout_constraintTop_toBottomOf="@+id/text_report_title_reason">
 
-            <CheckedTextView
-                android:id="@+id/text_report_reason_spoilers"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:checkMark="?android:attr/listChoiceIndicatorSingle"
-                android:text="@string/text_report_reason_spoilers"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_abuse" />
+                <RadioButton
+                    android:id="@+id/radios_report_reason_abuse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:tag="@string/text_report_reason_abuse"
+                    android:text="@string/text_report_reason_abuse"
+                    android:textSize="18sp" />
 
-            <CheckedTextView
-                android:id="@+id/text_report_reason_spam"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:checkMark="?android:attr/listChoiceIndicatorSingle"
-                android:text="@string/text_report_reason_spam"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spoilers" />
+                <RadioButton
+                    android:id="@+id/radios_reason_spoilers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:tag="@string/text_report_reason_spoilers"
+                    android:text="@string/text_report_reason_spoilers"
+                    android:textSize="18sp" />
 
-            <CheckedTextView
-                android:id="@+id/text_report_reason_plagiarism"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:checkMark="?android:attr/listChoiceIndicatorSingle"
-                android:text="@string/text_report_reason_plagiarism"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spam" />
+                <RadioButton
+                    android:id="@+id/radios_report_reason_spam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:tag="@string/text_report_reason_spam"
+                    android:text="@string/text_report_reason_spam"
+                    android:textSize="18sp" />
 
-            <CheckedTextView
-                android:id="@+id/text_report_reason_other"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:checkMark="?android:attr/listChoiceIndicatorSingle"
-                android:text="@string/text_report_reason_other"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_plagiarism" />
+                <RadioButton
+                    android:id="@+id/radios_report_reason_plagiarism"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:tag="@string/text_report_reason_plagiarism"
+                    android:text="@string/text_report_reason_plagiarism"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/radios_report_reason_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.15"
+                    android:tag="@string/text_report_reason_other"
+                    android:text="@string/text_report_reason_other"
+                    android:textSize="18sp" />
+
+            </RadioGroup>
+
+<!--            <CheckedTextView-->
+<!--                android:id="@+id/text_report_reason_abuse"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--                android:text="@string/text_report_reason_abuse"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_title_reason" />-->
+<!--            android:checked="@{viewModel.isAbuse()}"-->
+<!--            android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+
+<!--            <CheckedTextView-->
+<!--                android:id="@+id/text_report_reason_spoilers"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--                android:text="@string/text_report_reason_spoilers"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_abuse" />-->
+<!--            android:checked="@{viewModel.isSpoiler()}"-->
+
+<!--            <CheckedTextView-->
+<!--                android:id="@+id/text_report_reason_spam"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--                android:text="@string/text_report_reason_spam"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spoilers" />-->
+<!--            android:checked="@{viewModel.isSpam()}"-->
+
+<!--            <CheckedTextView-->
+<!--                android:id="@+id/text_report_reason_plagiarism"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--                android:text="@string/text_report_reason_plagiarism"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spam" />-->
+<!--            android:checked="@{viewModel.isPlagiarism()}"-->
+
+<!--            <CheckedTextView-->
+<!--                android:id="@+id/text_report_reason_other"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
+<!--                android:text="@string/text_report_reason_other"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_plagiarism" />-->
+<!--            android:checked="@{viewModel.isOther()}"-->
 
             <TextView
                 android:id="@+id/text_report_title_message"
@@ -152,7 +216,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_other" />
+                app:layout_constraintTop_toBottomOf="@+id/radios_report_reason" />
 
             <EditText
                 android:id="@+id/edit_report_message"
@@ -165,6 +229,8 @@
                 android:gravity="start"
                 android:hint="@string/edit_report_message"
                 android:inputType="textMultiLine"
+                android:importantForAutofill="no"
+                android:text="@={viewModel.message}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_report_title_message" />

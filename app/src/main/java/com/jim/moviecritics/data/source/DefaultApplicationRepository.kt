@@ -124,6 +124,10 @@ class DefaultApplicationRepository(
         return firebaseDataSource.pushScore(score)
     }
 
+    override suspend fun pushReport(report: Report): Result<Boolean> {
+        return firebaseDataSource.pushReport(report)
+    }
+
     override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {
         return firebaseDataSource.pushPopularMovies(trends)
     }

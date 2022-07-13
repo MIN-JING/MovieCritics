@@ -13,13 +13,16 @@ import androidx.lifecycle.lifecycleScope
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogReportBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.ext.showToast
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
+
 class ReportDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<ReportViewModel> { getVmFactory() }
+    private val viewModel by viewModels<ReportViewModel> { getVmFactory(ReportDialogArgs.fromBundle(requireArguments()).comment) }
     private lateinit var binding: DialogReportBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +46,27 @@ class ReportDialog : AppCompatDialogFragment() {
             it?.let {
                 dismiss()
                 viewModel.onLeaveCompleted()
+            }
+        }
+
+        viewModel.message.observe(viewLifecycleOwner) {
+            Logger.i("Report message = $it")
+        }
+
+        viewModel.invalidReport.observe(viewLifecycleOwner) {
+            Logger.i("Report invalidReport = $it")
+            it?.let {
+                when (it) {
+                    ReportViewModel.INVALID_FORMAT_REASON_EMPTY -> {
+                        activity.showToast("The reason of the report was empty, please try choice again.")
+                    }
+                    ReportViewModel.INVALID_FORMAT_MESSAGE_EMPTY -> {
+                        activity.showToast("The message of the report was empty, please try key-in again.")
+                    }
+                    ReportViewModel.NO_ONE_KNOWS -> {
+                        Logger.i("Unknown invalidReport value NO_ONE_KNOWS = $it")
+                    }
+                }
             }
         }
 

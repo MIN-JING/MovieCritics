@@ -68,6 +68,7 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
+//        UserManager.clear()
     }
 
 

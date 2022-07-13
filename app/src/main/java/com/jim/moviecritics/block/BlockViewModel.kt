@@ -1,15 +1,12 @@
-package com.jim.moviecritics.review
-
+package com.jim.moviecritics.block
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
@@ -18,35 +15,23 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
-class ReviewViewModel(
+class BlockViewModel(
     private val applicationRepository: ApplicationRepository,
-    private val arguments: Movie
+    private val arguments: User?
 ) : ViewModel() {
-
-    private val _movie = MutableLiveData<Movie>().apply {
+    private val _user = MutableLiveData<User>().apply {
         value = arguments
     }
 
-    val movie: LiveData<Movie>
-        get() = _movie
+    val user: LiveData<User>
+        get() = _user
 
+    // Handle leave login
+    private val _leave = MutableLiveData<Boolean?>()
 
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-
-//    private val movie = arguments
-
-    private val user = UserManager.user
-
-    private val comment = Comment()
-
-    val content = MutableLiveData<String>()
-
+    val leave: LiveData<Boolean?>
+        get() = _leave
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -61,20 +46,12 @@ class ReviewViewModel(
         get() = _error
 
 
-    private val _leave = MutableLiveData<Boolean?>()
-
-    val leave: LiveData<Boolean?>
-        get() = _leave
-
-    private val _invalidComment = MutableLiveData<Int>()
-
-    val invalidComment: LiveData<Int>
-        get() = _invalidComment
-
-
+    // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
+    // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
 
     override fun onCleared() {
         super.onCleared()
@@ -85,11 +62,7 @@ class ReviewViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
-        comment.imdbID = movie.value?.imdbID.toString()
-        comment.userID = user?.id.toString()
     }
-
 
     fun leave() {
         _leave.value = true
@@ -99,35 +72,17 @@ class ReviewViewModel(
         _leave.value = null
     }
 
-    fun toGenres(): String {
-        var genres = ""
-
-        movie.value?.genres?.let {
-            if (it.isNotEmpty()) {
-                for (genre in it) {
-                    genres = genres + genre.name + ", "
-                }
-                Logger.i("genres = $genres")
-            }
-        }
-        return genres
-    }
-
-    fun dateToday(): String {
-        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH).format(Timestamp.now().toDate())
-        Logger.i("today = $today")
-        return today
-    }
-
-    private fun pushComment(comment: Comment) {
-
+    fun pushBlockUser() {
         coroutineScope.launch {
-
-            comment.createdTime = Timestamp.now()
-
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushComment(comment)) {
+            when (val result =
+                UserManager.user?.id?.let { userID ->
+                    user.value?.id?.let { blockedID ->
+                    applicationRepository.pushBlockUser(
+                        userID = userID,
+                        blockedID = blockedID)
+                } }) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -145,25 +100,7 @@ class ReviewViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
             }
+            _leave.value = true
         }
-    }
-
-    fun prepareComment() {
-        when {
-            content.value == null -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
-
-            content.value != null -> {
-                comment.content = content.value.toString()
-                pushComment(comment)
-                leave()
-            }
-
-            else -> _invalidComment.value = NO_ONE_KNOWS
-        }
-    }
-
-    companion object {
-        const val INVALID_FORMAT_COMMENT_EMPTY = 0x11
-        const val NO_ONE_KNOWS = 0x21
     }
 }

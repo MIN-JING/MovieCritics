@@ -35,28 +35,25 @@ class DetailFragment : Fragment() {
             }
         )
 
-        binding.recyclerviewDetailReview.adapter = ReviewAdapter(
+        val reviewAdapter = ReviewAdapter(
             ReviewAdapter.OnClickListener {
                 Logger.i("ReviewAdapter.OnClickListener it = $it")
-            }
+            },
+            viewModel
         )
+
+        binding.recyclerviewDetailReview.adapter = reviewAdapter
+
+//        binding.recyclerviewDetailReview.adapter = ReviewAdapter(
+//            ReviewAdapter.OnClickListener {
+//                Logger.i("ReviewAdapter.OnClickListener it = $it")
+//            },
+//            viewModel
+//        )
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.movie = $it")
         }
-
-
-//        viewModel.user.observe(viewLifecycleOwner) {
-//            Logger.i("DetailViewModel.user = $it")
-//
-//            viewModel.movie.value?.imdbID?.let { imdbID ->
-//                viewModel.user.value?.id?.let { userID ->
-//                    Logger.i("userID = $userID")
-//                    Logger.i("imdbID = $imdbID")
-//                    viewModel.getLiveScoreResult(imdbID = imdbID, userID = userID)
-//                }
-//            }
-//        }
 
         viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
@@ -102,12 +99,28 @@ class DetailFragment : Fragment() {
             }
         }
 
-        viewModel.liveComments.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.liveComments = $it")
-//            it?.let {
-//                binding.viewModel = viewModel
-//            }
+        viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
+            Logger.i("DetailViewModel.liveComments = $comments")
+
+//            val blocks = viewModel.user?.blocks
+//            comments.filterNot { it.userID in blocks }
+
+            comments?.let {
+                val list = mutableListOf<String>()
+
+                for (comment in it) {
+                    list.add(comment.userID)
+                }
+                Logger.i("DetailViewModel.liveComment userID = $list")
+                viewModel.getUsersResult(false, list)
+
+                viewModel.isUsersMapReady.observe(viewLifecycleOwner) { boolean ->
+                    Logger.i("DetailViewModel.isUsersMapReady = $boolean")
+                    reviewAdapter.submitList(comments)
+                }
+            }
         }
+
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")
@@ -115,6 +128,22 @@ class DetailFragment : Fragment() {
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
                 viewModel.onPendingNavigated()
+            }
+        }
+
+        viewModel.navigateToReport.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.navigateToReport = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
+                viewModel.onReportNavigated()
+            }
+        }
+
+        viewModel.navigateToUserInfo.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.navigateToUserInfo = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
+                viewModel.onUserInfoNavigated()
             }
         }
 

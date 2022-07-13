@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
+import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
 import com.jim.moviecritics.profile.FavoriteItemAdapter
@@ -76,6 +77,22 @@ fun bindRecyclerViewWithComments(recyclerView: RecyclerView, comments: List<Comm
         }
     }
 }
+
+//@BindingAdapter("reviews", "viewModel")
+//fun bindDetailCommentsRecyclerView(
+//    recyclerView: RecyclerView,
+//    comments: List<Comment>?,
+//    viewModel: DetailViewModel,
+//    onClickListener: ReviewAdapter.OnClickListener
+//) {
+//    comments?.let {
+//        recyclerView.adapter = ReviewAdapter(onClickListener, viewModel).apply {
+//            submitList(it)
+//        }
+//    }
+//}
+
+
 
 @BindingAdapter("finds")
 fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {

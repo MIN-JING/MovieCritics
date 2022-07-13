@@ -110,6 +110,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
             user.email = googleSignInAccount.email.toString()
             user.pictureUri = googleSignInAccount.photoUrl.toString()
 
+
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Logger.e("Google log in failed code = ${e.statusCode}")
@@ -143,13 +144,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
                     UserManager.userToken = firebaseTokenResult?.token.toString()
                     Logger.i("UserManager.userToken = ${UserManager.userToken}")
-
-//                    UserManager.userId = firebaseCurrentUser?.uid.toString()
-//                    Logger.i("UserManager.userId = ${UserManager.userId}")
-
-//                    liveUser.value = user
-
-
                     _navigateToLoginSuccess.value = user
 
                     if (task.result.additionalUserInfo?.isNewUser == true) {
@@ -161,7 +155,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                         pushUserInfo(user)
                         UserManager.user = user
                         _liveUser.value = user
-//                        UserManager.user = liveUser.value
                         _statusLogIn.value = FIREBASE_LOG_IN_FIRST
                         leave()
                     } else {
@@ -169,9 +162,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
                         Logger.i("isNewUser == false, user = $user")
                         getUserById(user.id)
-//                        UserManager.user = user
-
-//                        UserManager.user = user
                         _statusLogIn.value = FIREBASE_LOG_IN_EVER
                         leave()
                     }
@@ -221,23 +211,17 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                 is Result.Fail -> {
                     _error.value = result.error
                     _status.value = LoadApiStatus.ERROR
-//                    if (result.error.contains("Invalid Access Token", true)) {
-//                        UserManager.clear()
-//                    }
                     null
-                    User()
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
                     _status.value = LoadApiStatus.ERROR
                     null
-                    User()
                 }
                 else -> {
                     _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                     null
-                    User()
                 }
             }
             _liveUser.value = UserManager.user

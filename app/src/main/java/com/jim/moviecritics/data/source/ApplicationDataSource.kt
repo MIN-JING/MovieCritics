@@ -38,7 +38,9 @@ interface ApplicationDataSource {
 
     suspend fun getUserByToken(token: String): Result<User>
 
-    suspend fun getUserById(id: String): Result<User>
+    suspend fun getUserById(id: String): Result<User?>
+
+    suspend fun getUsersByIdList(idList: List<String>): Result<List<User>>
 
     suspend fun getComments(imdbID: String): Result<List<Comment>>
 
@@ -51,6 +53,8 @@ interface ApplicationDataSource {
     suspend fun delete(comment: Comment): Result<Boolean>
 
     fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>>
+
+    fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>>
 
     suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 
@@ -65,6 +69,10 @@ interface ApplicationDataSource {
     suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean>
 
     suspend fun pushScore(score: Score): Result<Boolean>
+
+    suspend fun pushReport(report: Report): Result<Boolean>
+
+    suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean>
 
     suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>
 

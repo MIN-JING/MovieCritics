@@ -1,5 +1,4 @@
-package com.jim.moviecritics.review
-
+package com.jim.moviecritics.report
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,45 +7,60 @@ import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Report
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
-class ReviewViewModel(
+class ReportViewModel(
     private val applicationRepository: ApplicationRepository,
-    private val arguments: Movie
-) : ViewModel() {
+    private val arguments: Comment
+    ) : ViewModel() {
 
-    private val _movie = MutableLiveData<Movie>().apply {
+    private val _comment = MutableLiveData<Comment>().apply {
         value = arguments
     }
 
-    val movie: LiveData<Movie>
-        get() = _movie
+    val comment: LiveData<Comment>
+        get() = _comment
 
-
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-
-//    private val movie = arguments
 
     private val user = UserManager.user
 
-    private val comment = Comment()
+    private val report = Report()
 
-    val content = MutableLiveData<String>()
+    val selectedReasonRadio = MutableLiveData<Int>()
 
+    private val reportReason: String
+        get() = when (selectedReasonRadio.value) {
+            R.id.radios_report_reason_abuse -> getString(R.string.text_report_reason_abuse)
+            R.id.radios_reason_spoilers -> getString(R.string.text_report_reason_spoilers_label)
+            R.id.radios_report_reason_spam -> getString(R.string.text_report_reason_spam)
+            R.id.radios_report_reason_plagiarism -> getString(R.string.text_report_reason_plagiarism)
+            R.id.radios_report_reason_other -> getString(R.string.text_report_reason_other_label)
+            else -> ""
+        }
+
+    val message = MutableLiveData<String>()
+
+
+    private val _invalidReport = MutableLiveData<Int>()
+
+    val invalidReport: LiveData<Int>
+        get() = _invalidReport
+
+    // Handle leave login
+    private val _leave = MutableLiveData<Boolean?>()
+
+    val leave: LiveData<Boolean?>
+        get() = _leave
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -61,20 +75,12 @@ class ReviewViewModel(
         get() = _error
 
 
-    private val _leave = MutableLiveData<Boolean?>()
-
-    val leave: LiveData<Boolean?>
-        get() = _leave
-
-    private val _invalidComment = MutableLiveData<Int>()
-
-    val invalidComment: LiveData<Int>
-        get() = _invalidComment
-
-
+    // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
+    // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
 
     override fun onCleared() {
         super.onCleared()
@@ -86,10 +92,10 @@ class ReviewViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        comment.imdbID = movie.value?.imdbID.toString()
-        comment.userID = user?.id.toString()
+        report.commentID = comment.value?.id.toString()
+        report.imdbID = comment.value?.imdbID.toString()
+        report.userID = user?.id.toString()
     }
-
 
     fun leave() {
         _leave.value = true
@@ -99,35 +105,28 @@ class ReviewViewModel(
         _leave.value = null
     }
 
-    fun toGenres(): String {
-        var genres = ""
-
-        movie.value?.genres?.let {
-            if (it.isNotEmpty()) {
-                for (genre in it) {
-                    genres = genres + genre.name + ", "
-                }
-                Logger.i("genres = $genres")
+    fun prepareReport() {
+        when {
+            reportReason.isEmpty() -> _invalidReport.value = INVALID_FORMAT_REASON_EMPTY
+            message.value.isNullOrEmpty() -> _invalidReport.value = INVALID_FORMAT_MESSAGE_EMPTY
+            !message.value.isNullOrEmpty() && reportReason.isNotEmpty() -> {
+                report.reason = reportReason
+                report.message = message.value.toString()
+                pushReport(report)
+                leave()
             }
+            else -> _invalidReport.value = NO_ONE_KNOWS
         }
-        return genres
     }
 
-    fun dateToday(): String {
-        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH).format(Timestamp.now().toDate())
-        Logger.i("today = $today")
-        return today
-    }
-
-    private fun pushComment(comment: Comment) {
-
+    private fun pushReport(report: Report) {
         coroutineScope.launch {
 
-            comment.createdTime = Timestamp.now()
+            report.createdTime = Timestamp.now()
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushComment(comment)) {
+            when (val result = applicationRepository.pushReport(report)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -148,22 +147,9 @@ class ReviewViewModel(
         }
     }
 
-    fun prepareComment() {
-        when {
-            content.value == null -> _invalidComment.value = INVALID_FORMAT_COMMENT_EMPTY
-
-            content.value != null -> {
-                comment.content = content.value.toString()
-                pushComment(comment)
-                leave()
-            }
-
-            else -> _invalidComment.value = NO_ONE_KNOWS
-        }
-    }
-
     companion object {
-        const val INVALID_FORMAT_COMMENT_EMPTY = 0x11
+        const val INVALID_FORMAT_REASON_EMPTY = 0x11
+        const val INVALID_FORMAT_MESSAGE_EMPTY = 0x12
         const val NO_ONE_KNOWS = 0x21
     }
 }

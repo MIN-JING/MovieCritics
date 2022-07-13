@@ -146,7 +146,11 @@ object ApiDataSource : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUserById(id: String): Result<User> {
+    override suspend fun getUserById(id: String): Result<User?> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> {
         TODO("Not yet implemented")
     }
 
@@ -171,6 +175,13 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getLiveCommentsExcludeBlocks(
+        imdbID: String,
+        blocks: List<String>,
+    ): MutableLiveData<List<Comment>> {
         TODO("Not yet implemented")
     }
 
@@ -199,6 +210,14 @@ object ApiDataSource : ApplicationDataSource {
     }
 
     override suspend fun pushScore(score: Score): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushReport(report: Report): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

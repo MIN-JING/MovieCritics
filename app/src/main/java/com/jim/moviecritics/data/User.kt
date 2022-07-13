@@ -15,7 +15,7 @@ data class User(
     val twitterUri: String = "",
     val followers: List<String> = mutableListOf(),
     val followings: List<String> = mutableListOf(),
-    val blocks: List<String> = mutableListOf(),
+    val blocks: List<String> = mutableListOf("0"),
     val watched: MutableList<String> = mutableListOf(),
     val liked: MutableList<String> = mutableListOf(),
     val watchlist: MutableList<String> = mutableListOf(),

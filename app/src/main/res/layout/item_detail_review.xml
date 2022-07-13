@@ -8,45 +8,72 @@
         <variable
             name="comment"
             type="com.jim.moviecritics.data.Comment" />
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.detail.DetailViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/text_detail_item_review_rating"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="4.7 Star" />
+        android:clickable="true"
+        android:focusable="true">
 
-    <TextView
-        android:id="@+id/text_detail_item_review_user_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="User Name" />
+        <TextView
+            android:id="@+id/text_detail_item_review_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@{viewModel.usersMap[comment.userID].name}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_content"
+            tools:text="User Name" />
 
-    <TextView
-        android:id="@+id/text_detail_item_review_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxLines="6"
-        android:text="@{comment.content}"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_rating"
-        tools:text="Review" />
+        <TextView
+            android:id="@+id/text_detail_item_review_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="6"
+            android:text="@{comment.content}"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/image_detail_item_review_report"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Review" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/image_detail_item_review_user_pic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:onClick="@{() -> viewModel.navigateToUserInfo(viewModel.usersMap[comment.userID])}"
+            app:imageUrlWithCircleCrop="@{viewModel.usersMap[comment.userID].pictureUri}"
+            app:layout_constraintBottom_toBottomOf="@+id/text_detail_item_review_user_name"
+            app:layout_constraintStart_toEndOf="@+id/text_detail_item_review_user_name"
+            app:layout_constraintTop_toTopOf="@+id/text_detail_item_review_user_name"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <ImageView
+            android:id="@+id/image_detail_item_review_report"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:onClick="@{() -> viewModel.navigateToReport(comment)}"
+            android:contentDescription="@string/image_detail_item_review_report_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_flag_selector"/>
+<!--        app:srcCompat="@drawable/ic_flag_selector"-->
+<!--        android:background="@drawable/ic_flag_selector"-->
+<!--        android:background="?android:attr/selectableItemBackground"-->
+<!--        android:focusableInTouchMode="true"-->
+<!--        android:background="?android:attr/activatedBackgroundIndicator"-->
+<!--        android:clickable="true"-->
+<!--        android:focusable="true"-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

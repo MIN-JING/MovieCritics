@@ -68,8 +68,12 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getUserByToken(token)
     }
 
-    override suspend fun getUserById(id: String): Result<User> {
+    override suspend fun getUserById(id: String): Result<User?> {
         return firebaseDataSource.getUserById(id)
+    }
+
+    override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> {
+        return firebaseDataSource.getUsersByIdList(idList)
     }
 
     override suspend fun getComments(imdbID: String): Result<List<Comment>> {
@@ -94,6 +98,10 @@ class DefaultApplicationRepository(
 
     override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
         return firebaseDataSource.getLivePersonalFavorites(userID)
+    }
+
+    override fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>> {
+        return firebaseDataSource.getLiveCommentsExcludeBlocks(imdbID, blocks)
     }
 
     override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
@@ -122,6 +130,14 @@ class DefaultApplicationRepository(
 
     override suspend fun pushScore(score: Score): Result<Boolean> {
         return firebaseDataSource.pushScore(score)
+    }
+
+    override suspend fun pushReport(report: Report): Result<Boolean> {
+        return firebaseDataSource.pushReport(report)
+    }
+
+    override suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean> {
+        return firebaseDataSource.pushBlockUser(userID, blockedID)
     }
 
     override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {

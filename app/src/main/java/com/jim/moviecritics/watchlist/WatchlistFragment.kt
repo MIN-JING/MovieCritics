@@ -29,6 +29,7 @@ class WatchlistFragment : Fragment() {
             R.id.toolbar_button_test -> {
                 Logger.i("toolbar_button_test onClick")
                 true
+//                throw RuntimeException("Test Crash") // Force a crash
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -70,7 +71,7 @@ class WatchlistFragment : Fragment() {
 
         viewModel.liveWatchListByUser.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.liveWatchListByUser = $it")
-            if (it != null) {
+            it?.let {
                 val list = mutableListOf<String>()
                 for (value in it) {
                     list.add(value.imdbID)

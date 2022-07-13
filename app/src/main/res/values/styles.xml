@@ -5,9 +5,6 @@
         <item name="colorOnPrimary">@color/translucent_40</item>
     </style>
 
-
-
-
     <style name="PendingDialog">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@null</item>
@@ -21,10 +18,22 @@
         <item name="android:windowExitAnimation">@null</item>
         <item name="android:windowBackground">@color/translucent_40</item>
         <item name="android:animation">@null</item>
-        <!--        <item name="android:windowCloseOnTouchOutside">true</item>-->
+<!--        <item name="android:windowCloseOnTouchOutside">true</item>-->
     </style>
 
     <style name="LoginDialog">
+        <item name="android:windowBackground">@color/translucent_40</item>
+    </style>
+
+    <style name="ReportDialog">
+        <item name="android:windowBackground">@color/translucent_40</item>
+    </style>
+
+    <style name="FollowDialog">
+        <item name="android:windowBackground">@color/translucent_40</item>
+    </style>
+
+    <style name="BlockDialog">
         <item name="android:windowBackground">@color/translucent_40</item>
     </style>
 

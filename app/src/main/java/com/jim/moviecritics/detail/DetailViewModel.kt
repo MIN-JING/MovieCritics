@@ -16,6 +16,7 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 
@@ -23,10 +24,6 @@ class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
     ) : ViewModel() {
-
-//    private val movie = arguments
-
-    private val user = UserManager.user
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -36,10 +33,11 @@ class DetailViewModel(
         get() = _movie
 
 
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
+    val user = UserManager.user
+
+    private var users = listOf<User>()
+
+    var usersMap = mapOf<String, User>()
 
 
     private val _scores = MutableLiveData<List<Score>?>()
@@ -56,14 +54,15 @@ class DetailViewModel(
 
     var liveScore = MutableLiveData<Score>()
 
-
-    private val _comments = MutableLiveData<List<Comment>>()
-
-    val comments: LiveData<List<Comment>>
-        get() = _comments
-
-
     var liveComments = MutableLiveData<List<Comment>>()
+
+
+    private val _isUsersMapReady = MutableLiveData<Boolean>()
+
+    val isUsersMapReady: LiveData<Boolean>
+        get() = _isUsersMapReady
+
+
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -90,6 +89,18 @@ class DetailViewModel(
         get() = _navigateToPending
 
 
+    private val _navigateToReport = MutableLiveData<Comment?>()
+
+    val navigateToReport: LiveData<Comment?>
+        get() = _navigateToReport
+
+
+    private val _navigateToUserInfo = MutableLiveData<User?>()
+
+    val navigateToUserInfo: LiveData<User?>
+        get() = _navigateToUserInfo
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -105,8 +116,12 @@ class DetailViewModel(
         Logger.i("------------------------------------")
 
         movie.value?.imdbID?.let {
-            getLiveCommentsResult(imdbID = it)
-            user?.id?.let { userID -> getLiveScoreResult(imdbID = it, userID = userID) }
+            user?.let { user ->
+                getLiveScoreResult(imdbID = it, userID = user.id)
+                getLiveCommentsExcludeBlocks(imdbID = it, blocks = user.blocks)
+            }
+//            getLiveCommentsResult(imdbID = it)
+
         }
 
     }
@@ -117,6 +132,22 @@ class DetailViewModel(
 
     fun onPendingNavigated() {
         _navigateToPending.value = null
+    }
+
+    fun navigateToReport(comment: Comment) {
+        _navigateToReport.value = comment
+    }
+
+    fun onReportNavigated() {
+        _navigateToReport.value = null
+    }
+
+    fun navigateToUserInfo(user: User) {
+        _navigateToUserInfo.value = user
+    }
+
+    fun onUserInfoNavigated() {
+        _navigateToUserInfo.value = null
     }
 
     fun leave() {
@@ -141,6 +172,104 @@ class DetailViewModel(
         Logger.i("getLiveCommentsResult() liveComments.value = ${liveComments.value}")
         _status.value = LoadApiStatus.DONE
     }
+
+    private fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>) {
+        liveComments = applicationRepository.getLiveCommentsExcludeBlocks(imdbID, blocks)
+        Logger.i("getLiveCommentsExcludeBlocks() liveComments = $liveComments")
+        Logger.i("getLiveCommentsExcludeBlocks() liveComments.value = ${liveComments.value}")
+        _status.value = LoadApiStatus.DONE
+    }
+
+    fun getUserNames(userIDs: List<String>) {
+        val list = mutableListOf<String>()
+
+        coroutineScope.launch {
+            for (index in userIDs.indices) {
+                Logger.i("Item Comment request child $index")
+                Logger.i("userIDs[index] = ${userIDs[index]}")
+                val result =
+                    getUserNameResult(isInitial = true, userID = userIDs[index], index = index)
+                Logger.i("getUserNames result = $result")
+
+                if (result != null) {
+                    list.add(result)
+                    Logger.i("getUserNames list = $list")
+                }
+            }
+//            _userNames.value = list
+        }
+    }
+
+    private suspend fun getUserNameResult(isInitial: Boolean = false, userID: String, index: Int): String? {
+
+        return withContext(Dispatchers.IO) {
+
+            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
+
+            when (val result = applicationRepository.getUserById(userID)) {
+                is Result.Success -> {
+                    _error.postValue(null)
+                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
+                    Logger.w("child $index result: ${result.data}")
+                    result.data?.name
+                }
+                is Result.Fail -> {
+                    _error.postValue(result.error)
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                is Result.Error -> {
+                    _error.postValue(result.exception.toString())
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                else -> {
+                    _error.postValue(Util.getString(R.string.you_know_nothing))
+                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+            }
+        }
+    }
+
+    fun getUsersResult(isInitial: Boolean = false, idList: List<String>) {
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+
+            val result = applicationRepository.getUsersByIdList(idList = idList)
+
+            users = when (result) {
+
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    listOf()
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    listOf()
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    listOf()
+                }
+            }
+
+            Logger.i("users = $users")
+            usersMap = users.associateBy(User::id)
+            Logger.i("usersMap = $usersMap")
+            _isUsersMapReady.value = true
+        }
+    }
+
 
     fun setRadarData(
         averageLeisure: Float,

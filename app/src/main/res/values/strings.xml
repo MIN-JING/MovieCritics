@@ -65,6 +65,9 @@
     <string name="toggle_pending_like_on">Liked</string>
     <string name="toggle_pending_watchlist_off">Watchlist</string>
     <string name="toggle_pending_watchlist_on">Added</string>
+    <string name="image_pending_watch">You watched this movie or not</string>
+    <string name="image_pending_like">You like this movie or not</string>
+    <string name="image_pending_watchlist">You added this movie to watchlist or not</string>
     <string name="text_pending_rate">Rate</string>
     <string name="text_pending_leisure">Leisure</string>
     <string name="text_pending_hit">Hit</string>

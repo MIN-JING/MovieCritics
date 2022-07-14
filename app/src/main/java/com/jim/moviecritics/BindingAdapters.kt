@@ -2,6 +2,7 @@ package com.jim.moviecritics
 
 
 import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -145,6 +146,16 @@ fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
             .into(imgView)
     }
 }
+
+@BindingAdapter("app:tint")
+fun ImageView.setImageTint(@ColorInt color: Int) {
+    setColorFilter(color)
+}
+
+//@BindingAdapter("imgRes")
+//fun setImageResource(imageView: ImageView, resource: Int) {
+//    imageView.setImageResource(resource)
+//}
 
 //@BindingAdapter("ratingValue")
 //fun bindRating(ratingBar: RatingBar, rating: Float?) {

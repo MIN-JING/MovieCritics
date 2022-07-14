@@ -31,6 +31,7 @@
     <!-- Search -->
     <string name="edit_search">Input keywords…</string>
     <string name="button_search">For search request</string>
+    <string name="image_search">For search request</string>
 
     <!-- Item Search Movie -->
     <string name="image_search_movie_poster">Movie poster</string>
@@ -53,6 +54,9 @@
 
     <!-- Item Detail Cast -->
     <string name="image_cast">Cast profile picture</string>
+
+    <!-- Item Detail Review -->
+    <string name="image_detail_item_review_user_pic">User profile picture</string>
 
     <!-- Pending -->
     <string name="toggle_pending_watch_off">Watch</string>
@@ -132,8 +136,14 @@
     <string name="image_detail_item_review_report_description">Report review</string>
 
     <!-- Follow -->
+    <string name="text_follow_is_follow">Follow</string>
     <string name="image_follow_user_pic">User profile picture</string>
     <string name="image_follow_block">Block User</string>
+
+    <!-- Block -->
+    <string name="text_block_title">Confirm block?</string>
+    <string name="image_block_icon">Block user</string>
+    <string name="text_block_confirm">Confirm</string>
 
 
 </resources>

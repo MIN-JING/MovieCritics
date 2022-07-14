@@ -52,6 +52,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
             android:onClick="@{() -> viewModel.navigateToUserInfo(viewModel.usersMap[comment.userID])}"
+            android:contentDescription="@string/image_detail_item_review_user_pic"
             app:imageUrlWithCircleCrop="@{viewModel.usersMap[comment.userID].pictureUri}"
             app:layout_constraintBottom_toBottomOf="@+id/text_detail_item_review_user_name"
             app:layout_constraintStart_toEndOf="@+id/text_detail_item_review_user_name"

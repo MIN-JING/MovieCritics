@@ -37,12 +37,13 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_search"
+            android:backgroundTintMode="add"
+            android:contentDescription="@string/button_search"
             android:onClick="@{() -> viewModel.prepareSearch()}"
+            android:src="@drawable/ic_search"
             app:layout_constraintBottom_toBottomOf="@+id/edit_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edit_search"
-            android:contentDescription="@string/button_search" />
+            app:layout_constraintTop_toTopOf="@+id/edit_search" />
 
         <View
             android:id="@+id/divider1_search"

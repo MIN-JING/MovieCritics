@@ -8,6 +8,12 @@
         <variable
             name="find"
             type="com.jim.moviecritics.data.Find" />
+        <variable
+            name="watch"
+            type="com.jim.moviecritics.data.Watch" />
+        <variable
+            name="viewModel"
+            type="com.jim.moviecritics.watchlist.WatchlistViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +28,7 @@
             android:layout_marginTop="8dp"
             android:contentDescription="@string/image_watchlist_poster"
             android:scaleType="centerCrop"
-            app:imageUrl="@{find.posterUri}"
+            app:imageUrl="@{viewModel.movieMap[watch.imdbID].posterUri}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -37,7 +43,7 @@
             android:ellipsize="end"
             android:lines="2"
             android:maxLines="3"
-            android:text="@{find.title}"
+            android:text="@{viewModel.movieMap[watch.imdbID].title}"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +89,42 @@
             android:textOn="@string/toggle_watchlist_calendar_on"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_watchlist_title" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_watchlist_item_calendar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toStartOf="@+id/toggle_watchlist_calendar"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <ImageView
+                android:id="@+id/image_watchlist_item_calendar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/image_pending_watch"
+                android:src="@{watch.expiration == null ? @drawable/ic_calendar_selected : @drawable/ic_calendar}"
+                app:layout_constraintBottom_toTopOf="@+id/text_watchlist_item_calendar"
+                app:layout_constraintEnd_toEndOf="@+id/layout_watchlist_item_calendar"
+                app:layout_constraintStart_toStartOf="@+id/layout_watchlist_item_calendar"
+                app:layout_constraintTop_toTopOf="@+id/layout_watchlist_item_calendar"
+                app:tint="@{watch.expiration == null ? @color/primary : @color/gray_708090}" />
+
+            <TextView
+                android:id="@+id/text_watchlist_item_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{watch.expiration == null ? @string/toggle_watchlist_calendar_on : @string/toggle_watchlist_calendar_off}"
+                android:textAlignment="center"
+                android:textColor="#455A64"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_watchlist_item_calendar"
+                app:layout_constraintEnd_toEndOf="@+id/layout_watchlist_item_calendar"
+                app:layout_constraintStart_toStartOf="@+id/layout_watchlist_item_calendar"
+                tools:text="Watch" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

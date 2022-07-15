@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
-import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
 import com.jim.moviecritics.profile.FavoriteItemAdapter
@@ -104,15 +103,28 @@ fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
                     submitList(it)
                     Logger.i("is FavoriteItemAdapter bindRecyclerViewWithFinds = $it")
                 }
-                is WatchlistAdapter -> {
-                    submitList(it)
-                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
-                }
+//                is WatchlistAdapter -> {
+//                    submitList(it)
+//                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
+//                }
             }
         }
     }
 }
 
+@BindingAdapter("watchList")
+fun bindRecyclerViewWithWatchList(recyclerView: RecyclerView, watchList: List<Watch>?) {
+    watchList?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is WatchlistAdapter -> {
+                    submitList(it)
+                    Logger.i("is WatchlistAdapter bindRecyclerViewWithWatchList = $it")
+                }
+            }
+        }
+    }
+}
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
  */

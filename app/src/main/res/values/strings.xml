@@ -147,6 +147,7 @@
     <string name="text_block_title">Confirm block?</string>
     <string name="image_block_icon">Block user</string>
     <string name="text_block_confirm">Confirm</string>
+    <string name="text_block_cancel">Back</string>
 
 
 </resources>

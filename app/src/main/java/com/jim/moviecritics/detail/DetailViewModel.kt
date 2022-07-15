@@ -235,7 +235,7 @@ class DetailViewModel(
     fun getUsersResult(isInitial: Boolean = false, idList: List<String>) {
         coroutineScope.launch {
 
-            _status.value = LoadApiStatus.LOADING
+            if (isInitial) _status.value = LoadApiStatus.LOADING
 
             val result = applicationRepository.getUsersByIdList(idList = idList)
 

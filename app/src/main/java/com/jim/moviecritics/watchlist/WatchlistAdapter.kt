@@ -5,32 +5,43 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jim.moviecritics.data.Find
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.databinding.ItemWatchlistBinding
 
 
-class WatchlistAdapter(private val onClickListener: OnClickListener):
-    ListAdapter<Find, WatchlistAdapter.WatchlistItemViewHolder>(DiffCallback) {
+class WatchlistAdapter(
+    private val onClickListener: OnClickListener,
+    val viewModel: WatchlistViewModel):
+    ListAdapter<Watch, WatchlistAdapter.WatchlistItemViewHolder>(DiffCallback) {
 
-    class WatchlistItemViewHolder(private var binding: ItemWatchlistBinding) :
-        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(find: Find, onClickListener: OnClickListener) {
-            binding.find = find
+    class WatchlistItemViewHolder(
+        private var binding: ItemWatchlistBinding
+        ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(watch: Watch, onClickListener: OnClickListener, viewModel: WatchlistViewModel) {
+//            binding.find = find
+            binding.watch = watch
+            binding.viewModel = viewModel
+
             binding.toggleWatchlistCalendar.setOnClickListener {
-                onClickListener.onClick(find)
+                onClickListener.onClick(watch)
             }
+            binding.layoutWatchlistItemCalendar.setOnClickListener {
+                onClickListener.onClick(watch)
+            }
+
 //            binding.root.setOnClickListener { onClickListener.onClick(find) }
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Find>() {
-        override fun areItemsTheSame(oldItem: Find, newItem: Find): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<Watch>() {
+        override fun areItemsTheSame(oldItem: Watch, newItem: Watch): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Find, newItem: Find): Boolean {
+        override fun areContentsTheSame(oldItem: Watch, newItem: Watch): Boolean {
             return oldItem.id == newItem.id
         }
     }
@@ -42,10 +53,11 @@ class WatchlistAdapter(private val onClickListener: OnClickListener):
     }
 
     override fun onBindViewHolder(holder: WatchlistItemViewHolder, position: Int) {
-        holder.bind((getItem(position)), onClickListener)
+        holder.bind((getItem(position)), onClickListener, viewModel)
     }
 
-    class OnClickListener(val clickListener: (find: Find) -> Unit) {
-        fun onClick(find: Find) = clickListener(find)
+    class OnClickListener(val clickListener: (watch: Watch) -> Unit) {
+        fun onClick(watch: Watch) = clickListener(watch)
     }
+
 }

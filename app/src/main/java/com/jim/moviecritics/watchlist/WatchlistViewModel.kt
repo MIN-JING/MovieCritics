@@ -47,6 +47,19 @@ class WatchlistViewModel(
         get() = _timeStamp
 
 
+    var findsMap = mapOf<Int, Find>()
+
+    var movieMap = mapOf<String, Find>()
+
+
+    private val _isMovieMapReady = MutableLiveData<Boolean>()
+
+    val isMovieMapReady: LiveData<Boolean>
+        get() = _isMovieMapReady
+
+    val isCalendar = MutableLiveData<Boolean>()
+
+
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -118,6 +131,16 @@ class WatchlistViewModel(
                 }
             }
             _finds.value = list
+
+//            findsMap = list.mapIndexed { index, find ->
+//                index to find
+//            }.toMap()
+//            Logger.i("findsMap = $findsMap")
+
+            movieMap = watchList.zip(list).toMap()
+            Logger.i("movieMap = $movieMap")
+
+            _isMovieMapReady.value = true
         }
     }
 

@@ -44,8 +44,12 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveWatchListByUser(userID)
     }
 
-    override suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> {
-        return firebaseDataSource.pushWatchListExpiration(imdbID, userID, expiration)
+    override suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> {
+        return firebaseDataSource.pushMultiWatchListExpiration(imdbID, userID, expiration)
+    }
+
+    override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean> {
+        return firebaseDataSource.pushSingleWatchListExpiration(watch)
     }
 
     override suspend fun getScores(imdbID: String): Result<List<Score>> {

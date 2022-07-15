@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
+import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
@@ -15,6 +16,7 @@ import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -45,9 +47,6 @@ class WatchlistViewModel(
 
     val timeStamp: LiveData<Timestamp>
         get() = _timeStamp
-
-
-    var findsMap = mapOf<Int, Find>()
 
     var movieMap = mapOf<String, Find>()
 
@@ -183,6 +182,16 @@ class WatchlistViewModel(
         _status.value = LoadApiStatus.DONE
     }
 
+    fun toDate(timestamp: Timestamp?): String {
+        var date = ""
+
+        if (timestamp != null) {
+            date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(timestamp.toDate())
+            Logger.i("date = $date")
+        }
+        return date
+    }
+
     fun showDateTimeDialog(context: Context) {
         val calendar = Calendar.getInstance()
         val nowYear = calendar.get(Calendar.YEAR)
@@ -197,9 +206,6 @@ class WatchlistViewModel(
         var showHour: Int
         var showMinute: Int
 
-//        var timestamp: Timestamp
-
-
         val timePickerOnDataSetListener =
             TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 showHour = hour
@@ -213,7 +219,6 @@ class WatchlistViewModel(
                 calendar.set(Calendar.MINUTE, showMinute)
                 Logger.i("Dialog selected calendar.time = ${calendar.time}")
                 _timeStamp.value = Timestamp(calendar.time)
-//                Logger.i("timeStamp = $timestamp")
             }
 
         val datePickerOnDataSetListener =
@@ -239,9 +244,31 @@ class WatchlistViewModel(
             nowYear,
             nowMonth,
             nowDay).show()
+    }
 
+    fun pushSingleWatchListExpiration(watch: Watch) {
 
-        Logger.i("nowYear = $nowYear, nowMonth = $nowMonth, nowDay = $nowDay, nowHour = $nowHour, nowMinute = $nowMinute")
-//        Logger.i("Dialog selected time year: $showYear, month: $showMonth, day: $showDay, hour: $showHour, minute: $showMinute")
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+
+            when (val result = applicationRepository.pushSingleWatchListExpiration(watch)) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                }
+                else -> {
+                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                }
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.databinding.FragmentWatchlistBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
@@ -17,6 +18,8 @@ import com.jim.moviecritics.util.Logger
 class WatchlistFragment : Fragment() {
 
     private val viewModel by viewModels<WatchlistViewModel> { getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey) }
+
+    private var watch = Watch()
 
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 //        super.onCreateOptionsMenu(menu, inflater)
@@ -54,11 +57,13 @@ class WatchlistFragment : Fragment() {
             WatchlistAdapter.OnClickListener {
                 Logger.i("WatchlistAdapter.OnClickListener it = $it")
 
+                watch = it
+
                 context?.let { context -> viewModel.showDateTimeDialog(context) }
 //                intent.putExtra(CalendarContract.Events.CALENDAR_ID, 1)
-//                intent.putExtra(CalendarContract.Events.TITLE, "[Movie] ${it.title}")
+                intent.putExtra(CalendarContract.Events.TITLE, "[Movie] ${viewModel.movieMap[it.imdbID]?.title}")
                 intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "AppWorks Cinema")
-//                intent.putExtra(CalendarContract.Events.DESCRIPTION, it.overview)
+                intent.putExtra(CalendarContract.Events.DESCRIPTION, viewModel.movieMap[it.imdbID]?.overview)
                 intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
             },
             viewModel
@@ -88,11 +93,13 @@ class WatchlistFragment : Fragment() {
             intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, it.seconds * 1000L + 9000000L)
 //            intent.putExtra(CalendarContract.Events.EVENT_COLOR_KEY, )
 //            intent.putExtra(CalendarContract.Events.HAS_ALARM, 1)
+            watch.expiration = it
 
             context?.let { context ->
                 if (intent.resolveActivity(context.packageManager) != null) {
                     startActivity(intent)
-//                    viewModel.isCalendar.value = true
+                    Logger.i("pushSingleWatchListExpiration(watch) = $watch")
+                    viewModel.pushSingleWatchListExpiration(watch)
                 } else {
                     Toast.makeText(context, "There is no app that can support this action", Toast.LENGTH_LONG).show()
                 }

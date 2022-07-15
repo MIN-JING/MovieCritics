@@ -136,8 +136,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_movie)
+                    .error(R.drawable.ic_error)
             )
             .into(imgView)
     }
@@ -152,8 +152,8 @@ fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
             .circleCrop()
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_movie)
+                    .error(R.drawable.ic_error)
             )
             .into(imgView)
     }

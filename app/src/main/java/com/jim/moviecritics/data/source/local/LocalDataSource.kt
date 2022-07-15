@@ -47,11 +47,15 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         TODO("Not yet implemented")
     }
 
-    override suspend fun pushWatchListExpiration(
+    override suspend fun pushMultiWatchListExpiration(
         imdbID: String,
         userID: String,
         expiration: Timestamp,
     ): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean> {
         TODO("Not yet implemented")
     }
 

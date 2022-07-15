@@ -24,9 +24,10 @@ class WatchlistAdapter(
             binding.watch = watch
             binding.viewModel = viewModel
 
-            binding.toggleWatchlistCalendar.setOnClickListener {
-                onClickListener.onClick(watch)
-            }
+//            binding.toggleWatchlistCalendar.setOnClickListener {
+//                onClickListener.onClick(watch)
+//            }
+
             binding.layoutWatchlistItemCalendar.setOnClickListener {
                 onClickListener.onClick(watch)
             }

@@ -9,14 +9,17 @@ import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemProfileGuideCommentBinding
 
 
-class GuideItemReviewAdapter(private val onClickListener: OnClickListener) :
+class GuideItemReviewAdapter(
+    private val onClickListener: OnClickListener,
+    val viewModel: ItemGuideViewModel) :
     ListAdapter<Comment, GuideItemReviewAdapter.GuideItemReviewViewHolder>(DiffCallback) {
 
     class GuideItemReviewViewHolder(private var binding: ItemProfileGuideCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: Comment, onClickListener: OnClickListener) {
+        fun bind(comment: Comment, onClickListener: OnClickListener, viewModel: ItemGuideViewModel) {
             binding.comment = comment
+            binding.viewModel = viewModel
             binding.root.setOnClickListener { onClickListener.onClick(comment) }
             binding.executePendingBindings()
         }
@@ -39,7 +42,7 @@ class GuideItemReviewAdapter(private val onClickListener: OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: GuideItemReviewViewHolder, position: Int) {
-        holder.bind((getItem(position)), onClickListener)
+        holder.bind((getItem(position)), onClickListener, viewModel)
     }
 
     class OnClickListener(val clickListener: (comment: Comment) -> Unit) {

@@ -78,7 +78,7 @@ class WatchlistFragment : Fragment() {
                 for (value in it) {
                     list.add(value.imdbID)
                 }
-                viewModel.getWatchListFull(list)
+                viewModel.getFindsByImdbIDs(list)
             }
 
             viewModel.isMovieMapReady.observe(viewLifecycleOwner) { boolean ->
@@ -108,10 +108,6 @@ class WatchlistFragment : Fragment() {
 
         viewModel.user.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.user = $it")
-        }
-
-        viewModel.isCalendar.observe(viewLifecycleOwner) {
-            Logger.i("Watchlist ViewModel.isCalendar = $it")
         }
 
         return binding.root

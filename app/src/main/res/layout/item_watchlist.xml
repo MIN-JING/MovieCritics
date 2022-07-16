@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="find"
-            type="com.jim.moviecritics.data.Find" />
+<!--        <variable-->
+<!--            name="find"-->
+<!--            type="com.jim.moviecritics.data.Find" />-->
         <variable
             name="watch"
             type="com.jim.moviecritics.data.Watch" />
@@ -23,12 +23,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="8dp"
+        app:strokeColor="@color/primaryVariant"
+        app:strokeWidth="2dp"
         app:cardCornerRadius="15dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_corner">
+            android:layout_height="wrap_content">
+<!--            android:background="@drawable/bg_card_corner"-->
 
 
             <ImageView

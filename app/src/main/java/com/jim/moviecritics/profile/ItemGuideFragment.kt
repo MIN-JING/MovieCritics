@@ -26,11 +26,29 @@ class ItemGuideFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        binding.recyclerProfileGuideReview.adapter = GuideItemReviewAdapter(
+        val guideItemReviewAdapter = GuideItemReviewAdapter(
             GuideItemReviewAdapter.OnClickListener {
                 Logger.i("GuideItemReviewAdapter.OnClickListener it = $it")
-            }
+            },
+            viewModel
         )
+
+        binding.recyclerProfileGuideReview.adapter = guideItemReviewAdapter
+
+        viewModel.livePersonalComments.observe(viewLifecycleOwner) { comments ->
+            Logger.i("GuideItemReview ViewModel.livePersonalComments = $comments")
+            comments?.let {
+                val list = mutableListOf<String>()
+                for (value in it) {
+                    list.add(value.imdbID)
+                }
+                viewModel.getFindsByImdbIDs(list)
+            }
+            viewModel.isMovieMapReady.observe(viewLifecycleOwner) { boolean ->
+                Logger.i("GuideItemReview ViewModel.isMovieMapReady = $boolean")
+                guideItemReviewAdapter.submitList(comments)
+            }
+        }
 
 
         return binding.root

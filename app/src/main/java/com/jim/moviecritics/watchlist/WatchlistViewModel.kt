@@ -36,10 +36,10 @@ class WatchlistViewModel(
         get() = _user
 
 
-    private val _finds = MutableLiveData<List<Find>>()
-
-    val finds: LiveData<List<Find>>
-        get() = _finds
+//    private val _finds = MutableLiveData<List<Find>>()
+//
+//    val finds: LiveData<List<Find>>
+//        get() = _finds
 
     var liveWatchListByUser = MutableLiveData<List<Watch>>()
 
@@ -55,8 +55,6 @@ class WatchlistViewModel(
 
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
-
-    val isCalendar = MutableLiveData<Boolean>()
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -104,16 +102,16 @@ class WatchlistViewModel(
 
     }
 
-    fun getWatchListFull(watchList: List<String>) {
+    fun getFindsByImdbIDs(imdbIDs: List<String>) {
         val list = mutableListOf<Find>()
 
         coroutineScope.launch {
-            for (index in watchList.indices) {
+            for (index in imdbIDs.indices) {
                 Logger.i("Item WatchList request child $index")
-                Logger.i("watchList[index] = ${watchList[index]}")
+                Logger.i("imdbIDs[index] = ${imdbIDs[index]}")
                 val result =
-                    getFindResult(isInitial = true, imdbID = watchList[index], index = index)
-                Logger.i("getWatchListFull result = $result")
+                    getFindResult(isInitial = true, imdbID = imdbIDs[index], index = index)
+                Logger.i("getFindsByImdbIDs result = $result")
 
                 if (result?.finds != null) {
                     for (value in result.finds) {
@@ -125,20 +123,18 @@ class WatchlistViewModel(
                             value.backdrop = "https://image.tmdb.org/t/p/w185" + value.backdrop
                         }
                         list.add(value)
-                        Logger.i("getWatchListFull list = $list")
+                        Logger.i("getFindsByImdbIDs list = $list")
                     }
                 }
             }
-            _finds.value = list
+//            _finds.value = list
 
 //            findsMap = list.mapIndexed { index, find ->
 //                index to find
 //            }.toMap()
 //            Logger.i("findsMap = $findsMap")
-
-            movieMap = watchList.zip(list).toMap()
-            Logger.i("movieMap = $movieMap")
-
+            movieMap = imdbIDs.zip(list).toMap()
+            Logger.i("Item WatchList movieMap = $movieMap")
             _isMovieMapReady.value = true
         }
     }

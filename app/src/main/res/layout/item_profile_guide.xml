@@ -38,13 +38,13 @@
             android:orientation="vertical"
             android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical"
-            app:comments="@{viewModel.livePersonalComments}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_guide_recent_act"
             tools:listitem="@layout/item_profile_guide_comment" />
+<!--        app:comments="@{viewModel.livePersonalComments}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -149,5 +149,9 @@
     <string name="text_block_confirm">Confirm</string>
     <string name="text_block_cancel">Back</string>
 
+    <!-- WorkManager -->
+    <string name="channel_name">watchlist_channel</string>
+    <string name="channel_description">watchlist_reminder</string>
+
 
 </resources>

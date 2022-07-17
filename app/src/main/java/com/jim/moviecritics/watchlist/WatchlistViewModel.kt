@@ -6,6 +6,10 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
@@ -15,9 +19,12 @@ import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
+import com.jim.moviecritics.work.WatchlistReminderWorker
+import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class WatchlistViewModel(
@@ -266,5 +273,33 @@ class WatchlistViewModel(
                 }
             }
         }
+    }
+
+    internal fun scheduleReminder(
+        duration: Long,
+        unit: TimeUnit,
+        movieTitle: String
+    ) {
+        Logger.i("scheduleReminder()")
+
+        // TODO: create a Data instance with the plantName passed to it
+        val data = Data.Builder()
+            .putString(nameKey, movieTitle)
+            .build()
+
+
+        // TODO: Generate a OneTimeWorkRequest with the passed in duration, time unit, and data
+        //  instance
+
+        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WatchlistReminderWorker>()
+            .setInitialDelay(duration, unit)
+            .setInputData(data)
+            .build()
+
+        // TODO: Enqueue the request as a unique work request
+        WorkManager.getInstance().enqueueUniqueWork(
+            movieTitle,
+            ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
+        )
     }
 }

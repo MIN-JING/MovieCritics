@@ -12,7 +12,7 @@ import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.databinding.FragmentWatchlistBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
-
+import java.util.concurrent.TimeUnit
 
 
 class WatchlistFragment : Fragment() {
@@ -95,14 +95,20 @@ class WatchlistFragment : Fragment() {
 //            intent.putExtra(CalendarContract.Events.HAS_ALARM, 1)
             watch.expiration = it
 
+            viewModel.pushSingleWatchListExpiration(watch)
+
+            viewModel.movieMap[watch.imdbID]?.let { find ->
+                viewModel.scheduleReminder(7, TimeUnit.SECONDS, find.title)
+            }
+
             context?.let { context ->
                 if (intent.resolveActivity(context.packageManager) != null) {
                     startActivity(intent)
                     Logger.i("pushSingleWatchListExpiration(watch) = $watch")
-                    viewModel.pushSingleWatchListExpiration(watch)
                 } else {
                     Toast.makeText(context, "There is no app that can support this action", Toast.LENGTH_LONG).show()
                 }
+
             }
         }
 

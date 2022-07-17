@@ -22,7 +22,6 @@ class ItemFavoriteViewModel(
 
 //    private var livePersonalFavorites = MutableLiveData<List<String>>()
 
-
     private val _finds = MutableLiveData<List<Find>>()
 
     val finds: LiveData<List<Find>>

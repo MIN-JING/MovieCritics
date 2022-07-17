@@ -46,7 +46,7 @@ class WatchlistReminderWorker(
         val builder = NotificationCompat.Builder(applicationContext, MovieApplication.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Watch Movie!")
-            .setContentText("It's time to watch $movieTitle")
+            .setContentText("$movieTitle")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -59,6 +59,6 @@ class WatchlistReminderWorker(
     }
 
     companion object {
-        const val nameKey = "Movie Title"
+        const val nameKey = "MovieTitle"
     }
 }

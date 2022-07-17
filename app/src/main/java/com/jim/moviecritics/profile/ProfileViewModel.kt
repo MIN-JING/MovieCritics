@@ -71,7 +71,10 @@ class ProfileViewModel(
         if (user.value == null) {
             Logger.i("Profile ViewModel init if user.value == null")
             _user.value = UserManager.user
+        } else {
+            Logger.i("Profile ViewModel init if user.value != null")
         }
+
 
 //        if (user.value == null) {
 //            Logger.i("ProfileViewModel user.value == null")
@@ -88,7 +91,7 @@ class ProfileViewModel(
         coroutineScope.launch {
 
             _status.value = LoadApiStatus.LOADING
-
+            Logger.i("getUserByToken() token = $token")
             val result = applicationRepository.getUserByToken(token)
 
             _user.value = when (result) {
@@ -117,6 +120,8 @@ class ProfileViewModel(
                     null
                 }
             }
+
+            Logger.i("getUserByToken() _user.value = ${_user.value}")
         }
     }
 }

@@ -63,8 +63,6 @@ class DetailViewModel(
         get() = _isUsersMapReady
 
 
-
-
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 

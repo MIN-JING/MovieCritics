@@ -479,7 +479,8 @@ object FirebaseDataSource : ApplicationDataSource {
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
                         }
-                        liveData.value = list
+                        liveData.value = list.sortedByDescending { comment -> comment.createdTime }
+                        Logger.i("getLiveCommentsExcludeBlocks() liveData.value = ${liveData.value}")
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveCommentsExcludeBlocks task.result.size < 1")
                     }

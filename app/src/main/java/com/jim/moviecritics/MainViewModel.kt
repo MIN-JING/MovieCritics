@@ -92,14 +92,15 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("MainViewModel=$this")
         Logger.i("=============")
     }
-//
-//    fun checkUser() {
-//        if (user.value == null) {
-//            UserManager.userToken?.let {
-//                getUser(it)
-//            }
-//        }
-//    }
+
+    fun checkUser() {
+        if (user.value == null) {
+            Logger.i("MainViewModel UserManager.userToken = ${UserManager.userToken}")
+            UserManager.userToken?.let {
+                getUser(it)
+            }
+        }
+    }
 
     fun navigateToLoginSuccess(user: User) {
         _navigateToLoginSuccess.value = user

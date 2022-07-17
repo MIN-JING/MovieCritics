@@ -98,7 +98,7 @@ class WatchlistFragment : Fragment() {
             viewModel.pushSingleWatchListExpiration(watch)
 
             viewModel.movieMap[watch.imdbID]?.let { find ->
-                viewModel.scheduleReminder(7, TimeUnit.SECONDS, find.title)
+                viewModel.scheduleReminder(3, TimeUnit.SECONDS, find.title)
             }
 
             context?.let { context ->

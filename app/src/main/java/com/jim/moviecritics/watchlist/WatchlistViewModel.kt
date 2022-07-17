@@ -101,7 +101,12 @@ class WatchlistViewModel(
 
         if (user.value == null) {
             Logger.i("Watchlist ViewModel init if user.value == null")
-            _user.value = UserManager.user
+//            _user.value = UserManager.user
+            UserManager.userToken?.let {
+                getUserByToken(it)
+            }
+        } else {
+            Logger.i("Watchlist ViewModel init if user.value != null")
         }
 
 //        user.value?.watchlist?.let { getWatchListFull(it) }
@@ -290,7 +295,6 @@ class WatchlistViewModel(
 
         // TODO: Generate a OneTimeWorkRequest with the passed in duration, time unit, and data
         //  instance
-
         val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WatchlistReminderWorker>()
             .setInitialDelay(duration, unit)
             .setInputData(data)
@@ -301,5 +305,44 @@ class WatchlistViewModel(
             movieTitle,
             ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
         )
+    }
+
+    private fun getUserByToken(token: String) {
+
+        coroutineScope.launch {
+
+            _status.value = LoadApiStatus.LOADING
+            Logger.i("getUserByToken() token = $token")
+            val result = applicationRepository.getUserByToken(token)
+
+            _user.value = when (result) {
+
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    if (result.error.contains("Invalid Access Token", true)) {
+                        UserManager.clear()
+                    }
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _error.value = Util.getString(R.string.you_know_nothing)
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+
+            Logger.i("getUserByToken() _user.value = ${_user.value}")
+        }
     }
 }

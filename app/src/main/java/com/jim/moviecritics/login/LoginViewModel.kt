@@ -149,8 +149,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                     if (task.result.additionalUserInfo?.isNewUser == true) {
                         Logger.i("Firebase additionalUserInfo.isNewUser == true")
                         Logger.i("signInWithCredential user.uid = ${firebaseCurrentUser?.uid}")
-
-
                         Logger.i("isNewUser == true, user = $user")
                         pushUserInfo(user)
                         UserManager.user = user
@@ -159,7 +157,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
                         leave()
                     } else {
                         Logger.i("Firebase additionalUserInfo.isNewUser == false")
-
                         Logger.i("isNewUser == false, user = $user")
                         getUserById(user.id)
                         _statusLogIn.value = FIREBASE_LOG_IN_EVER

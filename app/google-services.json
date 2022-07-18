@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "97999771310",
+    "project_id": "moviecritics-6bc4f",
+    "storage_bucket": "moviecritics-6bc4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97999771310:android:fd4e479a04761c82bc7f3f",
+        "android_client_info": {
+          "package_name": "com.jim.moviecritics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97999771310-00k6i254t746l05eu587eldu1ob001n6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jim.moviecritics",
+            "certificate_hash": "d01d3556635fe0f513f5a0326cdb2faffe970de9"
+          }
+        },
+        {
+          "client_id": "97999771310-s1siqu5iqe90sigr2mq76n3vpo3jr6tm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jim.moviecritics",
+            "certificate_hash": "811c334f1f9aa638a5c6e4a32682431edd8887a9"
+          }
+        },
+        {
+          "client_id": "97999771310-o4omeiicjg9gs506fc1ltdi9usmthv1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9qVmcnedibawJ_byYwh-81eqr5jBdSME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97999771310-o4omeiicjg9gs506fc1ltdi9usmthv1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

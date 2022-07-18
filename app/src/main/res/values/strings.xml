@@ -120,7 +120,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="server_client_id"></string>
+    <string name="server_client_id">97999771310-o4omeiicjg9gs506fc1ltdi9usmthv1k.apps.googleusercontent.com</string>
 
     <!-- Report -->
     <string name="button_report_cancel">Cancel</string>

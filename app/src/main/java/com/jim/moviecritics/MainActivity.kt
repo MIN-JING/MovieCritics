@@ -13,6 +13,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
@@ -65,10 +66,20 @@ class MainActivity : BaseActivity() {
             }
         }
 
+
+        viewModel.user.observe(this) {
+            Logger.i("MainActivity viewModel.user = $it")
+            UserManager.user = it
+        }
+
+
+
         setupToolbar()
         setupBottomNav()
+        whenUserManagerIsLoggedIn()
         setupNavController()
 //        UserManager.clear()
+
     }
 
 
@@ -177,6 +188,20 @@ class MainActivity : BaseActivity() {
                 }
             }
             Logger.i("====== ${Build.MODEL} ======")
+        }
+    }
+
+    private fun whenUserManagerIsLoggedIn() {
+
+        when (UserManager.isLoggedIn) {
+            true -> {
+                Logger.i("MainActivity UserManager.isLoggedIn == true")
+                viewModel.checkUser()
+            }
+            else -> {
+                Logger.i("MainActivity UserManager.isLoggedIn == else")
+                findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+            }
         }
     }
 }

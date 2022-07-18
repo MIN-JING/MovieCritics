@@ -6,7 +6,7 @@ import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.report.ReportViewModel
 
-
+@Suppress("UNCHECKED_CAST")
 class CommentViewModelFactory(
     private val applicationRepository: ApplicationRepository,
     private val comment: Comment

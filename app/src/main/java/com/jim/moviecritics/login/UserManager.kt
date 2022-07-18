@@ -74,8 +74,8 @@ object UserManager {
      * It can be use to check login status directly
      */
     val isLoggedIn: Boolean
-        get() = user != null
-//        get() = userToken != null
+//        get() = user != null
+        get() = userToken != null
 
     /**
      * Clear the [userToken] and the [user]/[_user] data

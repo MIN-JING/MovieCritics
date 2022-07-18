@@ -16,8 +16,8 @@ android {
         applicationId "com.jim.moviecritics"
         minSdk 21
         targetSdk 32
-        versionCode 5
-        versionName "1.0.5"
+        versionCode 6
+        versionName "1.0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -133,4 +133,10 @@ dependencies {
 
     // Google login
     implementation "com.google.android.gms:play-services-auth:20.2.0"
+
+    // Lottie
+    implementation "com.airbnb.android:lottie:5.2.0"
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
 }

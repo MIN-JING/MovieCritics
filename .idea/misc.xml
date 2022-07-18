@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable-v24/bg_message.xml" value="0.1745" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/bg_card_corner.xml" value="0.321" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/bg_dialog_corner.xml" value="0.324" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/bg_movie.xml" value="0.321" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/bottom_nav_item_selector.xml" value="0.365" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/home-48px.xml" value="0.365" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_arrow_back.xml" value="0.325" />
@@ -14,6 +16,7 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_calendar_add_on.xml" value="0.328" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_calendar_selector.xml" value="0.328" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_comment.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_error.xml" value="0.321" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_event.xml" value="0.328" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_favorite_selected.xml" value="0.1875" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_favorite_selector.xml" value="0.354" />
@@ -27,6 +30,7 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_downshift.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_downshift_selected.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_downshift_selector.xml" value="0.338" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_home.xml" value="0.321" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_home_48px.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_home_selected.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_home_selector.xml" value="0.338" />
@@ -36,6 +40,8 @@
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_search.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_search_selected.xml" value="0.338" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_search_selector.xml" value="0.338" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_watchlist.xml" value="0.321" />
+        <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_watchlist_selected.xml" value="0.321" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_nav_watchlist_selector.xml" value="0.328" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_notes.xml" value="0.356" />
         <entry key="..\:/Users/goodc/IdeaProjects/workspace/MovieCritics/app/src/main/res/drawable/ic_pending.xml" value="0.325" />

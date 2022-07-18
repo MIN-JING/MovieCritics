@@ -109,10 +109,13 @@ class DetailFragment : Fragment() {
                 val list = mutableListOf<String>()
 
                 for (comment in it) {
+                    Logger.i("comment.userID = ${comment.userID}")
                     list.add(comment.userID)
                 }
-                Logger.i("DetailViewModel.liveComment userID = $list")
-                viewModel.getUsersResult(false, list)
+
+                val distinctUser = list.distinct()
+                Logger.i("DetailViewModel.liveComment userIDs = $distinctUser")
+                viewModel.getUsersResult(false, distinctUser)
 
                 viewModel.isUsersMapReady.observe(viewLifecycleOwner) { boolean ->
                     Logger.i("DetailViewModel.isUsersMapReady = $boolean")

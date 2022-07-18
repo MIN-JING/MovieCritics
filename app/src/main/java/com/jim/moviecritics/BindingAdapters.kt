@@ -2,13 +2,13 @@ package com.jim.moviecritics
 
 
 import android.widget.ImageView
+import androidx.annotation.ColorInt
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
-import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.detail.ReviewAdapter
 import com.jim.moviecritics.home.HomeAdapter
 import com.jim.moviecritics.profile.FavoriteItemAdapter
@@ -103,15 +103,28 @@ fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
                     submitList(it)
                     Logger.i("is FavoriteItemAdapter bindRecyclerViewWithFinds = $it")
                 }
-                is WatchlistAdapter -> {
-                    submitList(it)
-                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
-                }
+//                is WatchlistAdapter -> {
+//                    submitList(it)
+//                    Logger.i("is WatchlistAdapter bindRecyclerViewWithFinds = $it")
+//                }
             }
         }
     }
 }
 
+@BindingAdapter("watchList")
+fun bindRecyclerViewWithWatchList(recyclerView: RecyclerView, watchList: List<Watch>?) {
+    watchList?.let {
+        recyclerView.adapter?.apply {
+            when (this) {
+                is WatchlistAdapter -> {
+                    submitList(it)
+                    Logger.i("is WatchlistAdapter bindRecyclerViewWithWatchList = $it")
+                }
+            }
+        }
+    }
+}
 /**
  * Uses the Glide library to load an image by URL into an [ImageView]
  */
@@ -123,8 +136,8 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .load(imgUri)
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_movie)
+                    .error(R.drawable.ic_error)
             )
             .into(imgView)
     }
@@ -139,12 +152,22 @@ fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
             .circleCrop()
             .apply(
                 RequestOptions()
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_movie)
+                    .error(R.drawable.ic_error)
             )
             .into(imgView)
     }
 }
+
+@BindingAdapter("app:tint")
+fun ImageView.setImageTint(@ColorInt color: Int) {
+    setColorFilter(color)
+}
+
+//@BindingAdapter("imgRes")
+//fun setImageResource(imageView: ImageView, resource: Int) {
+//    imageView.setImageResource(resource)
+//}
 
 //@BindingAdapter("ratingValue")
 //fun bindRating(ratingBar: RatingBar, rating: Float?) {

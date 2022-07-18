@@ -187,7 +187,7 @@
                 android:gravity="start"
                 android:hint="@string/edit_review"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:text="@={viewModel.content}"
                 android:textColorHint="#37474F"
                 app:layout_constraintEnd_toEndOf="parent"

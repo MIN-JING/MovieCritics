@@ -26,7 +26,9 @@ interface ApplicationDataSource {
 
     fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>>
 
-    suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean>
+    suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean>
+
+    suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean>
 
     suspend fun getScores(imdbID: String): Result<List<Score>>
 

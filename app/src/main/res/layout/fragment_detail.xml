@@ -9,6 +9,8 @@
         <variable
             name="viewModel"
             type="com.jim.moviecritics.detail.DetailViewModel" />
+        <import type="com.jim.moviecritics.network.LoadApiStatus"/>
+        <import type="android.view.View"/>
         <variable
             name="isLiveDataDesign"
             type="Boolean" />
@@ -167,7 +169,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
                     android:lines="3"
+                    android:maxLines="5"
                     android:text="@{viewModel.movie.overview}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -250,7 +254,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_detail_cast"
                     android:layout_width="0dp"
-                    android:layout_height="220dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fadeScrollbars="false"
                     android:orientation="horizontal"
@@ -302,6 +306,21 @@
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_review"
                     tools:listitem="@layout/item_detail_review" />
 <!--                app:comments="@{isLiveDataDesign ? viewModel.liveComments : viewModel.comments}"-->
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_detail"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:elevation="5dp"
+                    android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/lottie_clapperboard_green"
+                    app:lottie_speed="3" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

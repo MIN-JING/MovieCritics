@@ -9,6 +9,8 @@
         <variable
             name="viewModel"
             type="com.jim.moviecritics.profile.ItemGuideViewModel" />
+        <import type="com.jim.moviecritics.network.LoadApiStatus"/>
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,13 +40,28 @@
             android:orientation="vertical"
             android:scrollbarStyle="outsideInset"
             android:scrollbars="vertical"
-            app:comments="@{viewModel.livePersonalComments}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_guide_recent_act"
             tools:listitem="@layout/item_profile_guide_comment" />
+<!--        app:comments="@{viewModel.livePersonalComments}"-->
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_profile_guide"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:elevation="5dp"
+            android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/lottie_clapperboard_green"
+            app:lottie_speed="3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

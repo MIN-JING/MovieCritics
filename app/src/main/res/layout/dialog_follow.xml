@@ -24,38 +24,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:id="@+id/image_follow_user_pic"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginStart="20dp"
-                android:contentDescription="@string/image_follow_user_pic"
-                android:scaleType="centerCrop"
-                app:imageUrlWithCircleCrop="@{viewModel.user.pictureUri}"
-                app:layout_constraintBottom_toBottomOf="@+id/text_follow_is_follow"
-                app:layout_constraintEnd_toStartOf="@+id/text_follow_user_name"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/text_follow_is_follow"
-                app:layout_constraintTop_toTopOf="@+id/text_follow_is_follow"
-                tools:src="@tools:sample/avatars" />
-
             <TextView
                 android:id="@+id/text_follow_is_follow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:text="Follow"
+                android:text="@string/text_follow_is_follow"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/image_follow_user_pic"
                 app:layout_constraintEnd_toStartOf="@+id/image_follow_user_pic"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/image_follow_user_pic" />
+
+            <ImageView
+                android:id="@+id/image_follow_user_pic"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:contentDescription="@string/image_follow_user_pic"
+                android:scaleType="centerCrop"
+                app:imageUrlWithCircleCrop="@{viewModel.user.pictureUri}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_follow_user_name"
+                app:layout_constraintStart_toEndOf="@+id/text_follow_is_follow"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/text_follow_user_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@{viewModel.user.name}"
@@ -126,8 +128,8 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/image_follow_block"
-                android:src="@drawable/ic_block"
                 android:onClick="@{() -> viewModel.navigateToBlock(viewModel.user)}"
+                android:src="@drawable/ic_block"
                 app:layout_constraintBottom_toBottomOf="@+id/text_follow_user_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_follow_user_name" />

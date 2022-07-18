@@ -63,8 +63,6 @@ class DetailViewModel(
         get() = _isUsersMapReady
 
 
-
-
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -235,7 +233,7 @@ class DetailViewModel(
     fun getUsersResult(isInitial: Boolean = false, idList: List<String>) {
         coroutineScope.launch {
 
-            _status.value = LoadApiStatus.LOADING
+            if (isInitial) _status.value = LoadApiStatus.LOADING
 
             val result = applicationRepository.getUsersByIdList(idList = idList)
 

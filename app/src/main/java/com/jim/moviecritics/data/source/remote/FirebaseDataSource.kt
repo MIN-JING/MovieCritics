@@ -130,7 +130,7 @@ object FirebaseDataSource : ApplicationDataSource {
         return liveData
     }
 
-    override suspend fun pushWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> = suspendCoroutine { continuation ->
         val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
         val query =  itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
 
@@ -157,6 +157,26 @@ object FirebaseDataSource : ApplicationDataSource {
                 continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
             }
         }
+    }
+
+    override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean>  = suspendCoroutine { continuation ->
+        FirebaseFirestore.getInstance()
+            .collection(PATH_WATCHLIST)
+            .document(watch.id)
+            .update(FIELD_EXPIRATION, watch.expiration)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Logger.i("pushWatchListExpiration task.isSuccessful")
+                    continuation.resume(Result.Success(true))
+                } else {
+                    task.exception?.let {
+                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        continuation.resume(Result.Error(it))
+                        return@addOnCompleteListener
+                    }
+                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                }
+            }
     }
 
     override suspend fun getScores(imdbID: String): Result<List<Score>> = suspendCoroutine { continuation ->
@@ -459,7 +479,8 @@ object FirebaseDataSource : ApplicationDataSource {
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
                         }
-                        liveData.value = list
+                        liveData.value = list.sortedByDescending { comment -> comment.createdTime }
+                        Logger.i("getLiveCommentsExcludeBlocks() liveData.value = ${liveData.value}")
                     } else {
                         Logger.w("[${this::class.simpleName}] getLiveCommentsExcludeBlocks task.result.size < 1")
                     }

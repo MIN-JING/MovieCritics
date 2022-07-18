@@ -24,26 +24,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
             android:text="@{viewModel.usersMap[comment.userID].name}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_content"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="User Name" />
 
         <TextView
             android:id="@+id/text_detail_item_review_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="6"
             android:text="@{comment.content}"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/image_detail_item_review_report"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_user_name"
             tools:text="Review" />
 
         <ImageView
@@ -51,29 +49,41 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
+            android:contentDescription="@string/image_detail_item_review_user_pic"
             android:onClick="@{() -> viewModel.navigateToUserInfo(viewModel.usersMap[comment.userID])}"
             app:imageUrlWithCircleCrop="@{viewModel.usersMap[comment.userID].pictureUri}"
-            app:layout_constraintBottom_toBottomOf="@+id/text_detail_item_review_user_name"
             app:layout_constraintStart_toEndOf="@+id/text_detail_item_review_user_name"
-            app:layout_constraintTop_toTopOf="@+id/text_detail_item_review_user_name"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
             android:id="@+id/image_detail_item_review_report"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:onClick="@{() -> viewModel.navigateToReport(comment)}"
             android:contentDescription="@string/image_detail_item_review_report_description"
+            android:onClick="@{() -> viewModel.navigateToReport(comment)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_flag_selector"/>
-<!--        app:srcCompat="@drawable/ic_flag_selector"-->
-<!--        android:background="@drawable/ic_flag_selector"-->
-<!--        android:background="?android:attr/selectableItemBackground"-->
-<!--        android:focusableInTouchMode="true"-->
-<!--        android:background="?android:attr/activatedBackgroundIndicator"-->
-<!--        android:clickable="true"-->
-<!--        android:focusable="true"-->
+            app:srcCompat="@drawable/ic_flag_selector" />
+
+        <View
+            android:id="@+id/divider1_detail_item_review"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_content" />
+        <!--        app:srcCompat="@drawable/ic_flag_selector"-->
+        <!--        android:background="@drawable/ic_flag_selector"-->
+        <!--        android:background="?android:attr/selectableItemBackground"-->
+        <!--        android:focusableInTouchMode="true"-->
+        <!--        android:background="?android:attr/activatedBackgroundIndicator"-->
+        <!--        android:clickable="true"-->
+        <!--        android:focusable="true"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

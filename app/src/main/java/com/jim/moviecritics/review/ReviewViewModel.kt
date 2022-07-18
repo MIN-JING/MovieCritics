@@ -39,7 +39,6 @@ class ReviewViewModel(
 //    val user: LiveData<User>
 //        get() = _user
 
-//    private val movie = arguments
 
     private val user = UserManager.user
 

@@ -20,25 +20,28 @@ android {
         versionName "1.0.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        // Input local properties
-//        Properties properties = new Properties()
-//        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-//        buildConfigField "String", "API_KEY",localProperties['API_KEY']
-
-//        def localProperties = new Properties()
-//        localProperties.load(new FileInputStream(rootProject.file("local.properties")))
     }
 
     buildTypes {
+        // Input local properties
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def tmdbAPIKey = properties.getProperty('key.api.tmdb')
+
         release {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // BuildConfig could be used in java code
+            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
         debug {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
+
+            // BuildConfig could be used in java code
+            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
     }
     compileOptions {
@@ -61,9 +64,6 @@ android {
         buildConfig = true
         viewBinding true
 
-        // Determines whether to support Data Binding.
-        // Note that the dataBinding.enabled property is now deprecated.
-//        dataBinding = true
     }
 
     composeOptions {

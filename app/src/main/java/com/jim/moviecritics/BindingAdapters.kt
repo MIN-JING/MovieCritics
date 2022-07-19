@@ -105,7 +105,7 @@ fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
     }
 }
 
-@BindingAdapter("app:tint")
+@BindingAdapter("tint")
 fun ImageView.setImageTint(@ColorInt color: Int) {
     setColorFilter(color)
 }

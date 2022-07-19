@@ -55,9 +55,7 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         viewModelJob.cancel()
     }
 
-    /**
-     * Call getMarketingHotsResult() on init so we can display status immediately.
-     */
+
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
@@ -97,7 +95,9 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
 
     fun prepareSearch() {
         when {
-            searchKey.value.isNullOrEmpty() -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
+            searchKey.value.isNullOrEmpty()
+                -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
+
             !searchKey.value.isNullOrEmpty() -> searchKey.value?.let{
                 getSearchResult(isInitial = true, it)
             }

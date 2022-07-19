@@ -8,7 +8,6 @@ import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.login.LoginViewModel
 import com.jim.moviecritics.profile.ItemFavoriteViewModel
 import com.jim.moviecritics.profile.ItemGuideViewModel
-import com.jim.moviecritics.report.ReportViewModel
 import com.jim.moviecritics.search.SearchViewModel
 
 
@@ -37,9 +36,6 @@ class ViewModelFactory constructor(
 
                 isAssignableFrom(ItemFavoriteViewModel::class.java) ->
                     ItemFavoriteViewModel(applicationRepository)
-
-//                isAssignableFrom(ReportViewModel::class.java) ->
-//                    ReportViewModel(applicationRepository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

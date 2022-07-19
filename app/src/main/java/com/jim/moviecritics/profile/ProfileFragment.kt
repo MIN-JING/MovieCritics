@@ -15,7 +15,9 @@ import com.jim.moviecritics.util.Logger
 
 class ProfileFragment : Fragment() {
 
-    private val profileViewModel by viewModels<ProfileViewModel> { getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey) }
+    private val profileViewModel by viewModels<ProfileViewModel> {
+        getVmFactory(ProfileFragmentArgs.fromBundle(requireArguments()).userKey)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -40,7 +42,6 @@ class ProfileFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-//        val tabLayoutArray = arrayOf("Guide", "Favorite")
         if (profileViewModel.user.value == null) {
             val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
             profileViewModel.user.observe(viewLifecycleOwner) {
@@ -51,7 +52,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         FragmentProfileBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = profileViewModel
@@ -59,7 +59,6 @@ class ProfileFragment : Fragment() {
             viewpagerProfile.let {
                 it.adapter = ProfilePagerAdapter(childFragmentManager, lifecycle)
                 TabLayoutMediator(tabsProfile, it) { tab, position ->
-//                    tab.text = tabLayoutArray[position]
                     tab.text = ProfileTypeFilter.values()[position].value
                 }.attach()
             }

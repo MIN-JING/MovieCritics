@@ -39,7 +39,6 @@ class SearchAdapter(private val onClickListener: OnClickListener) :
 
         fun bind(look: Look, onClickListener: OnClickListener) {
             binding.look = look
-//            binding.knownFor = knownFor
             binding.root.setOnClickListener { onClickListener.onClick(look) }
             binding.executePendingBindings()
         }
@@ -91,7 +90,6 @@ class SearchAdapter(private val onClickListener: OnClickListener) :
             is LookPersonViewHolder -> {
                     holder.bind(
                         (getItem(position) as LookItem.LookPerson).look,
-//                        (getItem(position) as LookItem.LookPerson).knownFor,
                         onClickListener)
             }
         }

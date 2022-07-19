@@ -26,7 +26,6 @@
             android:name="userKey"
             app:argType="com.jim.moviecritics.data.User"
             app:nullable="true" />
-<!--        android:defaultValue="@null"-->
     </fragment>
 
     <fragment
@@ -39,7 +38,6 @@
             android:name="userKey"
             app:argType="com.jim.moviecritics.data.User"
             app:nullable="true" />
-<!--        android:defaultValue="@null"-->
     </fragment>
 
     <fragment

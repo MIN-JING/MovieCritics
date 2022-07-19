@@ -43,11 +43,6 @@ class WatchlistViewModel(
         get() = _user
 
 
-//    private val _finds = MutableLiveData<List<Find>>()
-//
-//    val finds: LiveData<List<Find>>
-//        get() = _finds
-
     var liveWatchListByUser = MutableLiveData<List<Watch>>()
 
     private val _timeStamp = MutableLiveData<Timestamp>()
@@ -91,9 +86,7 @@ class WatchlistViewModel(
         viewModelJob.cancel()
     }
 
-    /**
-     * Get [User] profile data when user is null
-     */
+
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
@@ -101,7 +94,6 @@ class WatchlistViewModel(
 
         if (user.value == null) {
             Logger.i("Watchlist ViewModel init if user.value == null")
-//            _user.value = UserManager.user
             UserManager.userToken?.let {
                 getUserByToken(it)
             }
@@ -109,9 +101,7 @@ class WatchlistViewModel(
             Logger.i("Watchlist ViewModel init if user.value != null")
         }
 
-//        user.value?.watchlist?.let { getWatchListFull(it) }
         user.value?.id?.let { getLiveWatchListByUserResult(it) }
-
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
@@ -139,12 +129,6 @@ class WatchlistViewModel(
                     }
                 }
             }
-//            _finds.value = list
-
-//            findsMap = list.mapIndexed { index, find ->
-//                index to find
-//            }.toMap()
-//            Logger.i("findsMap = $findsMap")
             movieMap = imdbIDs.zip(list).toMap()
             Logger.i("Item WatchList movieMap = $movieMap")
             _isMovieMapReady.value = true
@@ -231,8 +215,6 @@ class WatchlistViewModel(
 
         val datePickerOnDataSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
-//                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE)
-//                setText(sdf.format(calendar.time))
                 showYear = year
                 showMonth = month
                 showDay = day
@@ -283,25 +265,21 @@ class WatchlistViewModel(
     internal fun scheduleReminder(
         duration: Long,
         unit: TimeUnit,
-        movieTitle: String
+        movieTitle: String,
+        context: Context
     ) {
         Logger.i("scheduleReminder()")
 
-        // TODO: create a Data instance with the plantName passed to it
         val data = Data.Builder()
             .putString(nameKey, movieTitle)
             .build()
 
-
-        // TODO: Generate a OneTimeWorkRequest with the passed in duration, time unit, and data
-        //  instance
         val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WatchlistReminderWorker>()
             .setInitialDelay(duration, unit)
             .setInputData(data)
             .build()
 
-        // TODO: Enqueue the request as a unique work request
-        WorkManager.getInstance().enqueueUniqueWork(
+        WorkManager.getInstance(context).enqueueUniqueWork(
             movieTitle,
             ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
         )
@@ -341,7 +319,6 @@ class WatchlistViewModel(
                     null
                 }
             }
-
             Logger.i("getUserByToken() _user.value = ${_user.value}")
         }
     }

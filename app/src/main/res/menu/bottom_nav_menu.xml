@@ -19,5 +19,4 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_nav_profile_selector"
         android:title="@string/navigation_profile"/>
-
 </menu>

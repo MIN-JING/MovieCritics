@@ -35,10 +35,6 @@ class ItemFavoriteFragment : Fragment() {
             Logger.i("FavoriteItem finds = $it")
         }
 
-//        viewModel.livePersonalFavorites.observe(viewLifecycleOwner) {
-//            Logger.i("viewModel.livePersonalFavorites = $it")
-//            viewModel.getFavoritesFull(it)
-//        }
         return binding.root
     }
 }

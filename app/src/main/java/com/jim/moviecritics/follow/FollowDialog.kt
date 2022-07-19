@@ -1,6 +1,6 @@
 package com.jim.moviecritics.follow
 
-import android.app.AlertDialog
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +15,6 @@ import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogFollowBinding
 import com.jim.moviecritics.ext.getVmFactory
-import com.jim.moviecritics.ext.showToast
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

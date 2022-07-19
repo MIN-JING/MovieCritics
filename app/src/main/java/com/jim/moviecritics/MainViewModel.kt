@@ -74,13 +74,6 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
-//        if (user.value == null) {
-//            UserManager.userToken?.let {
-//                getUser(it)
-//                Logger.i("MainViewModel init user.value = ${user.value}")
-//            }
-//        }
     }
 
     fun setupUser(user: User) {

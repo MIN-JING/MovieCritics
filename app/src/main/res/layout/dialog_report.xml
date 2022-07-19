@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".report.ReportDialog">
-<!--    tools:context=".report.ReportDialog"-->
+
     <data>
         <variable
             name="viewModel"
@@ -13,7 +13,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--        android:onClick="@{() -> viewModel.leave()}"-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_report"
@@ -45,7 +44,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/text_report_title_top"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_report_title_top" />
-<!--            android:onClick="@{() -> viewModel.prepareComment()}"-->
 
             <TextView
                 android:id="@+id/text_report_title_top"
@@ -126,84 +124,7 @@
                     android:tag="@string/text_report_reason_other"
                     android:text="@string/text_report_reason_other"
                     android:textSize="18sp" />
-
             </RadioGroup>
-
-<!--            <CheckedTextView-->
-<!--                android:id="@+id/text_report_reason_abuse"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--                android:text="@string/text_report_reason_abuse"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_title_reason" />-->
-<!--            android:checked="@{viewModel.isAbuse()}"-->
-<!--            android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-
-<!--            <CheckedTextView-->
-<!--                android:id="@+id/text_report_reason_spoilers"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--                android:text="@string/text_report_reason_spoilers"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_abuse" />-->
-<!--            android:checked="@{viewModel.isSpoiler()}"-->
-
-<!--            <CheckedTextView-->
-<!--                android:id="@+id/text_report_reason_spam"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--                android:text="@string/text_report_reason_spam"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spoilers" />-->
-<!--            android:checked="@{viewModel.isSpam()}"-->
-
-<!--            <CheckedTextView-->
-<!--                android:id="@+id/text_report_reason_plagiarism"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--                android:text="@string/text_report_reason_plagiarism"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_spam" />-->
-<!--            android:checked="@{viewModel.isPlagiarism()}"-->
-
-<!--            <CheckedTextView-->
-<!--                android:id="@+id/text_report_reason_other"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:checkMark="?android:attr/listChoiceIndicatorSingle"-->
-<!--                android:text="@string/text_report_reason_other"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/text_report_reason_plagiarism" />-->
-<!--            android:checked="@{viewModel.isOther()}"-->
 
             <TextView
                 android:id="@+id/text_report_title_message"

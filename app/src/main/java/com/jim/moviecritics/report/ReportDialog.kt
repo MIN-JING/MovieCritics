@@ -22,7 +22,10 @@ import kotlinx.coroutines.launch
 
 class ReportDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<ReportViewModel> { getVmFactory(ReportDialogArgs.fromBundle(requireArguments()).comment) }
+    private val viewModel by viewModels<ReportViewModel> {
+        getVmFactory(ReportDialogArgs.fromBundle(requireArguments()).comment)
+    }
+
     private lateinit var binding: DialogReportBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +40,9 @@ class ReportDialog : AppCompatDialogFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = DialogReportBinding.inflate(inflater, container, false)
-        binding.layoutReport.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutReport.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -47,10 +52,6 @@ class ReportDialog : AppCompatDialogFragment() {
                 dismiss()
                 viewModel.onLeaveCompleted()
             }
-        }
-
-        viewModel.message.observe(viewLifecycleOwner) {
-            Logger.i("Report message = $it")
         }
 
         viewModel.invalidReport.observe(viewLifecycleOwner) {
@@ -69,7 +70,6 @@ class ReportDialog : AppCompatDialogFragment() {
                 }
             }
         }
-
 
         return binding.root
     }

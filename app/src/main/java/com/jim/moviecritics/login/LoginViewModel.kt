@@ -31,11 +31,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
     var user = User()
 
-//    private val _user = MutableLiveData<User>()
 
-//    val user: LiveData<User>
-//        get() = _user
-//
     private val _liveUser = MutableLiveData<User>()
 
     val liveUser: LiveData<User>

@@ -3,7 +3,6 @@ package com.jim.moviecritics.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
@@ -12,9 +11,7 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.util.Util.getString
+
 
 class ProfileViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -30,7 +27,6 @@ class ProfileViewModel(
 
     val user: LiveData<User>
         get() = _user
-
 
 
     // status: The internal MutableLiveData that stores the status of the most recent request
@@ -73,55 +69,6 @@ class ProfileViewModel(
             _user.value = UserManager.user
         } else {
             Logger.i("Profile ViewModel init if user.value != null")
-        }
-
-
-//        if (user.value == null) {
-//            Logger.i("ProfileViewModel user.value == null")
-//            UserManager.userToken?.let {
-//                getUserByToken(it)
-//            }
-//        } else {
-//            Logger.i("ProfileViewModel user.value != null")
-//        }
-    }
-
-    private fun getUserByToken(token: String) {
-
-        coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-            Logger.i("getUserByToken() token = $token")
-            val result = applicationRepository.getUserByToken(token)
-
-            _user.value = when (result) {
-
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    if (result.error.contains("Invalid Access Token", true)) {
-                        UserManager.clear()
-                    }
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _error.value = getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-            }
-
-            Logger.i("getUserByToken() _user.value = ${_user.value}")
         }
     }
 }

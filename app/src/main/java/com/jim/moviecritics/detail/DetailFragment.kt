@@ -44,16 +44,6 @@ class DetailFragment : Fragment() {
 
         binding.recyclerviewDetailReview.adapter = reviewAdapter
 
-//        binding.recyclerviewDetailReview.adapter = ReviewAdapter(
-//            ReviewAdapter.OnClickListener {
-//                Logger.i("ReviewAdapter.OnClickListener it = $it")
-//            },
-//            viewModel
-//        )
-
-        viewModel.movie.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.movie = $it")
-        }
 
         viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
@@ -102,9 +92,6 @@ class DetailFragment : Fragment() {
         viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
             Logger.i("DetailViewModel.liveComments = $comments")
 
-//            val blocks = viewModel.user?.blocks
-//            comments.filterNot { it.userID in blocks }
-
             comments?.let {
                 val list = mutableListOf<String>()
 
@@ -123,7 +110,6 @@ class DetailFragment : Fragment() {
                 }
             }
         }
-
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")

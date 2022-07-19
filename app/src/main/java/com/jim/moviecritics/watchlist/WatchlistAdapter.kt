@@ -20,19 +20,13 @@ class WatchlistAdapter(
         ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(watch: Watch, onClickListener: OnClickListener, viewModel: WatchlistViewModel) {
-//            binding.find = find
             binding.watch = watch
             binding.viewModel = viewModel
-
-//            binding.toggleWatchlistCalendar.setOnClickListener {
-//                onClickListener.onClick(watch)
-//            }
 
             binding.layoutWatchlistItemCalendar.setOnClickListener {
                 onClickListener.onClick(watch)
             }
 
-//            binding.root.setOnClickListener { onClickListener.onClick(find) }
             binding.executePendingBindings()
         }
     }
@@ -60,5 +54,4 @@ class WatchlistAdapter(
     class OnClickListener(val clickListener: (watch: Watch) -> Unit) {
         fun onClick(watch: Watch) = clickListener(watch)
     }
-
 }

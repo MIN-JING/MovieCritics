@@ -20,8 +20,6 @@ class ItemFavoriteViewModel(
 
     private val user = UserManager.user
 
-//    private var livePersonalFavorites = MutableLiveData<List<String>>()
-
     private val _finds = MutableLiveData<List<Find>>()
 
     val finds: LiveData<List<Find>>
@@ -60,21 +58,7 @@ class ItemFavoriteViewModel(
         Logger.i("------------------------------------")
 
         user?.liked?.let { getFavoritesFull(it) }
-
-//        Logger.i("Item Favorite UserManager.user = ${UserManager.user}")
-//        UserManager.user?.liked?.let {
-//            Logger.i("Item Favorite UserManager.user?.liked ${UserManager.user?.liked}")
-//            getFavoritesFull(it) }
-
-//        UserManager.userId?.let {
-//            getLivePersonalFavoritesResult(it)
-//        }
     }
-
-//    private fun getLivePersonalFavoritesResult(userID: String) {
-//        livePersonalFavorites = applicationRepository.getLivePersonalFavorites(userID)
-//        _status.value = LoadApiStatus.DONE
-//    }
 
 
     private fun getFavoritesFull(favorites: List<String>) {

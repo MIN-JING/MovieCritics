@@ -118,10 +118,7 @@ class DetailViewModel(
                 getLiveScoreResult(imdbID = it, userID = user.id)
                 getLiveCommentsExcludeBlocks(imdbID = it, blocks = user.blocks)
             }
-//            getLiveCommentsResult(imdbID = it)
-
         }
-
     }
 
     fun navigateToPending(movie: Movie) {
@@ -163,39 +160,11 @@ class DetailViewModel(
         _status.value = LoadApiStatus.DONE
     }
 
-
-    private fun getLiveCommentsResult(imdbID: String) {
-        liveComments = applicationRepository.getLiveComments(imdbID)
-        Logger.i("getLiveCommentsResult() liveComments = $liveComments")
-        Logger.i("getLiveCommentsResult() liveComments.value = ${liveComments.value}")
-        _status.value = LoadApiStatus.DONE
-    }
-
     private fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>) {
         liveComments = applicationRepository.getLiveCommentsExcludeBlocks(imdbID, blocks)
         Logger.i("getLiveCommentsExcludeBlocks() liveComments = $liveComments")
         Logger.i("getLiveCommentsExcludeBlocks() liveComments.value = ${liveComments.value}")
         _status.value = LoadApiStatus.DONE
-    }
-
-    fun getUserNames(userIDs: List<String>) {
-        val list = mutableListOf<String>()
-
-        coroutineScope.launch {
-            for (index in userIDs.indices) {
-                Logger.i("Item Comment request child $index")
-                Logger.i("userIDs[index] = ${userIDs[index]}")
-                val result =
-                    getUserNameResult(isInitial = true, userID = userIDs[index], index = index)
-                Logger.i("getUserNames result = $result")
-
-                if (result != null) {
-                    list.add(result)
-                    Logger.i("getUserNames list = $list")
-                }
-            }
-//            _userNames.value = list
-        }
     }
 
     private suspend fun getUserNameResult(isInitial: Boolean = false, userID: String, index: Int): String? {

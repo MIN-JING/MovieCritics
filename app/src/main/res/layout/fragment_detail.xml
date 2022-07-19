@@ -214,7 +214,6 @@
                     app:layout_constraintStart_toEndOf="@+id/text_detail_ratings"
                     app:layout_constraintTop_toTopOf="@+id/text_detail_ratings"
                     tools:text="Score: 4.3" />
-<!--                android:text="@{String.format(`%.01f`, viewModel.movie.voteAverage)}"-->
 
                 <com.github.mikephil.charting.charts.RadarChart
                     android:id="@+id/radar_chart_rating"
@@ -305,7 +304,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_review"
                     tools:listitem="@layout/item_detail_review" />
-<!--                app:comments="@{isLiveDataDesign ? viewModel.liveComments : viewModel.comments}"-->
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/animation_detail"

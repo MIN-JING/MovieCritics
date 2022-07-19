@@ -14,7 +14,7 @@ fun Activity?.showToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).apply {
 // starting from Android R, text Toast can no longer be set with these parameters
 // since the setter functions have become no-op functions
-//        setGravity(Gravity.CENTER, 0, 0)
+// e.g. setGravity(Gravity.CENTER, 0, 0)
         show()
     }
 }

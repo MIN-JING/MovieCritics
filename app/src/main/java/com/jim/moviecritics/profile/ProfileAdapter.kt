@@ -8,10 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class ProfilePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
-//    private val titles = arrayOf("Guide1", "Favorites2")
-
     override fun getItemCount(): Int {
-//        return titles.size
         return ProfileTypeFilter.values().size
     }
 

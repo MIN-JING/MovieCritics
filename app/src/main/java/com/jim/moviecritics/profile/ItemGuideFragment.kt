@@ -50,7 +50,6 @@ class ItemGuideFragment : Fragment() {
             }
         }
 
-
         return binding.root
     }
 }

@@ -34,12 +34,6 @@ class ReviewViewModel(
         get() = _movie
 
 
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-
-
     private val user = UserManager.user
 
     private val comment = Comment()

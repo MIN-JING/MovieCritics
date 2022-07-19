@@ -27,7 +27,11 @@ class MainActivity : BaseActivity() {
     // get the height of status bar from system
     private val statusBarHeight: Int
         get() {
-            val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            val resourceId = resources.getIdentifier(
+                "status_bar_height",
+                "dimen",
+                "android"
+            )
             return when {
                 resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
                 else -> 0
@@ -72,14 +76,10 @@ class MainActivity : BaseActivity() {
             UserManager.user = it
         }
 
-
-
         setupToolbar()
         setupBottomNav()
         whenUserManagerIsLoggedIn()
         setupNavController()
-//        UserManager.clear()
-
     }
 
 
@@ -142,17 +142,10 @@ class MainActivity : BaseActivity() {
             }
             false
         }
-
-//        val menuView = binding.bottomNavView.getChildAt(0) as BottomNavigationMenuView
-//        val itemView = menuView.getChildAt(2) as BottomNavigationItemView
-//        val bindingBadge = BadgeBottomBinding.inflate(LayoutInflater.from(this), itemView, true)
-//        bindingBadge.lifecycleOwner = this
-//        bindingBadge.viewModel = viewModel
     }
 
     private fun setupToolbar() {
 
-//        binding.toolbar.setPadding(0, 0, 0, 0)
         binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
 
         setSupportActionBar(binding.toolbar)
@@ -175,7 +168,6 @@ class MainActivity : BaseActivity() {
 
                     val oriStatusBarHeight = resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
                     Logger.i("oriStatusBarHeight: $oriStatusBarHeight")
-//                    binding.toolbar.setPadding(0, oriStatusBarHeight, 0, 0)
                     binding.toolbar.setPadding(0, 0, 0, 0)
                     val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
                     layoutParams.gravity = Gravity.CENTER

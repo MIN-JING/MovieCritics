@@ -77,13 +77,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_detail_item_review_content" />
-        <!--        app:srcCompat="@drawable/ic_flag_selector"-->
-        <!--        android:background="@drawable/ic_flag_selector"-->
-        <!--        android:background="?android:attr/selectableItemBackground"-->
-        <!--        android:focusableInTouchMode="true"-->
-        <!--        android:background="?android:attr/activatedBackgroundIndicator"-->
-        <!--        android:clickable="true"-->
-        <!--        android:focusable="true"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

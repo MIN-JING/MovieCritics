@@ -62,9 +62,7 @@ class ItemGuideViewModel(
         viewModelJob.cancel()
     }
 
-    /**
-     * Get [User] profile data when user is null
-     */
+
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")

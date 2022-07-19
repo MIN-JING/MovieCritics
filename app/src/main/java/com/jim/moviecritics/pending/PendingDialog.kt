@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
@@ -49,15 +48,10 @@ class PendingDialog : AppCompatDialogFragment() {
 
         binding = DialogPendingBinding.inflate(inflater, container, false)
         binding.layoutPending.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
-//        dialog?.setCancelable(true)
-//        dialog?.setCanceledOnTouchOutside(true)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.observe(viewLifecycleOwner) {
-            Logger.i("Pending Dialog movie = $it")
-        }
 
         viewModel.liveWatchList.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog liveWatchList = $it")
@@ -96,7 +90,6 @@ class PendingDialog : AppCompatDialogFragment() {
                 }
             }
         }
-
 
         viewModel.leave.observe(viewLifecycleOwner) {
             when (viewModel.leave.value) {

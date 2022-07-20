@@ -93,8 +93,13 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
                     movie.ratings = listOf()
                     Logger.i("it.average = ${movieDetailResult.average}")
                     movie.voteAverage = ((movieDetailResult.average * 10).roundToInt() / 50).toFloat()
-//                    movie.voteAverage = movieDetailResult.average
                     Logger.i("movie.voteAverage = ${movie.voteAverage}")
+                    if (movieDetailResult.videos.results != null) {
+                        val youtubeKey = movieDetailResult.videos.results.maxByOrNull { it.published }!!.key
+                        Logger.i("youtubeKey = $youtubeKey")
+                        movie.trailerUri = "https://www.youtube.com/watch?v=$youtubeKey"
+                        Logger.i("movie.trailerUri = ${movie.trailerUri}")
+                    }
                 }
 
                 creditResult?.let { movieCreditResult ->

@@ -4,9 +4,11 @@ package com.jim.moviecritics.pending
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.load.model.stream.UrlLoader
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
@@ -415,15 +417,17 @@ class PendingViewModel(
     fun share(): Intent {
         val share = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
+            type = "*/*"
             putExtra(Intent.EXTRA_TEXT, "https://www.themoviedb.org/movie/${movie.value?.id}")
             putExtra(Intent.EXTRA_TITLE, movie.value?.title)
-            type = "*/*"
-//            clipData = ClipData.newRawUri("", Uri.parse("https://www.themoviedb.org/movie/${movie.value?.id}"))
+            val uri = Uri.parse(movie.value?.posterUri)
+            Logger.i("share uri = $uri")
+            clipData = ClipData.newRawUri("", uri)
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
-            clipData = ClipData.newRawUri("", Uri.parse(movie.value?.posterUri))
+//            clipData = ClipData.newRawUri("", Uri.parse("https://www.themoviedb.org/movie/${movie.value?.id}"))
 //            putExtra(Intent.EXTRA_STREAM, Uri.parse(movie.value?.posterUri))
 //            putExtra(Intent.EXTRA_STREAM, Uri.parse("https://www.themoviedb.org/movie/${movie.value?.id}"))
-//            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
 //            data = Uri.parse(movie.value?.posterUri)
 
         }, null)

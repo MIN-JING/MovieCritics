@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MovieDetailResult(
-    @Json(name = "status_message")val error: String?,
+    @Json(name = "status_message") val error: String?,
     val adult: Boolean,
     @Json(name = "backdrop_path") val backdrop: String?,
     val budget: Int,
@@ -28,4 +28,5 @@ data class MovieDetailResult(
     val video: Boolean,
     @Json(name = "vote_average") val average: Float,
     @Json(name = "vote_count") val count: Int,
+    val videos: VideosResult
 ) : Parcelable

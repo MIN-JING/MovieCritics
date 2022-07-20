@@ -18,6 +18,7 @@ private const val API_KEY = BuildConfig.API_KEY_TMDB
 private const val MEDIA_TYPE = "movie"
 private const val TIME_WINDOW = "week"
 private const val EXTERNAL_SOURCE = "imdb_id"
+private const val APPEND_TO_RESPONSE = "videos"
 
 
 
@@ -66,7 +67,8 @@ interface TmdbApiService {
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") id: Int,
-        @Query("api_key") apiKey: String = API_KEY
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("append_to_response") append: String = APPEND_TO_RESPONSE
     ): MovieDetailResult
 
     @GET("movie/{movie_id}/credits")

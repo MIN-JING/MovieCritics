@@ -1,6 +1,7 @@
 package com.jim.moviecritics.pending
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +52,10 @@ class PendingDialog : AppCompatDialogFragment() {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        binding.textPendingShare.setOnClickListener {
+            startActivity(viewModel.share())
+        }
 
 
         viewModel.liveWatchList.observe(viewLifecycleOwner) {
@@ -108,6 +113,16 @@ class PendingDialog : AppCompatDialogFragment() {
                 viewModel.onReviewNavigated()
             }
         }
+
+//        val share = Intent.createChooser(Intent().apply {
+//            action = Intent.ACTION_SEND
+//            putExtra(Intent.EXTRA_TEXT, "https://TMDB")
+//            putExtra(Intent.EXTRA_TITLE, "Movie Title")
+////            putExtra(Intent.EXTRA_STREAM, posterUri)
+////            type = "image/*"
+//            data = posterUri
+//            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//        }, null)
 
         viewModel.leisurePending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog leisurePending = $it")

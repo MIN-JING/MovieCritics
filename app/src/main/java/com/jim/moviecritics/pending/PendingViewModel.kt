@@ -1,6 +1,9 @@
 package com.jim.moviecritics.pending
 
 
+import android.content.ClipData
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -407,6 +410,25 @@ class PendingViewModel(
 
     fun onReviewNavigated() {
         _navigateToReview.value = null
+    }
+
+    fun share(): Intent {
+        val share = Intent.createChooser(Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "https://www.themoviedb.org/movie/${movie.value?.id}")
+            putExtra(Intent.EXTRA_TITLE, movie.value?.title)
+            type = "*/*"
+//            clipData = ClipData.newRawUri("", Uri.parse("https://www.themoviedb.org/movie/${movie.value?.id}"))
+
+            clipData = ClipData.newRawUri("", Uri.parse(movie.value?.posterUri))
+//            putExtra(Intent.EXTRA_STREAM, Uri.parse(movie.value?.posterUri))
+//            putExtra(Intent.EXTRA_STREAM, Uri.parse("https://www.themoviedb.org/movie/${movie.value?.id}"))
+//            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//            data = Uri.parse(movie.value?.posterUri)
+
+        }, null)
+
+        return share
     }
 
     companion object {

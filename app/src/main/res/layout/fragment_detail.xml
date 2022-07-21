@@ -148,7 +148,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_directed_by" />
 
-
                 <TextView
                     android:id="@+id/text_detail_runtime"
                     android:layout_width="0dp"

@@ -7,6 +7,7 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.pending.PendingViewModel
 import com.jim.moviecritics.review.ReviewViewModel
+import com.jim.moviecritics.trailer.TrailerViewModel
 
 
 @Suppress("UNCHECKED_CAST")
@@ -26,6 +27,9 @@ class MovieViewModelFactory(
 
                 isAssignableFrom(ReviewViewModel::class.java) ->
                     ReviewViewModel(applicationRepository, movie)
+
+                isAssignableFrom(TrailerViewModel::class.java) ->
+                    TrailerViewModel(applicationRepository, movie)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

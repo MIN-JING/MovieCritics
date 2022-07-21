@@ -99,6 +99,13 @@ class DetailViewModel(
         get() = _navigateToUserInfo
 
 
+    private val _navigateToTrailer = MutableLiveData<Movie?>()
+
+    val navigateToTrailer: LiveData<Movie?>
+        get() = _navigateToTrailer
+
+
+
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -143,6 +150,14 @@ class DetailViewModel(
 
     fun onUserInfoNavigated() {
         _navigateToUserInfo.value = null
+    }
+
+    fun navigateToTrailer(movie: Movie) {
+        _navigateToTrailer.value = movie
+    }
+
+    fun onTrailerNavigated() {
+        _navigateToTrailer.value = null
     }
 
     fun leave() {

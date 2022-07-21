@@ -119,6 +119,18 @@
             app:nullable="true" />
     </dialog>
 
+    <dialog
+        android:id="@+id/trailerDialog"
+        android:name="com.jim.moviecritics.trailer.TrailerDialog"
+        android:label="dialog_trailer"
+        tools:layout="@layout/dialog_trailer">
+
+        <argument
+            android:name="movie"
+            app:argType="com.jim.moviecritics.data.Movie"
+            app:nullable="false"/>
+    </dialog>
+
 
     <action android:id="@+id/navigate_to_home_fragment" app:destination="@id/homeFragment"
         app:popUpTo="@id/navigation"
@@ -149,5 +161,7 @@
     <action android:id="@+id/navigation_to_follow_dialog" app:destination="@+id/followDialog"/>
 
     <action android:id="@+id/navigation_to_block_dialog" app:destination="@+id/blockDialog"/>
+
+    <action android:id="@+id/navigation_to_trailer_dialog" app:destination="@+id/trailerDialog"/>
 
 </navigation>

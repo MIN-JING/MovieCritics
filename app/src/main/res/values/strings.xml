@@ -153,5 +153,6 @@
     <string name="channel_description">watchlist_reminder</string>
 
     <!-- Trailer Dialog -->
-    <string name="button_trailer_play">This is the play and pause button for the video player.</string>
+    <string name="button_trailer_play">Play and pause for the video player.</string>
+    <string name="default_progress_value">00:00</string>
 </resources>

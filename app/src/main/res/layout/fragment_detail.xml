@@ -139,6 +139,7 @@
                     android:paddingEnd="4dp"
                     android:text="@string/button_detail_trailer"
                     android:textColor="#FFFFFF"
+                    android:onClick="@{() -> viewModel.navigateToTrailer(viewModel.movie)}"
                     app:icon="@drawable/ic_play_arrow"
                     app:iconPadding="8dp"
                     app:iconSize="20dp"

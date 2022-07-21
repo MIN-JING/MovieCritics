@@ -136,6 +136,14 @@ class DetailFragment : Fragment() {
             }
         }
 
+        viewModel.navigateToTrailer.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.navigateToTrailer = $it")
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToTrailerDialog(it))
+                viewModel.onTrailerNavigated()
+            }
+        }
+
         viewModel.leave.observe(viewLifecycleOwner) {
             Logger.i(" DetailViewModel.leaveDetail = $it")
             it?.let {

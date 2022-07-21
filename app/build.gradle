@@ -14,7 +14,8 @@ android {
 
     defaultConfig {
         applicationId "com.jim.moviecritics"
-        minSdk 24
+        minSdk 21
+        // minSdk 21
         targetSdk 32
         versionCode 6
         versionName "1.0.6"
@@ -27,6 +28,7 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def tmdbAPIKey = properties.getProperty('key.api.tmdb')
+        def youtubeAPIKey = properties.getProperty('key.api.youtube')
 
         release {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
@@ -36,12 +38,14 @@ android {
 
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
+            buildConfigField "String", "API_KEY_YOUTUBE", youtubeAPIKey
         }
         debug {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
 
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
+            buildConfigField "String", "API_KEY_YOUTUBE", youtubeAPIKey
         }
     }
     compileOptions {
@@ -147,4 +151,7 @@ dependencies {
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+
+    // Youtube VideoView
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }

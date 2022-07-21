@@ -1,21 +1,17 @@
 package com.jim.moviecritics.trailer
 
 
-import android.media.MediaDrm
-import android.media.MediaPlayer
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.widget.SeekBar
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.jim.moviecritics.BuildConfig
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogTrailerBinding
 import com.jim.moviecritics.ext.getVmFactory
@@ -26,18 +22,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-@RequiresApi(Build.VERSION_CODES.O)
-class TrailerDialog : AppCompatDialogFragment(), SurfaceHolder.Callback, SeekBar.OnSeekBarChangeListener,
-    MediaPlayer.OnPreparedListener, MediaPlayer.OnDrmInfoListener {
 
-    private val mediaPlayer = MediaPlayer()
-    private lateinit var runnable: Runnable
-    private var handler = Handler(Looper.getMainLooper())
+class TrailerDialog : AppCompatDialogFragment(), YouTubePlayer.OnInitializedListener {
 
-
-    companion object {
-        const val SECOND = 1000
-    }
 
 
     private val viewModel by viewModels<TrailerViewModel> {
@@ -52,8 +39,6 @@ class TrailerDialog : AppCompatDialogFragment(), SurfaceHolder.Callback, SeekBar
 
         //***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TrailerDialog)
-
-//        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
 
     }
@@ -70,22 +55,8 @@ class TrailerDialog : AppCompatDialogFragment(), SurfaceHolder.Callback, SeekBar
         binding.viewModel = viewModel
 
 
-        mediaPlayer.setOnPreparedListener(this)
-        mediaPlayer.setOnDrmInfoListener(this)
-        binding.videoTrailer.holder.addCallback(this)
-        binding.seekBarTrailer.setOnSeekBarChangeListener(this)
-        binding.buttonTrailerPlay.isEnabled = false
+        binding.youtubePlayer.initialize(BuildConfig.API_KEY_YOUTUBE, this)
 
-
-        binding.buttonTrailerPlay.setOnClickListener {
-            if (mediaPlayer.isPlaying) {
-                mediaPlayer.pause()
-                binding.buttonTrailerPlay.setImageResource(android.R.drawable.ic_media_play)
-            } else {
-                mediaPlayer.start()
-                binding.buttonTrailerPlay.setImageResource(android.R.drawable.ic_media_pause)
-            }
-        }
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog movie = $it")
@@ -116,14 +87,6 @@ class TrailerDialog : AppCompatDialogFragment(), SurfaceHolder.Callback, SeekBar
         return binding.root
     }
 
-    // Release the media player resources when activity gets destroyed
-    override fun onDestroy() {
-        super.onDestroy()
-        handler.removeCallbacks(runnable)
-        mediaPlayer.release()
-        mediaPlayer.releaseDrm()
-    }
-
     override fun dismiss() {
         binding.layoutTrailer.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
         lifecycleScope.launch {
@@ -133,94 +96,78 @@ class TrailerDialog : AppCompatDialogFragment(), SurfaceHolder.Callback, SeekBar
         }
     }
 
-    private fun timeInString(seconds: Int): String {
-        return String.format(
-            "%02d:%02d",
-            (seconds / 3600 * 60 + ((seconds % 3600) / 60)),
-            (seconds % 60)
-        )
-    }
+    override fun onInitializationSuccess(
+        provider: YouTubePlayer.Provider?,
+        youTubePlayer: YouTubePlayer?,
+        wasRestored: Boolean,
+    ) {
+        Logger.d("onInitializationSuccess: provider is ${provider?.javaClass}")
+        Logger.d("onInitializationSuccess: youTubePlayer is ${youTubePlayer?.javaClass}")
+        Logger.i("Initialized Youtube Player")
 
-    // Initialize seekBar
-    private fun initializeSeekBar() {
-        binding.seekBarTrailer.max = mediaPlayer.seconds
-        binding.textTrailerProgress.text = getString(R.string.default_progress_value)
-        binding.textTrailerTotalTime.text = timeInString(mediaPlayer.seconds)
-        binding.progressBarTrailer.visibility = View.GONE
-        binding.buttonTrailerPlay.isEnabled = true
-    }
+        youTubePlayer?.setPlayerStateChangeListener(playerStateChangeListener)
+        youTubePlayer?.setPlaybackEventListener(playbackEventListener)
 
-    // Update seek bar after every 1 second
-    private fun updateSeekBar() {
-        runnable = Runnable {
-            binding.textTrailerProgress.text = timeInString(mediaPlayer.currentSeconds)
-            binding.seekBarTrailer.progress = mediaPlayer.currentSeconds
-            handler.postDelayed(runnable, SECOND.toLong())
-        }
-        handler.postDelayed(runnable, SECOND.toLong())
-    }
-
-    // SurfaceHolder is ready
-    override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
-        mediaPlayer.apply {
-            Logger.i("surfaceCreated trailerUri = ${viewModel.movie.value?.trailerUri}")
-//            context?.let { setDataSource(it, Uri.parse("android.resource://com.jim.moviecritics/raw/test_video")) }
-//            context?.let { setDataSource(it, Uri.parse(viewModel.movie.value?.trailerUri)) }
-//            setDataSource(applicationContext, selectedVideoUri)
-
-            //For DRM protected video
-            setOnDrmInfoListener(this@TrailerDialog) //This method will invoke onDrmInfo() function
-//            selectedVideoUri = Uri.parse("https://media.geeksforgeeks.org/wp-content/uploads/20201217192146/Screenrecorder-2020-12-17-19-17-36-828.mp4?_=1")
-            setDataSource("https://www.youtube.com/watch?v=QI3DLYOHUM0")
-            setDisplay(surfaceHolder)
-            prepareAsync()
+        if (!wasRestored) {
+            youTubePlayer?.cueVideo("sN3HEtWOcjA")
         }
     }
 
-    override fun surfaceChanged(surfaceHolder: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
-    }
+    override fun onInitializationFailure(
+        provider: YouTubePlayer.Provider?,
+        youTubeInitializationResult: YouTubeInitializationResult?,
+    ) {
+        val REQUEST_CODE = 0
 
-    override fun surfaceDestroyed(surfaceHolder: SurfaceHolder) {
-    }
-
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        if (fromUser)
-            mediaPlayer.seekTo(progress * SECOND)
-    }
-
-    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-    }
-
-    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-    }
-
-    override fun onPrepared(mediaPlayer: MediaPlayer?) {
-        initializeSeekBar()
-        updateSeekBar()
-    }
-
-    override fun onDrmInfo(mediaPlayer: MediaPlayer?, drmInfo: MediaPlayer.DrmInfo?) {
-        mediaPlayer?.apply {
-            val key = drmInfo?.supportedSchemes?.get(0)
-            key?.let {
-                prepareDrm(key)
-                val keyRequest = getKeyRequest(
-                    null, null, null,
-                    MediaDrm.KEY_TYPE_STREAMING, null
-                )
-                provideKeyResponse(null, keyRequest.data)
-            }
+        if (youTubeInitializationResult?.isUserRecoverableError == true) {
+            youTubeInitializationResult.getErrorDialog(activity, REQUEST_CODE).show()
+        } else {
+            val errorMessage = "There was an error initializing the YoutubePlayer ($youTubeInitializationResult)"
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
         }
     }
 
-    // Creating an extension properties to get the media player total time and current duration in seconds
-    private val MediaPlayer.seconds: Int
-        get() {
-            return this.duration / SECOND
+    private val playbackEventListener = object: YouTubePlayer.PlaybackEventListener {
+        override fun onSeekTo(p0: Int) {
         }
 
-    private val MediaPlayer.currentSeconds: Int
-        get() {
-            return this.currentPosition / SECOND
+        override fun onBuffering(p0: Boolean) {
         }
+
+        override fun onPlaying() {
+            Toast.makeText(context, "Good, video is playing ok", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onStopped() {
+            Toast.makeText(context, "Video has stopped", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPaused() {
+            Toast.makeText(context, "Video has paused", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val playerStateChangeListener = object: YouTubePlayer.PlayerStateChangeListener {
+        override fun onAdStarted() {
+            Toast.makeText(context, "Click Ad now, make the video creator rich!", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onLoading() {
+        }
+
+        override fun onVideoStarted() {
+            Toast.makeText(context, "Video has started", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onLoaded(p0: String?) {
+        }
+
+        override fun onVideoEnded() {
+            Toast.makeText(context, "Congratulations! You've completed another video.", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onError(p0: YouTubePlayer.ErrorReason?) {
+        }
+    }
+
 }

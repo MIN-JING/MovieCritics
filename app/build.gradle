@@ -153,5 +153,8 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
     // Youtube VideoView
-    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+//    implementation files('libs/YouTubeAndroidPlayerApi.jar')
+
+    // Youtube VideoView Improvement
+    implementation 'kr.co.prnd:youtube-player-view:1.4.1'
 }

@@ -29,7 +29,6 @@ object ServiceLocator {
             FirebaseDataSource,
             createLocalDataSource(context)
         )
-
     }
 
     private fun createLocalDataSource(context: Context): ApplicationDataSource {

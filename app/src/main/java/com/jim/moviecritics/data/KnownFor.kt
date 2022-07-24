@@ -21,7 +21,7 @@ data class KnownFor(
     @Json(name = "vote_count") val count: Int?,
     val video: Boolean?,
     @Json(name = "vote_average") val average: Float?,
-    //TV
+    // TV
     @Json(name = "first_air_date") val firstAir: String?,
     @Json(name = "original_country") val originalCountry: List<String>?,
     val name: String?,

@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".profile.ItemGuideFragment">
+    tools:context=".profile.item.ItemGuideFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.jim.moviecritics.profile.ItemGuideViewModel" />
+            type="com.jim.moviecritics.profile.item.ItemGuideViewModel" />
         <import type="com.jim.moviecritics.network.LoadApiStatus"/>
         <import type="android.view.View"/>
     </data>

@@ -1,6 +1,5 @@
 package com.jim.moviecritics.follow
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,16 +18,14 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class FollowDialog : AppCompatDialogFragment() {
-
 
     private val viewModel by viewModels<FollowViewModel> { getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey) }
     private lateinit var binding: DialogFollowBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.FollowDialog)
     }
 

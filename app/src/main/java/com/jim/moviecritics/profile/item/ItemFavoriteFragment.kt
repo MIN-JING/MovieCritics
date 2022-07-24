@@ -1,15 +1,14 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.ItemProfileFavoriteBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
-
 
 class ItemFavoriteFragment : Fragment() {
 

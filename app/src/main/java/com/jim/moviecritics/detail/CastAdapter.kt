@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Cast
 import com.jim.moviecritics.databinding.ItemDetailCastBinding
 
-
 class CastAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Cast, CastAdapter.CastViewHolder>(DiffCallback) {
 
@@ -35,7 +34,9 @@ class CastAdapter(private val onClickListener: OnClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
         return CastViewHolder(
             ItemDetailCastBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {

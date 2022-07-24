@@ -9,15 +9,14 @@ import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemDetailReviewBinding
 import com.jim.moviecritics.util.Logger
 
-
 class ReviewAdapter(
     private val onClickListener: OnClickListener,
     val viewModel: DetailViewModel
-    ) : ListAdapter<Comment, ReviewAdapter.ReviewViewHolder>(DiffCallback) {
-
+) : ListAdapter<Comment, ReviewAdapter.ReviewViewHolder>(DiffCallback) {
 
     class ReviewViewHolder(
-        private val binding: ItemDetailReviewBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val binding: ItemDetailReviewBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment, onClickListener: OnClickListener, viewModel: DetailViewModel) {
             binding.comment = comment
@@ -45,7 +44,8 @@ class ReviewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         return ReviewViewHolder(
             ItemDetailReviewBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
     }
 

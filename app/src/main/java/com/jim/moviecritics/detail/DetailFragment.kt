@@ -1,10 +1,10 @@
 package com.jim.moviecritics.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.MovieApplication
@@ -44,7 +44,6 @@ class DetailFragment : Fragment() {
 
         binding.recyclerviewDetailReview.adapter = reviewAdapter
 
-
         viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
@@ -66,7 +65,6 @@ class DetailFragment : Fragment() {
                 if (radarData != null) {
                     viewModel.showRadarChart(binding.radarChartRating, radarData)
                 }
-
             } else {
                 Logger.i("viewModel.liveScore == null")
                 val radarData = viewModel.movie.value?.let { movie ->

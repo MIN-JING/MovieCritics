@@ -21,16 +21,15 @@ import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import com.jim.moviecritics.work.WatchlistReminderWorker
 import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
-import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
+import kotlinx.coroutines.*
 
 class WatchlistViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: User?
-    ) : ViewModel() {
+) : ViewModel() {
 
     // After login to Firebase server through Google, at the same time we can get user info to provide to display ui
     private val _user = MutableLiveData<User>().apply {
@@ -42,7 +41,6 @@ class WatchlistViewModel(
     val user: LiveData<User>
         get() = _user
 
-
     var liveWatchListByUser = MutableLiveData<List<Watch>>()
 
     private val _timeStamp = MutableLiveData<Timestamp>()
@@ -52,12 +50,10 @@ class WatchlistViewModel(
 
     var movieMap = mapOf<String, Find>()
 
-
     private val _isMovieMapReady = MutableLiveData<Boolean>()
 
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -85,7 +81,6 @@ class WatchlistViewModel(
         super.onCleared()
         viewModelJob.cancel()
     }
-
 
     init {
         Logger.i("------------------------------------")
@@ -225,7 +220,8 @@ class WatchlistViewModel(
                     timePickerOnDataSetListener,
                     nowHour,
                     nowMinute,
-                    true).show()
+                    true
+                ).show()
             }
 
         DatePickerDialog(
@@ -233,7 +229,8 @@ class WatchlistViewModel(
             datePickerOnDataSetListener,
             nowYear,
             nowMonth,
-            nowDay).show()
+            nowDay
+        ).show()
     }
 
     fun pushSingleWatchListExpiration(watch: Watch) {

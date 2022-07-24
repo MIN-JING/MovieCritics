@@ -1,6 +1,5 @@
 package com.jim.moviecritics
 
-
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.core.net.toUri
@@ -10,10 +9,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.home.HomeAdapter
-import com.jim.moviecritics.profile.FavoriteItemAdapter
+import com.jim.moviecritics.profile.item.FavoriteItemAdapter
 import com.jim.moviecritics.search.SearchAdapter
 import com.jim.moviecritics.util.Logger
-
 
 @BindingAdapter("homeItems")
 fun bindRecyclerViewWithHomeItems(recyclerView: RecyclerView, homeItems: List<HomeItem>?) {

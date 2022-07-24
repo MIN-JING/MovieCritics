@@ -8,7 +8,6 @@ import com.jim.moviecritics.detail.DetailViewModel
 import com.jim.moviecritics.pending.PendingViewModel
 import com.jim.moviecritics.review.ReviewViewModel
 
-
 @Suppress("UNCHECKED_CAST")
 class MovieViewModelFactory(
     private val applicationRepository: ApplicationRepository,

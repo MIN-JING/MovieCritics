@@ -1,6 +1,5 @@
 package com.jim.moviecritics.watchlist
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -14,7 +13,6 @@ import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 import java.util.concurrent.TimeUnit
 
-
 class WatchlistFragment : Fragment() {
 
     private val viewModel by viewModels<WatchlistViewModel> {
@@ -23,9 +21,9 @@ class WatchlistFragment : Fragment() {
 
     private var watch = Watch()
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
 
@@ -34,7 +32,6 @@ class WatchlistFragment : Fragment() {
         val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
 
         val intent = Intent(Intent.ACTION_INSERT)
         intent.data = CalendarContract.Events.CONTENT_URI
@@ -93,7 +90,6 @@ class WatchlistFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "There is no app that can support this action", Toast.LENGTH_LONG).show()
                 }
-
             }
         }
 

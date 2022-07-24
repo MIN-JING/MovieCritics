@@ -1,6 +1,5 @@
 package com.jim.moviecritics.report
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +17,6 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-
 class ReportDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<ReportViewModel> {
@@ -30,7 +27,7 @@ class ReportDialog : AppCompatDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReportDialog)
     }
 

@@ -1,20 +1,18 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.ItemProfileGuideBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 
-
 class ItemGuideFragment : Fragment() {
 
     private val viewModel by viewModels<ItemGuideViewModel> { getVmFactory() }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -1,11 +1,9 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Find
 import com.jim.moviecritics.data.FindResult
 import com.jim.moviecritics.data.Result
@@ -15,25 +13,17 @@ import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
 
-class ItemGuideViewModel(
+class ItemFavoriteViewModel(
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
 
     private val user = UserManager.user
 
+    private val _finds = MutableLiveData<List<Find>>()
 
-    var livePersonalComments = MutableLiveData<List<Comment>>()
-
-    var movieMap = mapOf<String, Find>()
-
-
-    private val _isMovieMapReady = MutableLiveData<Boolean>()
-
-    val isMovieMapReady: LiveData<Boolean>
-        get() = _isMovieMapReady
+    val finds: LiveData<List<Find>>
+        get() = _finds
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -62,36 +52,24 @@ class ItemGuideViewModel(
         viewModelJob.cancel()
     }
 
-
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        user?.id?.let { getLivePersonalCommentsResult(it) }
+        user?.liked?.let { getFavoritesFull(it) }
     }
 
-    private fun getLivePersonalCommentsResult(userID: String) {
-        livePersonalComments = applicationRepository.getLivePersonalComments(userID)
-        _status.value = LoadApiStatus.DONE
-    }
-
-    fun timeStampToDate(timestamp: Timestamp): String {
-        val date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(timestamp.toDate())
-        Logger.i("date = $date")
-        return date
-    }
-
-    fun getFindsByImdbIDs(imdbIDs: List<String>) {
+    private fun getFavoritesFull(favorites: List<String>) {
         val list = mutableListOf<Find>()
 
         coroutineScope.launch {
-            for (index in imdbIDs.indices) {
-                Logger.i("Item Guide request child $index")
-                Logger.i("imdbIDs[index] = ${imdbIDs[index]}")
+            for (index in favorites.indices) {
+                Logger.i("Item Favorite request child $index")
+                Logger.i("favorites[index] = ${favorites[index]}")
                 val result =
-                    getFindResult(isInitial = true, imdbID = imdbIDs[index], index = index)
-                Logger.i("getFindsByImdbIDs result = $result")
+                    getFindResult(isInitial = true, imdbID = favorites[index], index = index)
+                Logger.i("getFavoritesFull result = $result")
 
                 if (result?.finds != null) {
                     for (value in result.finds) {
@@ -103,13 +81,12 @@ class ItemGuideViewModel(
                             value.backdrop = "https://image.tmdb.org/t/p/w185" + value.backdrop
                         }
                         list.add(value)
-                        Logger.i("getFindsByImdbIDs list = $list")
+                        Logger.i("getFavoritesFull list = $list")
                     }
                 }
             }
-            movieMap = imdbIDs.zip(list).toMap()
-            Logger.i("Item Guide movieMap = $movieMap")
-            _isMovieMapReady.value = true
+            _finds.value = list
+            Logger.i("Item Favorite getFavoritesFull list = $list")
         }
     }
 

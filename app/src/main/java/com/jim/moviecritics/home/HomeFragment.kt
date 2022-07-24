@@ -1,18 +1,16 @@
 package com.jim.moviecritics.home
 
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
-import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.databinding.FragmentHomeBinding
+import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
-
 
 class HomeFragment : Fragment() {
 
@@ -42,7 +40,7 @@ class HomeFragment : Fragment() {
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner) {
             Logger.i("HomeViewModel.navigateToDetail = $it")
-            Logger.i("HomeViewModel.navigateToDetail it?.runTime = ${it?.runtime}")
+            Logger.i("HomeViewModel.navigateToDetail it.runTime = ${it?.runtime}")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
                 viewModel.onDetailNavigated()

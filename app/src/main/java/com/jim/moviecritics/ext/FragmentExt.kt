@@ -10,7 +10,6 @@ import com.jim.moviecritics.factory.MovieViewModelFactory
 import com.jim.moviecritics.factory.UserViewModelFactory
 import com.jim.moviecritics.factory.ViewModelFactory
 
-
 fun Fragment.getVmFactory(): ViewModelFactory {
     val repository = (requireContext().applicationContext as MovieApplication).applicationRepository
     return ViewModelFactory(repository)

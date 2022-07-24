@@ -18,18 +18,18 @@ import kotlinx.coroutines.launch
 
 class BlockDialog : AppCompatDialogFragment() {
 
-
     private val viewModel by viewModels<BlockViewModel> { getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey) }
     private lateinit var binding: DialogBlockBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.BlockDialog)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = DialogBlockBinding.inflate(inflater, container, false)

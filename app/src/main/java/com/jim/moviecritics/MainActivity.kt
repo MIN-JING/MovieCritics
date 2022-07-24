@@ -1,6 +1,5 @@
 package com.jim.moviecritics
 
-
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -17,7 +16,6 @@ import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.launch
-
 
 class MainActivity : BaseActivity() {
 
@@ -38,7 +36,6 @@ class MainActivity : BaseActivity() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,9 +44,9 @@ class MainActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         viewModel.currentFragmentType.observe(this) {
-                Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                Logger.i("[${viewModel.currentFragmentType.value}]")
-                Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            Logger.i("[${viewModel.currentFragmentType.value}]")
+            Logger.i("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         }
 
         viewModel.navigateToLoginSuccess.observe(this) {
@@ -70,7 +67,6 @@ class MainActivity : BaseActivity() {
             }
         }
 
-
         viewModel.user.observe(this) {
             Logger.i("MainActivity viewModel.user = $it")
             UserManager.user = it
@@ -81,7 +77,6 @@ class MainActivity : BaseActivity() {
         whenUserManagerIsLoggedIn()
         setupNavController()
     }
-
 
     private fun setupNavController() {
         findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
@@ -104,12 +99,12 @@ class MainActivity : BaseActivity() {
                     findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToHomeFragment())
                     return@setOnItemSelectedListener true
                 }
-                R.id.navigation_search-> {
+                R.id.navigation_search -> {
 
                     findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToSearchFragment())
                     return@setOnItemSelectedListener true
                 }
-                R.id.navigation_watchlist-> {
+                R.id.navigation_watchlist -> {
 
                     when (viewModel.isLoggedIn) {
                         true -> {

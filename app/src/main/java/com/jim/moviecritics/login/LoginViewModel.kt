@@ -18,19 +18,18 @@ import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.*
 
-class LoginViewModel(private val applicationRepository: ApplicationRepository)  : ViewModel() {
+class LoginViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
     private lateinit var googleSignInAccount: GoogleSignInAccount
     private lateinit var firebaseAuth: FirebaseAuth
 
     var user = User()
-
 
     private val _liveUser = MutableLiveData<User>()
 
@@ -42,13 +41,11 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
     val statusLogIn: LiveData<Int>
         get() = _statusLogIn
 
-
     // Handle navigation to login success
     private val _navigateToLoginSuccess = MutableLiveData<User>()
 
     val navigateToLoginSuccess: LiveData<User>
         get() = _navigateToLoginSuccess
-
 
     // Handle leave login
     private val _leave = MutableLiveData<Boolean?>()
@@ -73,7 +70,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -105,8 +101,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository)  
             user.name = googleSignInAccount.givenName + "  " + googleSignInAccount.familyName
             user.email = googleSignInAccount.email.toString()
             user.pictureUri = googleSignInAccount.photoUrl.toString()
-
-
         } catch (e: ApiException) {
             // Sign in was unsuccessful
             Logger.e("Google log in failed code = ${e.statusCode}")

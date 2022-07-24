@@ -10,10 +10,10 @@ import com.jim.moviecritics.databinding.ItemSearchSectionBinding
 import com.jim.moviecritics.databinding.ItemSearchSectionItemMovieBinding
 import com.jim.moviecritics.ext.setOnSingleClickListener
 
-
 class ExpandAdapter(
-    private val onSectionClickListener: (LookItem) -> Unit)
-    : ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback){
+    private val onSectionClickListener: (LookItem) -> Unit
+) :
+    ListAdapter<Any, RecyclerView.ViewHolder>(DiffCallback) {
 
     class SectionViewHolder(
         private var binding: ItemSearchSectionBinding,
@@ -110,10 +110,9 @@ class ExpandAdapter(
             else -> super.getItemViewType(position)
         }
     }
-
 }
 
-//class RecycleAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+// class RecycleAdapter(var mContext: Context, val list: MutableList<ParentData>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //
 //    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 //
@@ -202,4 +201,4 @@ class ExpandAdapter(
 //        val childTV = row.findViewById(R.id.child_Title) as TextView?
 //
 //    }
-//}
+// }

@@ -12,9 +12,11 @@ fun View.setOnSingleClickListener(onClickListener: View.OnClickListener?) {
 }
 
 fun View.setOnSingleClickListener(onClickListener: (View) -> Unit) {
-    setOnSingleClickListener(View.OnClickListener { view ->
-        onClickListener(view)
-    })
+    setOnSingleClickListener(
+        View.OnClickListener { view ->
+            onClickListener(view)
+        }
+    )
 }
 
 class OnSingleClickListener(

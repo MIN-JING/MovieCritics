@@ -1,6 +1,5 @@
 package com.jim.moviecritics.pending
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +11,8 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.*
 import kotlin.math.roundToInt
+import kotlinx.coroutines.*
 
 class PendingViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -27,7 +26,6 @@ class PendingViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-
     private val _user = MutableLiveData<User>().apply {
         value = UserManager.user
     }
@@ -36,8 +34,6 @@ class PendingViewModel(
         get() = _user
 
     var liveWatchList = MutableLiveData<Watch>()
-
-
 
     private val _isWatch = MutableLiveData<Boolean>()
 
@@ -73,7 +69,6 @@ class PendingViewModel(
 
     val watch = Watch()
 
-
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
@@ -92,12 +87,10 @@ class PendingViewModel(
     val leave: LiveData<Boolean?>
         get() = _leave
 
-
     private val _navigateToReview = MutableLiveData<Movie?>()
 
     val navigateToReview: LiveData<Movie?>
         get() = _navigateToReview
-
 
     private var viewModelJob = Job()
 
@@ -112,7 +105,6 @@ class PendingViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
-
 
         _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
         _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
@@ -343,11 +335,12 @@ class PendingViewModel(
     private fun prepareScore() {
         Logger.i("prepareScore()")
 
-        if (leisurePending.value != null
-            && hitPending.value != null
-            && castPending.value != null
-            && musicPending.value != null
-            && storyPending.value != null) {
+        if (leisurePending.value != null &&
+            hitPending.value != null &&
+            castPending.value != null &&
+            musicPending.value != null &&
+            storyPending.value != null
+        ) {
 
             Logger.i("五個分數都不是 null")
             score.leisure = leisurePending.value!!
@@ -355,15 +348,20 @@ class PendingViewModel(
             score.cast = castPending.value!!
             score.music = musicPending.value!!
             score.story = storyPending.value!!
-            score.average = (((
-                    leisurePending.value!!
-                    + hitPending.value!!
-                    + castPending.value!!
-                    + musicPending.value!!
-                    + storyPending.value!!) * 10).roundToInt() / 50).toFloat()
+            score.average = (
+                (
+                    (
+                        leisurePending.value!! +
+                            hitPending.value!! +
+                            castPending.value!! +
+                            musicPending.value!! +
+                            storyPending.value!!
+                        ) * 10
+                    ).roundToInt() / 50
+                ).toFloat()
 
-            Logger.i("score.average = ${score.average}" )
-            Logger.i("score = $score" )
+            Logger.i("score.average = ${score.average}")
+            Logger.i("score = $score")
             pushScore(score)
             _invalidScore.value = SCORE_IS_FILLED
         } else {

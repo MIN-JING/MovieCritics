@@ -12,11 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-
 class ProfileViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: User?
-    ) : ViewModel() {
+) : ViewModel() {
 
     // After login to Firebase server through Google, at the same time we can get user info to provide to display ui
     private val _user = MutableLiveData<User>().apply {
@@ -27,7 +26,6 @@ class ProfileViewModel(
 
     val user: LiveData<User>
         get() = _user
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()

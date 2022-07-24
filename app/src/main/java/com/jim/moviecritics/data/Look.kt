@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class Look(
     @Json(name = "poster_path") var posterPath: String?,
@@ -22,12 +21,12 @@ data class Look(
     @Json(name = "vote_count") val count: Int?,
     val video: Boolean?,
     @Json(name = "vote_average") val average: Float?,
-    //TV
+    // TV
     @Json(name = "first_air_date") val firstAirDate: String?,
     @Json(name = "original_country") val originalCountry: List<String>?,
     val name: String?,
     @Json(name = "original_name") val originalName: String?,
-    //Person
+    // Person
     @Json(name = "profile_path") var profilePath: String?,
     @Json(name = "known_for") val knownFor: List<KnownFor>?
 ) : Parcelable

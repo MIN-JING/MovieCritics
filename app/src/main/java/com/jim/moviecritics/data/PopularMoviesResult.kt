@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class PopularMoviesResult(
     @Json(name = "status_message")val error: String?,

@@ -7,6 +7,8 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    // ktlint
+    id 'org.jlleitschuh.gradle.ktlint'
 }
 
 android {
@@ -147,4 +149,9 @@ dependencies {
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+}
+
+ktlint {
+    android.set(true)
+    outputColorName.set("RED")
 }

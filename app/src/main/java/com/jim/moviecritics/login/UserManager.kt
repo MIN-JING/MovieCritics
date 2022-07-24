@@ -4,12 +4,10 @@ import android.content.Context
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.data.User
 
-
 object UserManager {
 
     private const val USER_DATA = "user_data"
     private const val USER_TOKEN = "user_token"
-
 
     var user: User? = null
 
@@ -35,7 +33,6 @@ object UserManager {
                 }
             }
         }
-
 
     /**
      * It can be use to check login status directly

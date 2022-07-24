@@ -10,7 +10,7 @@
             type="com.jim.moviecritics.data.Comment" />
         <variable
             name="viewModel"
-            type="com.jim.moviecritics.profile.ItemGuideViewModel" />
+            type="com.jim.moviecritics.profile.item.ItemGuideViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

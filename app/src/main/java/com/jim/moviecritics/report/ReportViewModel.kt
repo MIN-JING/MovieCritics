@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class ReportViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Comment
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _comment = MutableLiveData<Comment>().apply {
         value = arguments
@@ -30,7 +30,6 @@ class ReportViewModel(
 
     val comment: LiveData<Comment>
         get() = _comment
-
 
     private val user = UserManager.user
 
@@ -49,7 +48,6 @@ class ReportViewModel(
         }
 
     val message = MutableLiveData<String>()
-
 
     private val _invalidReport = MutableLiveData<Int>()
 
@@ -74,13 +72,11 @@ class ReportViewModel(
     val error: LiveData<String?>
         get() = _error
 
-
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()

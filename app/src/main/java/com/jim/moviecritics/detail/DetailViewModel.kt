@@ -1,6 +1,5 @@
 package com.jim.moviecritics.detail
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,11 +18,10 @@ import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
-
 class DetailViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: Movie
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -32,36 +30,30 @@ class DetailViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-
     val user = UserManager.user
 
     private var users = listOf<User>()
 
     var usersMap = mapOf<String, User>()
 
-
     private val _scores = MutableLiveData<List<Score>?>()
 
     val scores: LiveData<List<Score>?>
         get() = _scores
-
 
     private val _score = MutableLiveData<Score?>()
 
     val score: LiveData<Score?>
         get() = _score
 
-
     var liveScore = MutableLiveData<Score>()
 
     var liveComments = MutableLiveData<List<Comment>>()
-
 
     private val _isUsersMapReady = MutableLiveData<Boolean>()
 
     val isUsersMapReady: LiveData<Boolean>
         get() = _isUsersMapReady
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -80,24 +72,20 @@ class DetailViewModel(
     val leave: LiveData<Boolean>
         get() = _leave
 
-
     private val _navigateToPending = MutableLiveData<Movie?>()
 
     val navigateToPending: LiveData<Movie?>
         get() = _navigateToPending
-
 
     private val _navigateToReport = MutableLiveData<Comment?>()
 
     val navigateToReport: LiveData<Comment?>
         get() = _navigateToReport
 
-
     private val _navigateToUserInfo = MutableLiveData<User?>()
 
     val navigateToUserInfo: LiveData<User?>
         get() = _navigateToUserInfo
-
 
     private var viewModelJob = Job()
 
@@ -237,7 +225,6 @@ class DetailViewModel(
         }
     }
 
-
     fun setRadarData(
         averageLeisure: Float,
         averageHit: Float,
@@ -251,23 +238,23 @@ class DetailViewModel(
         userStory: Float,
     ): RadarData {
 
-        val averageRatingsList: ArrayList<RadarEntry>
-                = arrayListOf(
-            RadarEntry(averageLeisure),
-            RadarEntry(averageHit),
-            RadarEntry(averageCast),
-            RadarEntry(averageMusic),
-            RadarEntry(averageStory)
-        )
+        val averageRatingsList: ArrayList<RadarEntry> =
+            arrayListOf(
+                RadarEntry(averageLeisure),
+                RadarEntry(averageHit),
+                RadarEntry(averageCast),
+                RadarEntry(averageMusic),
+                RadarEntry(averageStory)
+            )
 
-        val userRatingsList: ArrayList<RadarEntry>
-                = arrayListOf(
-            RadarEntry(userLeisure),
-            RadarEntry(userHit),
-            RadarEntry(userCast),
-            RadarEntry(userMusic),
-            RadarEntry(userStory)
-        )
+        val userRatingsList: ArrayList<RadarEntry> =
+            arrayListOf(
+                RadarEntry(userLeisure),
+                RadarEntry(userHit),
+                RadarEntry(userCast),
+                RadarEntry(userMusic),
+                RadarEntry(userStory)
+            )
 
         val averageRatingsSet = RadarDataSet(averageRatingsList, "Average Ratings")
         averageRatingsSet.color = R.color.teal_200

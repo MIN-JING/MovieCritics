@@ -6,10 +6,9 @@ import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.login.LoginViewModel
-import com.jim.moviecritics.profile.ItemFavoriteViewModel
-import com.jim.moviecritics.profile.ItemGuideViewModel
+import com.jim.moviecritics.profile.item.ItemFavoriteViewModel
+import com.jim.moviecritics.profile.item.ItemGuideViewModel
 import com.jim.moviecritics.search.SearchViewModel
-
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(

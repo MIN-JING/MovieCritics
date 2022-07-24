@@ -9,14 +9,13 @@ import com.jim.moviecritics.follow.FollowViewModel
 import com.jim.moviecritics.profile.ProfileViewModel
 import com.jim.moviecritics.watchlist.WatchlistViewModel
 
-
 @Suppress("UNCHECKED_CAST")
 class UserViewModelFactory(
     private val applicationRepository: ApplicationRepository,
     private val user: User?
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>)=
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
                 isAssignableFrom(ProfileViewModel::class.java) ->

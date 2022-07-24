@@ -23,7 +23,6 @@ class FollowViewModel(
     val user: LiveData<User>
         get() = _user
 
-
     private val _navigateToBlock = MutableLiveData<User?>()
 
     val navigateToBlock: LiveData<User?>
@@ -47,13 +46,11 @@ class FollowViewModel(
     val error: LiveData<String?>
         get() = _error
 
-
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()

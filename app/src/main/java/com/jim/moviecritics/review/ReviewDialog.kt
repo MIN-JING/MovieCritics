@@ -1,6 +1,5 @@
 package com.jim.moviecritics.review
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,18 +20,17 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ReviewDialog : AppCompatDialogFragment()  {
+class ReviewDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<ReviewViewModel> {
         getVmFactory(ReviewDialogArgs.fromBundle(requireArguments()).movie)
     }
     private lateinit var binding: DialogReviewBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
     }
 

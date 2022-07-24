@@ -9,7 +9,6 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.util.ServiceLocator
 import kotlin.properties.Delegates
 
-
 /**
  * An application that lazily provides a repository. Note that this Service Locator pattern is
  * used to simplify the sample. Consider a Dependency Injection framework.

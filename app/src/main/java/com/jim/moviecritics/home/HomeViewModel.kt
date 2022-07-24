@@ -55,15 +55,17 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        getPopularMoviesResult(true)
+        getPopularMoviesResult()
     }
 
     fun getMovieFull(id: Int) {
         coroutineScope.launch {
+            _status.postValue(LoadApiStatus.LOADING)
             val detailResult = getMovieDetail(isInitial = true, index = 0, id = id)
             val creditResult = getMovieCredit(isInitial = true, index = 1, id = id)
             detailResultToMovie(detailResult)
             creditResultToMovie(creditResult)
+            _status.postValue(LoadApiStatus.DONE)
             Logger.i("getMovieFull() movie = $movie")
             navigateToDetail(movie)
         }
@@ -77,29 +79,29 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         _navigateToDetail.value = null
     }
 
-    private fun getPopularMoviesResult(isInitial: Boolean = false) {
+    private fun getPopularMoviesResult() {
         coroutineScope.launch {
-            if (isInitial) _status.value = LoadApiStatus.LOADING
+            _status.value = LoadApiStatus.LOADING
             val result = applicationRepository.getPopularMovies()
             _homeItems.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
+                    _status.value = LoadApiStatus.DONE
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
+                    _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
@@ -112,11 +114,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         id: Int
     ): MovieDetailResult? {
         return withContext(Dispatchers.IO) {
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
             when (val result = applicationRepository.getMovieDetail(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
@@ -145,11 +145,9 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         id: Int
     ): CreditResult? {
         return withContext(Dispatchers.IO) {
-            if (isInitial) _status.postValue( LoadApiStatus.LOADING)
             when (val result = applicationRepository.getMovieCredit(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }

@@ -33,18 +33,16 @@ class ItemGuideFragment : Fragment() {
 
         binding.recyclerProfileGuideReview.adapter = guideItemReviewAdapter
 
-        viewModel.livePersonalComments.observe(viewLifecycleOwner) { comments ->
-            Logger.i("GuideItemReview ViewModel.livePersonalComments = $comments")
-            comments?.let {
+        viewModel.livePersonalComments.observe(viewLifecycleOwner) { personalComments ->
+            Logger.i("GuideItemReview ViewModel.livePersonalComments = $personalComments")
+            personalComments?.let { comments ->
                 val list = mutableListOf<String>()
-                for (value in it) {
-                    list.add(value.imdbID)
-                }
+                comments.forEach { list.add(it.imdbID) }
                 viewModel.getFindsByImdbIDs(list)
             }
             viewModel.isMovieMapReady.observe(viewLifecycleOwner) { boolean ->
                 Logger.i("GuideItemReview ViewModel.isMovieMapReady = $boolean")
-                guideItemReviewAdapter.submitList(comments)
+                guideItemReviewAdapter.submitList(personalComments)
             }
         }
 

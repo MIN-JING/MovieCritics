@@ -96,6 +96,7 @@ class WatchlistViewModel(
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
         val list = mutableListOf<Find>()
         coroutineScope.launch {
+            _status.postValue(LoadApiStatus.LOADING)
             imdbIDs.forEachIndexed { index, imdbID ->
                 Logger.i("Item WatchList request child $index")
                 Logger.i("imdbID = $imdbID")
@@ -106,10 +107,10 @@ class WatchlistViewModel(
                     result?.finds?.forEach { find ->
                         Logger.i("result find = $find")
                         if (!find.posterUri.isNullOrEmpty()) {
-                            find.posterUri = "https://image.tmdb.org/t/p/w185" + find.posterUri
+                            find.posterUri = "https://image.tmdb.org/t/p/w185${find.posterUri}"
                         }
                         if (!find.backdrop.isNullOrEmpty()) {
-                            find.backdrop = "https://image.tmdb.org/t/p/w185" + find.backdrop
+                            find.backdrop = "https://image.tmdb.org/t/p/w185${find.backdrop}"
                         }
                         list.add(find)
                         Logger.i("getFindsByImdbIDs find list = $list")
@@ -123,9 +124,12 @@ class WatchlistViewModel(
         }
     }
 
-    private suspend fun getFindResult(isInitial: Boolean = false, imdbID: String, index: Int): FindResult? {
+    private suspend fun getFindResult(
+        isInitial: Boolean = false,
+        imdbID: String,
+        index: Int
+    ): FindResult? {
         return withContext(Dispatchers.IO) {
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
             when (val result = applicationRepository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)

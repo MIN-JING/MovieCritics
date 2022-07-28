@@ -11,6 +11,8 @@
 #### Display popular movies
 * Be familiar with [`Retrofit`](https://github.com/square/retrofit) for communication with a server and parsed JSON response with [`Moshi`](https://github.com/square/moshi)
 * Optimized images download caching and minimized decode times with [`Glide`](https://github.com/bumptech/glide)
+<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/drawable/screen_display_popular_movies.gif" width="170" />
+
 #### Rating
 * Use [`MPAndroidChart`](https://github.com/PhilJay/MPAndroidChart) for showing ratings
 #### Comment

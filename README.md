@@ -1,5 +1,6 @@
-# MovieCritics
-##### :zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
+# Movie Critics
+:zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
+
 ![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.0.6-blue)
 
 

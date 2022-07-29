@@ -3,9 +3,14 @@
 
 :zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
 
-![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.0.6-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue) 
+![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.0.6-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-26%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
 
 [<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/mipmap-xxhdpi/ic_app.png" height="70" /><img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/drawable/bg_google_play.png" height="70" />](https://play.google.com/store/apps/details?id=com.jim.moviecritics)
+
+## Test Account
+E-mail : `moviecritics0728@gmail.com`
+
+Password : `yd829517`
 
 ## Features
 #### Display popular movies
@@ -30,14 +35,10 @@
 #### Personal recent activities
 * Created better user experience by quickly switching through [`ViewPager2`](https://developer.android.com/training/animation/screen-slide-2) and [`TabLayout`](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
 
-## Test Account
-E-mail : `moviecritics0728@gmail.com`
-
-Password : `829517`
-
 ## Requirement
-![](https://img.shields.io/badge/SDK_version-26%2B-orange)
-![](https://img.shields.io/badge/Gradle_version-7.2-orange)
+SDK version 26+
+
+Gradle version 7.2
 
 ## Version History
 |    Version    |                    Detail                     |

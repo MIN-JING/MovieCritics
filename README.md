@@ -12,6 +12,11 @@ E-mail : `moviecritics0728@gmail.com`
 
 Password : `yd829517`
 
+## Attribution
+<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" width="300" />
+
+The Movie Critics application that uses data is attributed to [The Movie Database (TMDB)](https://developers.themoviedb.org/3/getting-started/introduction) as the source
+
 ## Features
 #### Display popular movies
 * Be familiar with [`Retrofit`](https://github.com/square/retrofit) for communication with a server and parsed JSON response with [`Moshi`](https://github.com/square/moshi)
@@ -31,9 +36,14 @@ Password : `yd829517`
 * Set [`Notification`](https://developer.android.com/guide/topics/ui/notifiers/notifications) to remind users until the appointed time
 * Added movie information and watching time to [`Google Calendar`](https://developer.android.com/guide/topics/providers/calendar-provider) efficiently
 #### Search in movies, TVs, and casts
-* Achieved searching by [`The Movie Database(TMDB) APIs`](https://developers.themoviedb.org/3/getting-started/introduction)
+* Achieved searching by [`The Movie Database (TMDB) APIs`](https://developers.themoviedb.org/3/getting-started/introduction)
 #### Personal recent activities
 * Created better user experience by quickly switching through [`ViewPager2`](https://developer.android.com/training/animation/screen-slide-2) and [`TabLayout`](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
+
+## Installation
+1. Download ZIP and import it as a project into [Android Studio](https://developer.android.com/studio)
+2. Sign up for The Movie Database (TMDB) member and request an API key from the [setting page](https://www.themoviedb.org/settings/api). Here is an [instructional video](https://www.youtube.com/watch?v=mO3gvkiLkio)
+3. Once you have it open `MovieCritics/local.properties` file in the **Project** folder tree and add your own API key in line 9 `key.api.tmdb="YOUR_TMDB_API_KEY_STRING"`
 
 ## Requirement
 SDK version 26+

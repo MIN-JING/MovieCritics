@@ -3,7 +3,6 @@ package com.jim.moviecritics.data
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class Movie(
     var id: Int = 0,
@@ -20,7 +19,7 @@ data class Movie(
     var country: String? = "",
     var awards: String? = "",
     var runtime: Int? = 0,
-    var writing: List<String?> = listOf(),
+    val writing: MutableList<String?> = mutableListOf(),
     var ratings: List<Rating> = listOf(),
     var revenue: Int? = 0,
     var salesTaiwan: String? = "",

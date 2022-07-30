@@ -1,4 +1,4 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,28 +25,24 @@ class ItemFavoriteViewModel(
     val finds: LiveData<List<Find>>
         get() = _finds
 
-    // status: The internal MutableLiveData that stores the status of the most recent request
+
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-    // error: The internal MutableLiveData that stores the error of the most recent request
+
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-    // Create a Coroutine scope using a job to be able to cancel when needed
+
     private var viewModelJob = Job()
 
-    // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
-     * service to stop.
-     */
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
@@ -59,7 +55,6 @@ class ItemFavoriteViewModel(
 
         user?.liked?.let { getFavoritesFull(it) }
     }
-
 
     private fun getFavoritesFull(favorites: List<String>) {
         val list = mutableListOf<Find>()
@@ -88,6 +83,7 @@ class ItemFavoriteViewModel(
             }
             _finds.value = list
             Logger.i("Item Favorite getFavoritesFull list = $list")
+            _status.postValue(LoadApiStatus.DONE)
         }
     }
 
@@ -100,7 +96,6 @@ class ItemFavoriteViewModel(
             when (val result = applicationRepository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }

@@ -1,6 +1,5 @@
 package com.jim.moviecritics.data
 
-
 /**
  * A generic class that holds a value with its api status.
  */

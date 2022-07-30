@@ -45,13 +45,11 @@ class BlockViewModel(
     val error: LiveData<String?>
         get() = _error
 
-
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
 
     // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -76,13 +74,17 @@ class BlockViewModel(
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            when (val result =
-                UserManager.user?.id?.let { userID ->
-                    user.value?.id?.let { blockedID ->
-                    applicationRepository.pushBlockUser(
-                        userID = userID,
-                        blockedID = blockedID)
-                } }) {
+            when (
+                val result =
+                    UserManager.user?.id?.let { userID ->
+                        user.value?.id?.let { blockedID ->
+                            applicationRepository.pushBlockUser(
+                                userID = userID,
+                                blockedID = blockedID
+                            )
+                        }
+                    }
+            ) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

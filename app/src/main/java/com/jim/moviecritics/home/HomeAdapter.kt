@@ -9,19 +9,18 @@ import com.jim.moviecritics.data.HomeItem
 import com.jim.moviecritics.data.Trend
 import com.jim.moviecritics.databinding.ItemHomePopularBinding
 
-
 class HomeAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<HomeItem, RecyclerView.ViewHolder>(DiffCallback) {
 
     class PopularMovieViewHolder(private var binding: ItemHomePopularBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-            fun bind(trend: Trend, onClickListener: OnClickListener) {
-                binding.trend = trend
-                binding.root.setOnClickListener { onClickListener.onClick(trend) }
-                binding.executePendingBindings()
-            }
+        fun bind(trend: Trend, onClickListener: OnClickListener) {
+            binding.trend = trend
+            binding.root.setOnClickListener { onClickListener.onClick(trend) }
+            binding.executePendingBindings()
         }
+    }
 
     companion object DiffCallback : DiffUtil.ItemCallback<HomeItem>() {
         override fun areItemsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {

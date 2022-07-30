@@ -17,8 +17,8 @@ object Util {
             if (activeNetwork != null) {
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
                 if (networkCapabilities != null) {
-                    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                            || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                 }
             }
             false

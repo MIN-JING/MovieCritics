@@ -7,6 +7,8 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    // ktlint
+    id 'org.jlleitschuh.gradle.ktlint'
 }
 
 android {
@@ -15,7 +17,6 @@ android {
     defaultConfig {
         applicationId "com.jim.moviecritics"
         minSdk 21
-        // minSdk 21
         targetSdk 32
         versionCode 6
         versionName "1.0.6"
@@ -28,24 +29,18 @@ android {
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def tmdbAPIKey = properties.getProperty('key.api.tmdb')
-        def youtubeAPIKey = properties.getProperty('key.api.youtube')
 
         release {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
-            buildConfigField "String", "API_KEY_YOUTUBE", youtubeAPIKey
         }
         debug {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
-
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
-            buildConfigField "String", "API_KEY_YOUTUBE", youtubeAPIKey
         }
     }
     compileOptions {
@@ -63,16 +58,12 @@ android {
     buildFeatures {
         // Material 3
         compose = true
-
         // Determines whether to generate a BuildConfig class.
         buildConfig = true
         viewBinding true
-
     }
 
     composeOptions {
-//        kotlinCompilerExtensionVersion = "1.2.0-beta01"
-//        kotlinCompilerExtensionVersion = "1.2.0-alpha08"
         kotlinCompilerExtensionVersion = "1.2.0-alpha07"
     }
 
@@ -93,7 +84,6 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-firestore:24.1.2'
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
-//    implementation 'com.google.firebase:firebase-analytics'
     implementation 'io.fabric.sdk.android:fabric:1.4.8'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
@@ -151,10 +141,9 @@ dependencies {
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+}
 
-    // Youtube VideoView
-//    implementation files('libs/YouTubeAndroidPlayerApi.jar')
-
-    // Youtube VideoView Improvement
-    implementation 'kr.co.prnd:youtube-player-view:1.4.1'
+ktlint {
+    android.set(true)
+    outputColorName.set("RED")
 }

@@ -55,7 +55,6 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         viewModelJob.cancel()
     }
 
-
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
@@ -96,9 +95,9 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
     fun prepareSearch() {
         when {
             searchKey.value.isNullOrEmpty()
-                -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
+            -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
 
-            !searchKey.value.isNullOrEmpty() -> searchKey.value?.let{
+            !searchKey.value.isNullOrEmpty() -> searchKey.value?.let {
                 getSearchResult(isInitial = true, it)
             }
             else -> _invalidSearch.value = NO_ONE_KNOWS

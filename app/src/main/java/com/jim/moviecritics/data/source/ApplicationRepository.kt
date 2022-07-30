@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 
-
 /**
  *  Interface to the Application layers.
  */

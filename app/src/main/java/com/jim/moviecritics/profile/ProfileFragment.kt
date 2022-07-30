@@ -12,7 +12,6 @@ import com.jim.moviecritics.databinding.FragmentProfileBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 
-
 class ProfileFragment : Fragment() {
 
     private val profileViewModel by viewModels<ProfileViewModel> {

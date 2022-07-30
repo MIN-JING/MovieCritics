@@ -3,18 +3,18 @@ package com.jim.moviecritics
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.util.Util.getString
 
 class MainViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 

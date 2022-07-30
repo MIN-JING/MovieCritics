@@ -8,15 +8,12 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-
 
 class ProfileViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: User?
-    ) : ViewModel() {
+) : ViewModel() {
 
     // After login to Firebase server through Google, at the same time we can get user info to provide to display ui
     private val _user = MutableLiveData<User>().apply {
@@ -29,36 +26,26 @@ class ProfileViewModel(
         get() = _user
 
 
-    // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-    // error: The internal MutableLiveData that stores the error of the most recent request
+
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-    // Create a Coroutine scope using a job to be able to cancel when needed
+
     private var viewModelJob = Job()
 
-    // the Coroutine runs using the Main (UI) dispatcher
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
-     * service to stop.
-     */
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
 
-    /**
-     * Get [User] profile data when user is null
-     */
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")

@@ -1,7 +1,5 @@
 package com.jim.moviecritics.pending
 
-
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +15,6 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.ext.showToast
-import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_CAST_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_HIT_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LEISURE_EMPTY
@@ -27,17 +22,18 @@ import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MU
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
 import com.jim.moviecritics.pending.PendingViewModel.Companion.SCORE_IS_FILLED
-
+import com.jim.moviecritics.util.Logger
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PendingDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<PendingViewModel> { getVmFactory(PendingDialogArgs.fromBundle(requireArguments()).movie) }
     private lateinit var binding: DialogPendingBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.PendingDialog)
     }
 
@@ -56,7 +52,6 @@ class PendingDialog : AppCompatDialogFragment() {
         binding.textPendingShare.setOnClickListener {
             startActivity(viewModel.share())
         }
-
 
         viewModel.liveWatchList.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog liveWatchList = $it")
@@ -113,16 +108,6 @@ class PendingDialog : AppCompatDialogFragment() {
                 viewModel.onReviewNavigated()
             }
         }
-
-//        val share = Intent.createChooser(Intent().apply {
-//            action = Intent.ACTION_SEND
-//            putExtra(Intent.EXTRA_TEXT, "https://TMDB")
-//            putExtra(Intent.EXTRA_TITLE, "Movie Title")
-////            putExtra(Intent.EXTRA_STREAM, posterUri)
-////            type = "image/*"
-//            data = posterUri
-//            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-//        }, null)
 
         viewModel.leisurePending.observe(viewLifecycleOwner) {
             Logger.i("Pending Dialog leisurePending = $it")

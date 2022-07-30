@@ -9,8 +9,6 @@ import com.jim.moviecritics.data.Look
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.databinding.*
 
-
-
 class SearchAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<LookItem, RecyclerView.ViewHolder>(DiffCallback) {
 
@@ -88,9 +86,10 @@ class SearchAdapter(private val onClickListener: OnClickListener) :
                 holder.bind((getItem(position) as LookItem.LookTelevision).look, onClickListener)
             }
             is LookPersonViewHolder -> {
-                    holder.bind(
-                        (getItem(position) as LookItem.LookPerson).look,
-                        onClickListener)
+                holder.bind(
+                    (getItem(position) as LookItem.LookPerson).look,
+                    onClickListener
+                )
             }
         }
     }

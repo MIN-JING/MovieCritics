@@ -1,18 +1,17 @@
 package com.jim.moviecritics.data.source.remote
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationDataSource
+import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
-import com.jim.moviecritics.data.*
-import com.jim.moviecritics.util.Logger
-
 
 /**
  * Implementation of the Application source that from network.
@@ -34,7 +33,6 @@ object FirebaseDataSource : ApplicationDataSource {
     private const val FIELD_FIREBASE_TOKEN = "firebaseToken"
     private const val FIELD_EXPIRATION = "expiration"
     private const val FIELD_BLOCKS = "blocks"
-
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
@@ -78,7 +76,7 @@ object FirebaseDataSource : ApplicationDataSource {
                             val watch = document.toObject(Watch::class.java)
                             list.add(watch)
                         }
-                        Logger.d( list.first().id + " => " + list.first())
+                        Logger.d(list.first().id + " => " + list.first())
                         liveData.value = list.first()
                         Logger.i("live watchList snapshot.size() >= 1 liveData.value = ${liveData.value}")
                         Logger.i("live watchList snapshot.size() >= 1 liveData = $liveData")
@@ -130,9 +128,13 @@ object FirebaseDataSource : ApplicationDataSource {
         return liveData
     }
 
-    override suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> = suspendCoroutine { continuation ->
+    override suspend fun pushMultiWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp
+    ): Result<Boolean> = suspendCoroutine { continuation ->
         val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
-        val query =  itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
+        val query = itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
 
         query.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -159,7 +161,7 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-    override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean>  = suspendCoroutine { continuation ->
+    override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean> = suspendCoroutine { continuation ->
         FirebaseFirestore.getInstance()
             .collection(PATH_WATCHLIST)
             .document(watch.id)
@@ -189,10 +191,10 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getScores task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        Logger.d(task.result.first().id + " => " + task.result.first().data)
                         val list = mutableListOf<Score>()
                         for (document in task.result) {
-                            Logger.d( document.id + " => " + document.data)
+                            Logger.d(document.id + " => " + document.data)
                             val score = document.toObject(Score::class.java)
                             list.add(score)
                         }
@@ -224,7 +226,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getScore task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        Logger.d(task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(Score::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
@@ -266,7 +268,7 @@ object FirebaseDataSource : ApplicationDataSource {
                             val score = document.toObject(Score::class.java)
                             list.add(score)
                         }
-                        Logger.d( list.first().id + " => " + list.first())
+                        Logger.d(list.first().id + " => " + list.first())
                         liveData.value = list.first()
                         Logger.i("live score snapshot.size() >= 1 liveData.value = ${liveData.value}")
                         Logger.i("live score snapshot.size() >= 1 liveData = $liveData")
@@ -312,7 +314,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getUserByToken task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        Logger.d(task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(User::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
@@ -340,7 +342,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getUserById task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        Logger.d(task.result.first().id + " => " + task.result.first().data)
                         val item = task.result.first().toObject(User::class.java)
                         continuation.resume(Result.Success(item))
                     } else {
@@ -368,10 +370,10 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getUsersByIdList task.result.size >= 1")
-                        Logger.d( "First element is " + task.result.first().id + " => " + task.result.first().data)
+                        Logger.d("First element is " + task.result.first().id + " => " + task.result.first().data)
                         val list = mutableListOf<User>()
                         for (document in task.result) {
-                            Logger.d( document.id + " => " + document.data)
+                            Logger.d(document.id + " => " + document.data)
                             val user = document.toObject(User::class.java)
                             list.add(user)
                         }
@@ -400,10 +402,10 @@ object FirebaseDataSource : ApplicationDataSource {
                 if (task.isSuccessful) {
                     if (task.result.size() >= 1) {
                         Logger.w("[${this::class.simpleName}] getComments task.result.size >= 1")
-                        Logger.d( task.result.first().id + " => " + task.result.first().data)
+                        Logger.d(task.result.first().id + " => " + task.result.first().data)
                         val list = mutableListOf<Comment>()
                         for (document in task.result) {
-                            Logger.d( document.id + " => " + document.data)
+                            Logger.d(document.id + " => " + document.data)
                             val comment = document.toObject(Comment::class.java)
                             list.add(comment)
                         }
@@ -437,7 +439,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 }
 
                 if (snapshot != null) {
-                    if (snapshot.size() >=1 ) {
+                    if (snapshot.size() >= 1) {
                         val list = mutableListOf<Comment>()
                         snapshot.forEach { document ->
                             Logger.d(document.id + " => " + document.data)
@@ -472,7 +474,7 @@ object FirebaseDataSource : ApplicationDataSource {
                 }
 
                 if (snapshot != null) {
-                    if (snapshot.size() >=1 ) {
+                    if (snapshot.size() >= 1) {
                         val list = mutableListOf<Comment>()
                         snapshot.forEach { document ->
                             Logger.d(document.id + " => " + document.data)
@@ -587,7 +589,7 @@ object FirebaseDataSource : ApplicationDataSource {
                         val list = mutableListOf<User>()
                         snapshot.forEach { document ->
                             Logger.d(document.id + " => " + document.data)
-                            val user= document.toObject(User::class.java)
+                            val user = document.toObject(User::class.java)
                             list.add(user)
                         }
                         liveData.value = list.first().liked
@@ -706,7 +708,7 @@ object FirebaseDataSource : ApplicationDataSource {
 
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> = suspendCoroutine { continuation ->
         val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
-        val query =  itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
+        val query = itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
 
         query.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -733,7 +735,7 @@ object FirebaseDataSource : ApplicationDataSource {
         }
     }
 
-    override suspend fun pushScore(score: Score): Result<Boolean>  = suspendCoroutine { continuation ->
+    override suspend fun pushScore(score: Score): Result<Boolean> = suspendCoroutine { continuation ->
         val scores = FirebaseFirestore.getInstance().collection(PATH_SCORES)
         val document = scores.document()
 
@@ -756,7 +758,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushReport(report: Report): Result<Boolean>  = suspendCoroutine { continuation ->
+    override suspend fun pushReport(report: Report): Result<Boolean> = suspendCoroutine { continuation ->
         val reports = FirebaseFirestore.getInstance().collection(PATH_REPORTS)
         val document = reports.document()
 
@@ -799,7 +801,7 @@ object FirebaseDataSource : ApplicationDataSource {
             }
     }
 
-    override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean>  = suspendCoroutine { continuation ->
+    override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> = suspendCoroutine { continuation ->
         val popularMovies = FirebaseFirestore.getInstance().collection(PATH_POPULAR_MOVIES)
 
         for (trend in trends) {

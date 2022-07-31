@@ -1,13 +1,11 @@
 package com.jim.moviecritics.search
 
-
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.jim.moviecritics.databinding.FragmentSearchBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.ext.showToast
@@ -27,10 +25,6 @@ class SearchFragment : Fragment() {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-
-        viewModel.lookItems.observe(viewLifecycleOwner) {
-            Logger.i("viewModel.lookItems = $it")
-        }
 
         binding.recyclerviewSearch.adapter = SearchAdapter(
             SearchAdapter.OnClickListener {

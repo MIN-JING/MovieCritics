@@ -1,4 +1,4 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemProfileGuideCommentBinding
 
-
 class GuideItemReviewAdapter(
     private val onClickListener: OnClickListener,
-    val viewModel: ItemGuideViewModel) :
+    val viewModel: ItemGuideViewModel
+) :
     ListAdapter<Comment, GuideItemReviewAdapter.GuideItemReviewViewHolder>(DiffCallback) {
 
     class GuideItemReviewViewHolder(private var binding: ItemProfileGuideCommentBinding) :
@@ -38,7 +38,9 @@ class GuideItemReviewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideItemReviewViewHolder {
         return GuideItemReviewViewHolder(
             ItemProfileGuideCommentBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: GuideItemReviewViewHolder, position: Int) {

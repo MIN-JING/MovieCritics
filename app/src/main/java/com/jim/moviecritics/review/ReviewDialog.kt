@@ -1,6 +1,5 @@
 package com.jim.moviecritics.review
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,25 +20,18 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ReviewDialog : AppCompatDialogFragment()  {
+class ReviewDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<ReviewViewModel> { getVmFactory(ReviewDialogArgs.fromBundle(requireArguments()).movie) }
+    private val viewModel by viewModels<ReviewViewModel> {
+        getVmFactory(ReviewDialogArgs.fromBundle(requireArguments()).movie)
+    }
     private lateinit var binding: DialogReviewBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.ReviewDialog)
-
-//        if (viewModel.user.value == null) {
-//            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-//            mainViewModel.user.value?.let { viewModel.takeDownUser(it) }
-//            Logger.i("Review mainViewModel.user.value = ${mainViewModel.user.value}")
-//            Logger.i("Review viewModel.user.value = ${viewModel.user.value}")
-//        }
-//        viewModel.initComment()
     }
 
     override fun onCreateView(
@@ -72,10 +64,6 @@ class ReviewDialog : AppCompatDialogFragment()  {
             }
         }
 
-        viewModel.content.observe(viewLifecycleOwner) {
-            Logger.i("Review Dialog content = $it")
-        }
-
         viewModel.invalidComment.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog invalidComment = $it")
             it?.let {
@@ -104,7 +92,6 @@ class ReviewDialog : AppCompatDialogFragment()  {
     }
 
     override fun dismiss() {
-//    if (::binding.isInitialized) { }
         binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
         lifecycleScope.launch {
             delay(200)

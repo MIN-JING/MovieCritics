@@ -1,9 +1,8 @@
 package com.jim.moviecritics.data
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import com.google.firebase.Timestamp
-
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User(

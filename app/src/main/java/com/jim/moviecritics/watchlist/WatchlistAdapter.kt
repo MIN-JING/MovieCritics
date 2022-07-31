@@ -8,31 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.databinding.ItemWatchlistBinding
 
-
 class WatchlistAdapter(
     private val onClickListener: OnClickListener,
-    val viewModel: WatchlistViewModel):
+    val viewModel: WatchlistViewModel
+) :
     ListAdapter<Watch, WatchlistAdapter.WatchlistItemViewHolder>(DiffCallback) {
-
 
     class WatchlistItemViewHolder(
         private var binding: ItemWatchlistBinding
-        ) : RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(watch: Watch, onClickListener: OnClickListener, viewModel: WatchlistViewModel) {
-//            binding.find = find
             binding.watch = watch
             binding.viewModel = viewModel
-
-//            binding.toggleWatchlistCalendar.setOnClickListener {
-//                onClickListener.onClick(watch)
-//            }
 
             binding.layoutWatchlistItemCalendar.setOnClickListener {
                 onClickListener.onClick(watch)
             }
 
-//            binding.root.setOnClickListener { onClickListener.onClick(find) }
             binding.executePendingBindings()
         }
     }
@@ -50,7 +43,9 @@ class WatchlistAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchlistItemViewHolder {
         return WatchlistItemViewHolder(
             ItemWatchlistBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: WatchlistItemViewHolder, position: Int) {
@@ -60,5 +55,4 @@ class WatchlistAdapter(
     class OnClickListener(val clickListener: (watch: Watch) -> Unit) {
         fun onClick(watch: Watch) = clickListener(watch)
     }
-
 }

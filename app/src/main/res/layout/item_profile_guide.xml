@@ -2,13 +2,13 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-<!--    tools:context=".profile.ItemGuideFragment">-->
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".profile.item.ItemGuideFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.jim.moviecritics.profile.ItemGuideViewModel" />
+            type="com.jim.moviecritics.profile.item.ItemGuideViewModel" />
         <import type="com.jim.moviecritics.network.LoadApiStatus"/>
         <import type="android.view.View"/>
     </data>
@@ -46,7 +46,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_guide_recent_act"
             tools:listitem="@layout/item_profile_guide_comment" />
-<!--        app:comments="@{viewModel.livePersonalComments}"-->
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_profile_guide"

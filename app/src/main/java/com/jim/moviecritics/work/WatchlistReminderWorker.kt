@@ -13,7 +13,6 @@ import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.util.Logger
 
-
 class WatchlistReminderWorker(
     context: Context,
     workerParams: WorkerParameters,
@@ -28,18 +27,24 @@ class WatchlistReminderWorker(
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
-
         val pendingIntent: PendingIntent =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent
-                .getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        } else {
-            PendingIntent
-                .getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
-
-//        val pendingIntent: PendingIntent = PendingIntent
-//            .getActivity(applicationContext, 0, intent, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent
+                    .getActivity(
+                        applicationContext,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+            } else {
+                PendingIntent
+                    .getActivity(
+                        applicationContext,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+            }
 
         val movieTitle = inputData.getString(nameKey)
 

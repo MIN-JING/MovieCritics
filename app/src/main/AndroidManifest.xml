@@ -3,8 +3,10 @@
     package="com.jim.moviecritics">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
     <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:name=".MovieApplication"
         android:allowBackup="true"
@@ -13,6 +15,8 @@
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieCritics">
+<!--        android:usesCleartextTraffic="true"-->
+<!--        android:networkSecurityConfig="@xml/network_permission_config"-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

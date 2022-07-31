@@ -7,6 +7,8 @@ plugins {
     id 'androidx.navigation.safeargs'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    // ktlint
+    id 'org.jlleitschuh.gradle.ktlint'
 }
 
 android {
@@ -23,14 +25,22 @@ android {
     }
 
     buildTypes {
+        // Input local properties
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def tmdbAPIKey = properties.getProperty('key.api.tmdb')
+
         release {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
-
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // BuildConfig could be used in java code
+            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
         debug {
             buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
+            // BuildConfig could be used in java code
+            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
     }
     compileOptions {
@@ -48,19 +58,12 @@ android {
     buildFeatures {
         // Material 3
         compose = true
-
         // Determines whether to generate a BuildConfig class.
         buildConfig = true
         viewBinding true
-
-        // Determines whether to support Data Binding.
-        // Note that the dataBinding.enabled property is now deprecated.
-//        dataBinding = true
     }
 
     composeOptions {
-//        kotlinCompilerExtensionVersion = "1.2.0-beta01"
-//        kotlinCompilerExtensionVersion = "1.2.0-alpha08"
         kotlinCompilerExtensionVersion = "1.2.0-alpha07"
     }
 
@@ -81,7 +84,6 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-firestore:24.1.2'
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
-//    implementation 'com.google.firebase:firebase-analytics'
     implementation 'io.fabric.sdk.android:fabric:1.4.8'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.2'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.4'
@@ -139,4 +141,9 @@ dependencies {
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.7.1"
+}
+
+ktlint {
+    android.set(true)
+    outputColorName.set("RED")
 }

@@ -10,16 +10,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
-
 private const val HOST_NAME = "api.themoviedb.org"
 private const val API_VERSION = "3"
 private const val BASE_URL = "https://$HOST_NAME/$API_VERSION/"
-private const val API_KEY = ""
+private const val API_KEY = BuildConfig.API_KEY_TMDB
 private const val MEDIA_TYPE = "movie"
 private const val TIME_WINDOW = "week"
 private const val EXTERNAL_SOURCE = "imdb_id"
-
-
+private const val APPEND_TO_RESPONSE = "videos"
 
 /**
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
@@ -50,7 +48,6 @@ private val retrofit = Retrofit.Builder()
     .client(client)
     .build()
 
-
 /**
  * A public interface that exposes the [getPopularMovies] methods
  */
@@ -66,7 +63,8 @@ interface TmdbApiService {
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") id: Int,
-        @Query("api_key") apiKey: String = API_KEY
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("append_to_response") append: String = APPEND_TO_RESPONSE
     ): MovieDetailResult
 
     @GET("movie/{movie_id}/credits")

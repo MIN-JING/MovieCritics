@@ -1,6 +1,5 @@
 package com.jim.moviecritics.review
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,12 +13,12 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ReviewViewModel(
     private val applicationRepository: ApplicationRepository,
@@ -33,19 +32,11 @@ class ReviewViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-
-//    private val _user = MutableLiveData<User>()
-//
-//    val user: LiveData<User>
-//        get() = _user
-
-
     private val user = UserManager.user
 
     private val comment = Comment()
 
     val content = MutableLiveData<String>()
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -59,7 +50,6 @@ class ReviewViewModel(
     val error: LiveData<String?>
         get() = _error
 
-
     private val _leave = MutableLiveData<Boolean?>()
 
     val leave: LiveData<Boolean?>
@@ -69,7 +59,6 @@ class ReviewViewModel(
 
     val invalidComment: LiveData<Int>
         get() = _invalidComment
-
 
     private var viewModelJob = Job()
 
@@ -88,7 +77,6 @@ class ReviewViewModel(
         comment.imdbID = movie.value?.imdbID.toString()
         comment.userID = user?.id.toString()
     }
-
 
     fun leave() {
         _leave.value = true

@@ -10,7 +10,6 @@ import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import com.jim.moviecritics.util.Util.isInternetConnected
 
-
 object ApiDataSource : ApplicationDataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
@@ -27,7 +26,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(popularResult.toHomeItems())
-
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
             Result.Error(e)
@@ -47,7 +45,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(detailResult)
-
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
             Result.Error(e)
@@ -66,7 +63,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(creditResult)
-
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
             Result.Error(e)
@@ -82,7 +78,7 @@ object ApiDataSource : ApplicationDataSource {
             val searchResult = TmdbApi.retrofitService.getSearchMulti(queryKey)
 
             searchResult.error?.let {
-                return  Result.Fail(it)
+                return Result.Fail(it)
             }
             Result.Success(searchResult.toLookItems())
         } catch (e: Exception) {
@@ -103,7 +99,6 @@ object ApiDataSource : ApplicationDataSource {
                 return Result.Fail(it)
             }
             Result.Success(searchResult)
-
         } catch (e: Exception) {
             Logger.w("[${this::class.simpleName}] exception=${e.message}")
             Result.Error(e)

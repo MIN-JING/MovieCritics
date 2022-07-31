@@ -4,15 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 
-
 /**
  * Concrete implementation to load Application sources.
  */
 class DefaultApplicationRepository(
     private val apiDataSource: ApplicationDataSource,
     private val firebaseDataSource: ApplicationDataSource,
-    private val localDataSource: ApplicationDataSource ) : ApplicationRepository {
-
+    private val localDataSource: ApplicationDataSource
+) : ApplicationRepository {
 
     // ApiDataSource
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
@@ -44,7 +43,11 @@ class DefaultApplicationRepository(
         return firebaseDataSource.getLiveWatchListByUser(userID)
     }
 
-    override suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean> {
+    override suspend fun pushMultiWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp
+    ): Result<Boolean> {
         return firebaseDataSource.pushMultiWatchListExpiration(imdbID, userID, expiration)
     }
 

@@ -21,18 +21,16 @@ import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import com.jim.moviecritics.work.WatchlistReminderWorker
 import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
-import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
+import kotlinx.coroutines.*
 
 class WatchlistViewModel(
     private val applicationRepository: ApplicationRepository,
     private val arguments: User?
-    ) : ViewModel() {
+) : ViewModel() {
 
-    // After login to Firebase server through Google, at the same time we can get user info to provide to display ui
     private val _user = MutableLiveData<User>().apply {
         arguments?.let {
             value = it
@@ -41,12 +39,6 @@ class WatchlistViewModel(
 
     val user: LiveData<User>
         get() = _user
-
-
-//    private val _finds = MutableLiveData<List<Find>>()
-//
-//    val finds: LiveData<List<Find>>
-//        get() = _finds
 
     var liveWatchListByUser = MutableLiveData<List<Watch>>()
 
@@ -57,43 +49,34 @@ class WatchlistViewModel(
 
     var movieMap = mapOf<String, Find>()
 
-
     private val _isMovieMapReady = MutableLiveData<Boolean>()
 
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
 
 
-    // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-    // error: The internal MutableLiveData that stores the error of the most recent request
+
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-    // Create a Coroutine scope using a job to be able to cancel when needed
+
     private var viewModelJob = Job()
 
-    // the Coroutine runs using the Main (UI) dispatcher
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * When the [ViewModel] is finished, we cancel our coroutine [viewModelJob], which tells the
-     * service to stop.
-     */
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
 
-    /**
-     * Get [User] profile data when user is null
-     */
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
@@ -101,66 +84,55 @@ class WatchlistViewModel(
 
         if (user.value == null) {
             Logger.i("Watchlist ViewModel init if user.value == null")
-//            _user.value = UserManager.user
             UserManager.userToken?.let {
                 getUserByToken(it)
             }
         } else {
             Logger.i("Watchlist ViewModel init if user.value != null")
         }
-
-//        user.value?.watchlist?.let { getWatchListFull(it) }
         user.value?.id?.let { getLiveWatchListByUserResult(it) }
-
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
         val list = mutableListOf<Find>()
-
         coroutineScope.launch {
-            for (index in imdbIDs.indices) {
+            _status.postValue(LoadApiStatus.LOADING)
+            imdbIDs.forEachIndexed { index, imdbID ->
                 Logger.i("Item WatchList request child $index")
-                Logger.i("imdbIDs[index] = ${imdbIDs[index]}")
+                Logger.i("imdbID = $imdbID")
                 val result =
-                    getFindResult(isInitial = true, imdbID = imdbIDs[index], index = index)
+                    getFindResult(isInitial = true, imdbID = imdbID, index = index)
                 Logger.i("getFindsByImdbIDs result = $result")
-
-                if (result?.finds != null) {
-                    for (value in result.finds) {
-                        Logger.i("result?.finds value = $value")
-                        if (value.posterUri != null) {
-                            value.posterUri = "https://image.tmdb.org/t/p/w185" + value.posterUri
+                if (!result?.finds.isNullOrEmpty()) {
+                    result?.finds?.forEach { find ->
+                        Logger.i("result find = $find")
+                        if (!find.posterUri.isNullOrEmpty()) {
+                            find.posterUri = "https://image.tmdb.org/t/p/w185${find.posterUri}"
                         }
-                        if (value.backdrop != null) {
-                            value.backdrop = "https://image.tmdb.org/t/p/w185" + value.backdrop
+                        if (!find.backdrop.isNullOrEmpty()) {
+                            find.backdrop = "https://image.tmdb.org/t/p/w185${find.backdrop}"
                         }
-                        list.add(value)
-                        Logger.i("getFindsByImdbIDs list = $list")
+                        list.add(find)
+                        Logger.i("getFindsByImdbIDs find list = $list")
                     }
                 }
             }
-//            _finds.value = list
-
-//            findsMap = list.mapIndexed { index, find ->
-//                index to find
-//            }.toMap()
-//            Logger.i("findsMap = $findsMap")
             movieMap = imdbIDs.zip(list).toMap()
             Logger.i("Item WatchList movieMap = $movieMap")
             _isMovieMapReady.value = true
+            _status.postValue(LoadApiStatus.DONE)
         }
     }
 
-    private suspend fun getFindResult(isInitial: Boolean = false, imdbID: String, index: Int): FindResult? {
-
+    private suspend fun getFindResult(
+        isInitial: Boolean = false,
+        imdbID: String,
+        index: Int
+    ): FindResult? {
         return withContext(Dispatchers.IO) {
-
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
-
             when (val result = applicationRepository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
-                    if (isInitial) _status.postValue(LoadApiStatus.DONE)
                     Logger.w("child $index result: ${result.data}")
                     result.data
                 }
@@ -185,14 +157,11 @@ class WatchlistViewModel(
 
     private fun getLiveWatchListByUserResult(userID: String) {
         liveWatchListByUser = applicationRepository.getLiveWatchListByUser(userID)
-        Logger.i("getLiveWatchListResult() liveComments = $liveWatchListByUser")
         Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchListByUser.value}")
-        _status.value = LoadApiStatus.DONE
     }
 
     fun toDate(timestamp: Timestamp?): String {
         var date = ""
-
         if (timestamp != null) {
             date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(timestamp.toDate())
             Logger.i("date = $date")
@@ -218,8 +187,8 @@ class WatchlistViewModel(
             TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 showHour = hour
                 showMinute = minute
-                Logger.i("hour: $showHour, minute: $showMinute")
-                Logger.i("Dialog selected time year: $showYear, month: $showMonth, day: $showDay, hour: $showHour, minute: $showMinute")
+                Logger.i("Dialog selected year: $showYear, month: $showMonth," +
+                        " day: $showDay, hour: $showHour, minute: $showMinute")
                 calendar.set(Calendar.YEAR, showYear)
                 calendar.set(Calendar.MONTH, showMonth)
                 calendar.set(Calendar.DAY_OF_MONTH, showDay)
@@ -231,19 +200,17 @@ class WatchlistViewModel(
 
         val datePickerOnDataSetListener =
             DatePickerDialog.OnDateSetListener { _, year, month, day ->
-//                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE)
-//                setText(sdf.format(calendar.time))
                 showYear = year
                 showMonth = month
                 showDay = day
-                Logger.i("year: $showYear, month: $showMonth, day: $showDay")
 
                 TimePickerDialog(
                     context,
                     timePickerOnDataSetListener,
                     nowHour,
                     nowMinute,
-                    true).show()
+                    true
+                ).show()
             }
 
         DatePickerDialog(
@@ -251,30 +218,24 @@ class WatchlistViewModel(
             datePickerOnDataSetListener,
             nowYear,
             nowMonth,
-            nowDay).show()
+            nowDay
+        ).show()
     }
 
     fun pushSingleWatchListExpiration(watch: Watch) {
-
         coroutineScope.launch {
-            _status.value = LoadApiStatus.LOADING
-
             when (val result = applicationRepository.pushSingleWatchListExpiration(watch)) {
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
                     _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
                 }
             }
         }
@@ -283,48 +244,36 @@ class WatchlistViewModel(
     internal fun scheduleReminder(
         duration: Long,
         unit: TimeUnit,
-        movieTitle: String
+        movieTitle: String,
+        context: Context
     ) {
         Logger.i("scheduleReminder()")
-
-        // TODO: create a Data instance with the plantName passed to it
         val data = Data.Builder()
             .putString(nameKey, movieTitle)
             .build()
 
-
-        // TODO: Generate a OneTimeWorkRequest with the passed in duration, time unit, and data
-        //  instance
         val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WatchlistReminderWorker>()
             .setInitialDelay(duration, unit)
             .setInputData(data)
             .build()
 
-        // TODO: Enqueue the request as a unique work request
-        WorkManager.getInstance().enqueueUniqueWork(
+        WorkManager.getInstance(context).enqueueUniqueWork(
             movieTitle,
             ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
         )
     }
 
     private fun getUserByToken(token: String) {
-
         coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
             Logger.i("getUserByToken() token = $token")
             val result = applicationRepository.getUserByToken(token)
-
             _user.value = when (result) {
-
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
                     if (result.error.contains("Invalid Access Token", true)) {
                         UserManager.clear()
                     }
@@ -332,16 +281,13 @@ class WatchlistViewModel(
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = Util.getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
             }
-
             Logger.i("getUserByToken() _user.value = ${_user.value}")
         }
     }

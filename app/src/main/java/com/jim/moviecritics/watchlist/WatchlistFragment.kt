@@ -1,6 +1,5 @@
 package com.jim.moviecritics.watchlist
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -14,31 +13,17 @@ import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 import java.util.concurrent.TimeUnit
 
-
 class WatchlistFragment : Fragment() {
 
-    private val viewModel by viewModels<WatchlistViewModel> { getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey) }
+    private val viewModel by viewModels<WatchlistViewModel> {
+        getVmFactory(WatchlistFragmentArgs.fromBundle(requireArguments()).userKey)
+    }
 
     private var watch = Watch()
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        super.onCreateOptionsMenu(menu, inflater)
-//        inflater.inflate(R.menu.toolbar_menu, menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.toolbar_button_test -> {
-//                Logger.i("toolbar_button_test onClick")
-//                true
-////                throw RuntimeException("Test Crash") // Force a crash
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
 
@@ -48,22 +33,19 @@ class WatchlistFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-
         val intent = Intent(Intent.ACTION_INSERT)
-//        intent.data = CalendarContract.CONTENT_URI
         intent.data = CalendarContract.Events.CONTENT_URI
 
         val watchlistAdapter = WatchlistAdapter(
             WatchlistAdapter.OnClickListener {
                 Logger.i("WatchlistAdapter.OnClickListener it = $it")
-
                 watch = it
-
                 context?.let { context -> viewModel.showDateTimeDialog(context) }
-//                intent.putExtra(CalendarContract.Events.CALENDAR_ID, 1)
-                intent.putExtra(CalendarContract.Events.TITLE, "[Movie] ${viewModel.movieMap[it.imdbID]?.title}")
+                intent.putExtra(CalendarContract.Events.TITLE,
+                    "[Movie] ${viewModel.movieMap[it.imdbID]?.title}")
                 intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "AppWorks Cinema")
-                intent.putExtra(CalendarContract.Events.DESCRIPTION, viewModel.movieMap[it.imdbID]?.overview)
+                intent.putExtra(CalendarContract.Events.DESCRIPTION,
+                    viewModel.movieMap[it.imdbID]?.overview)
                 intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
             },
             viewModel
@@ -71,34 +53,32 @@ class WatchlistFragment : Fragment() {
 
         binding.recyclerWatchlist.adapter = watchlistAdapter
 
-        viewModel.liveWatchListByUser.observe(viewLifecycleOwner) { watchList ->
-            Logger.i("Watchlist ViewModel.liveWatchListByUser = $watchList")
-            watchList?.let {
+        viewModel.liveWatchListByUser.observe(viewLifecycleOwner) { watchListByUser ->
+            Logger.i("Watchlist ViewModel.liveWatchListByUser = $watchListByUser")
+            watchListByUser?.let { watchList ->
                 val list = mutableListOf<String>()
-                for (value in it) {
-                    list.add(value.imdbID)
-                }
+                watchList.forEach { list.add(it.imdbID) }
                 viewModel.getFindsByImdbIDs(list)
             }
 
             viewModel.isMovieMapReady.observe(viewLifecycleOwner) { boolean ->
                 Logger.i("Watchlist ViewModel.isMovieMapReady = $boolean")
-                watchlistAdapter.submitList(watchList)
+                watchlistAdapter.submitList(watchListByUser)
             }
         }
 
         viewModel.timeStamp.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.timeStamp = $it")
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, it.seconds * 1000L)
-            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, it.seconds * 1000L + 9000000L)
-//            intent.putExtra(CalendarContract.Events.EVENT_COLOR_KEY, )
-//            intent.putExtra(CalendarContract.Events.HAS_ALARM, 1)
+            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                it.seconds * 1000L + 9000000L)
             watch.expiration = it
-
             viewModel.pushSingleWatchListExpiration(watch)
 
             viewModel.movieMap[watch.imdbID]?.let { find ->
-                viewModel.scheduleReminder(3, TimeUnit.SECONDS, find.title)
+                context?.let { context ->
+                    viewModel.scheduleReminder(3, TimeUnit.SECONDS, find.title, context)
+                }
             }
 
             context?.let { context ->
@@ -106,9 +86,9 @@ class WatchlistFragment : Fragment() {
                     startActivity(intent)
                     Logger.i("pushSingleWatchListExpiration(watch) = $watch")
                 } else {
-                    Toast.makeText(context, "There is no app that can support this action", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "There is no app that can support this action",
+                        Toast.LENGTH_LONG).show()
                 }
-
             }
         }
 

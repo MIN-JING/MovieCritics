@@ -1,10 +1,10 @@
 package com.jim.moviecritics.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.MovieApplication
@@ -44,17 +44,6 @@ class DetailFragment : Fragment() {
 
         binding.recyclerviewDetailReview.adapter = reviewAdapter
 
-//        binding.recyclerviewDetailReview.adapter = ReviewAdapter(
-//            ReviewAdapter.OnClickListener {
-//                Logger.i("ReviewAdapter.OnClickListener it = $it")
-//            },
-//            viewModel
-//        )
-
-        viewModel.movie.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.movie = $it")
-        }
-
         viewModel.liveScore.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.liveScore = $it")
             if (it != null) {
@@ -76,7 +65,6 @@ class DetailFragment : Fragment() {
                 if (radarData != null) {
                     viewModel.showRadarChart(binding.radarChartRating, radarData)
                 }
-
             } else {
                 Logger.i("viewModel.liveScore == null")
                 val radarData = viewModel.movie.value?.let { movie ->
@@ -102,9 +90,6 @@ class DetailFragment : Fragment() {
         viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
             Logger.i("DetailViewModel.liveComments = $comments")
 
-//            val blocks = viewModel.user?.blocks
-//            comments.filterNot { it.userID in blocks }
-
             comments?.let {
                 val list = mutableListOf<String>()
 
@@ -123,7 +108,6 @@ class DetailFragment : Fragment() {
                 }
             }
         }
-
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")
@@ -147,6 +131,15 @@ class DetailFragment : Fragment() {
             it?.let {
                 findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
                 viewModel.onUserInfoNavigated()
+            }
+        }
+
+        viewModel.navigateToTrailer.observe(viewLifecycleOwner) {
+            Logger.i("DetailViewModel.navigateToTrailer = $it")
+            it?.let {
+                Logger.i("DetailViewModel.navigateToTrailer trailerUri =  ${it.trailerUri}")
+                findNavController().navigate(NavigationDirections.navigationToTrailerDialog(it))
+                viewModel.onTrailerNavigated()
             }
         }
 

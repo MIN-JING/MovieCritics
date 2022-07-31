@@ -82,10 +82,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider1_login" />
-<!--        android:layout_gravity="start"-->
-<!--        android:enabled="false"-->
-<!--        tools:text="@string/button_login_google"-->
-<!--        android:text='@{viewModel.status != LoadApiStatus.LOADING ? @string/button_login_google : ""}'-->
 
         <ProgressBar
             android:id="@+id/progressBar_login"

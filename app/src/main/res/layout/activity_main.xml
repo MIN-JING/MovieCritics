@@ -34,9 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-<!--        app:navigationIcon="@drawable/ic_toolbar_menu"-->
-<!--        style="@style/Widget.MaterialComponents.Toolbar.Primary"-->
-<!--        android:theme="@style/ThemeOverlay_Toolbar"-->
+
         <TextView
             android:id="@+id/text_toolbar_title"
             android:layout_width="wrap_content"
@@ -49,10 +47,6 @@
             android:visibility="@{viewModel.currentFragmentType == CurrentFragmentType.DETAIL ? View.GONE : View.VISIBLE}"
             tools:text="Movie Critics"
             tools:visibility="visible" />
-<!--            tools:layout_editor_absoluteX="128dp"-->
-<!--            tools:layout_editor_absoluteY="26dp"-->
-<!--        android:layout_gravity="center"-->
-
     </com.google.android.material.appbar.MaterialToolbar>
 
     <fragment

@@ -1,6 +1,5 @@
 package com.jim.moviecritics.pending
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +9,12 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogPendingBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.ext.showToast
-import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_CAST_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_HIT_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_LEISURE_EMPTY
@@ -27,17 +22,18 @@ import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_MU
 import com.jim.moviecritics.pending.PendingViewModel.Companion.INVALID_FORMAT_STORY_EMPTY
 import com.jim.moviecritics.pending.PendingViewModel.Companion.NO_ONE_KNOWS
 import com.jim.moviecritics.pending.PendingViewModel.Companion.SCORE_IS_FILLED
-
+import com.jim.moviecritics.util.Logger
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PendingDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<PendingViewModel> { getVmFactory(PendingDialogArgs.fromBundle(requireArguments()).movie) }
     private lateinit var binding: DialogPendingBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.PendingDialog)
     }
 
@@ -49,14 +45,12 @@ class PendingDialog : AppCompatDialogFragment() {
 
         binding = DialogPendingBinding.inflate(inflater, container, false)
         binding.layoutPending.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
-//        dialog?.setCancelable(true)
-//        dialog?.setCanceledOnTouchOutside(true)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.observe(viewLifecycleOwner) {
-            Logger.i("Pending Dialog movie = $it")
+        binding.textPendingShare.setOnClickListener {
+            startActivity(viewModel.share())
         }
 
         viewModel.liveWatchList.observe(viewLifecycleOwner) {
@@ -96,7 +90,6 @@ class PendingDialog : AppCompatDialogFragment() {
                 }
             }
         }
-
 
         viewModel.leave.observe(viewLifecycleOwner) {
             when (viewModel.leave.value) {

@@ -3,11 +3,11 @@ package com.jim.moviecritics.data.source.local
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
+import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.source.ApplicationDataSource
 import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -15,7 +15,6 @@ import kotlin.coroutines.suspendCoroutine
 private const val PATH_SCORES = "scores"
 private const val PATH_COMMENTS = "comments"
 private const val PATH_USERS = "users"
-
 
 class LocalDataSource(val context: Context) : ApplicationDataSource {
 
@@ -181,7 +180,9 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        Logger.w(
+                            "[${this::class.simpleName}] " +
+                                    "Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -216,7 +217,8 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        Logger.w("[${this::class.simpleName}] " +
+                                "Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -229,7 +231,9 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
         val user = User(
             id = "2BLJSIq9AiNS9R4egUZqJLb7Stz2",
             name = "REVIEWER",
-            pictureUri = "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/nebusoku_doctor_man.png",
+            pictureUri = "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/" +
+                    "AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/" +
+                    "nebusoku_doctor_man.png",
             location = "Taipei City",
             instagramUri = "https://www.instagram.com/panboknee/",
             twitterUri = "https://twitter.com/totorojack",
@@ -243,8 +247,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             firebaseTokenExpiration = Timestamp.now(),
             signInProvider = "google.com",
             email = "dog@gmail.com"
-            )
-
+        )
 
         FirebaseFirestore.getInstance()
             .collection(PATH_USERS)
@@ -256,7 +259,8 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] Error getting documents. ${it.message}")
+                        Logger.w("[${this::class.simpleName}] " +
+                                "Error getting documents. ${it.message}")
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }

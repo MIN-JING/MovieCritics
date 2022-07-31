@@ -14,7 +14,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--        android:onClick="@{() -> viewModel.leave()}"-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_pending"
@@ -70,63 +69,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_pending_released" />
 
-<!--            <ToggleButton-->
-<!--                android:id="@+id/toggle_pending_watch"-->
-<!--                android:layout_width="90dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:backgroundTintMode="add"-->
-<!--                android:checked="@{viewModel.isWatch}"-->
-<!--                android:drawableTop="@drawable/ic_watch_selector"-->
-<!--                android:includeFontPadding="true"-->
-<!--                android:onClick="@{() -> viewModel.onClickWatch(viewModel.movie.imdbID, viewModel.user.id)}"-->
-<!--                android:textColor="#455A64"-->
-<!--                android:textOff="@string/toggle_pending_watch_off"-->
-<!--                android:textOn="@string/toggle_pending_watch_on"-->
-<!--                android:textSize="12sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/toggle_pending_like"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/toggle_pending_like"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/toggle_pending_like" />-->
-<!--            android:checked="true"-->
-<!--            android:clickable="false"-->
-
-<!--            <ToggleButton-->
-<!--                android:id="@+id/toggle_pending_like"-->
-<!--                android:layout_width="90dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_marginTop="8dp"-->
-<!--                android:backgroundTintMode="add"-->
-<!--                android:checked="@{viewModel.isLike}"-->
-<!--                android:drawableTop="@drawable/ic_favorite_selector"-->
-<!--                android:includeFontPadding="true"-->
-<!--                android:onClick="@{() -> viewModel.onClickLike(viewModel.movie.imdbID, viewModel.user.id)}"-->
-<!--                android:textColor="#455A64"-->
-<!--                android:textOff="@string/toggle_pending_like_off"-->
-<!--                android:textOn="@string/toggle_pending_like_on"-->
-<!--                android:textSize="12sp"-->
-<!--                app:layout_constraintEnd_toStartOf="@+id/toggle_pending_watchlist"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/divider1_pending" />-->
-
-<!--            <ToggleButton-->
-<!--                android:id="@+id/toggle_pending_watchlist"-->
-<!--                android:layout_width="90dp"-->
-<!--                android:layout_height="80dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:background="@android:drawable/btn_default"-->
-<!--                android:backgroundTintMode="add"-->
-<!--                android:checked="@{viewModel.isWatchList}"-->
-<!--                android:drawableTop="@drawable/ic_watchlist_selector"-->
-<!--                android:includeFontPadding="true"-->
-<!--                android:onClick="@{() -> viewModel.onClickWatchList()}"-->
-<!--                android:textColor="#455A64"-->
-<!--                android:textOff="@string/toggle_pending_watchlist_off"-->
-<!--                android:textOn="@string/toggle_pending_watchlist_on"-->
-<!--                android:textSize="12sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="@+id/layout_pending_like"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="@+id/layout_pending_like" />-->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_pending_watch"
                 android:layout_width="70dp"
@@ -149,9 +91,6 @@
                     app:layout_constraintStart_toStartOf="@+id/layout_pending_watch"
                     app:layout_constraintTop_toTopOf="@+id/layout_pending_watch"
                     app:tint="@{viewModel.isWatch == true ? @color/primary : @color/gray_708090}" />
-                <!--                android:src="@drawable/ic_watch_selector"-->
-                <!--                imgRes="@{viewModel.isWatch == true ? @drawable/ic_watch_selected : @drawable/ic_watch}"-->
-                <!--                app:imageResource="@{viewModel.isWatch == true ? @drawable/ic_watch_selected : @drawable/ic_watch}"-->
 
                 <TextView
                     android:id="@+id/text_pending_watch"
@@ -294,7 +233,6 @@
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_pending_rate" />
-            <!--            style="@style/Widget.AppCompat.RatingBar.Small"-->
 
             <TextView
                 android:id="@+id/text_pending_hit"
@@ -322,9 +260,6 @@
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar_pending_leisure" />
-            <!--            android:rating="@{viewModel.hitPending}"-->
-            <!--            android:value="@{viewModel.hitPending}"-->
-            <!--            ratingValue="@{viewModel.hitPending}"-->
 
             <TextView
                 android:id="@+id/text_pending_cast"

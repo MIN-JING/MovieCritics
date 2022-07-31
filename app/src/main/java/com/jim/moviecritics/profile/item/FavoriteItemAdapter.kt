@@ -1,4 +1,4 @@
-package com.jim.moviecritics.profile
+package com.jim.moviecritics.profile.item
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Find
 import com.jim.moviecritics.databinding.ItemProfileFavoriteChildBinding
 
-
-class FavoriteItemAdapter(private val onClickListener: OnClickListener):
+class FavoriteItemAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Find, FavoriteItemAdapter.FavoriteItemViewHolder>(DiffCallback) {
 
     class FavoriteItemViewHolder(private var binding: ItemProfileFavoriteChildBinding) :
@@ -35,7 +34,9 @@ class FavoriteItemAdapter(private val onClickListener: OnClickListener):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteItemViewHolder {
         return FavoriteItemViewHolder(
             ItemProfileFavoriteChildBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false))
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: FavoriteItemViewHolder, position: Int) {

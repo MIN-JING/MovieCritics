@@ -1,7 +1,6 @@
 package com.jim.moviecritics.login
 
 import android.app.Activity
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,8 +22,6 @@ import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-
 
 class LoginDialog : AppCompatDialogFragment() {
 
@@ -41,22 +39,21 @@ class LoginDialog : AppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.LoginDialog)
-
 
         // Google log in
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
+            .requestIdToken(getString(R.string.service_client_id))
             .requestEmail()
             .build()
 
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient =
             context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }
-            ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
+                ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
 
         // Firebase log out
 //        Firebase.auth.signOut()
@@ -100,7 +97,6 @@ class LoginDialog : AppCompatDialogFragment() {
                 viewModel.onLeaveCompleted()
             }
         }
-
 
         viewModel.navigateToLoginSuccess.observe(viewLifecycleOwner) {
             it?.let {

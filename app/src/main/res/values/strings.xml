@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MovieCritics</string>
 
-
     <string name="internet_not_connected">您尚未連接到網路</string>
     <string name="you_know_nothing">You know nothing</string>
 
@@ -120,7 +119,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="server_client_id"></string>
+    <string name="service_client_id">97999771310-o4omeiicjg9gs506fc1ltdi9usmthv1k.apps.googleusercontent.com</string>
 
     <!-- Report -->
     <string name="button_report_cancel">Cancel</string>
@@ -153,5 +152,7 @@
     <string name="channel_name">watchlist_channel</string>
     <string name="channel_description">watchlist_reminder</string>
 
-
+    <!-- Trailer Dialog -->
+    <string name="button_trailer_play">Play and pause for the video player.</string>
+    <string name="default_progress_value">00:00</string>
 </resources>

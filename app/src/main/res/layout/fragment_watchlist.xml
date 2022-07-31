@@ -6,7 +6,6 @@
     tools:context=".watchlist.WatchlistFragment">
 
     <data>
-<!--        <import type="android.text.TextUtils"/>-->
         <variable
             name="viewModel"
             type="com.jim.moviecritics.watchlist.WatchlistViewModel" />
@@ -35,8 +34,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_watchlist" />
-<!--            app:finds="@{viewModel.finds}"-->
-<!--            app:watchList="@{viewModel.liveWatchListByUser}"-->
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_watchlist"

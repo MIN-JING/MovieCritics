@@ -5,9 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-<!--        <variable-->
-<!--            name="find"-->
-<!--            type="com.jim.moviecritics.data.Find" />-->
         <variable
             name="watch"
             type="com.jim.moviecritics.data.Watch" />
@@ -30,8 +27,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-<!--            android:background="@drawable/bg_card_corner"-->
-
 
             <ImageView
                 android:id="@+id/image_watchlist_poster"
@@ -90,21 +85,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_watchlist_expiration"
                 tools:text="2022-08-08" />
 
-            <!--        <ToggleButton-->
-            <!--            android:id="@+id/toggle_watchlist_calendar"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_marginTop="4dp"-->
-            <!--            android:layout_marginEnd="8dp"-->
-            <!--            android:backgroundTintMode="add"-->
-            <!--            android:drawableStart="@drawable/ic_calendar_selector"-->
-            <!--            android:includeFontPadding="false"-->
-            <!--            android:textColor="#455A64"-->
-            <!--            android:textOff="@string/toggle_watchlist_calendar_off"-->
-            <!--            android:textOn="@string/toggle_watchlist_calendar_on"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@+id/text_watchlist_title" />-->
-
             <View
                 android:id="@+id/divider1_watchlist_item"
                 android:layout_width="1dp"
@@ -123,7 +103,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-                <!--            android:onClick="@{() -> viewModel.onClickCalendar(watch.id)}"-->
 
                 <ImageView
                     android:id="@+id/image_watchlist_item_calendar"

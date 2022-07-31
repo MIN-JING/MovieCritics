@@ -25,6 +25,8 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 
 #### Rating
 * Use [`MPAndroidChart`](https://github.com/PhilJay/MPAndroidChart) for showing ratings
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_rating.gif" width="170" />
+
 #### Comment
 * Updated comments immediately and authenticated users simply with [`Firebase Firestor`](https://firebase.google.com/docs/firestore)
 #### Watch trailer

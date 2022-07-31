@@ -32,7 +32,9 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 <img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_comment.gif" width="170" />
 
 #### Watch trailer
-* Used [`WebView`](https://developer.android.com/reference/android/webkit/WebView) to play YouTube videos
+* Used [`WebView`](https://developer.android.com/reference/android/webkit/WebView) to play YouTube trailers
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_webview.gif" width="170" />
+                                                                                                          
 #### Share movie information
 * Suggested relevant person and application for sharing information through [`Sharesheet`](https://developer.android.com/training/sharing/send)
 #### Schedule watching movies

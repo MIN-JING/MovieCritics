@@ -43,6 +43,8 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 * Scheduled movie watching time by [`WorkManager`](https://developer.android.com/topic/libraries/architecture/workmanager)
 * Set [`Notification`](https://developer.android.com/guide/topics/ui/notifiers/notifications) to remind users until the appointed time
 * Added movie information and watching time to [`Google Calendar`](https://developer.android.com/guide/topics/providers/calendar-provider) efficiently
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_schedule.gif" width="170" />
+
 #### Search in movies, TVs, and casts
 * Achieved searching by [`The Movie Database (TMDB) APIs`](https://developers.themoviedb.org/3/getting-started/introduction)
 #### Personal recent activities

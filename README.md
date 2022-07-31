@@ -28,7 +28,9 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 <img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_rating.gif" width="170" />
 
 #### Comment
-* Updated comments immediately and authenticated users simply with [`Firebase Firestor`](https://firebase.google.com/docs/firestore)
+* Updated comments immediately and authenticated users simply with [`Firebase Firestore`](https://firebase.google.com/docs/firestore)
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_comment.gif" width="170" />
+
 #### Watch trailer
 * Used [`WebView`](https://developer.android.com/reference/android/webkit/WebView) to play YouTube videos
 #### Share movie information

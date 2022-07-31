@@ -51,6 +51,7 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 
 #### Personal recent activities
 * Created better user experience by quickly switching through [`ViewPager2`](https://developer.android.com/training/animation/screen-slide-2) and [`TabLayout`](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_viewpager2.gif" width="170" />
 
 ## Installation
 1. Download ZIP and import it as a project into [Android Studio](https://developer.android.com/studio)

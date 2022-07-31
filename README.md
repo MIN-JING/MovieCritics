@@ -21,7 +21,7 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 #### Display popular movies
 * Be familiar with [`Retrofit`](https://github.com/square/retrofit) for communication with a server and parsed JSON response with [`Moshi`](https://github.com/square/moshi)
 * Optimized images download caching and minimized decode times with [`Glide`](https://github.com/bumptech/glide)
-<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_display_popular_movies.gif" width="170" />
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_popular_movies.gif" width="170" />
 
 #### Rating
 * Use [`MPAndroidChart`](https://github.com/PhilJay/MPAndroidChart) for showing ratings

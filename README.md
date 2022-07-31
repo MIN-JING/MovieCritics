@@ -37,6 +37,8 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
                                                                                                           
 #### Share movie information
 * Suggested relevant person and application for sharing information through [`Sharesheet`](https://developer.android.com/training/sharing/send)
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_share.gif" width="170" />
+
 #### Schedule watching movies
 * Scheduled movie watching time by [`WorkManager`](https://developer.android.com/topic/libraries/architecture/workmanager)
 * Set [`Notification`](https://developer.android.com/guide/topics/ui/notifiers/notifications) to remind users until the appointed time

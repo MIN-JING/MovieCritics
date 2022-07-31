@@ -1,11 +1,11 @@
 # Movie Critics
-<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/drawable/bg_tokusatsu_kaiju.png" height="200" />
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/bg_tokusatsu_kaiju.png" height="200" />
 
 :zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
 
 ![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.0.6-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-26%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
 
-[<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/mipmap-xxhdpi/ic_app.png" height="70" /><img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/drawable/bg_google_play.png" height="70" />](https://play.google.com/store/apps/details?id=com.jim.moviecritics)
+[<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/mipmap-xxhdpi/ic_app.png" height="70" /><img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/bg_google_play.png" height="70" />](https://play.google.com/store/apps/details?id=com.jim.moviecritics)
 
 ## Test Account
 E-mail : `moviecritics0728@gmail.com`
@@ -21,7 +21,7 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 #### Display popular movies
 * Be familiar with [`Retrofit`](https://github.com/square/retrofit) for communication with a server and parsed JSON response with [`Moshi`](https://github.com/square/moshi)
 * Optimized images download caching and minimized decode times with [`Glide`](https://github.com/bumptech/glide)
-<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/drawable/screen_display_popular_movies.gif" width="170" />
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_display_popular_movies.gif" width="170" />
 
 #### Rating
 * Use [`MPAndroidChart`](https://github.com/PhilJay/MPAndroidChart) for showing ratings

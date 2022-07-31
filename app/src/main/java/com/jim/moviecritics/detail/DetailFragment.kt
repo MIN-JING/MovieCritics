@@ -137,6 +137,7 @@ class DetailFragment : Fragment() {
         viewModel.navigateToTrailer.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToTrailer = $it")
             it?.let {
+                Logger.i("DetailViewModel.navigateToTrailer trailerUri =  ${it.trailerUri}")
                 findNavController().navigate(NavigationDirections.navigationToTrailerDialog(it))
                 viewModel.onTrailerNavigated()
             }

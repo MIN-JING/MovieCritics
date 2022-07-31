@@ -67,6 +67,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             creditResultToMovie(creditResult)
             _status.postValue(LoadApiStatus.DONE)
             Logger.i("getMovieFull() movie = $movie")
+            Logger.i("getMovieFull() movie.trailerUri = ${movie.trailerUri}")
             navigateToDetail(movie)
         }
     }
@@ -190,6 +191,14 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             movie.trailerUri = null
             movie.ratings = listOf()
             movie.voteAverage = ((movieDetailResult.average * 10).roundToInt() / 50).toFloat()
+            if (!movieDetailResult.videos.results.isNullOrEmpty()) {
+                val youtubeKey = movieDetailResult.videos.results.maxByOrNull { it.published }?.key
+                youtubeKey?.let {
+                    Logger.i("youtubeKey = $youtubeKey")
+                    movie.trailerUri = "https://www.youtube.com/watch?v=$youtubeKey"
+                    Logger.i("HomeViewModel movie.trailerUri = ${movie.trailerUri}")
+                }
+            }
         }
     }
 

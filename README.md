@@ -51,11 +51,11 @@ SDK version 26+
 Gradle version 7.2
 
 ## Version History
-|    Version    |                    Detail                     |
-| ------------- | --------------------------------------------- |
-|     1.0.7     |   Add WebView for YouTube trailer, refactor   |
-|     1.0.6     |   Add Notifications                           |
-|     1.0.5     |   Add block user and report comment features  |
+|    Version    |                    Detail                                                         |
+| ------------- | --------------------------------------------------------------------------------- |
+|     1.0.7     |   Add WebView for YouTube trailer, movie info sharing features, and refactoring   |
+|     1.0.6     |   Add Notifications                                                               |
+|     1.0.5     |   Add blocking user and reporting comment features                                |
 
 ## License
 ```

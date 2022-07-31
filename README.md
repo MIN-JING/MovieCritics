@@ -47,6 +47,8 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 
 #### Search in movies, TVs, and casts
 * Achieved searching by [`The Movie Database (TMDB) APIs`](https://developers.themoviedb.org/3/getting-started/introduction)
+<img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_search.gif" width="170" />
+
 #### Personal recent activities
 * Created better user experience by quickly switching through [`ViewPager2`](https://developer.android.com/training/animation/screen-slide-2) and [`TabLayout`](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
 

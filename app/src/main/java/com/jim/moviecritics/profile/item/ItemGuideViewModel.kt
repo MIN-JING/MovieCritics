@@ -22,8 +22,6 @@ class ItemGuideViewModel(
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
 
-    private val user = UserManager.user
-
     var livePersonalComments = MutableLiveData<List<Comment>>()
 
     var movieMap = mapOf<String, Find>()
@@ -61,7 +59,7 @@ class ItemGuideViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        user?.id?.let { getLivePersonalCommentsResult(it) }
+        UserManager.user?.id?.let { getLivePersonalCommentsResult(it) }
     }
 
     private fun getLivePersonalCommentsResult(userID: String) {

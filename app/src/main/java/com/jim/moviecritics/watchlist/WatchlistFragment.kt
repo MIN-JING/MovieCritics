@@ -33,6 +33,8 @@ class WatchlistFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+
+
         val intent = Intent(Intent.ACTION_INSERT)
         intent.data = CalendarContract.Events.CONTENT_URI
 

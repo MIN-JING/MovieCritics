@@ -82,15 +82,7 @@ class WatchlistViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        if (user.value == null) {
-            Logger.i("Watchlist ViewModel init if user.value == null")
-            UserManager.userToken?.let {
-                getUserByToken(it)
-            }
-        } else {
-            Logger.i("Watchlist ViewModel init if user.value != null")
-        }
-        user.value?.id?.let { getLiveWatchListByUserResult(it) }
+        UserManager.user?.id?.let { getLiveWatchListByUserResult(it) }
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {

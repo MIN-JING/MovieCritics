@@ -51,11 +51,6 @@ class ProfileViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        if (user.value == null) {
-            Logger.i("Profile ViewModel init if user.value == null")
-            _user.value = UserManager.user
-        } else {
-            Logger.i("Profile ViewModel init if user.value != null")
-        }
+        _user.value = UserManager.user
     }
 }

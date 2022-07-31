@@ -7,6 +7,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Find
 import com.jim.moviecritics.data.FindResult
 import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
@@ -17,8 +18,6 @@ import kotlinx.coroutines.*
 class ItemFavoriteViewModel(
     private val applicationRepository: ApplicationRepository
 ) : ViewModel() {
-
-    private val user = UserManager.user
 
     private val _finds = MutableLiveData<List<Find>>()
 
@@ -53,7 +52,7 @@ class ItemFavoriteViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        user?.liked?.let { getFavoritesFull(it) }
+        UserManager.user?.liked?.let { getFavoritesFull(it) }
     }
 
     private fun getFavoritesFull(favorites: List<String>) {

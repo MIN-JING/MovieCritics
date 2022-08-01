@@ -3,18 +3,17 @@ package com.jim.moviecritics
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
-import com.jim.moviecritics.util.CurrentFragmentType
-import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.*
 import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+
 
 class MainViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
 
@@ -88,8 +87,8 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
 
     fun checkUser() {
         if (user.value == null) {
-            Logger.i("MainViewModel UserManager.userToken = ${UserManager.userToken}")
-            UserManager.userToken?.let {
+            Logger.i("MainViewModel UserManager.useId = ${UserManager.userId}")
+            UserManager.userId?.let {
                 getUser(it)
             }
         }
@@ -111,37 +110,24 @@ class MainViewModel(private val applicationRepository: ApplicationRepository) : 
         _navigateToProfileByBottomNav.value = null
     }
 
-    private fun getUser(token: String) {
-
+    private fun getUser(userId: String) {
         coroutineScope.launch {
-
-            _status.value = LoadApiStatus.LOADING
-
-            val result = applicationRepository.getUserByToken(token)
-
+            val result = applicationRepository.getUserById(userId)
             _user.value = when (result) {
-
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
                     result.data
                 }
                 is Result.Fail -> {
                     _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    if (result.error.contains("Invalid Access Token", true)) {
-                        UserManager.clear()
-                    }
                     null
                 }
                 is Result.Error -> {
                     _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
                 else -> {
                     _error.value = getString(R.string.you_know_nothing)
-                    _status.value = LoadApiStatus.ERROR
                     null
                 }
             }

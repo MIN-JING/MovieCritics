@@ -59,7 +59,7 @@ class ItemGuideViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.user?.id?.let { getLivePersonalCommentsResult(it) }
+        UserManager.userId?.let { getLivePersonalCommentsResult(it) }
     }
 
     private fun getLivePersonalCommentsResult(userID: String) {

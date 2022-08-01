@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.databinding.FragmentDetailBinding
@@ -109,10 +111,13 @@ class DetailFragment : Fragment() {
             }
         }
 
+        val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToPending = $it")
             Logger.i("DetailViewModel.navigateToPending runTime = ${it?.runtime}")
             it?.let {
+                mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
                 viewModel.onPendingNavigated()
             }
@@ -121,6 +126,7 @@ class DetailFragment : Fragment() {
         viewModel.navigateToReport.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToReport = $it")
             it?.let {
+                mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
                 viewModel.onReportNavigated()
             }
@@ -129,6 +135,7 @@ class DetailFragment : Fragment() {
         viewModel.navigateToUserInfo.observe(viewLifecycleOwner) {
             Logger.i("DetailViewModel.navigateToUserInfo = $it")
             it?.let {
+                mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
                 viewModel.onUserInfoNavigated()
             }

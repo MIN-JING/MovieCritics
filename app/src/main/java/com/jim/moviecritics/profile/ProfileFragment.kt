@@ -41,16 +41,6 @@ class ProfileFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        if (profileViewModel.user.value == null) {
-            val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-            profileViewModel.user.observe(viewLifecycleOwner) {
-                Logger.i("profileViewModel.user observe it = $it")
-                if (null != it) {
-                    mainViewModel.setupUser(it)
-                }
-            }
-        }
-
         FragmentProfileBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = profileViewModel

@@ -121,6 +121,8 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository) :
                     val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
 
                     user.id = firebaseCurrentUser?.uid.toString()
+                    UserManager.userId = firebaseCurrentUser?.uid.toString()
+                    Logger.i("UserManager.userId = ${UserManager.userId}")
                     user.firebaseToken = firebaseTokenResult?.token.toString()
                     Logger.i("Firebase Token = ${firebaseTokenResult?.token}")
 
@@ -132,8 +134,6 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository) :
 
                     user.signInProvider = firebaseTokenResult?.signInProvider.toString()
 
-                    UserManager.userToken = firebaseTokenResult?.token.toString()
-                    Logger.i("UserManager.userToken = ${UserManager.userToken}")
                     _navigateToLoginSuccess.value = user
 
                     if (task.result.additionalUserInfo?.isNewUser == true) {

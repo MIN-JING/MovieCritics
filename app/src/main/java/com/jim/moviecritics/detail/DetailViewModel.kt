@@ -108,9 +108,9 @@ class DetailViewModel(
         Logger.i("------------------------------------")
 
         movie.value?.imdbID?.let {
-            user?.let { user ->
-                getLiveScoreResult(imdbID = it, userID = user.id)
-                getLiveCommentsExcludeBlocks(imdbID = it, blocks = user.blocks)
+            UserManager.userId?.let { userId ->
+                getLiveScoreResult(imdbID = it, userID = userId)
+                getLiveComments(imdbID = it)
             }
         }
     }
@@ -162,10 +162,8 @@ class DetailViewModel(
         _status.value = LoadApiStatus.DONE
     }
 
-    private fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>) {
-        liveComments = applicationRepository.getLiveCommentsExcludeBlocks(imdbID, blocks)
-        Logger.i("getLiveCommentsExcludeBlocks() liveComments = $liveComments")
-        Logger.i("getLiveCommentsExcludeBlocks() liveComments.value = ${liveComments.value}")
+    private fun getLiveComments(imdbID: String) {
+        liveComments = applicationRepository.getLiveComments(imdbID)
         _status.value = LoadApiStatus.DONE
     }
 
@@ -273,11 +271,6 @@ class DetailViewModel(
         radarChart.description.setPosition(750F, 70F)
         radarChart.description.textSize = 50F
         radarChart.setDrawWeb(true)
-//        radarChart.setBackgroundColor(Color.rgb(255, 102, 0))
-//        radarChart.webLineWidth = 1f
-//        radarChart.webColor = Color.rgb(0, 0, 0)
-//        radarChart.webColorInner = Color.rgb(0, 0, 0)
-//        radarChart.webLineWidthInner = 1f
         radarChart.isRotationEnabled = true
 
         val labels: Array<String> = arrayOf("Leisure", "Hit", "Cast", "Music", "Story")

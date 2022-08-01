@@ -74,7 +74,6 @@ class MainActivity : BaseActivity() {
 
         setupToolbar()
         setupBottomNav()
-        whenUserManagerIsLoggedIn()
         setupNavController()
     }
 
@@ -108,6 +107,7 @@ class MainActivity : BaseActivity() {
 
                     when (viewModel.isLoggedIn) {
                         true -> {
+                            viewModel.checkUser()
                             findNavController(R.id.navHostFragment).navigate(
                                 NavigationDirections.navigateToWatchlistFragment(viewModel.user.value)
                             )
@@ -123,6 +123,7 @@ class MainActivity : BaseActivity() {
 
                     when (viewModel.isLoggedIn) {
                         true -> {
+                            viewModel.checkUser()
                             findNavController(R.id.navHostFragment).navigate(
                                 NavigationDirections.navigateToProfileFragment(viewModel.user.value)
                             )
@@ -175,20 +176,6 @@ class MainActivity : BaseActivity() {
                 }
             }
             Logger.i("====== ${Build.MODEL} ======")
-        }
-    }
-
-    private fun whenUserManagerIsLoggedIn() {
-
-        when (UserManager.isLoggedIn) {
-            true -> {
-                Logger.i("MainActivity UserManager.isLoggedIn == true")
-                viewModel.checkUser()
-            }
-            else -> {
-                Logger.i("MainActivity UserManager.isLoggedIn == else")
-                findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
-            }
         }
     }
 }

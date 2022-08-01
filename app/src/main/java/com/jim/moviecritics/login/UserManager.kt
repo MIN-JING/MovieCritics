@@ -7,27 +7,27 @@ import com.jim.moviecritics.data.User
 object UserManager {
 
     private const val USER_DATA = "user_data"
-    private const val USER_TOKEN = "user_token"
+    private const val USER_ID = "user_id"
 
     var user: User? = null
 
-    var userToken: String? = null
+    var userId: String? = null
         get() = MovieApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
-            .getString(USER_TOKEN, null)
+            .getString(USER_ID, null)
         set(value) {
             field = when (value) {
                 null -> {
                     MovieApplication.instance
                         .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
-                        .remove(USER_TOKEN)
+                        .remove(USER_ID)
                         .apply()
                     null
                 }
                 else -> {
                     MovieApplication.instance
                         .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE).edit()
-                        .putString(USER_TOKEN, value)
+                        .putString(USER_ID, value)
                         .apply()
                     value
                 }
@@ -38,12 +38,12 @@ object UserManager {
      * It can be use to check login status directly
      */
     val isLoggedIn: Boolean
-        get() = userToken != null
+        get() = userId != null
 
     /**
-     * Clear the [userToken]
+     * Clear the [userId]
      */
     fun clear() {
-        userToken = null
+        userId = null
     }
 }

@@ -18,7 +18,7 @@ import com.jim.moviecritics.data.source.ApplicationRepository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
+import com.jim.moviecritics.util.Util.getString
 import com.jim.moviecritics.work.WatchlistReminderWorker
 import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
 import java.text.SimpleDateFormat
@@ -82,7 +82,7 @@ class WatchlistViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.user?.id?.let { getLiveWatchListByUserResult(it) }
+        UserManager.userId?.let { getLiveWatchListByUserResult(it) }
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
@@ -139,7 +139,7 @@ class WatchlistViewModel(
                     null
                 }
                 else -> {
-                    _error.postValue(Util.getString(R.string.you_know_nothing))
+                    _error.postValue(getString(R.string.you_know_nothing))
                     if (isInitial) _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
@@ -253,34 +253,5 @@ class WatchlistViewModel(
             movieTitle,
             ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
         )
-    }
-
-    private fun getUserByToken(token: String) {
-        coroutineScope.launch {
-            Logger.i("getUserByToken() token = $token")
-            val result = applicationRepository.getUserByToken(token)
-            _user.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (result.error.contains("Invalid Access Token", true)) {
-                        UserManager.clear()
-                    }
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    null
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    null
-                }
-            }
-            Logger.i("getUserByToken() _user.value = ${_user.value}")
-        }
     }
 }

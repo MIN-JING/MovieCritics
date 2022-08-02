@@ -15,8 +15,6 @@
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieCritics">
-<!--        android:usesCleartextTraffic="true"-->
-<!--        android:networkSecurityConfig="@xml/network_permission_config"-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

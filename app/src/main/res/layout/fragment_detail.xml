@@ -39,6 +39,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="25dp"
                     android:background="@drawable/ic_arrow_back"
+                    android:backgroundTint="@color/black"
                     android:contentDescription="@string/button_detail_back"
                     android:onClick="@{() -> viewModel.leave()}"
                     app:layout_constraintStart_toStartOf="parent"
@@ -51,6 +52,7 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/ic_pending"
+                    android:backgroundTint="@color/black"
                     android:contentDescription="@string/button_detail_pending"
                     android:onClick="@{() -> viewModel.navigateToPending(viewModel.movie)}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +96,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/text_detail_directed_by"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_detail_released_year" />

@@ -51,6 +51,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:text="@string/text_report_title_top"
+                android:textColor="#004D40"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/button_report_cancel"
                 app:layout_constraintEnd_toStartOf="@+id/button_report_send"
@@ -65,6 +66,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/text_report_title_reason"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +89,7 @@
                     android:letterSpacing="0.15"
                     android:tag="@string/text_report_reason_abuse"
                     android:text="@string/text_report_reason_abuse"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <RadioButton
@@ -96,6 +99,7 @@
                     android:letterSpacing="0.15"
                     android:tag="@string/text_report_reason_spoilers"
                     android:text="@string/text_report_reason_spoilers"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <RadioButton
@@ -105,6 +109,7 @@
                     android:letterSpacing="0.15"
                     android:tag="@string/text_report_reason_spam"
                     android:text="@string/text_report_reason_spam"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <RadioButton
@@ -114,6 +119,7 @@
                     android:letterSpacing="0.15"
                     android:tag="@string/text_report_reason_plagiarism"
                     android:text="@string/text_report_reason_plagiarism"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
 
                 <RadioButton
@@ -123,6 +129,7 @@
                     android:letterSpacing="0.15"
                     android:tag="@string/text_report_reason_other"
                     android:text="@string/text_report_reason_other"
+                    android:textColor="@color/black"
                     android:textSize="18sp" />
             </RadioGroup>
 
@@ -134,6 +141,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/text_report_title_message"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,12 +154,15 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="#37474F"
                 android:ems="10"
                 android:gravity="start"
                 android:hint="@string/edit_report_message"
-                android:inputType="textMultiLine"
                 android:importantForAutofill="no"
+                android:inputType="textMultiLine"
                 android:text="@={viewModel.message}"
+                android:textColor="@color/black"
+                android:textColorHint="#37474F"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_report_title_message" />

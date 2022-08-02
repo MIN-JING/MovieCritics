@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@{viewModel.usersMap[comment.userID].name}"
+            android:textColor="@color/green_486b5e"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="User Name" />
@@ -62,6 +63,7 @@
             android:layout_height="30dp"
             android:contentDescription="@string/image_detail_item_review_report_description"
             android:onClick="@{() -> viewModel.navigateToReport(comment)}"
+            android:tint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_flag_selector" />
@@ -72,7 +74,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
-            android:background="?android:attr/listDivider"
+            android:background="@color/gray_708090"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

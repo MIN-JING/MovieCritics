@@ -53,6 +53,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:text="@string/text_review_title_top"
+                android:textColor="#004D40"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/button_review_cancel"
                 app:layout_constraintEnd_toStartOf="@+id/button_review_save"

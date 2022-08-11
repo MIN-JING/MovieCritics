@@ -3,12 +3,7 @@ package com.jim.moviecritics.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.data.RadarData
-import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
@@ -36,24 +31,26 @@ class DetailViewModel(
 
     var usersMap = mapOf<String, User>()
 
-    private val _scores = MutableLiveData<List<Score>?>()
-
-    val scores: LiveData<List<Score>?>
-        get() = _scores
-
-    private val _score = MutableLiveData<Score?>()
-
-    val score: LiveData<Score?>
-        get() = _score
-
     var liveScore = MutableLiveData<Score>()
 
     var liveComments = MutableLiveData<List<Comment>>()
+
+    lateinit var averageRatings: ArrayList<RadarEntry>
+
+    var userRatings: ArrayList<RadarEntry>
+        = arrayListOf(
+        RadarEntry(0F),
+        RadarEntry(0F),
+        RadarEntry(0F),
+        RadarEntry(0F),
+        RadarEntry(0F)
+    )
 
     private val _isUsersMapReady = MutableLiveData<Boolean>()
 
     val isUsersMapReady: LiveData<Boolean>
         get() = _isUsersMapReady
+
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -107,11 +104,18 @@ class DetailViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        movie.value?.imdbID?.let {
+        movie.value?.let { movie ->
             UserManager.userId?.let { userId ->
-                getLiveScoreResult(imdbID = it, userID = userId)
-                getLiveComments(imdbID = it)
+                movie.imdbID?.let { getLiveScore(imdbID = it, userID = userId) }
+                movie.imdbID?.let { getLiveComments(imdbID = it) }
             }
+            averageRatings = arrayListOf(
+                RadarEntry(movie.voteAverage),
+                RadarEntry(movie.voteAverage),
+                RadarEntry(movie.voteAverage),
+                RadarEntry(movie.voteAverage),
+                RadarEntry(movie.voteAverage)
+            )
         }
     }
 
@@ -151,29 +155,23 @@ class DetailViewModel(
         _leave.value = true
     }
 
-    private fun getLiveScoreResult(imdbID: String, userID: String) {
+    private fun getLiveScore(imdbID: String, userID: String) {
         liveScore.value = applicationRepository.getLiveScore(imdbID, userID).value
         liveScore = applicationRepository.getLiveScore(imdbID, userID)
-        _status.value = LoadApiStatus.DONE
     }
 
     private fun getLiveComments(imdbID: String) {
+        _status.value = LoadApiStatus.LOADING
         liveComments = applicationRepository.getLiveComments(imdbID)
         _status.value = LoadApiStatus.DONE
     }
 
-    fun getUsersResult(isInitial: Boolean = false, idList: List<String>) {
+    fun getUsersResult(idList: List<String>) {
         coroutineScope.launch {
-
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
             val result = applicationRepository.getUsersByIdList(idList = idList)
-
             users = when (result) {
-
                 is Result.Success -> {
                     _error.value = null
-                    _status.value = LoadApiStatus.DONE
                     result.data
                 }
                 is Result.Fail -> {
@@ -197,79 +195,13 @@ class DetailViewModel(
         }
     }
 
-    fun setRadarData(
-        averageLeisure: Float,
-        averageHit: Float,
-        averageCast: Float,
-        averageMusic: Float,
-        averageStory: Float,
-        userLeisure: Float,
-        userHit: Float,
-        userCast: Float,
-        userMusic: Float,
-        userStory: Float,
-    ): RadarData {
-
-        val averageRatingsList: ArrayList<RadarEntry> =
-            arrayListOf(
-                RadarEntry(averageLeisure),
-                RadarEntry(averageHit),
-                RadarEntry(averageCast),
-                RadarEntry(averageMusic),
-                RadarEntry(averageStory)
+    fun setRadarEntry(score: Score) {
+        userRatings = arrayListOf(
+                RadarEntry(score.leisure),
+                RadarEntry(score.hit),
+                RadarEntry(score.cast),
+                RadarEntry(score.music),
+                RadarEntry(score.story)
             )
-
-        val userRatingsList: ArrayList<RadarEntry> =
-            arrayListOf(
-                RadarEntry(userLeisure),
-                RadarEntry(userHit),
-                RadarEntry(userCast),
-                RadarEntry(userMusic),
-                RadarEntry(userStory)
-            )
-
-        val averageRatingsSet = RadarDataSet(averageRatingsList, "Average Ratings")
-        averageRatingsSet.color = R.color.teal_200
-        averageRatingsSet.fillColor = R.color.teal_700
-        averageRatingsSet.setDrawFilled(true)
-        averageRatingsSet.fillAlpha = 160
-        averageRatingsSet.lineWidth = 2F
-        averageRatingsSet.isDrawHighlightCircleEnabled = true
-        averageRatingsSet.setDrawHighlightIndicators(false)
-
-        val userRatingsSet = RadarDataSet(userRatingsList, "Ratings By you")
-        userRatingsSet.color = R.color.yellow
-        userRatingsSet.fillColor = R.color.yellow
-        userRatingsSet.setDrawFilled(true)
-        userRatingsSet.fillAlpha = 160
-        userRatingsSet.lineWidth = 2F
-        userRatingsSet.isDrawHighlightCircleEnabled = true
-        userRatingsSet.setDrawHighlightIndicators(false)
-
-        val totalRatingsSet = ArrayList<IRadarDataSet>()
-        totalRatingsSet.add(averageRatingsSet)
-        totalRatingsSet.add(userRatingsSet)
-
-        val radarData = RadarData(totalRatingsSet)
-        radarData.setDrawValues(true)
-        radarData.setValueTextSize(10F)
-        radarData.setValueTextColor(R.color.purple_200)
-
-        return radarData
-    }
-
-    fun showRadarChart(radarChart: RadarChart, radarData: RadarData) {
-        radarChart.description.text = ""
-        radarChart.description.setPosition(750F, 70F)
-        radarChart.description.textSize = 50F
-        radarChart.setDrawWeb(true)
-        radarChart.isRotationEnabled = true
-
-        val labels: Array<String> = arrayOf("Leisure", "Hit", "Cast", "Music", "Story")
-        radarChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-        radarChart.yAxis.axisMinimum = 0F
-        radarChart.yAxis.axisMaximum = 5F
-        radarChart.data = radarData
-        radarChart.invalidate()
     }
 }

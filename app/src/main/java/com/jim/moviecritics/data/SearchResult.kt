@@ -16,53 +16,42 @@ data class SearchResult(
 
     fun toLookItems(): List<LookItem> {
         val items = mutableListOf<LookItem>()
+        looks?.let { lookList ->
+           lookList.forEach { look ->
+               when (look.mediaType) {
+                   "movie" -> {
+                       if (!look.posterPath.isNullOrEmpty()) {
+                           look.posterPath = "https://image.tmdb.org/t/p/w185" + look.posterPath
+                       }
+                       items.add(LookItem.LookMovie(look))
+                   }
+                   "tv" -> {
+                       if (!look.posterPath.isNullOrEmpty()) {
+                           look.posterPath = "https://image.tmdb.org/t/p/w185" + look.posterPath
+                       }
+                       items.add(LookItem.LookTelevision(look))
+                   }
+                   "person" -> {
+                       if (!look.profilePath.isNullOrEmpty()) {
+                           look.profilePath = "https://image.tmdb.org/t/p/w185" + look.profilePath
+                       }
+                       if (!look.knownFor.isNullOrEmpty()) {
+                           look.knownFor.forEach { knownFor ->
+                               if (!knownFor.posterPath.isNullOrEmpty()) {
+                                   knownFor.posterPath = "https://image.tmdb.org/t/p/w185" + knownFor.posterPath
+                               }
+                               if (!knownFor.backdropPath.isNullOrEmpty()) {
+                                   knownFor.backdropPath = "https://image.tmdb.org/t/p/w185" + knownFor.backdropPath
+                               }
+                           }
+                       }
+                       items.add(LookItem.LookPerson(look))
+                   }
+                   else -> { Logger.i("mediaType unknown data = $look") }
+               }
+               items.sortBy { items -> items.order }
 
-        looks?.let {
-            Logger.i("looksList = $looks")
-
-            for (look in it) {
-                when (look.mediaType) {
-                    "movie" -> {
-                        if (look.posterPath != null) {
-                            look.posterPath = "https://image.tmdb.org/t/p/w185" + look.posterPath
-                        }
-                        items.add(LookItem.LookMovie(look))
-                        Logger.i("movie = $look")
-                    }
-                    "tv" -> {
-                        if (look.posterPath != null) {
-                            look.posterPath = "https://image.tmdb.org/t/p/w185" + look.posterPath
-                        }
-                        items.add(LookItem.LookTelevision(look))
-                        Logger.i("tv = $look")
-                    }
-                    "person" -> {
-                        if (look.profilePath != null) {
-                            look.profilePath = "https://image.tmdb.org/t/p/w185" + look.profilePath
-                        }
-                        if (look.knownFor != null) {
-                            for (knownFor in look.knownFor) {
-                                if (knownFor.posterPath != null) {
-                                    knownFor.posterPath = "https://image.tmdb.org/t/p/w185" + knownFor.posterPath
-                                }
-                                if (knownFor.backdropPath != null) {
-                                    knownFor.backdropPath = "https://image.tmdb.org/t/p/w185" + knownFor.backdropPath
-                                }
-                            }
-                        }
-                        items.add(LookItem.LookPerson(look))
-                        Logger.i("person = $look")
-                    }
-                    else -> { Logger.i("mediaType unknown data = $look") }
-                }
-            }
-            items.sortBy { items -> items.order }
-            Logger.i("items = $items")
-            for (item in items) {
-                Logger.i("sorted item = $item")
-                Logger.i("item.id = ${item.id}")
-                Logger.i("item.mediaType = ${item.mediaType}")
-            }
+           }
         }
         return items
     }

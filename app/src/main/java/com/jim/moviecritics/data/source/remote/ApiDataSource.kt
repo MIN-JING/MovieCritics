@@ -4,13 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationDataSource
+import com.jim.moviecritics.data.source.DataSource
 import com.jim.moviecritics.network.TmdbApi
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import com.jim.moviecritics.util.Util.isInternetConnected
 
-object ApiDataSource : ApplicationDataSource {
+/**
+ * Implementation of the Application source that from TMDB API.
+ */
+object ApiDataSource : DataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
 

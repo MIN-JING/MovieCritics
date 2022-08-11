@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.*
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class MainViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class MainViewModel(private val applicationRepository: Repository) : ViewModel() {
 
     // user: MainViewModel has User info to provide Drawer UI
     private val _user = MutableLiveData<User>()

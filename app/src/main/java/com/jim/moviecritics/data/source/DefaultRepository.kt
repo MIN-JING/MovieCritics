@@ -7,11 +7,11 @@ import com.jim.moviecritics.data.*
 /**
  * Concrete implementation to load Application sources.
  */
-class DefaultApplicationRepository(
-    private val apiDataSource: ApplicationDataSource,
-    private val firebaseDataSource: ApplicationDataSource,
-    private val localDataSource: ApplicationDataSource
-) : ApplicationRepository {
+class DefaultRepository(
+    private val apiDataSource: DataSource,
+    private val firebaseDataSource: DataSource,
+    private val localDataSource: DataSource
+) : Repository {
 
     // ApiDataSource
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {

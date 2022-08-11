@@ -11,7 +11,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -19,7 +19,7 @@ import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 class DetailViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val applicationRepository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -152,13 +152,8 @@ class DetailViewModel(
     }
 
     private fun getLiveScoreResult(imdbID: String, userID: String) {
-        Logger.i("getLiveScoreResult()")
-        Logger.i("getLiveScoreResult() userID = $userID")
-        Logger.i("getLiveScoreResult() imdbID = $imdbID")
         liveScore.value = applicationRepository.getLiveScore(imdbID, userID).value
         liveScore = applicationRepository.getLiveScore(imdbID, userID)
-        Logger.i("getLiveScoreResult() liveScore = $liveScore")
-        Logger.i("getLiveScoreResult() liveScore.value = ${liveScore.value}")
         _status.value = LoadApiStatus.DONE
     }
 
@@ -197,10 +192,7 @@ class DetailViewModel(
                     listOf()
                 }
             }
-
-            Logger.i("users = $users")
             usersMap = users.associateBy(User::id)
-            Logger.i("usersMap = $usersMap")
             _isUsersMapReady.value = true
         }
     }

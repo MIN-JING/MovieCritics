@@ -15,7 +15,7 @@ import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import java.util.*
@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class LoginViewModel(private val applicationRepository: Repository) : ViewModel() {
 
     private lateinit var googleSignInAccount: GoogleSignInAccount
     private lateinit var firebaseAuth: FirebaseAuth

@@ -90,20 +90,14 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
-            Logger.i("DetailViewModel.liveComments = $comments")
-
-            comments?.let {
+            comments?.let { commentList ->
                 val list = mutableListOf<String>()
-
-                for (comment in it) {
-                    Logger.i("comment.userID = ${comment.userID}")
+                commentList.forEach { comment ->
                     list.add(comment.userID)
                 }
-
                 val distinctUser = list.distinct()
                 Logger.i("DetailViewModel.liveComment userIDs = $distinctUser")
                 viewModel.getUsersResult(false, distinctUser)
-
                 viewModel.isUsersMapReady.observe(viewLifecycleOwner) { boolean ->
                     Logger.i("DetailViewModel.isUsersMapReady = $boolean")
                     reviewAdapter.submitList(comments)
@@ -114,8 +108,6 @@ class DetailFragment : Fragment() {
         val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.navigateToPending = $it")
-            Logger.i("DetailViewModel.navigateToPending runTime = ${it?.runtime}")
             it?.let {
                 mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
@@ -124,7 +116,6 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.navigateToReport.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.navigateToReport = $it")
             it?.let {
                 mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
@@ -133,7 +124,6 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.navigateToUserInfo.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.navigateToUserInfo = $it")
             it?.let {
                 mainViewModel.checkUser()
                 findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
@@ -142,16 +132,13 @@ class DetailFragment : Fragment() {
         }
 
         viewModel.navigateToTrailer.observe(viewLifecycleOwner) {
-            Logger.i("DetailViewModel.navigateToTrailer = $it")
             it?.let {
-                Logger.i("DetailViewModel.navigateToTrailer trailerUri =  ${it.trailerUri}")
                 findNavController().navigate(NavigationDirections.navigationToTrailerDialog(it))
                 viewModel.onTrailerNavigated()
             }
         }
 
         viewModel.leave.observe(viewLifecycleOwner) {
-            Logger.i(" DetailViewModel.leaveDetail = $it")
             it?.let {
                 if (it) findNavController().popBackStack()
             }

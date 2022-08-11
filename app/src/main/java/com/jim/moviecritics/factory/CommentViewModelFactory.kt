@@ -3,12 +3,12 @@ package com.jim.moviecritics.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.report.ReportViewModel
 
 @Suppress("UNCHECKED_CAST")
 class CommentViewModelFactory(
-    private val applicationRepository: ApplicationRepository,
+    private val applicationRepository: Repository,
     private val comment: Comment
 ) : ViewModelProvider.Factory {
 

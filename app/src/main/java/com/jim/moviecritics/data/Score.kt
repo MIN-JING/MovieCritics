@@ -9,7 +9,7 @@ data class Score(
     var id: String = "",
     var userID: String = "",
     var imdbID: String = "",
-    var createdTime: Timestamp = Timestamp.now(),
+    var createdTime: Timestamp = Timestamp(1659888000L, 100000000),
     var leisure: Float = 0F,
     var hit: Float = 0F,
     var cast: Float = 0F,

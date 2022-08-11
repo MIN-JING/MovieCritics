@@ -7,7 +7,7 @@ import com.jim.moviecritics.data.*
 /**
  *  Interface to the Application layers.
  */
-interface ApplicationRepository {
+interface Repository {
 
     // ApiDataSource
     suspend fun getPopularMovies(): Result<List<HomeItem>>

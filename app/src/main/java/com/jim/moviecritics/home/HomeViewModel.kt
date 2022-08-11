@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
-class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class HomeViewModel(private val applicationRepository: Repository) : ViewModel() {
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 

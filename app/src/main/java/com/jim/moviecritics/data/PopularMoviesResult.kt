@@ -15,10 +15,9 @@ data class PopularMoviesResult(
 
     fun toHomeItems(): List<HomeItem> {
         val items = mutableListOf<HomeItem>()
-
-        trends?.let {
-            for (trend in it) {
-                if (trend.posterUri != null) {
+        trends?.let { trendList ->
+            trendList.forEach { trend ->
+                if (!trend.posterUri.isNullOrEmpty()) {
                     trend.posterUri = "https://image.tmdb.org/t/p/w185" + trend.posterUri
                 }
                 items.add(HomeItem.PopularMovie(trend))

@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.login.UserManager
@@ -75,6 +76,8 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
+        Logger.i("timeStamp = ${Timestamp(1659888000L, 100000000)}")
+        Logger.i("timeStamp = ${Timestamp.now()}")
     }
 
     private fun setupNavController() {

@@ -7,7 +7,7 @@ import com.jim.moviecritics.data.*
 /**
  * Main entry point for accessing Application sources.
  */
-interface ApplicationDataSource {
+interface DataSource {
 
     // ApiDataSource
     suspend fun getPopularMovies(): Result<List<HomeItem>>

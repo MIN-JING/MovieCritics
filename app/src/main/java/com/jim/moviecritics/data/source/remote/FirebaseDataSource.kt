@@ -8,15 +8,15 @@ import com.google.firebase.firestore.Query
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationDataSource
+import com.jim.moviecritics.data.source.DataSource
 import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 /**
- * Implementation of the Application source that from network.
+ * Implementation of the Application source that from Firebase.
  */
-object FirebaseDataSource : ApplicationDataSource {
+object FirebaseDataSource : DataSource {
 
     private const val PATH_SCORES = "scores"
     private const val PATH_COMMENTS = "comments"

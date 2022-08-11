@@ -10,7 +10,7 @@ import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class PendingViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val applicationRepository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 

@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationDataSource
+import com.jim.moviecritics.data.source.DataSource
 import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -16,7 +16,10 @@ private const val PATH_SCORES = "scores"
 private const val PATH_COMMENTS = "comments"
 private const val PATH_USERS = "users"
 
-class LocalDataSource(val context: Context) : ApplicationDataSource {
+/**
+ * Implementation of the Application source that from mock data.
+ */
+class LocalDataSource(val context: Context) : DataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
         TODO("Not yet implemented")
@@ -162,7 +165,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             id = "",
             userID = "200001L",
             imdbID = "tt0343818",
-            createdTime = Timestamp.now(),
+            createdTime = Timestamp(1659888000L, 100000000),
             content = "Would Google LaMDA chat robot become a human?",
             likes = mutableListOf("300001L", "300002L", "300003L"),
             dislikes = mutableListOf("300001L", "300002L", "300003L")
@@ -196,7 +199,7 @@ class LocalDataSource(val context: Context) : ApplicationDataSource {
             id = "",
             userID = "2BLJSIq9AiNS9R4egUZqJLb7Stz2",
             imdbID = "tt0343818",
-            createdTime = Timestamp.now(),
+            createdTime = Timestamp(1659888000L, 100000000),
             leisure = 3.5F,
             hit = 5.0F,
             cast = 2.0F,

@@ -7,8 +7,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Find
 import com.jim.moviecritics.data.FindResult
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.User
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -16,7 +15,7 @@ import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 class ItemFavoriteViewModel(
-    private val applicationRepository: ApplicationRepository
+    private val applicationRepository: Repository
 ) : ViewModel() {
 
     private val _finds = MutableLiveData<List<Find>>()

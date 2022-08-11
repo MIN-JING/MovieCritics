@@ -3,7 +3,7 @@ package com.jim.moviecritics.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.MainViewModel
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.login.LoginViewModel
 import com.jim.moviecritics.profile.item.ItemFavoriteViewModel
@@ -12,7 +12,7 @@ import com.jim.moviecritics.search.SearchViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val applicationRepository: ApplicationRepository,
+    private val applicationRepository: Repository,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =

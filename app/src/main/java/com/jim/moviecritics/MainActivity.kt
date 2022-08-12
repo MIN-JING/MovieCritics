@@ -1,8 +1,6 @@
 package com.jim.moviecritics
 
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
@@ -10,32 +8,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import com.google.firebase.Timestamp
 import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.launch
+
 
 class MainActivity : BaseActivity() {
 
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
-
-    // get the height of status bar from system
-    private val statusBarHeight: Int
-        get() {
-            val resourceId = resources.getIdentifier(
-                "status_bar_height",
-                "dimen",
-                "android"
-            )
-            return when {
-                resourceId > 0 -> resources.getDimensionPixelSize(resourceId)
-                else -> 0
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +59,12 @@ class MainActivity : BaseActivity() {
         setupToolbar()
         setupBottomNav()
         setupNavController()
-        Logger.i("timeStamp = ${Timestamp(1659888000L, 100000000)}")
-        Logger.i("timeStamp = ${Timestamp.now()}")
+    }
+
+    private fun setupToolbar() {
+        val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
+        layoutParams.gravity = Gravity.CENTER
+        binding.textToolbarTitle.layoutParams = layoutParams
     }
 
     private fun setupNavController() {
@@ -140,45 +127,6 @@ class MainActivity : BaseActivity() {
                 }
             }
             false
-        }
-    }
-
-    private fun setupToolbar() {
-
-        binding.toolbar.setPadding(0, statusBarHeight, 0, 0)
-
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = ""
-
-        launch {
-
-            val dpi = resources.displayMetrics.densityDpi.toFloat()
-            val dpiMultiple = dpi / DisplayMetrics.DENSITY_DEFAULT
-
-            val cutoutHeight = getCutoutHeight()
-
-            Logger.i("====== ${Build.MODEL} ======")
-            Logger.i("$dpi dpi (${dpiMultiple}x)")
-            Logger.i("statusBarHeight: ${statusBarHeight}px/${statusBarHeight / dpiMultiple}dp")
-
-            when {
-                cutoutHeight > 0 -> {
-                    Logger.i("cutoutHeight: ${cutoutHeight}px/${cutoutHeight / dpiMultiple}dp")
-
-                    val oriStatusBarHeight = resources.getDimensionPixelSize(R.dimen.height_status_bar_origin)
-                    Logger.i("oriStatusBarHeight: $oriStatusBarHeight")
-                    binding.toolbar.setPadding(0, 0, 0, 0)
-                    val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
-                    layoutParams.gravity = Gravity.CENTER
-
-                    when (Build.MODEL) {
-                        "Pixel 5" -> { Logger.i("Build.MODEL is ${Build.MODEL}") }
-                        else -> { layoutParams.topMargin = statusBarHeight - oriStatusBarHeight }
-                    }
-                    binding.textToolbarTitle.layoutParams = layoutParams
-                }
-            }
-            Logger.i("====== ${Build.MODEL} ======")
         }
     }
 }

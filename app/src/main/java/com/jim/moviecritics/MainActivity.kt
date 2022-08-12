@@ -3,6 +3,7 @@ package com.jim.moviecritics
 import android.os.Bundle
 import android.view.Gravity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -14,8 +15,7 @@ import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
 import com.jim.moviecritics.util.Logger
 
-
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding

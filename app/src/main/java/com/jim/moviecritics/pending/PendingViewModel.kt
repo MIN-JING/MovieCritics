@@ -152,7 +152,8 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -181,7 +182,8 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -214,7 +216,8 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -243,7 +246,8 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -272,7 +276,8 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
+                        _error.value =
+                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -283,7 +288,11 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = repository.removeWatchlistMovie(imdbID = watch.imdbID, userID = watch.userID)) {
+                when (
+                    val result = repository.removeWatchlistMovie(
+                        imdbID = watch.imdbID, userID = watch.userID
+                    )
+                ) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE

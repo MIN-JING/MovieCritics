@@ -61,8 +61,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
             detailResultToMovie(detailResult)
             creditResultToMovie(creditResult)
             _status.postValue(LoadApiStatus.DONE)
-            Logger.i("getMovieFull() movie = $movie")
-            Logger.i("getMovieFull() movie.trailerUri = ${movie.trailerUri}")
             navigateToDetail(movie)
         }
     }

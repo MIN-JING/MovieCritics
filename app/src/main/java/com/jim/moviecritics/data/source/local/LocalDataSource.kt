@@ -190,7 +190,9 @@ class LocalDataSource(val context: Context) : DataSource {
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
-                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                    continuation.resume(
+                        Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing))
+                    )
                 }
             }
     }
@@ -228,7 +230,9 @@ class LocalDataSource(val context: Context) : DataSource {
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
-                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                    continuation.resume(
+                        Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing))
+                    )
                 }
             }
     }
@@ -272,7 +276,9 @@ class LocalDataSource(val context: Context) : DataSource {
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
-                    continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                    continuation.resume(
+                        Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing))
+                    )
                 }
             }
     }

@@ -101,7 +101,8 @@ class ReviewViewModel(
     }
 
     fun dateToday(): String {
-        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH).format(Timestamp.now().toDate())
+        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH)
+            .format(Timestamp.now().toDate())
         Logger.i("today = $today")
         return today
     }

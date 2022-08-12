@@ -38,10 +38,12 @@ data class SearchResult(
                         if (!look.knownFor.isNullOrEmpty()) {
                             look.knownFor.forEach { knownFor ->
                                 if (!knownFor.posterPath.isNullOrEmpty()) {
-                                    knownFor.posterPath = "https://image.tmdb.org/t/p/w185" + knownFor.posterPath
+                                    knownFor.posterPath =
+                                        "https://image.tmdb.org/t/p/w185" + knownFor.posterPath
                                 }
                                 if (!knownFor.backdropPath.isNullOrEmpty()) {
-                                    knownFor.backdropPath = "https://image.tmdb.org/t/p/w185" + knownFor.backdropPath
+                                    knownFor.backdropPath =
+                                        "https://image.tmdb.org/t/p/w185" + knownFor.backdropPath
                                 }
                             }
                         }

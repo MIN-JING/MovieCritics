@@ -39,15 +39,14 @@ class TrailerDialog : AppCompatDialogFragment() {
     ): View? {
 
         binding = DialogTrailerBinding.inflate(inflater, container, false)
-        binding.layoutTrailer.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutTrailer.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.value?.trailerUri?.let {
-            Logger.i("trailerUri = $it")
-            binding.webViewTrailer.loadUrl(it)
-        }
+        viewModel.movie.value?.trailerUri?.let { binding.webViewTrailer.loadUrl(it) }
 
         // Enable Javascript
         val webSettings = binding.webViewTrailer.settings
@@ -100,7 +99,9 @@ class TrailerDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutTrailer.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutTrailer.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

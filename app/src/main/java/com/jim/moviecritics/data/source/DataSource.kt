@@ -25,7 +25,11 @@ interface DataSource {
 
     fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>>
 
-    suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean>
+    suspend fun pushMultiWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp
+    ): Result<Boolean>
 
     suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean>
 
@@ -55,7 +59,10 @@ interface DataSource {
 
     fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>>
 
-    fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>>
+    fun getLiveCommentsExcludeBlocks(
+        imdbID: String,
+        blocks: List<String>
+    ): MutableLiveData<List<Comment>>
 
     suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 

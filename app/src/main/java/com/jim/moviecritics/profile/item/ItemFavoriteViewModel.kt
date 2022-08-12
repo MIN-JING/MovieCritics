@@ -52,13 +52,14 @@ class ItemFavoriteViewModel(
 
     private fun getFavoritesFull(favorites: List<String>) {
         val list = mutableListOf<Find>()
+        _status.value = LoadApiStatus.LOADING
 
         coroutineScope.launch {
             for (index in favorites.indices) {
                 Logger.i("Item Favorite request child $index")
                 Logger.i("favorites[index] = ${favorites[index]}")
                 val result =
-                    getFindResult(isInitial = true, imdbID = favorites[index], index = index)
+                    getFindResult(imdbID = favorites[index], index = index)
                 Logger.i("getFavoritesFull result = $result")
 
                 if (result?.finds != null) {
@@ -81,12 +82,8 @@ class ItemFavoriteViewModel(
         }
     }
 
-    private suspend fun getFindResult(isInitial: Boolean = false, imdbID: String, index: Int): FindResult? {
-
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
         return withContext(Dispatchers.IO) {
-
-            if (isInitial) _status.postValue(LoadApiStatus.LOADING)
-
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
@@ -95,17 +92,17 @@ class ItemFavoriteViewModel(
                 }
                 is Result.Fail -> {
                     _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
                     _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
                     _error.postValue(Util.getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }

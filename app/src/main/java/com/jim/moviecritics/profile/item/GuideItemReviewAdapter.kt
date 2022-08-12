@@ -17,7 +17,11 @@ class GuideItemReviewAdapter(
     class GuideItemReviewViewHolder(private var binding: ItemProfileGuideCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: Comment, onClickListener: OnClickListener, viewModel: ItemGuideViewModel) {
+        fun bind(
+            comment: Comment,
+            onClickListener: OnClickListener,
+            viewModel: ItemGuideViewModel
+        ) {
             binding.comment = comment
             binding.viewModel = viewModel
             binding.root.setOnClickListener { onClickListener.onClick(comment) }

@@ -62,13 +62,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val layoutParams = Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
+        val layoutParams = Toolbar.LayoutParams(
+            Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT
+        )
         layoutParams.gravity = Gravity.CENTER
         binding.textToolbarTitle.layoutParams = layoutParams
     }
 
     private fun setupNavController() {
-        findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+        findNavController(R.id.navHostFragment).addOnDestinationChangedListener {
+            navController: NavController, _: NavDestination, _: Bundle? ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.homeFragment -> CurrentFragmentType.HOME
                 R.id.searchFragment -> CurrentFragmentType.SEARCH
@@ -85,12 +88,14 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_home -> {
 
-                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToHomeFragment())
+                    findNavController(R.id.navHostFragment)
+                        .navigate(NavigationDirections.navigateToHomeFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_search -> {
 
-                    findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigateToSearchFragment())
+                    findNavController(R.id.navHostFragment)
+                        .navigate(NavigationDirections.navigateToSearchFragment())
                     return@setOnItemSelectedListener true
                 }
                 R.id.navigation_watchlist -> {
@@ -99,11 +104,13 @@ class MainActivity : AppCompatActivity() {
                         true -> {
                             viewModel.checkUser()
                             findNavController(R.id.navHostFragment).navigate(
-                                NavigationDirections.navigateToWatchlistFragment(viewModel.user.value)
+                                NavigationDirections
+                                    .navigateToWatchlistFragment(viewModel.user.value)
                             )
                         }
                         false -> {
-                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+                            findNavController(R.id.navHostFragment)
+                                .navigate(NavigationDirections.navigationToLoginDialog())
                             return@setOnItemSelectedListener false
                         }
                     }
@@ -119,7 +126,8 @@ class MainActivity : AppCompatActivity() {
                             )
                         }
                         false -> {
-                            findNavController(R.id.navHostFragment).navigate(NavigationDirections.navigationToLoginDialog())
+                            findNavController(R.id.navHostFragment)
+                                .navigate(NavigationDirections.navigationToLoginDialog())
                             return@setOnItemSelectedListener false
                         }
                     }

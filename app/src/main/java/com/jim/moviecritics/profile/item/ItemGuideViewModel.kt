@@ -63,10 +63,8 @@ class ItemGuideViewModel(
     }
 
     fun timeStampToDate(timestamp: Timestamp): String {
-        val date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+        return SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
             .format(timestamp.toDate())
-        Logger.i("date = $date")
-        return date
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
@@ -77,7 +75,7 @@ class ItemGuideViewModel(
                 Logger.i("Item Guide request child $index")
                 Logger.i("imdbID = $imdbID")
                 val result =
-                    getFindResult(isInitial = true, imdbID = imdbID, index = index)
+                    getFindResult(imdbID = imdbID, index = index)
                 Logger.i("getFindsByImdbIDs result = $result")
                 if (!result?.finds.isNullOrEmpty()) {
                     result?.finds?.forEach { find ->
@@ -100,11 +98,7 @@ class ItemGuideViewModel(
         }
     }
 
-    private suspend fun getFindResult(
-        isInitial: Boolean = false,
-        imdbID: String,
-        index: Int
-    ): FindResult? {
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
         return withContext(Dispatchers.IO) {
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
@@ -114,17 +108,17 @@ class ItemGuideViewModel(
                 }
                 is Result.Fail -> {
                     _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
                     _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
                     _error.postValue(Util.getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }

@@ -56,10 +56,14 @@ class ReportDialog : AppCompatDialogFragment() {
             it?.let {
                 when (it) {
                     ReportViewModel.INVALID_FORMAT_REASON_EMPTY -> {
-                        activity.showToast("The reason of the report was empty, please try choice again.")
+                        activity.showToast(
+                            "The reason of the report was empty, please try choice again."
+                        )
                     }
                     ReportViewModel.INVALID_FORMAT_MESSAGE_EMPTY -> {
-                        activity.showToast("The message of the report was empty, please try key-in again.")
+                        activity.showToast(
+                            "The message of the report was empty, please try key-in again."
+                        )
                     }
                     ReportViewModel.NO_ONE_KNOWS -> {
                         Logger.i("Unknown invalidReport value NO_ONE_KNOWS = $it")
@@ -72,7 +76,9 @@ class ReportDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutReport.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutReport.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

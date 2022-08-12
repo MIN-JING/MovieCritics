@@ -145,13 +145,13 @@ class WatchlistViewModel(
 
     private fun getLiveWatchListByUserResult(userID: String) {
         liveWatchListByUser = repository.getLiveWatchListByUser(userID)
-        Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchListByUser.value}")
     }
 
     fun toDate(timestamp: Timestamp?): String {
         var date = ""
         if (timestamp != null) {
-            date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(timestamp.toDate())
+            date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+                .format(timestamp.toDate())
             Logger.i("date = $date")
         }
         return date

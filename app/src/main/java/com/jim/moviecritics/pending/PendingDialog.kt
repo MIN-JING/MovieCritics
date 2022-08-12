@@ -28,7 +28,9 @@ import kotlinx.coroutines.launch
 
 class PendingDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<PendingViewModel> { getVmFactory(PendingDialogArgs.fromBundle(requireArguments()).movie) }
+    private val viewModel by viewModels<PendingViewModel> {
+        getVmFactory(PendingDialogArgs.fromBundle(requireArguments()).movie)
+    }
     private lateinit var binding: DialogPendingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +46,9 @@ class PendingDialog : AppCompatDialogFragment() {
     ): View? {
 
         binding = DialogPendingBinding.inflate(inflater, container, false)
-        binding.layoutPending.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutPending.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -67,19 +71,29 @@ class PendingDialog : AppCompatDialogFragment() {
             it?.let {
                 when (it) {
                     INVALID_FORMAT_LEISURE_EMPTY -> {
-                        activity.showToast("Leisure minimum score is 0.5 star, please try rating again.")
+                        activity.showToast(
+                            "Leisure minimum score is 0.5 star, please try rating again."
+                        )
                     }
                     INVALID_FORMAT_HIT_EMPTY -> {
-                        activity.showToast("Hit minimum score is 0.5 star, please try rating again.")
+                        activity.showToast(
+                            "Hit minimum score is 0.5 star, please try rating again."
+                        )
                     }
                     INVALID_FORMAT_CAST_EMPTY -> {
-                        activity.showToast("Cast minimum score is 0.5 star, please try rating again.")
+                        activity.showToast(
+                            "Cast minimum score is 0.5 star, please try rating again."
+                        )
                     }
                     INVALID_FORMAT_MUSIC_EMPTY -> {
-                        activity.showToast("Music minimum score is 0.5 star, please try rating again.")
+                        activity.showToast(
+                            "Music minimum score is 0.5 star, please try rating again."
+                        )
                     }
                     INVALID_FORMAT_STORY_EMPTY -> {
-                        activity.showToast("Story minimum score is 0.5 star, please try rating again.")
+                        activity.showToast(
+                            "Story minimum score is 0.5 star, please try rating again."
+                        )
                     }
                     NO_ONE_KNOWS -> {
                         Logger.i("Unknown invalidScore value NO_ONE_KNOWS = $it")
@@ -133,7 +147,9 @@ class PendingDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutPending.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutPending.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
 
         lifecycleScope.launch {
             delay(200)

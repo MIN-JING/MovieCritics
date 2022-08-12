@@ -107,7 +107,10 @@ class DefaultRepository(
         return firebaseDataSource.getLivePersonalFavorites(userID)
     }
 
-    override fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>> {
+    override fun getLiveCommentsExcludeBlocks(
+        imdbID: String,
+        blocks: List<String>
+    ): MutableLiveData<List<Comment>> {
         return firebaseDataSource.getLiveCommentsExcludeBlocks(imdbID, blocks)
     }
 

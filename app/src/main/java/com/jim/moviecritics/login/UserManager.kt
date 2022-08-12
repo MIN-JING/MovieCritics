@@ -11,7 +11,7 @@ object UserManager {
 
     var user: User? = null
 
-    var userId: String? = null
+    var userID: String? = null
         get() = MovieApplication.instance
             .getSharedPreferences(USER_DATA, Context.MODE_PRIVATE)
             .getString(USER_ID, null)
@@ -38,12 +38,12 @@ object UserManager {
      * It can be use to check login status directly
      */
     val isLoggedIn: Boolean
-        get() = userId != null
+        get() = userID != null
 
     /**
-     * Clear the [userId]
+     * Clear the [userID]
      */
     fun clear() {
-        userId = null
+        userID = null
     }
 }

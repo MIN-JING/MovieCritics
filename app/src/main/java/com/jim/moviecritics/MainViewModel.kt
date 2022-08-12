@@ -87,8 +87,8 @@ class MainViewModel(private val applicationRepository: Repository) : ViewModel()
 
     fun checkUser() {
         if (user.value == null) {
-            Logger.i("MainViewModel UserManager.useId = ${UserManager.userId}")
-            UserManager.userId?.let {
+            Logger.i("MainViewModel UserManager.useId = ${UserManager.userID}")
+            UserManager.userID?.let {
                 getUser(it)
             }
         }

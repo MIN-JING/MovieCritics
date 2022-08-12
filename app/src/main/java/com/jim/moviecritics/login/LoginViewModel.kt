@@ -121,8 +121,8 @@ class LoginViewModel(private val applicationRepository: Repository) : ViewModel(
                     val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
 
                     user.id = firebaseCurrentUser?.uid.toString()
-                    UserManager.userId = firebaseCurrentUser?.uid.toString()
-                    Logger.i("UserManager.userId = ${UserManager.userId}")
+                    UserManager.userID = firebaseCurrentUser?.uid.toString()
+                    Logger.i("UserManager.userId = ${UserManager.userID}")
                     user.firebaseToken = firebaseTokenResult?.token.toString()
                     Logger.i("Firebase Token = ${firebaseTokenResult?.token}")
 

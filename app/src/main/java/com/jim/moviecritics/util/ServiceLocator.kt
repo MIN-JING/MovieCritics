@@ -18,7 +18,6 @@ object ServiceLocator {
     fun provideRepository(context: Context): Repository {
         synchronized(this) {
             return repository
-                ?: repository
                 ?: createApplicationRepository(context)
         }
     }

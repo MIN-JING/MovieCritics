@@ -82,7 +82,7 @@ class WatchlistViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.userId?.let { getLiveWatchListByUserResult(it) }
+        UserManager.userID?.let { getLiveWatchListByUserResult(it) }
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {

@@ -157,8 +157,8 @@ class DetailFragment : Fragment() {
         radarChart.yAxis.setLabelCount(5, true)
         // NOT show yAxis label
         radarChart.yAxis.setDrawLabels(false)
-//        radarChart.scaleX = 1.05F
-//        radarChart.scaleY = 1.05F
+        radarChart.scaleX = 1.05F
+        radarChart.scaleY = 1.05F
         radarChart.data = radarData
         radarChart.invalidate()
     }

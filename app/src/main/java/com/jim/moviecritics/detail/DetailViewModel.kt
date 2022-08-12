@@ -105,9 +105,9 @@ class DetailViewModel(
         Logger.i("------------------------------------")
 
         movie.value?.let { movie ->
-            UserManager.userId?.let { userId ->
-                movie.imdbID?.let { getLiveScore(imdbID = it, userID = userId) }
-                movie.imdbID?.let { getLiveComments(imdbID = it) }
+            movie.imdbID?.let { imdbID ->
+                UserManager.userID?.let { getLiveScore(imdbID = imdbID, it) }
+                getLiveComments(imdbID = imdbID)
             }
             averageRatings = arrayListOf(
                 RadarEntry(movie.voteAverage),

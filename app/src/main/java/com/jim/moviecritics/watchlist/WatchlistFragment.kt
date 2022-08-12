@@ -33,8 +33,6 @@ class WatchlistFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-
-
         val intent = Intent(Intent.ACTION_INSERT)
         intent.data = CalendarContract.Events.CONTENT_URI
 
@@ -43,11 +41,15 @@ class WatchlistFragment : Fragment() {
                 Logger.i("WatchlistAdapter.OnClickListener it = $it")
                 watch = it
                 context?.let { context -> viewModel.showDateTimeDialog(context) }
-                intent.putExtra(CalendarContract.Events.TITLE,
-                    "[Movie] ${viewModel.movieMap[it.imdbID]?.title}")
+                intent.putExtra(
+                    CalendarContract.Events.TITLE,
+                    "[Movie] ${viewModel.movieMap[it.imdbID]?.title}"
+                )
                 intent.putExtra(CalendarContract.Events.EVENT_LOCATION, "AppWorks Cinema")
-                intent.putExtra(CalendarContract.Events.DESCRIPTION,
-                    viewModel.movieMap[it.imdbID]?.overview)
+                intent.putExtra(
+                    CalendarContract.Events.DESCRIPTION,
+                    viewModel.movieMap[it.imdbID]?.overview
+                )
                 intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
             },
             viewModel
@@ -72,8 +74,10 @@ class WatchlistFragment : Fragment() {
         viewModel.timeStamp.observe(viewLifecycleOwner) {
             Logger.i("Watchlist ViewModel.timeStamp = $it")
             intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, it.seconds * 1000L)
-            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
-                it.seconds * 1000L + 9000000L)
+            intent.putExtra(
+                CalendarContract.EXTRA_EVENT_END_TIME,
+                it.seconds * 1000L + 9000000L
+            )
             watch.expiration = it
             viewModel.pushSingleWatchListExpiration(watch)
 
@@ -88,8 +92,10 @@ class WatchlistFragment : Fragment() {
                     startActivity(intent)
                     Logger.i("pushSingleWatchListExpiration(watch) = $watch")
                 } else {
-                    Toast.makeText(context, "There is no app that can support this action",
-                        Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context, "There is no app that can support this action",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

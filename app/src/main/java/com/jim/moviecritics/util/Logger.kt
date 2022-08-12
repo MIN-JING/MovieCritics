@@ -4,7 +4,6 @@ import android.util.Log
 import com.jim.moviecritics.BuildConfig
 
 object Logger {
-
     private const val TAG = "Jim-MovieCritics"
 
     fun v(content: String) { if (BuildConfig.LOGGER_VISIABLE) Log.v(TAG, content) }

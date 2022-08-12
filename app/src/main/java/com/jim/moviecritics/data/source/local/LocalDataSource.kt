@@ -185,7 +185,8 @@ class LocalDataSource(val context: Context) : DataSource {
                     task.exception?.let {
                         Logger.w(
                             "[${this::class.simpleName}] " +
-                                    "Error getting documents. ${it.message}")
+                                "Error getting documents. ${it.message}"
+                        )
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -220,8 +221,10 @@ class LocalDataSource(val context: Context) : DataSource {
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] " +
-                                "Error getting documents. ${it.message}")
+                        Logger.w(
+                            "[${this::class.simpleName}] " +
+                                "Error getting documents. ${it.message}"
+                        )
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }
@@ -235,8 +238,8 @@ class LocalDataSource(val context: Context) : DataSource {
             id = "2BLJSIq9AiNS9R4egUZqJLb7Stz2",
             name = "REVIEWER",
             pictureUri = "https://1.bp.blogspot.com/-Tk6O2ne3XbI/Xtt6icgq3WI/" +
-                    "AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/" +
-                    "nebusoku_doctor_man.png",
+                "AAAAAAABZRU/MAxy4N6fTmIWjBqDVRHg6V2bq8gDY2P9ACNcBGAsYHQ/s400/" +
+                "nebusoku_doctor_man.png",
             location = "Taipei City",
             instagramUri = "https://www.instagram.com/panboknee/",
             twitterUri = "https://twitter.com/totorojack",
@@ -262,8 +265,10 @@ class LocalDataSource(val context: Context) : DataSource {
                     continuation.resume(Result.Success(true))
                 } else {
                     task.exception?.let {
-                        Logger.w("[${this::class.simpleName}] " +
-                                "Error getting documents. ${it.message}")
+                        Logger.w(
+                            "[${this::class.simpleName}] " +
+                                "Error getting documents. ${it.message}"
+                        )
                         continuation.resume(Result.Error(it))
                         return@addOnCompleteListener
                     }

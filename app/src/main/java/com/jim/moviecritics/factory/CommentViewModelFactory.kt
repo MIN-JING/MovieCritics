@@ -8,7 +8,7 @@ import com.jim.moviecritics.report.ReportViewModel
 
 @Suppress("UNCHECKED_CAST")
 class CommentViewModelFactory(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val comment: Comment
 ) : ViewModelProvider.Factory {
 
@@ -16,7 +16,7 @@ class CommentViewModelFactory(
         with(modelClass) {
             when {
                 isAssignableFrom(ReportViewModel::class.java) ->
-                    ReportViewModel(applicationRepository, comment)
+                    ReportViewModel(repository, comment)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

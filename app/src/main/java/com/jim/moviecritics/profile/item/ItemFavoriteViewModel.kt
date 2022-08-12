@@ -15,7 +15,7 @@ import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 class ItemFavoriteViewModel(
-    private val applicationRepository: Repository
+    private val repository: Repository
 ) : ViewModel() {
 
     private val _finds = MutableLiveData<List<Find>>()
@@ -23,23 +23,19 @@ class ItemFavoriteViewModel(
     val finds: LiveData<List<Find>>
         get() = _finds
 
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -91,7 +87,7 @@ class ItemFavoriteViewModel(
 
             if (isInitial) _status.postValue(LoadApiStatus.LOADING)
 
-            when (val result = applicationRepository.getFind(imdbID)) {
+            when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemDetailReviewBinding
 
-
 class ReviewAdapter(
     private val onClickListener: OnClickListener,
     val viewModel: DetailViewModel

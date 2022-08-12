@@ -17,7 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class BlockViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
     private val _user = MutableLiveData<User>().apply {
@@ -78,7 +78,7 @@ class BlockViewModel(
                 val result =
                     UserManager.user?.id?.let { userID ->
                         user.value?.id?.let { blockedID ->
-                            applicationRepository.pushBlockUser(
+                            repository.pushBlockUser(
                                 userID = userID,
                                 blockedID = blockedID
                             )

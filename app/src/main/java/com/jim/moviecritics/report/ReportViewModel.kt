@@ -20,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ReportViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: Comment
 ) : ViewModel() {
 
@@ -122,7 +122,7 @@ class ReportViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushReport(report)) {
+            when (val result = repository.pushReport(report)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

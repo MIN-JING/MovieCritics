@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 class TrailerViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -35,12 +35,10 @@ class TrailerViewModel(
     val error: LiveData<String?>
         get() = _error
 
-
     private val _leave = MutableLiveData<Boolean?>()
 
     val leave: LiveData<Boolean?>
         get() = _leave
-
 
     private var viewModelJob = Job()
 
@@ -56,7 +54,6 @@ class TrailerViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
     }
-
 
     fun leave() {
         _leave.value = true

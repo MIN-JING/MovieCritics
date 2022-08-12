@@ -14,7 +14,7 @@ import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 class DetailViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -37,20 +37,19 @@ class DetailViewModel(
 
     lateinit var averageRatings: ArrayList<RadarEntry>
 
-    var userRatings: ArrayList<RadarEntry>
-        = arrayListOf(
-        RadarEntry(0F),
-        RadarEntry(0F),
-        RadarEntry(0F),
-        RadarEntry(0F),
-        RadarEntry(0F)
-    )
+    var userRatings: ArrayList<RadarEntry> =
+        arrayListOf(
+            RadarEntry(0F),
+            RadarEntry(0F),
+            RadarEntry(0F),
+            RadarEntry(0F),
+            RadarEntry(0F)
+        )
 
     private val _isUsersMapReady = MutableLiveData<Boolean>()
 
     val isUsersMapReady: LiveData<Boolean>
         get() = _isUsersMapReady
-
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -88,7 +87,6 @@ class DetailViewModel(
 
     val navigateToTrailer: LiveData<Movie?>
         get() = _navigateToTrailer
-
 
     private var viewModelJob = Job()
 
@@ -156,19 +154,19 @@ class DetailViewModel(
     }
 
     private fun getLiveScore(imdbID: String, userID: String) {
-        liveScore.value = applicationRepository.getLiveScore(imdbID, userID).value
-        liveScore = applicationRepository.getLiveScore(imdbID, userID)
+        liveScore.value = repository.getLiveScore(imdbID, userID).value
+        liveScore = repository.getLiveScore(imdbID, userID)
     }
 
     private fun getLiveComments(imdbID: String) {
         _status.value = LoadApiStatus.LOADING
-        liveComments = applicationRepository.getLiveComments(imdbID)
+        liveComments = repository.getLiveComments(imdbID)
         _status.value = LoadApiStatus.DONE
     }
 
     fun getUsersResult(idList: List<String>) {
         coroutineScope.launch {
-            val result = applicationRepository.getUsersByIdList(idList = idList)
+            val result = repository.getUsersByIdList(idList = idList)
             users = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -197,11 +195,11 @@ class DetailViewModel(
 
     fun setRadarEntry(score: Score) {
         userRatings = arrayListOf(
-                RadarEntry(score.leisure),
-                RadarEntry(score.hit),
-                RadarEntry(score.cast),
-                RadarEntry(score.music),
-                RadarEntry(score.story)
-            )
+            RadarEntry(score.leisure),
+            RadarEntry(score.hit),
+            RadarEntry(score.cast),
+            RadarEntry(score.music),
+            RadarEntry(score.story)
+        )
     }
 }

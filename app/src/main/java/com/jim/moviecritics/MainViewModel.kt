@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-
 class MainViewModel(private val applicationRepository: Repository) : ViewModel() {
 
     // user: MainViewModel has User info to provide Drawer UI

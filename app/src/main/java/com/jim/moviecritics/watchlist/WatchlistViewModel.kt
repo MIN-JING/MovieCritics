@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 
 class WatchlistViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
 
@@ -54,23 +54,19 @@ class WatchlistViewModel(
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
 
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -122,7 +118,7 @@ class WatchlistViewModel(
         index: Int
     ): FindResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getFind(imdbID)) {
+            when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")
@@ -148,7 +144,7 @@ class WatchlistViewModel(
     }
 
     private fun getLiveWatchListByUserResult(userID: String) {
-        liveWatchListByUser = applicationRepository.getLiveWatchListByUser(userID)
+        liveWatchListByUser = repository.getLiveWatchListByUser(userID)
         Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchListByUser.value}")
     }
 
@@ -179,8 +175,10 @@ class WatchlistViewModel(
             TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 showHour = hour
                 showMinute = minute
-                Logger.i("Dialog selected year: $showYear, month: $showMonth," +
-                        " day: $showDay, hour: $showHour, minute: $showMinute")
+                Logger.i(
+                    "Dialog selected year: $showYear, month: $showMonth," +
+                        " day: $showDay, hour: $showHour, minute: $showMinute"
+                )
                 calendar.set(Calendar.YEAR, showYear)
                 calendar.set(Calendar.MONTH, showMonth)
                 calendar.set(Calendar.DAY_OF_MONTH, showDay)
@@ -216,7 +214,7 @@ class WatchlistViewModel(
 
     fun pushSingleWatchListExpiration(watch: Watch) {
         coroutineScope.launch {
-            when (val result = applicationRepository.pushSingleWatchListExpiration(watch)) {
+            when (val result = repository.pushSingleWatchListExpiration(watch)) {
                 is Result.Success -> {
                     _error.value = null
                 }

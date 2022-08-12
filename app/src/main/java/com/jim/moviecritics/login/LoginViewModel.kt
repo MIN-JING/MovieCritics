@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val applicationRepository: Repository) : ViewModel() {
+class LoginViewModel(private val repository: Repository) : ViewModel() {
 
     private lateinit var googleSignInAccount: GoogleSignInAccount
     private lateinit var firebaseAuth: FirebaseAuth
@@ -163,7 +163,7 @@ class LoginViewModel(private val applicationRepository: Repository) : ViewModel(
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushUserInfo(user)) {
+            when (val result = repository.pushUserInfo(user)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -188,7 +188,7 @@ class LoginViewModel(private val applicationRepository: Repository) : ViewModel(
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getUserById(id)
+            val result = repository.getUserById(id)
             UserManager.user = when (result) {
                 is Result.Success -> {
                     _error.value = null

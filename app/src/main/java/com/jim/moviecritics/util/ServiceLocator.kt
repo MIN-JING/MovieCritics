@@ -3,8 +3,8 @@ package com.jim.moviecritics.util
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.jim.moviecritics.data.source.DataSource
-import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.data.source.DefaultRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.data.source.local.LocalDataSource
 import com.jim.moviecritics.data.source.remote.ApiDataSource
 import com.jim.moviecritics.data.source.remote.FirebaseDataSource

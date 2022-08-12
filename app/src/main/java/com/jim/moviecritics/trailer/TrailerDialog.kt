@@ -1,6 +1,5 @@
 package com.jim.moviecritics.trailer
 
-
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -18,11 +17,7 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-
 class TrailerDialog : AppCompatDialogFragment() {
-
-
 
     private val viewModel by viewModels<TrailerViewModel> {
         getVmFactory(TrailerDialogArgs.fromBundle(requireArguments()).movie)
@@ -30,16 +25,16 @@ class TrailerDialog : AppCompatDialogFragment() {
 
     private lateinit var binding: DialogTrailerBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TrailerDialog)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
 
@@ -62,16 +57,18 @@ class TrailerDialog : AppCompatDialogFragment() {
         binding.webViewTrailer.webViewClient = WebViewClient()
 
         binding.webViewTrailer.canGoBack()
-        binding.webViewTrailer.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.action == MotionEvent.ACTION_UP
-                && binding.webViewTrailer.canGoBack()) {
-                binding.webViewTrailer.goBack()
-                return@OnKeyListener true
+        binding.webViewTrailer.setOnKeyListener(
+            View.OnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_BACK &&
+                    event.action == MotionEvent.ACTION_UP &&
+                    binding.webViewTrailer.canGoBack()
+                ) {
+                    binding.webViewTrailer.goBack()
+                    return@OnKeyListener true
+                }
+                false
             }
-            false
-        })
-
+        )
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog movie = $it")

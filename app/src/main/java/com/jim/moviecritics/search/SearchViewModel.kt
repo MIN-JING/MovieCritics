@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val applicationRepository: Repository) : ViewModel() {
+class SearchViewModel(private val repository: Repository) : ViewModel() {
     private val _lookItems = MutableLiveData<List<LookItem>>()
 
     val lookItems: LiveData<List<LookItem>>
@@ -65,7 +65,7 @@ class SearchViewModel(private val applicationRepository: Repository) : ViewModel
         coroutineScope.launch {
             if (isInitial) _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getSearchMulti(queryKey)
+            val result = repository.getSearchMulti(queryKey)
 
             _lookItems.value = when (result) {
                 is Result.Success -> {

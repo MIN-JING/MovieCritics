@@ -18,7 +18,7 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class PendingViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -138,7 +138,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.pushWatchedMovie(imdbID, userID)) {
+                when (val result = repository.pushWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -167,7 +167,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.removeWatchedMovie(imdbID, userID)) {
+                when (val result = repository.removeWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -200,7 +200,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.pushLikedMovie(imdbID, userID)) {
+                when (val result = repository.pushLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -229,7 +229,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.removeLikedMovie(imdbID, userID)) {
+                when (val result = repository.removeLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -258,7 +258,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.pushWatchlistMovie(watch)) {
+                when (val result = repository.pushWatchlistMovie(watch)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -283,7 +283,7 @@ class PendingViewModel(
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
 
-                when (val result = applicationRepository.removeWatchlistMovie(imdbID = watch.imdbID, userID = watch.userID)) {
+                when (val result = repository.removeWatchlistMovie(imdbID = watch.imdbID, userID = watch.userID)) {
                     is Result.Success -> {
                         _error.value = null
                         _status.value = LoadApiStatus.DONE
@@ -314,7 +314,7 @@ class PendingViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushScore(score)) {
+            when (val result = repository.pushScore(score)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -381,7 +381,7 @@ class PendingViewModel(
     }
 
     private fun getLiveWatchListResult(imdbID: String, userID: String) {
-        liveWatchList = applicationRepository.getLiveWatchList(imdbID, userID)
+        liveWatchList = repository.getLiveWatchList(imdbID, userID)
         _status.value = LoadApiStatus.DONE
     }
 
@@ -411,16 +411,19 @@ class PendingViewModel(
     }
 
     fun share(): Intent {
-        val share = Intent.createChooser(Intent().apply {
-            action = Intent.ACTION_SEND
-            type = "*/*"
-            putExtra(Intent.EXTRA_TEXT, "https://www.themoviedb.org/movie/${movie.value?.id}")
-            putExtra(Intent.EXTRA_TITLE, movie.value?.title)
-            val uri = Uri.parse(movie.value?.posterUri)
-            Logger.i("share uri = $uri")
-            clipData = ClipData.newRawUri("", uri)
-            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        }, null)
+        val share = Intent.createChooser(
+            Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "*/*"
+                putExtra(Intent.EXTRA_TEXT, "https://www.themoviedb.org/movie/${movie.value?.id}")
+                putExtra(Intent.EXTRA_TITLE, movie.value?.title)
+                val uri = Uri.parse(movie.value?.posterUri)
+                Logger.i("share uri = $uri")
+                clipData = ClipData.newRawUri("", uri)
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            },
+            null
+        )
 
         return share
     }

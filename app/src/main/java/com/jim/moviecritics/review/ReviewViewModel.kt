@@ -21,7 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ReviewViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -114,7 +114,7 @@ class ReviewViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushComment(comment)) {
+            when (val result = repository.pushComment(comment)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

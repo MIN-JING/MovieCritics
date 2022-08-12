@@ -11,7 +11,7 @@ import com.jim.moviecritics.trailer.TrailerViewModel
 
 @Suppress("UNCHECKED_CAST")
 class MovieViewModelFactory(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val movie: Movie
 ) : ViewModelProvider.Factory {
 
@@ -19,16 +19,16 @@ class MovieViewModelFactory(
         with(modelClass) {
             when {
                 isAssignableFrom(DetailViewModel::class.java) ->
-                    DetailViewModel(applicationRepository, movie)
+                    DetailViewModel(repository, movie)
 
                 isAssignableFrom(PendingViewModel::class.java) ->
-                    PendingViewModel(applicationRepository, movie)
+                    PendingViewModel(repository, movie)
 
                 isAssignableFrom(ReviewViewModel::class.java) ->
-                    ReviewViewModel(applicationRepository, movie)
+                    ReviewViewModel(repository, movie)
 
                 isAssignableFrom(TrailerViewModel::class.java) ->
-                    TrailerViewModel(applicationRepository, movie)
+                    TrailerViewModel(repository, movie)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

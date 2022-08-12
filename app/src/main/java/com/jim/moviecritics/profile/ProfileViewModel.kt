@@ -10,11 +10,12 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.Job
 
 class ProfileViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
 
-    // After login to Firebase server through Google, at the same time we can get user info to provide to display ui
+    // After login to Firebase server through Google
+    // at the same time we can get user info to provide to display ui
     private val _user = MutableLiveData<User>().apply {
         arguments?.let {
             value = it
@@ -24,21 +25,17 @@ class ProfileViewModel(
     val user: LiveData<User>
         get() = _user
 
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-
     private var viewModelJob = Job()
-
 
     override fun onCleared() {
         super.onCleared()

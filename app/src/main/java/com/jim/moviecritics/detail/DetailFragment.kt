@@ -61,7 +61,8 @@ class DetailFragment : Fragment() {
                 viewModel.setRadarEntry(it)
                 showRadarChart(
                     binding.radarChartRating,
-                    setRatings(viewModel.averageRatings, viewModel.userRatings))
+                    setRatings(viewModel.averageRatings, viewModel.userRatings)
+                )
             }
         }
 
@@ -124,8 +125,8 @@ class DetailFragment : Fragment() {
 
     private fun setRatings(
         averageRatings: ArrayList<RadarEntry>,
-        userRatings: ArrayList<RadarEntry>)
-    : RadarData {
+        userRatings: ArrayList<RadarEntry>
+    ): RadarData {
         val averageRatingsSet = RadarDataSet(averageRatings, "Average ratings")
         averageRatingsSet.lineWidth = 2F
         averageRatingsSet.isDrawHighlightCircleEnabled = true

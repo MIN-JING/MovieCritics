@@ -19,7 +19,7 @@ import java.util.*
 import kotlinx.coroutines.*
 
 class ItemGuideViewModel(
-    private val applicationRepository: Repository
+    private val repository: Repository
 ) : ViewModel() {
 
     var livePersonalComments = MutableLiveData<List<Comment>>()
@@ -31,23 +31,19 @@ class ItemGuideViewModel(
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
 
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -63,12 +59,12 @@ class ItemGuideViewModel(
     }
 
     private fun getLivePersonalCommentsResult(userID: String) {
-        livePersonalComments = applicationRepository.getLivePersonalComments(userID)
+        livePersonalComments = repository.getLivePersonalComments(userID)
     }
 
     fun timeStampToDate(timestamp: Timestamp): String {
         val date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
-                    .format(timestamp.toDate())
+            .format(timestamp.toDate())
         Logger.i("date = $date")
         return date
     }
@@ -110,7 +106,7 @@ class ItemGuideViewModel(
         index: Int
     ): FindResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getFind(imdbID)) {
+            when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")

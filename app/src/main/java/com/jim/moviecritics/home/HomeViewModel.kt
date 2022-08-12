@@ -12,7 +12,7 @@ import com.jim.moviecritics.util.Util.getString
 import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
-class HomeViewModel(private val applicationRepository: Repository) : ViewModel() {
+class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 
@@ -26,29 +26,24 @@ class HomeViewModel(private val applicationRepository: Repository) : ViewModel()
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
-
 
     private val _navigateToDetail = MutableLiveData<Movie?>()
 
     val navigateToDetail: LiveData<Movie?>
         get() = _navigateToDetail
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
-
 
     init {
         Logger.i("------------------------------------")
@@ -83,7 +78,7 @@ class HomeViewModel(private val applicationRepository: Repository) : ViewModel()
     private fun getPopularMoviesResult() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-            val result = applicationRepository.getPopularMovies()
+            val result = repository.getPopularMovies()
             _homeItems.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -115,7 +110,7 @@ class HomeViewModel(private val applicationRepository: Repository) : ViewModel()
         id: Int
     ): MovieDetailResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getMovieDetail(id)) {
+            when (val result = repository.getMovieDetail(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")
@@ -146,7 +141,7 @@ class HomeViewModel(private val applicationRepository: Repository) : ViewModel()
         id: Int
     ): CreditResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getMovieCredit(id)) {
+            when (val result = repository.getMovieCredit(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")

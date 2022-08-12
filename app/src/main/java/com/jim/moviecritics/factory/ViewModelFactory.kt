@@ -12,29 +12,29 @@ import com.jim.moviecritics.search.SearchViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
                 isAssignableFrom(MainViewModel::class.java) ->
-                    MainViewModel(applicationRepository)
+                    MainViewModel(repository)
 
                 isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(applicationRepository)
+                    HomeViewModel(repository)
 
                 isAssignableFrom(SearchViewModel::class.java) ->
-                    SearchViewModel(applicationRepository)
+                    SearchViewModel(repository)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
-                    LoginViewModel(applicationRepository)
+                    LoginViewModel(repository)
 
                 isAssignableFrom(ItemGuideViewModel::class.java) ->
-                    ItemGuideViewModel(applicationRepository)
+                    ItemGuideViewModel(repository)
 
                 isAssignableFrom(ItemFavoriteViewModel::class.java) ->
-                    ItemFavoriteViewModel(applicationRepository)
+                    ItemFavoriteViewModel(repository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

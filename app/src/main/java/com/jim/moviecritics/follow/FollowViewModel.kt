@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
 class FollowViewModel(
-    private val applicationRepository: Repository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
 

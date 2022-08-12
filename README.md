@@ -3,7 +3,7 @@
 
 :zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
 
-![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.1.0-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-21%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
+![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.1.1-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-26%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
 
 [<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/mipmap-xxhdpi/ic_app.png" height="70" /><img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/bg_google_play.png" height="70" />](https://play.google.com/store/apps/details?id=com.jim.moviecritics)
 
@@ -59,14 +59,15 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 3. Once you have it open `MovieCritics/local.properties` file in the **Project** folder tree and add your own API key in line 9 `key.api.tmdb="YOUR_TMDB_API_KEY_STRING"`
 
 ## Requirement
-SDK version 21+
+SDK version 26+
 
 Gradle version 7.2
 
 ## Version History
 |    Version    |                    Detail                                                         |
 | ------------- | --------------------------------------------------------------------------------- |
-|     1.1.0     |   Modify colors in dark mode                                                              |
+|     1.1.1     |   Refactor radar chart                                                            |
+|     1.1.0     |   Modify colors in dark mode                                                      |
 |     1.0.9     |   Fix loginning flow                                                              |
 |     1.0.8     |   Fix loginning flow                                                              |
 |     1.0.7     |   Add WebView for YouTube trailer, movie info sharing features, and refactoring   |

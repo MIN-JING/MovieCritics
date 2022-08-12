@@ -3,12 +3,12 @@ package com.jim.moviecritics.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.data.Comment
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.report.ReportViewModel
 
 @Suppress("UNCHECKED_CAST")
 class CommentViewModelFactory(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
     private val comment: Comment
 ) : ViewModelProvider.Factory {
 
@@ -16,7 +16,7 @@ class CommentViewModelFactory(
         with(modelClass) {
             when {
                 isAssignableFrom(ReportViewModel::class.java) ->
-                    ReportViewModel(applicationRepository, comment)
+                    ReportViewModel(repository, comment)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

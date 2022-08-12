@@ -3,7 +3,7 @@ package com.jim.moviecritics.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jim.moviecritics.MainViewModel
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.home.HomeViewModel
 import com.jim.moviecritics.login.LoginViewModel
 import com.jim.moviecritics.profile.item.ItemFavoriteViewModel
@@ -12,29 +12,29 @@ import com.jim.moviecritics.search.SearchViewModel
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory constructor(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>) =
         with(modelClass) {
             when {
                 isAssignableFrom(MainViewModel::class.java) ->
-                    MainViewModel(applicationRepository)
+                    MainViewModel(repository)
 
                 isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(applicationRepository)
+                    HomeViewModel(repository)
 
                 isAssignableFrom(SearchViewModel::class.java) ->
-                    SearchViewModel(applicationRepository)
+                    SearchViewModel(repository)
 
                 isAssignableFrom(LoginViewModel::class.java) ->
-                    LoginViewModel(applicationRepository)
+                    LoginViewModel(repository)
 
                 isAssignableFrom(ItemGuideViewModel::class.java) ->
-                    ItemGuideViewModel(applicationRepository)
+                    ItemGuideViewModel(repository)
 
                 isAssignableFrom(ItemFavoriteViewModel::class.java) ->
-                    ItemFavoriteViewModel(applicationRepository)
+                    ItemFavoriteViewModel(repository)
 
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

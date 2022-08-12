@@ -20,7 +20,9 @@ import kotlinx.coroutines.launch
 
 class FollowDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<FollowViewModel> { getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey) }
+    private val viewModel by viewModels<FollowViewModel> {
+        getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey)
+    }
     private lateinit var binding: DialogFollowBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +37,9 @@ class FollowDialog : AppCompatDialogFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = DialogFollowBinding.inflate(inflater, container, false)
-        binding.layoutFollow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutFollow.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -59,7 +63,9 @@ class FollowDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutFollow.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutFollow.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

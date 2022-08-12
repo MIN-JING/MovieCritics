@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class SearchViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class SearchViewModel(private val repository: Repository) : ViewModel() {
     private val _lookItems = MutableLiveData<List<LookItem>>()
 
     val lookItems: LiveData<List<LookItem>>
@@ -65,7 +65,7 @@ class SearchViewModel(private val applicationRepository: ApplicationRepository) 
         coroutineScope.launch {
             if (isInitial) _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getSearchMulti(queryKey)
+            val result = repository.getSearchMulti(queryKey)
 
             _lookItems.value = when (result) {
                 is Result.Success -> {

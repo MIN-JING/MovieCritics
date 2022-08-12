@@ -15,7 +15,7 @@ import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import java.util.*
@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class LoginViewModel(private val repository: Repository) : ViewModel() {
 
     private lateinit var googleSignInAccount: GoogleSignInAccount
     private lateinit var firebaseAuth: FirebaseAuth
@@ -121,8 +121,8 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository) :
                     val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
 
                     user.id = firebaseCurrentUser?.uid.toString()
-                    UserManager.userId = firebaseCurrentUser?.uid.toString()
-                    Logger.i("UserManager.userId = ${UserManager.userId}")
+                    UserManager.userID = firebaseCurrentUser?.uid.toString()
+                    Logger.i("UserManager.userId = ${UserManager.userID}")
                     user.firebaseToken = firebaseTokenResult?.token.toString()
                     Logger.i("Firebase Token = ${firebaseTokenResult?.token}")
 
@@ -163,7 +163,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository) :
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushUserInfo(user)) {
+            when (val result = repository.pushUserInfo(user)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE
@@ -188,7 +188,7 @@ class LoginViewModel(private val applicationRepository: ApplicationRepository) :
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
 
-            val result = applicationRepository.getUserById(id)
+            val result = repository.getUserById(id)
             UserManager.user = when (result) {
                 is Result.Success -> {
                     _error.value = null

@@ -18,7 +18,9 @@ import kotlinx.coroutines.launch
 
 class BlockDialog : AppCompatDialogFragment() {
 
-    private val viewModel by viewModels<BlockViewModel> { getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey) }
+    private val viewModel by viewModels<BlockViewModel> {
+        getVmFactory(FollowDialogArgs.fromBundle(requireArguments()).userKey)
+    }
     private lateinit var binding: DialogBlockBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,9 @@ class BlockDialog : AppCompatDialogFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = DialogBlockBinding.inflate(inflater, container, false)
-        binding.layoutBlock.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutBlock.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -49,7 +53,9 @@ class BlockDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutBlock.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutBlock.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

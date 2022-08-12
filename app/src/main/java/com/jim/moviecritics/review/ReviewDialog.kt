@@ -41,7 +41,9 @@ class ReviewDialog : AppCompatDialogFragment() {
     ): View? {
 
         binding = DialogReviewBinding.inflate(inflater, container, false)
-        binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutReview.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -69,7 +71,9 @@ class ReviewDialog : AppCompatDialogFragment() {
             it?.let {
                 when (it) {
                     INVALID_FORMAT_COMMENT_EMPTY -> {
-                        activity.showToast("The content of the review was empty, please try key-in again.")
+                        activity.showToast(
+                            "The content of the review was empty, please try key-in again."
+                        )
                     }
                     NO_ONE_KNOWS -> {
                         Logger.i("Unknown invalidComment value NO_ONE_KNOWS = $it")
@@ -92,7 +96,9 @@ class ReviewDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutReview.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutReview.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util.getString
 import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
-class HomeViewModel(private val applicationRepository: ApplicationRepository) : ViewModel() {
+class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     private val _homeItems = MutableLiveData<List<HomeItem>>()
 
@@ -26,29 +26,24 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
     val status: LiveData<LoadApiStatus>
         get() = _status
 
-
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
-
 
     private val _navigateToDetail = MutableLiveData<Movie?>()
 
     val navigateToDetail: LiveData<Movie?>
         get() = _navigateToDetail
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
-
 
     init {
         Logger.i("------------------------------------")
@@ -66,8 +61,6 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
             detailResultToMovie(detailResult)
             creditResultToMovie(creditResult)
             _status.postValue(LoadApiStatus.DONE)
-            Logger.i("getMovieFull() movie = $movie")
-            Logger.i("getMovieFull() movie.trailerUri = ${movie.trailerUri}")
             navigateToDetail(movie)
         }
     }
@@ -83,7 +76,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
     private fun getPopularMoviesResult() {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-            val result = applicationRepository.getPopularMovies()
+            val result = repository.getPopularMovies()
             _homeItems.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -115,7 +108,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         id: Int
     ): MovieDetailResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getMovieDetail(id)) {
+            when (val result = repository.getMovieDetail(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")
@@ -146,7 +139,7 @@ class HomeViewModel(private val applicationRepository: ApplicationRepository) : 
         id: Int
     ): CreditResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getMovieCredit(id)) {
+            when (val result = repository.getMovieCredit(id)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")

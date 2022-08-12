@@ -29,7 +29,9 @@ class LoginDialog : AppCompatDialogFragment() {
     private lateinit var binding: DialogLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             viewModel.handleSignInResult(task)
@@ -53,16 +55,10 @@ class LoginDialog : AppCompatDialogFragment() {
         // Build a GoogleSignInClient with the options specified by gso.
         googleSignInClient =
             context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }
-                ?: throw NullPointerException("Expression 'context?.let { GoogleSignIn.getClient(it, gso) }' must not be null")
-
-        // Firebase log out
-//        Firebase.auth.signOut()
-
-        // Google log out
-//        googleSignInClient.signOut()
-
-        // Firebase auth
-//        firebaseAuth = Firebase.auth
+                ?: throw NullPointerException(
+                    "Expression 'context?.let { GoogleSignIn.getClient(it, gso) }'" +
+                        " must not be null"
+                )
     }
 
     override fun onCreateView(
@@ -72,7 +68,9 @@ class LoginDialog : AppCompatDialogFragment() {
     ): View? {
 
         binding = DialogLoginBinding.inflate(inflater, container, false)
-        binding.layoutLogin.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutLogin.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -114,7 +112,9 @@ class LoginDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutLogin.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutLogin.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

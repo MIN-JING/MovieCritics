@@ -14,7 +14,7 @@ import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.*
 
 class WatchlistViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
 
@@ -54,23 +54,19 @@ class WatchlistViewModel(
     val isMovieMapReady: LiveData<Boolean>
         get() = _isMovieMapReady
 
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
         get() = _status
-
 
     private val _error = MutableLiveData<String?>()
 
     val error: LiveData<String?>
         get() = _error
 
-
     private var viewModelJob = Job()
 
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
 
     override fun onCleared() {
         super.onCleared()
@@ -82,7 +78,7 @@ class WatchlistViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        UserManager.userId?.let { getLiveWatchListByUserResult(it) }
+        UserManager.userID?.let { getLiveWatchListByUserResult(it) }
     }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
@@ -122,7 +118,7 @@ class WatchlistViewModel(
         index: Int
     ): FindResult? {
         return withContext(Dispatchers.IO) {
-            when (val result = applicationRepository.getFind(imdbID)) {
+            when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
                     Logger.w("child $index result: ${result.data}")
@@ -148,14 +144,14 @@ class WatchlistViewModel(
     }
 
     private fun getLiveWatchListByUserResult(userID: String) {
-        liveWatchListByUser = applicationRepository.getLiveWatchListByUser(userID)
-        Logger.i("getLiveWatchListResult() liveComments.value = ${liveWatchListByUser.value}")
+        liveWatchListByUser = repository.getLiveWatchListByUser(userID)
     }
 
     fun toDate(timestamp: Timestamp?): String {
         var date = ""
         if (timestamp != null) {
-            date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH).format(timestamp.toDate())
+            date = SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+                .format(timestamp.toDate())
             Logger.i("date = $date")
         }
         return date
@@ -179,8 +175,10 @@ class WatchlistViewModel(
             TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 showHour = hour
                 showMinute = minute
-                Logger.i("Dialog selected year: $showYear, month: $showMonth," +
-                        " day: $showDay, hour: $showHour, minute: $showMinute")
+                Logger.i(
+                    "Dialog selected year: $showYear, month: $showMonth," +
+                        " day: $showDay, hour: $showHour, minute: $showMinute"
+                )
                 calendar.set(Calendar.YEAR, showYear)
                 calendar.set(Calendar.MONTH, showMonth)
                 calendar.set(Calendar.DAY_OF_MONTH, showDay)
@@ -216,7 +214,7 @@ class WatchlistViewModel(
 
     fun pushSingleWatchListExpiration(watch: Watch) {
         coroutineScope.launch {
-            when (val result = applicationRepository.pushSingleWatchListExpiration(watch)) {
+            when (val result = repository.pushSingleWatchListExpiration(watch)) {
                 is Result.Success -> {
                     _error.value = null
                 }

@@ -9,7 +9,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Report
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -20,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ReportViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
     private val arguments: Comment
 ) : ViewModel() {
 
@@ -122,7 +122,7 @@ class ReportViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushReport(report)) {
+            when (val result = repository.pushReport(report)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

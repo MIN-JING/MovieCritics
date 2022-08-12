@@ -1,6 +1,5 @@
 package com.jim.moviecritics.trailer
 
-
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -18,11 +17,7 @@ import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-
 class TrailerDialog : AppCompatDialogFragment() {
-
-
 
     private val viewModel by viewModels<TrailerViewModel> {
         getVmFactory(TrailerDialogArgs.fromBundle(requireArguments()).movie)
@@ -30,29 +25,28 @@ class TrailerDialog : AppCompatDialogFragment() {
 
     private lateinit var binding: DialogTrailerBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //***** Let layout showing match constraint *****
+        // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TrailerDialog)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
 
         binding = DialogTrailerBinding.inflate(inflater, container, false)
-        binding.layoutTrailer.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_up))
+        binding.layoutTrailer.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.movie.value?.trailerUri?.let {
-            Logger.i("trailerUri = $it")
-            binding.webViewTrailer.loadUrl(it)
-        }
+        viewModel.movie.value?.trailerUri?.let { binding.webViewTrailer.loadUrl(it) }
 
         // Enable Javascript
         val webSettings = binding.webViewTrailer.settings
@@ -62,16 +56,18 @@ class TrailerDialog : AppCompatDialogFragment() {
         binding.webViewTrailer.webViewClient = WebViewClient()
 
         binding.webViewTrailer.canGoBack()
-        binding.webViewTrailer.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_BACK
-                && event.action == MotionEvent.ACTION_UP
-                && binding.webViewTrailer.canGoBack()) {
-                binding.webViewTrailer.goBack()
-                return@OnKeyListener true
+        binding.webViewTrailer.setOnKeyListener(
+            View.OnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_BACK &&
+                    event.action == MotionEvent.ACTION_UP &&
+                    binding.webViewTrailer.canGoBack()
+                ) {
+                    binding.webViewTrailer.goBack()
+                    return@OnKeyListener true
+                }
+                false
             }
-            false
-        })
-
+        )
 
         viewModel.movie.observe(viewLifecycleOwner) {
             Logger.i("Review Dialog movie = $it")
@@ -103,7 +99,9 @@ class TrailerDialog : AppCompatDialogFragment() {
     }
 
     override fun dismiss() {
-        binding.layoutTrailer.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_slide_down))
+        binding.layoutTrailer.startAnimation(
+            AnimationUtils.loadAnimation(context, R.anim.anim_slide_down)
+        )
         lifecycleScope.launch {
             delay(200)
             super.dismiss()

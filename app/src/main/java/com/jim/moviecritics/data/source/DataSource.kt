@@ -5,9 +5,9 @@ import com.google.firebase.Timestamp
 import com.jim.moviecritics.data.*
 
 /**
- *  Interface to the Application layers.
+ * Main entry point for accessing Application sources.
  */
-interface ApplicationRepository {
+interface DataSource {
 
     // ApiDataSource
     suspend fun getPopularMovies(): Result<List<HomeItem>>
@@ -25,7 +25,11 @@ interface ApplicationRepository {
 
     fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>>
 
-    suspend fun pushMultiWatchListExpiration(imdbID: String, userID: String, expiration: Timestamp): Result<Boolean>
+    suspend fun pushMultiWatchListExpiration(
+        imdbID: String,
+        userID: String,
+        expiration: Timestamp
+    ): Result<Boolean>
 
     suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean>
 
@@ -49,13 +53,16 @@ interface ApplicationRepository {
 
     fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>>
 
-    fun getLiveCommentsExcludeBlocks(imdbID: String, blocks: List<String>): MutableLiveData<List<Comment>>
-
     suspend fun pushComment(comment: Comment): Result<Boolean>
 
     suspend fun delete(comment: Comment): Result<Boolean>
 
     fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>>
+
+    fun getLiveCommentsExcludeBlocks(
+        imdbID: String,
+        blocks: List<String>
+    ): MutableLiveData<List<Comment>>
 
     suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean>
 

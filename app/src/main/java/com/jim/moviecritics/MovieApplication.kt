@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.util.ServiceLocator
 import kotlin.properties.Delegates
 
@@ -16,7 +16,7 @@ import kotlin.properties.Delegates
 class MovieApplication : Application() {
 
     // Depends on the flavor
-    val applicationRepository: ApplicationRepository
+    val applicationRepository: Repository
         get() = ServiceLocator.provideRepository(this)
 
     companion object {

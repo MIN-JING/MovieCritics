@@ -136,17 +136,11 @@
         app:popUpTo="@id/navigation"
         app:popUpToInclusive="true"/>
 
-    <action android:id="@+id/navigate_to_search_fragment" app:destination="@id/searchFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_search_fragment" app:destination="@id/searchFragment" />
 
-    <action android:id="@+id/navigate_to_watchlist_fragment" app:destination="@id/watchlistFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_watchlist_fragment" app:destination="@id/watchlistFragment" />
 
-    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment"
-        app:popUpTo="@id/navigation"
-        app:popUpToInclusive="true"/>
+    <action android:id="@+id/navigate_to_profile_fragment" app:destination="@id/profileFragment" />
 
     <action android:id="@+id/navigate_to_detail_fragment" app:destination="@id/detailFragment"/>
 

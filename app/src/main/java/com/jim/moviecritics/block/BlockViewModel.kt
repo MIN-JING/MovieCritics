@@ -7,7 +7,7 @@ import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -17,7 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class BlockViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
     private val arguments: User?
 ) : ViewModel() {
     private val _user = MutableLiveData<User>().apply {
@@ -78,7 +78,7 @@ class BlockViewModel(
                 val result =
                     UserManager.user?.id?.let { userID ->
                         user.value?.id?.let { blockedID ->
-                            applicationRepository.pushBlockUser(
+                            repository.pushBlockUser(
                                 userID = userID,
                                 blockedID = blockedID
                             )

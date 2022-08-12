@@ -9,7 +9,7 @@ import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
-import com.jim.moviecritics.data.source.ApplicationRepository
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
@@ -21,7 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ReviewViewModel(
-    private val applicationRepository: ApplicationRepository,
+    private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
@@ -101,7 +101,8 @@ class ReviewViewModel(
     }
 
     fun dateToday(): String {
-        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH).format(Timestamp.now().toDate())
+        val today = SimpleDateFormat("EEEE, MMMM dd, yyyy", Locale.ENGLISH)
+            .format(Timestamp.now().toDate())
         Logger.i("today = $today")
         return today
     }
@@ -114,7 +115,7 @@ class ReviewViewModel(
 
             _status.value = LoadApiStatus.LOADING
 
-            when (val result = applicationRepository.pushComment(comment)) {
+            when (val result = repository.pushComment(comment)) {
                 is Result.Success -> {
                     _error.value = null
                     _status.value = LoadApiStatus.DONE

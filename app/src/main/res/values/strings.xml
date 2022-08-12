@@ -21,7 +21,7 @@
     <string name="navigation_profile">Profile</string>
 
     <!-- Home -->
-    <string name="text_home_popular">Popular movie for the week</string>
+    <string name="text_home_popular">Popular movies this week</string>
 
     <!-- Item Home Popular -->
     <string name="image_home_poster">Movie poster</string>

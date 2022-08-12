@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.MainViewModel
-import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentDetailBinding
@@ -37,7 +36,6 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.isLiveDataDesign = MovieApplication.instance.isLiveDataDesign()
         binding.viewModel = viewModel
 
         binding.recyclerviewDetailCast.adapter = CastAdapter(

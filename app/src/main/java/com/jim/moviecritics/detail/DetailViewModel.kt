@@ -4,13 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.RadarEntry
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.*
 
 class DetailViewModel(
@@ -200,7 +198,6 @@ class DetailViewModel(
                     listOf()
                 }
                 else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                     listOf()
                 }

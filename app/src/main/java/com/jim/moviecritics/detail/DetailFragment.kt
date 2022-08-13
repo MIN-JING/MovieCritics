@@ -157,7 +157,9 @@ class DetailFragment : Fragment() {
         averageRatings: ArrayList<RadarEntry>,
         userRatings: ArrayList<RadarEntry>
     ): RadarData {
-        val averageRatingsSet = RadarDataSet(averageRatings, "Average ratings")
+        val averageRatingsSet = RadarDataSet(
+            averageRatings, "TMDB ratings with linear transformation"
+        )
         averageRatingsSet.lineWidth = 2F
         averageRatingsSet.isDrawHighlightCircleEnabled = true
         averageRatingsSet.setDrawHighlightIndicators(false)

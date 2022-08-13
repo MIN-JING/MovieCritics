@@ -33,14 +33,11 @@ class HomeFragment : Fragment() {
         binding.recyclerviewHomePopular.adapter = HomeAdapter(
             HomeAdapter.OnClickListener {
                 Logger.i("HomeAdapter.OnClickListener it = $it")
-                Logger.i("HomeAdapter.OnClickListener it.id = ${it.id}")
                 viewModel.getMovieFull(it.id)
             }
         )
 
         viewModel.navigateToDetail.observe(viewLifecycleOwner) {
-            Logger.i("HomeViewModel.navigateToDetail = $it")
-            Logger.i("HomeViewModel.navigateToDetail it.runTime = ${it?.runtime}")
             it?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
                 viewModel.onDetailNavigated()

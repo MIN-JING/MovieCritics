@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.data.RadarData
@@ -14,7 +13,6 @@ import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
-import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentDetailBinding
@@ -53,6 +51,11 @@ class DetailFragment : Fragment() {
 
         binding.recyclerviewDetailReview.adapter = reviewAdapter
 
+        showRadarChart(
+            binding.radarChartRating,
+            setRatings(viewModel.averageRatings, viewModel.userRatings)
+        )
+
         viewModel.liveScore.observe(viewLifecycleOwner) { score ->
             Logger.i("DetailViewModel.liveScore = $score")
             score?.let {
@@ -80,29 +83,51 @@ class DetailFragment : Fragment() {
             }
         }
 
-        val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-
         viewModel.navigateToPending.observe(viewLifecycleOwner) {
             it?.let {
-                mainViewModel.checkUser()
-                findNavController().navigate(NavigationDirections.navigateToPendingDialog(it))
-                viewModel.onPendingNavigated()
+                when (viewModel.isLoggedIn) {
+                    true -> {
+                        viewModel.checkUser()
+                        findNavController()
+                            .navigate(NavigationDirections.navigateToPendingDialog(it))
+                        viewModel.onPendingNavigated()
+                    }
+                    false -> {
+                        viewModel.navigateToLogin()
+                    }
+                }
             }
         }
 
         viewModel.navigateToReport.observe(viewLifecycleOwner) {
             it?.let {
-                mainViewModel.checkUser()
-                findNavController().navigate(NavigationDirections.navigationToReportDialog(it))
-                viewModel.onReportNavigated()
+                when (viewModel.isLoggedIn) {
+                    true -> {
+                        viewModel.checkUser()
+                        findNavController()
+                            .navigate(NavigationDirections.navigationToReportDialog(it))
+                        viewModel.onReportNavigated()
+                    }
+                    false -> {
+                        viewModel.navigateToLogin()
+                    }
+                }
             }
         }
 
         viewModel.navigateToUserInfo.observe(viewLifecycleOwner) {
             it?.let {
-                mainViewModel.checkUser()
-                findNavController().navigate(NavigationDirections.navigationToFollowDialog(it))
-                viewModel.onUserInfoNavigated()
+                when (viewModel.isLoggedIn) {
+                    true -> {
+                        viewModel.checkUser()
+                        findNavController()
+                            .navigate(NavigationDirections.navigationToFollowDialog(it))
+                        viewModel.onUserInfoNavigated()
+                    }
+                    false -> {
+                        viewModel.navigateToLogin()
+                    }
+                }
             }
         }
 
@@ -110,6 +135,13 @@ class DetailFragment : Fragment() {
             it?.let {
                 findNavController().navigate(NavigationDirections.navigationToTrailerDialog(it))
                 viewModel.onTrailerNavigated()
+            }
+        }
+
+        viewModel.navigateToLogin.observe(viewLifecycleOwner) {
+            it?.let {
+                findNavController().navigate(NavigationDirections.navigationToLoginDialog())
+                viewModel.onLoginNavigated()
             }
         }
 

@@ -98,7 +98,6 @@ class BlockViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }

@@ -25,9 +25,13 @@ class DetailViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-    val user = UserManager.user
+    var user = UserManager.user
 
     private var users = listOf<User>()
+
+    // check user login status
+    val isLoggedIn
+        get() = UserManager.isLoggedIn
 
     var usersMap = mapOf<String, User>()
 
@@ -87,6 +91,11 @@ class DetailViewModel(
 
     val navigateToTrailer: LiveData<Movie?>
         get() = _navigateToTrailer
+
+    private val _navigateToLogin = MutableLiveData<Boolean?>()
+
+    val navigateToLogin: LiveData<Boolean?>
+        get() = _navigateToLogin
 
     private var viewModelJob = Job()
 
@@ -149,6 +158,14 @@ class DetailViewModel(
         _navigateToTrailer.value = null
     }
 
+    fun navigateToLogin() {
+        _navigateToLogin.value = true
+    }
+
+    fun onLoginNavigated() {
+        _navigateToLogin.value = null
+    }
+
     fun leave() {
         _leave.value = true
     }
@@ -201,5 +218,35 @@ class DetailViewModel(
             RadarEntry(score.music),
             RadarEntry(score.story)
         )
+    }
+
+    fun checkUser() {
+        Logger.i("DetailViewModel user = $user")
+        if (user == null) {
+            UserManager.userID?.let { getUser(it) }
+        }
+    }
+
+    private fun getUser(userID: String) {
+        coroutineScope.launch {
+            val result = repository.getUserById(userID)
+            user = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    null
+                }
+                else -> {
+                    null
+                }
+            }
+        }
     }
 }

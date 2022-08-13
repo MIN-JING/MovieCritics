@@ -49,7 +49,7 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 /**
- * A public interface that exposes the [getPopularMovies] methods
+ * A public interface that exposes the methods
  */
 interface TmdbApiService {
 

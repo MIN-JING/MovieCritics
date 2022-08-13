@@ -7,14 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.MovieApplication
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class PendingViewModel(
@@ -36,7 +33,10 @@ class PendingViewModel(
     val user: LiveData<User>
         get() = _user
 
-    var liveWatchList = MutableLiveData<Watch>()
+
+    val watch = Watch()
+
+    var liveWatch = MutableLiveData<Watch>()
 
     private val _isWatch = MutableLiveData<Boolean>()
 
@@ -69,8 +69,6 @@ class PendingViewModel(
 
     val invalidScore: LiveData<Int>
         get() = _invalidScore
-
-    val watch = Watch()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -137,7 +135,6 @@ class PendingViewModel(
             Logger.i("user.value?.watched add = ${user.value?.watched}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
@@ -152,8 +149,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -167,7 +162,6 @@ class PendingViewModel(
             Logger.i("user.value?.watched remove = ${user.value?.watched}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.removeWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
@@ -182,8 +176,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -201,7 +193,6 @@ class PendingViewModel(
             Logger.i("user.value?.liked add = ${user.value?.liked}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
@@ -216,8 +207,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -231,7 +220,6 @@ class PendingViewModel(
             Logger.i("user.value?.liked remove = ${user.value?.liked}")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.removeLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
@@ -246,8 +234,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -258,10 +244,8 @@ class PendingViewModel(
 
     fun onClickWatchList() {
         if (isWatchList.value != true) {
-            Logger.i("isWatchList.value != true")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushWatchlistMovie(watch)) {
                     is Result.Success -> {
                         _error.value = null
@@ -276,18 +260,14 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
             }
             _isWatchList.value = true
         } else {
-            Logger.i("isWatchList.value != false")
             coroutineScope.launch {
                 _status.value = LoadApiStatus.LOADING
-
                 when (
                     val result = repository.removeWatchlistMovie(
                         imdbID = watch.imdbID, userID = watch.userID
@@ -306,7 +286,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -316,13 +295,9 @@ class PendingViewModel(
     }
 
     private fun pushScore(score: Score) {
-
         coroutineScope.launch {
-
             score.createdTime = Timestamp.now()
-
             _status.value = LoadApiStatus.LOADING
-
             when (val result = repository.pushScore(score)) {
                 is Result.Success -> {
                     _error.value = null
@@ -337,7 +312,6 @@ class PendingViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
@@ -345,15 +319,12 @@ class PendingViewModel(
     }
 
     private fun prepareScore() {
-        Logger.i("prepareScore()")
-
         if (leisurePending.value != null &&
             hitPending.value != null &&
             castPending.value != null &&
             musicPending.value != null &&
             storyPending.value != null
         ) {
-
             Logger.i("五個分數都不是 null")
             score.leisure = leisurePending.value!!
             score.hit = hitPending.value!!
@@ -361,16 +332,12 @@ class PendingViewModel(
             score.music = musicPending.value!!
             score.story = storyPending.value!!
             score.average = (
-                (
-                    (
-                        leisurePending.value!! +
-                            hitPending.value!! +
-                            castPending.value!! +
-                            musicPending.value!! +
-                            storyPending.value!!
-                        ) * 10
-                    ).roundToInt() / 50
-                ).toFloat()
+                (leisurePending.value!! +
+                    hitPending.value!! +
+                    castPending.value!! +
+                    musicPending.value!! +
+                    storyPending.value!!) / 5
+            )
 
             Logger.i("score.average = ${score.average}")
             Logger.i("score = $score")
@@ -390,7 +357,7 @@ class PendingViewModel(
     }
 
     private fun getLiveWatchListResult(imdbID: String, userID: String) {
-        liveWatchList = repository.getLiveWatchList(imdbID, userID)
+        liveWatch = repository.getLiveWatchList(imdbID, userID)
         _status.value = LoadApiStatus.DONE
     }
 

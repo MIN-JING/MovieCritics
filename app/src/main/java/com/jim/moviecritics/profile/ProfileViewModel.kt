@@ -3,11 +3,16 @@ package com.jim.moviecritics.profile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
+import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val repository: Repository,
@@ -35,7 +40,11 @@ class ProfileViewModel(
     val error: LiveData<String?>
         get() = _error
 
+    // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
+
+    // the Coroutine runs using the Main (UI) dispatcher
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     override fun onCleared() {
         super.onCleared()
@@ -46,5 +55,37 @@ class ProfileViewModel(
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
+        if (user.value == null) {
+            UserManager.userID?.let { getUserByID(it) }
+        }
+    }
+
+    private fun getUserByID(id: String) {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+            val result = repository.getUserById(id)
+            UserManager.user = when (result) {
+                is Result.Success -> {
+                    _error.value = null
+                    _status.value = LoadApiStatus.DONE
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.value = result.error
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                is Result.Error -> {
+                    _error.value = result.exception.toString()
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+                else -> {
+                    _status.value = LoadApiStatus.ERROR
+                    null
+                }
+            }
+            _user.value = UserManager.user
+        }
     }
 }

@@ -11,8 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.jim.moviecritics.MovieApplication
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
@@ -95,9 +93,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
             googleSignInAccount = completedTask.getResult(ApiException::class.java)
             val googleId = googleSignInAccount.id ?: ""
             Logger.i("Google ID = $googleId")
-
             googleSignInAccount.idToken?.let { firebaseAuthWithGoogle(it) }
-
             user.name = googleSignInAccount.givenName + "  " + googleSignInAccount.familyName
             user.email = googleSignInAccount.email.toString()
             user.pictureUri = googleSignInAccount.photoUrl.toString()
@@ -109,7 +105,6 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
-
         firebaseAuth = Firebase.auth
 
         firebaseAuth.signInWithCredential(credential)
@@ -118,11 +113,12 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
                     Logger.i("signInWithCredential:success")
 
                     val firebaseCurrentUser = firebaseAuth.currentUser
-                    val firebaseTokenResult = firebaseCurrentUser?.getIdToken(false)?.result
+                    val firebaseTokenResult
+                        = firebaseCurrentUser?.getIdToken(false)?.result
 
                     user.id = firebaseCurrentUser?.uid.toString()
                     UserManager.userID = firebaseCurrentUser?.uid.toString()
-                    Logger.i("UserManager.userId = ${UserManager.userID}")
+                    Logger.i("UserManager.userID = ${UserManager.userID}")
                     user.firebaseToken = firebaseTokenResult?.token.toString()
                     Logger.i("Firebase Token = ${firebaseTokenResult?.token}")
 
@@ -138,7 +134,8 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
 
                     if (task.result.additionalUserInfo?.isNewUser == true) {
                         Logger.i("Firebase additionalUserInfo.isNewUser == true")
-                        Logger.i("signInWithCredential user.uid = ${firebaseCurrentUser?.uid}")
+                        Logger.i("signInWithCredential user.uid" +
+                                "= ${firebaseCurrentUser?.uid}")
                         Logger.i("isNewUser == true, user = $user")
                         pushUserInfo(user)
                         UserManager.user = user
@@ -148,7 +145,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
                     } else {
                         Logger.i("Firebase additionalUserInfo.isNewUser == false")
                         Logger.i("isNewUser == false, user = $user")
-                        getUserById(user.id)
+                        getUserByID(user.id)
                         _statusLogIn.value = FIREBASE_LOG_IN_EVER
                         leave()
                     }
@@ -162,7 +159,6 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
     private fun pushUserInfo(user: User) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-
             when (val result = repository.pushUserInfo(user)) {
                 is Result.Success -> {
                     _error.value = null
@@ -177,17 +173,15 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
         }
     }
 
-    private fun getUserById(id: String) {
+    private fun getUserByID(id: String) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-
             val result = repository.getUserById(id)
             UserManager.user = when (result) {
                 is Result.Success -> {
@@ -206,7 +200,6 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
                     null
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
@@ -216,10 +209,8 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
     }
 
     companion object {
-
         const val FIREBASE_LOG_IN_FIRST = 0x11
         const val FIREBASE_LOG_IN_EVER = 0x12
-
         const val NO_ONE_KNOWS = 0x21
     }
 }

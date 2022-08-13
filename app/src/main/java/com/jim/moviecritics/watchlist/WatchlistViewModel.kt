@@ -18,7 +18,6 @@ import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util.getString
 import com.jim.moviecritics.work.WatchlistReminderWorker
 import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
 import java.text.SimpleDateFormat
@@ -89,7 +88,7 @@ class WatchlistViewModel(
                 Logger.i("Item WatchList request child $index")
                 Logger.i("imdbID = $imdbID")
                 val result =
-                    getFindResult(isInitial = true, imdbID = imdbID, index = index)
+                    getFindResult(imdbID = imdbID, index = index)
                 Logger.i("getFindsByImdbIDs result = $result")
                 if (!result?.finds.isNullOrEmpty()) {
                     result?.finds?.forEach { find ->
@@ -112,11 +111,7 @@ class WatchlistViewModel(
         }
     }
 
-    private suspend fun getFindResult(
-        isInitial: Boolean = false,
-        imdbID: String,
-        index: Int
-    ): FindResult? {
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
         return withContext(Dispatchers.IO) {
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
@@ -126,17 +121,16 @@ class WatchlistViewModel(
                 }
                 is Result.Fail -> {
                     _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
                     _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
-                    _error.postValue(getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }

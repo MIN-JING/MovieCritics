@@ -23,7 +23,6 @@ class DetailViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-    var user = UserManager.user
 
     private var users = listOf<User>()
 
@@ -215,35 +214,5 @@ class DetailViewModel(
             RadarEntry(score.music),
             RadarEntry(score.story)
         )
-    }
-
-    fun checkUser() {
-        Logger.i("DetailViewModel user = $user")
-        if (user == null) {
-            UserManager.userID?.let { getUser(it) }
-        }
-    }
-
-    private fun getUser(userID: String) {
-        coroutineScope.launch {
-            val result = repository.getUserById(userID)
-            user = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    null
-                }
-                else -> {
-                    null
-                }
-            }
-        }
     }
 }

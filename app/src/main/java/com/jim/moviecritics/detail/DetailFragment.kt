@@ -87,7 +87,6 @@ class DetailFragment : Fragment() {
             it?.let {
                 when (viewModel.isLoggedIn) {
                     true -> {
-                        viewModel.checkUser()
                         findNavController()
                             .navigate(NavigationDirections.navigateToPendingDialog(it))
                         viewModel.onPendingNavigated()
@@ -103,7 +102,6 @@ class DetailFragment : Fragment() {
             it?.let {
                 when (viewModel.isLoggedIn) {
                     true -> {
-                        viewModel.checkUser()
                         findNavController()
                             .navigate(NavigationDirections.navigationToReportDialog(it))
                         viewModel.onReportNavigated()
@@ -119,7 +117,6 @@ class DetailFragment : Fragment() {
             it?.let {
                 when (viewModel.isLoggedIn) {
                     true -> {
-                        viewModel.checkUser()
                         findNavController()
                             .navigate(NavigationDirections.navigationToFollowDialog(it))
                         viewModel.onUserInfoNavigated()

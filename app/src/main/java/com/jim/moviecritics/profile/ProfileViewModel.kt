@@ -60,10 +60,10 @@ class ProfileViewModel(
         }
     }
 
-    private fun getUserByID(id: String) {
+    private fun getUserByID(userID: String) {
         coroutineScope.launch {
             _status.value = LoadApiStatus.LOADING
-            val result = repository.getUserById(id)
+            val result = repository.getUserById(userID)
             UserManager.user = when (result) {
                 is Result.Success -> {
                     _error.value = null

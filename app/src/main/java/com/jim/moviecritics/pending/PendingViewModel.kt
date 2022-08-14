@@ -7,14 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.MovieApplication
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class PendingViewModel(
@@ -29,14 +26,15 @@ class PendingViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-    private val _user = MutableLiveData<User>().apply {
-        value = UserManager.user
-    }
+    private val _user = MutableLiveData<User?>()
 
-    val user: LiveData<User>
+    val user: LiveData<User?>
         get() = _user
 
-    var liveWatchList = MutableLiveData<Watch>()
+
+    val watch = Watch()
+
+    var liveWatch = MutableLiveData<Watch>()
 
     private val _isWatch = MutableLiveData<Boolean>()
 
@@ -69,8 +67,6 @@ class PendingViewModel(
 
     val invalidScore: LiveData<Int>
         get() = _invalidScore
-
-    val watch = Watch()
 
     // status: The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<LoadApiStatus>()
@@ -109,22 +105,33 @@ class PendingViewModel(
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        _isWatch.value = user.value?.watched?.contains(movie.value?.imdbID.toString())
-        _isLike.value = user.value?.liked?.contains(movie.value?.imdbID.toString())
+        initScoreAndWatch()
+        setButtonStatus()
+    }
 
-        getLiveWatchListResult(movie.value?.imdbID.toString(), user.value?.id.toString())
-
-        score.imdbID = movie.value?.imdbID.toString()
-        score.userID = user.value?.id.toString()
-
-        movie.value?.imdbID.toString().let {
-            score.imdbID = it
-            watch.imdbID = it
+    private fun initScoreAndWatch() {
+        movie.value?.imdbID?.let { imdbID ->
+            score.imdbID = imdbID
+            watch.imdbID = imdbID
+            UserManager.userID?.let { userID ->
+                getLiveWatchListResult(imdbID = imdbID, userID = userID)
+                score.userID = userID
+                watch.userID = userID
+            }
         }
+    }
 
-        user.value?.id.toString().let {
-            score.userID = it
-            watch.userID = it
+    private fun setButtonStatus() {
+        coroutineScope.launch {
+            _status.value = LoadApiStatus.LOADING
+            val userResult = UserManager.userID?.let { getUserByID(it) }
+            _user.value = userResult
+            movie.value?.imdbID?.let { imdbID ->
+                Logger.i("setButtonStatus() user.value = ${user.value}")
+                _isWatch.value = user.value?.watched?.contains(imdbID)
+                _isLike.value = user.value?.liked?.contains(imdbID)
+            }
+            _status.value = LoadApiStatus.DONE
         }
     }
 
@@ -136,12 +143,9 @@ class PendingViewModel(
             user.value?.watched?.add(imdbID)
             Logger.i("user.value?.watched add = ${user.value?.watched}")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -152,8 +156,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -166,12 +168,9 @@ class PendingViewModel(
             user.value?.watched?.remove(imdbID)
             Logger.i("user.value?.watched remove = ${user.value?.watched}")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.removeWatchedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -182,8 +181,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -200,12 +197,9 @@ class PendingViewModel(
             user.value?.liked?.add(imdbID)
             Logger.i("user.value?.liked add = ${user.value?.liked}")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -216,8 +210,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -230,12 +222,9 @@ class PendingViewModel(
             user.value?.liked?.remove(imdbID)
             Logger.i("user.value?.liked remove = ${user.value?.liked}")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.removeLikedMovie(imdbID, userID)) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -246,8 +235,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -258,14 +245,10 @@ class PendingViewModel(
 
     fun onClickWatchList() {
         if (isWatchList.value != true) {
-            Logger.i("isWatchList.value != true")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (val result = repository.pushWatchlistMovie(watch)) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -276,18 +259,13 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value =
-                            MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
             }
             _isWatchList.value = true
         } else {
-            Logger.i("isWatchList.value != false")
             coroutineScope.launch {
-                _status.value = LoadApiStatus.LOADING
-
                 when (
                     val result = repository.removeWatchlistMovie(
                         imdbID = watch.imdbID, userID = watch.userID
@@ -295,7 +273,6 @@ class PendingViewModel(
                 ) {
                     is Result.Success -> {
                         _error.value = null
-                        _status.value = LoadApiStatus.DONE
                     }
                     is Result.Fail -> {
                         _error.value = result.error
@@ -306,7 +283,6 @@ class PendingViewModel(
                         _status.value = LoadApiStatus.ERROR
                     }
                     else -> {
-                        _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                         _status.value = LoadApiStatus.ERROR
                     }
                 }
@@ -316,13 +292,9 @@ class PendingViewModel(
     }
 
     private fun pushScore(score: Score) {
-
         coroutineScope.launch {
-
             score.createdTime = Timestamp.now()
-
             _status.value = LoadApiStatus.LOADING
-
             when (val result = repository.pushScore(score)) {
                 is Result.Success -> {
                     _error.value = null
@@ -337,7 +309,6 @@ class PendingViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
@@ -345,15 +316,12 @@ class PendingViewModel(
     }
 
     private fun prepareScore() {
-        Logger.i("prepareScore()")
-
         if (leisurePending.value != null &&
             hitPending.value != null &&
             castPending.value != null &&
             musicPending.value != null &&
             storyPending.value != null
         ) {
-
             Logger.i("五個分數都不是 null")
             score.leisure = leisurePending.value!!
             score.hit = hitPending.value!!
@@ -361,17 +329,12 @@ class PendingViewModel(
             score.music = musicPending.value!!
             score.story = storyPending.value!!
             score.average = (
-                (
-                    (
-                        leisurePending.value!! +
-                            hitPending.value!! +
-                            castPending.value!! +
-                            musicPending.value!! +
-                            storyPending.value!!
-                        ) * 10
-                    ).roundToInt() / 50
-                ).toFloat()
-
+                (leisurePending.value!! +
+                    hitPending.value!! +
+                    castPending.value!! +
+                    musicPending.value!! +
+                    storyPending.value!!) / 5
+            )
             Logger.i("score.average = ${score.average}")
             Logger.i("score = $score")
             pushScore(score)
@@ -390,8 +353,7 @@ class PendingViewModel(
     }
 
     private fun getLiveWatchListResult(imdbID: String, userID: String) {
-        liveWatchList = repository.getLiveWatchList(imdbID, userID)
-        _status.value = LoadApiStatus.DONE
+        liveWatch = repository.getLiveWatchList(imdbID, userID)
     }
 
     fun isWatchListEqualFalse() {
@@ -424,7 +386,8 @@ class PendingViewModel(
             Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "*/*"
-                putExtra(Intent.EXTRA_TEXT, "https://www.themoviedb.org/movie/${movie.value?.id}")
+                putExtra(Intent.EXTRA_TEXT,
+                    "https://www.themoviedb.org/movie/${movie.value?.id}")
                 putExtra(Intent.EXTRA_TITLE, movie.value?.title)
                 val uri = Uri.parse(movie.value?.posterUri)
                 Logger.i("share uri = $uri")
@@ -433,8 +396,33 @@ class PendingViewModel(
             },
             null
         )
-
         return share
+    }
+
+    private suspend fun getUserByID(userID: String) : User? {
+        return withContext(Dispatchers.IO) {
+            when (val result = repository.getUserById(userID)) {
+                is Result.Success -> {
+                    _error.postValue(null)
+                    Logger.w("child result: ${result.data}")
+                    result.data
+                }
+                is Result.Fail -> {
+                    _error.postValue(result.error)
+                    _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                is Result.Error -> {
+                    _error.postValue(result.exception.toString())
+                    _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+                else -> {
+                    _status.postValue(LoadApiStatus.ERROR)
+                    null
+                }
+            }
+        }
     }
 
     companion object {
@@ -443,9 +431,7 @@ class PendingViewModel(
         const val INVALID_FORMAT_CAST_EMPTY = 0x13
         const val INVALID_FORMAT_MUSIC_EMPTY = 0x14
         const val INVALID_FORMAT_STORY_EMPTY = 0x15
-
         const val NO_ONE_KNOWS = 0x21
-
         const val SCORE_IS_FILLED = 0x31
     }
 }

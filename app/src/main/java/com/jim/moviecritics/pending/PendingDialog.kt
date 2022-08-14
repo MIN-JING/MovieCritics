@@ -57,8 +57,8 @@ class PendingDialog : AppCompatDialogFragment() {
             startActivity(viewModel.share())
         }
 
-        viewModel.liveWatchList.observe(viewLifecycleOwner) {
-            Logger.i("Pending Dialog liveWatchList = $it")
+        viewModel.liveWatch.observe(viewLifecycleOwner) {
+            Logger.i("Pending Dialog liveWatch = $it")
             if (it.id == "") {
                 viewModel.isWatchListEqualFalse()
             } else {
@@ -111,7 +111,7 @@ class PendingDialog : AppCompatDialogFragment() {
                     dismiss()
                     viewModel.onLeaveCompleted()
                 }
-                else -> { Logger.i("viewModel.leave.value != true") }
+                else -> { Logger.i("PendingViewModel.leave.value != true") }
             }
         }
 

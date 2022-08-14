@@ -8,13 +8,12 @@ import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.*
-import com.jim.moviecritics.util.Util.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val applicationRepository: Repository) : ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel() {
 
     // user: MainViewModel has User info to provide Drawer UI
     private val _user = MutableLiveData<User>()
@@ -75,7 +74,6 @@ class MainViewModel(private val applicationRepository: Repository) : ViewModel()
     }
 
     fun setupUser(user: User) {
-
         _user.value = user
         Logger.i("=============")
         Logger.i("| setupUser |")
@@ -86,10 +84,8 @@ class MainViewModel(private val applicationRepository: Repository) : ViewModel()
 
     fun checkUser() {
         if (user.value == null) {
-            Logger.i("MainViewModel UserManager.useId = ${UserManager.userID}")
-            UserManager.userID?.let {
-                getUser(it)
-            }
+            Logger.i("MainViewModel UserManager.userID = ${UserManager.userID}")
+            UserManager.userID?.let { getUser(it) }
         }
     }
 
@@ -109,9 +105,9 @@ class MainViewModel(private val applicationRepository: Repository) : ViewModel()
         _navigateToProfileByBottomNav.value = null
     }
 
-    private fun getUser(userId: String) {
+    private fun getUser(userID: String) {
         coroutineScope.launch {
-            val result = applicationRepository.getUserById(userId)
+            val result = repository.getUserById(userID)
             _user.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
@@ -126,7 +122,6 @@ class MainViewModel(private val applicationRepository: Repository) : ViewModel()
                     null
                 }
                 else -> {
-                    _error.value = getString(R.string.you_know_nothing)
                     null
                 }
             }

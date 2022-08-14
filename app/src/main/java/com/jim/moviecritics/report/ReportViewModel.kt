@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Report
@@ -31,7 +30,6 @@ class ReportViewModel(
     val comment: LiveData<Comment>
         get() = _comment
 
-    private val user = UserManager.user
 
     private val report = Report()
 
@@ -90,7 +88,7 @@ class ReportViewModel(
 
         report.commentID = comment.value?.id.toString()
         report.imdbID = comment.value?.imdbID.toString()
-        report.userID = user?.id.toString()
+        report.userID = UserManager.userID.toString()
     }
 
     fun leave() {
@@ -108,6 +106,7 @@ class ReportViewModel(
             !message.value.isNullOrEmpty() && reportReason.isNotEmpty() -> {
                 report.reason = reportReason
                 report.message = message.value.toString()
+                Logger.i("pushReport(report) = $report")
                 pushReport(report)
                 leave()
             }
@@ -136,7 +135,6 @@ class ReportViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }

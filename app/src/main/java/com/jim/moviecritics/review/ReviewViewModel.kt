@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.MovieApplication
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.data.Movie
 import com.jim.moviecritics.data.Result
@@ -32,7 +30,6 @@ class ReviewViewModel(
     val movie: LiveData<Movie>
         get() = _movie
 
-    private val user = UserManager.user
 
     private val comment = Comment()
 
@@ -75,7 +72,7 @@ class ReviewViewModel(
         Logger.i("------------------------------------")
 
         comment.imdbID = movie.value?.imdbID.toString()
-        comment.userID = user?.id.toString()
+        comment.userID = UserManager.userID.toString()
     }
 
     fun leave() {
@@ -108,13 +105,9 @@ class ReviewViewModel(
     }
 
     private fun pushComment(comment: Comment) {
-
         coroutineScope.launch {
-
             comment.createdTime = Timestamp.now()
-
             _status.value = LoadApiStatus.LOADING
-
             when (val result = repository.pushComment(comment)) {
                 is Result.Success -> {
                     _error.value = null
@@ -129,7 +122,6 @@ class ReviewViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }
@@ -142,6 +134,7 @@ class ReviewViewModel(
 
             content.value != null -> {
                 comment.content = content.value.toString()
+                Logger.i("pushComment(comment) = $comment")
                 pushComment(comment)
                 leave()
             }

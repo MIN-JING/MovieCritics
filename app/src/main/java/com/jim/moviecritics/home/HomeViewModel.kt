@@ -3,13 +3,10 @@ package com.jim.moviecritics.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.Util.getString
-import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
@@ -55,12 +52,12 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     fun getMovieFull(id: Int) {
         coroutineScope.launch {
-            _status.postValue(LoadApiStatus.LOADING)
-            val detailResult = getMovieDetail(isInitial = true, index = 0, id = id)
-            val creditResult = getMovieCredit(isInitial = true, index = 1, id = id)
+            _status.value = LoadApiStatus.LOADING
+            val detailResult = getMovieDetail(index = 0, id = id)
+            val creditResult = getMovieCredit(index = 1, id = id)
             detailResultToMovie(detailResult)
             creditResultToMovie(creditResult)
-            _status.postValue(LoadApiStatus.DONE)
+            _status.value = LoadApiStatus.DONE
             navigateToDetail(movie)
         }
     }
@@ -94,7 +91,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                     null
                 }
                 else -> {
-                    _error.value = getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                     null
                 }
@@ -102,11 +98,7 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    private suspend fun getMovieDetail(
-        isInitial: Boolean = false,
-        index: Int,
-        id: Int
-    ): MovieDetailResult? {
+    private suspend fun getMovieDetail(index: Int, id: Int): MovieDetailResult? {
         return withContext(Dispatchers.IO) {
             when (val result = repository.getMovieDetail(id)) {
                 is Result.Success -> {
@@ -116,28 +108,23 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 }
                 is Result.Fail -> {
                     _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
                     _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
-                    _error.postValue(getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }
         }
     }
 
-    private suspend fun getMovieCredit(
-        isInitial: Boolean = false,
-        index: Int,
-        id: Int
-    ): CreditResult? {
+    private suspend fun getMovieCredit(index: Int, id: Int): CreditResult? {
         return withContext(Dispatchers.IO) {
             when (val result = repository.getMovieCredit(id)) {
                 is Result.Success -> {
@@ -147,17 +134,16 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 }
                 is Result.Fail -> {
                     _error.postValue(result.error)
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 is Result.Error -> {
                     _error.postValue(result.exception.toString())
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
                 else -> {
-                    _error.postValue(getString(R.string.you_know_nothing))
-                    if (isInitial) _status.postValue(LoadApiStatus.ERROR)
+                    _status.postValue(LoadApiStatus.ERROR)
                     null
                 }
             }
@@ -166,7 +152,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     private fun detailResultToMovie(detailResult: MovieDetailResult?) {
         detailResult?.let { movieDetailResult ->
-            Logger.i("movieDetailResult = $detailResult")
             movie.id = movieDetailResult.id
             movie.imdbID = movieDetailResult.imdbID
             movie.awards = null
@@ -183,7 +168,9 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
             movie.title = movieDetailResult.title
             movie.trailerUri = null
             movie.ratings = listOf()
-            movie.voteAverage = ((movieDetailResult.average * 10).roundToInt() / 50).toFloat()
+            movie.voteAverage = movieDetailResult.average / 2
+            Logger.i("movieDetailResult.average = ${movieDetailResult.average}")
+            Logger.i("movie.voteAverage = ${movie.voteAverage}")
             if (!movieDetailResult.videos.results.isNullOrEmpty()) {
                 val youtubeKey = movieDetailResult.videos.results.maxByOrNull { it.published }?.key
                 youtubeKey?.let {
@@ -206,13 +193,16 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
             movie.casts = movieCreditResult.casts
             movie.crews = movieCreditResult.crews
             movieCreditResult.crews.forEach { crew ->
-                if (crew.job == "Director") {
-                    movie.director = crew.name
-                    Logger.i("movie.director = ${movie.director}")
-                }
-                if (crew.job == "Story") {
-                    movie.writing.add(crew.name)
-                    Logger.i("movie.writing = ${movie.writing}")
+                when (crew.job) {
+                    "Director" -> {
+                        movie.director = crew.name
+                        Logger.i("movie.director = ${movie.director}")
+                    }
+                    "Story" -> {
+                        movie.writing.add(crew.name)
+                        Logger.i("movie.writing = ${movie.writing}")
+                    }
+                    else -> {}
                 }
             }
         }

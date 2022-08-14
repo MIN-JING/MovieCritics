@@ -3,8 +3,6 @@ package com.jim.moviecritics.block
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.MovieApplication
-import com.jim.moviecritics.R
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
@@ -98,7 +96,6 @@ class BlockViewModel(
                     _status.value = LoadApiStatus.ERROR
                 }
                 else -> {
-                    _error.value = MovieApplication.instance.getString(R.string.you_know_nothing)
                     _status.value = LoadApiStatus.ERROR
                 }
             }

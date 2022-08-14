@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.user.observe(this) {
-            Logger.i("MainActivity viewModel.user = $it")
+            Logger.i("MainViewModel.user = $it")
             UserManager.user = it
         }
 

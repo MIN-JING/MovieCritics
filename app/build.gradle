@@ -20,7 +20,7 @@ android {
         targetSdk 32
         versionCode 12
         versionName "1.1.2"
-        
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

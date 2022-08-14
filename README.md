@@ -3,7 +3,7 @@
 
 :zap: Let movie fans record watched movies, comment, and schedule watching times :zap:
 
-![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.1.1-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-26%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
+![](https://img.shields.io/badge/build-Kotlin-green) ![](https://img.shields.io/badge/release-v1.1.2-blue) ![](https://img.shields.io/badge/license-Apache_2.0-blue)  ![](https://img.shields.io/badge/SDK_version-26%2B-orange) ![](https://img.shields.io/badge/Gradle_version-7.2-orange) 
 
 [<img src="https://github.com/MIN-JING/MovieCritics/blob/develop/app/src/main/res/mipmap-xxhdpi/ic_app.png" height="70" /><img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/bg_google_play.png" height="70" />](https://play.google.com/store/apps/details?id=com.jim.moviecritics)
 
@@ -66,6 +66,7 @@ Gradle version 7.2
 ## Version History
 |    Version    |                    Detail                                                         |
 | ------------- | --------------------------------------------------------------------------------- |
+|     1.1.2     |   Modify radar chart UI, refactor rating page                                     |
 |     1.1.1     |   Refactor radar chart                                                            |
 |     1.1.0     |   Modify colors in dark mode                                                      |
 |     1.0.9     |   Fix loginning flow                                                              |

@@ -7,7 +7,6 @@ import com.jim.moviecritics.data.*
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlin.math.roundToInt
 import kotlinx.coroutines.*
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
@@ -53,12 +52,12 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
 
     fun getMovieFull(id: Int) {
         coroutineScope.launch {
-            _status.postValue(LoadApiStatus.LOADING)
+            _status.value = LoadApiStatus.LOADING
             val detailResult = getMovieDetail(index = 0, id = id)
             val creditResult = getMovieCredit(index = 1, id = id)
             detailResultToMovie(detailResult)
             creditResultToMovie(creditResult)
-            _status.postValue(LoadApiStatus.DONE)
+            _status.value = LoadApiStatus.DONE
             navigateToDetail(movie)
         }
     }

@@ -54,9 +54,20 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 <img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_viewpager2.gif" width="170" />
 
 ## Installation
-1. Download ZIP and import it as a project into [Android Studio](https://developer.android.com/studio)
+1. Github Clone or Download ZIP, and import it as a project into [Android Studio](https://developer.android.com/studio)
 2. Sign up for The Movie Database (TMDB) member and request an API key from the [setting page](https://www.themoviedb.org/settings/api). Here is an [instructional video](https://www.youtube.com/watch?v=mO3gvkiLkio)
 3. Once you have it open `MovieCritics/local.properties` file in the **Project** folder tree and add your own API key in line 9 `key.api.tmdb="YOUR_TMDB_API_KEY_STRING"`
+```
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+#Mon Jul 04 23:38:49 CST 2022
+sdk.dir=C\:\\Users\\goodc\\AppData\\Local\\Android\\Sdk
+key.api.tmdb="YOUR_TMDB_API_KEY_STRING"
+```
 
 ## Requirement
 SDK version 26+

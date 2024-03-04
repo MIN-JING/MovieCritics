@@ -17,8 +17,9 @@ import com.jim.moviecritics.util.Logger
 
 class MainActivity : AppCompatActivity() {
 
-    val viewModel by viewModels<MainViewModel> { getVmFactory() }
     private lateinit var binding: ActivityMainBinding
+
+    private val viewModel by viewModels<MainViewModel> { getVmFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

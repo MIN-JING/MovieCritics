@@ -30,7 +30,7 @@ private val moshi = Moshi.Builder()
 private val client = OkHttpClient.Builder()
     .addInterceptor(
         HttpLoggingInterceptor().apply {
-            level = when (BuildConfig.LOGGER_VISIABLE) {
+            level = when (BuildConfig.LOGGER_VISIBLE) {
                 true -> HttpLoggingInterceptor.Level.BODY
                 false -> HttpLoggingInterceptor.Level.NONE
             }

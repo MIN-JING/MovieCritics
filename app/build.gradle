@@ -11,13 +11,22 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
+kotlin {
+    jvmToolchain {
+//        version = "11"
+        version = "17"
+    }
+}
+
 android {
-    compileSdk 32
+    namespace "com.jim.moviecritics"
+
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.jim.moviecritics"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 12
         versionName "1.1.2"
 
@@ -31,29 +40,37 @@ android {
         def tmdbAPIKey = properties.getProperty('key.api.tmdb')
 
         release {
-            buildConfigField("Boolean", "LOGGER_VISIABLE", "false")
+            buildConfigField("Boolean", "LOGGER_VISIBLE", "false")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
         debug {
-            buildConfigField("Boolean", "LOGGER_VISIABLE", "true")
+            buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//        sourceCompatibility JavaVersion.VERSION_11
+//        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
-        jvmTarget = '1.8'
+//        jvmTarget = '1.8'
+//        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17
     }
+
     dataBinding {
         enabled = true
     }
-
 
     buildFeatures {
         // Material 3

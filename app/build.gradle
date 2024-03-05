@@ -144,14 +144,18 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-firestore:24.2.2'
-    implementation platform('com.google.firebase:firebase-bom:30.2.0')
-    implementation 'io.fabric.sdk.android:fabric:1.4.8'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
+//    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation platform('com.google.firebase:firebase-bom:32.7.3')
     // Crashlytics
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+//    implementation 'com.google.firebase:firebase-firestore:24.2.2'
+    implementation 'com.google.firebase:firebase-firestore'
+//    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.2'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+//    implementation 'com.google.firebase:firebase-auth-ktx:21.0.7'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'io.fabric.sdk.android:fabric:1.4.8'
 
     // Google login
     implementation "com.google.android.gms:play-services-auth:20.2.0"
@@ -185,11 +189,11 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.13.1"
     kapt "com.github.bumptech.glide:compiler:4.13.1"
 
-    // Radar Chart
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
-    
     // Lottie
     implementation "com.airbnb.android:lottie:5.2.0"
+
+    // Radar Chart
+    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 }
 
 ktlint {

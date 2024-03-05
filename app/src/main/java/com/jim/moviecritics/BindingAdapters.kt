@@ -5,6 +5,7 @@ import androidx.annotation.ColorInt
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.jim.moviecritics.data.*
 import com.jim.moviecritics.detail.CastAdapter
@@ -76,7 +77,7 @@ fun bindRecyclerViewWithFinds(recyclerView: RecyclerView, finds: List<Find>?) {
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUri = it.toUri().buildUpon().build()
-        GlideApp.with(imgView.context)
+        Glide.with(imgView.context)
             .load(imgUri)
             .apply(
                 RequestOptions()
@@ -91,7 +92,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 fun bindImageWithCircleCrop(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUri = it.toUri().buildUpon().build()
-        GlideApp.with(imgView.context)
+        Glide.with(imgView.context)
             .load(imgUri)
             .circleCrop()
             .apply(

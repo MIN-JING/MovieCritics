@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
     id 'com.google.gms.google-services'
     // Crashlytics
     id 'com.google.firebase.crashlytics'
@@ -158,7 +159,8 @@ dependencies {
     implementation 'io.fabric.sdk.android:fabric:1.4.8'
 
     // Google login
-    implementation "com.google.android.gms:play-services-auth:20.2.0"
+//    implementation "com.google.android.gms:play-services-auth:20.2.0"
+    implementation "com.google.android.gms:play-services-auth:21.0.0"
 
     // Android Studio Preview support
 //    implementation 'androidx.compose.ui:ui-tooling-preview'
@@ -173,24 +175,32 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
     // Retrofit Logging Interceptor
-    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5')
+//    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.5')
+    implementation('com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11')
 
     // Moshi
-    implementation "com.squareup.moshi:moshi:1.13.0"
-    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
-
+//    implementation "com.squareup.moshi:moshi:1.13.0"
+//    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
+    implementation "com.squareup.moshi:moshi:1.14.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.14.0"
     // Moshi Codegen
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
+//    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.13.0"
+    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.0'
 
     // Gson
-    implementation "com.google.code.gson:gson:2.9.0"
+//    implementation "com.google.code.gson:gson:2.9.0"
+    implementation "com.google.code.gson:gson:2.10.1"
 
     // Glide
-    implementation "com.github.bumptech.glide:glide:4.13.1"
-    kapt "com.github.bumptech.glide:compiler:4.13.1"
+//    implementation "com.github.bumptech.glide:glide:4.13.1"
+//    kapt "com.github.bumptech.glide:compiler:4.13.1"
+    implementation "com.github.bumptech.glide:glide:4.16.0"
+//    kapt "com.github.bumptech.glide:compiler:4.16.0"
+    ksp 'com.github.bumptech.glide:ksp:4.16.0'
 
     // Lottie
-    implementation "com.airbnb.android:lottie:5.2.0"
+//    implementation "com.airbnb.android:lottie:5.2.0"
+    implementation "com.airbnb.android:lottie:6.4.0"
 
     // Radar Chart
     implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"

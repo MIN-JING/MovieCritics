@@ -14,7 +14,7 @@
         android:label="Movie Critics"
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MovieCritics">
+        android:theme="@style/Theme.Material3.MovieCritics">
         <activity
             android:name=".MainActivity"
             android:exported="true">

@@ -1,5 +1,9 @@
 package com.jim.moviecritics.search
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,9 +17,26 @@ import com.jim.moviecritics.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val repository: Repository) : ViewModel() {
+
+    var searchQuery by mutableStateOf("")
+        private set
+
+//    val searchResults: StateFlow<List<LookItem>> =
+//        snapshotFlow { searchQuery }
+//            .combine(moviesFlow) { searchQuery, movies ->
+//                when {
+//                    searchQuery.isNotEmpty() -> movies.filter { movie ->
+//                        movie.name.contains(searchQuery, ignoreCase = true)
+//                    }
+//                    else -> movies
+//                }
+//            }
+
     private val _lookItems = MutableLiveData<List<LookItem>>()
 
     val lookItems: LiveData<List<LookItem>>

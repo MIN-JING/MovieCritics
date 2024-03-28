@@ -20,9 +20,33 @@
         <item name="colorOnSurface">@color/onSurface</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/roboto</item>
+    </style>
 
+    <style name="Theme.Material3.MovieCritics" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary_night</item>
+        <item name="colorOnPrimary">@color/onPrimary_night</item>
+        <item name="colorPrimaryContainer">@color/primaryContainer_night</item>
+        <item name="colorOnPrimaryContainer">@color/onPrimaryContainer_night</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant_night</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary_night</item>
+        <item name="colorOnSecondary">@color/onSecondary_night</item>
+        <item name="colorSecondaryContainer">@color/secondaryContainer_night</item>
+        <item name="colorOnSecondaryContainer">@color/onSecondaryContainer_night</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariant_night</item>
+
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="fontFamily">@font/roboto</item>
     </style>
 </resources>

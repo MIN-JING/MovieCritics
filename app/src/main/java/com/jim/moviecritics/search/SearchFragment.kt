@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.databinding.FragmentSearchBinding
@@ -26,7 +28,11 @@ class SearchFragment : Fragment() {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.composeViewSearch.setContent {
             MaterialTheme {
-                SearchScreen()
+                SearchScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                    navigateToDetail = { Logger.i("navigateToDetail it = $it") }
+                )
             }
         }
         binding.lifecycleOwner = viewLifecycleOwner

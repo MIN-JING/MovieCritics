@@ -16,10 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.util.GlideImage
 import kotlinx.coroutines.delay
 
@@ -136,10 +140,185 @@ fun SearchScreen(
     }
 }
 
-//@Preview(showBackground = true, name = "Text preview")
-//@Composable
-//fun SearchScreenPreview() {
-//    MaterialTheme {
-//        SearchScreen()
-//    }
-//}
+@Preview(showBackground = true, name = "Search Screen Preview")
+@Composable
+fun SearchScreenPreview() {
+
+    // Sample data for preview
+    val sampleLookItems = listOf(
+        LookItem.LookMovie(Look(mediaType = "movie", title = "Movie 1", overview = "Overview 1", posterPath = "")),
+        LookItem.LookTelevision(Look(mediaType = "tv", title = "TV Show 1", overview = "Overview 2", posterPath = "")),
+        LookItem.LookPerson(Look(mediaType = "person", title = "Person 1", overview = "Overview 3", profilePath = ""))
+    )
+
+    val fakeRepository = object : Repository {
+        override suspend fun getPopularMovies(): Result<List<HomeItem>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getMovieCredit(id: Int): Result<CreditResult> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getSearchMulti(queryKey: String): Result<List<LookItem>> {
+            return Result.Success(sampleLookItems)
+        }
+
+        override suspend fun getFind(imdbID: String): Result<FindResult> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLiveWatchList(imdbID: String, userID: String): MutableLiveData<Watch> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLiveWatchListByUser(userID: String): MutableLiveData<List<Watch>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushMultiWatchListExpiration(
+            imdbID: String,
+            userID: String,
+            expiration: Timestamp
+        ): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushSingleWatchListExpiration(watch: Watch): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getScores(imdbID: String): Result<List<Score>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getScore(imdbID: String, userID: String): Result<Score> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLiveScore(imdbID: String, userID: String): MutableLiveData<Score> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushUserInfo(user: User): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getUserByToken(token: String): Result<User> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getUserById(id: String): Result<User?> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getUsersByIdList(idList: List<String>): Result<List<User>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun getComments(imdbID: String): Result<List<Comment>> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLiveComments(imdbID: String): MutableLiveData<List<Comment>> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLivePersonalComments(userID: String): MutableLiveData<List<Comment>> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLiveCommentsExcludeBlocks(
+            imdbID: String,
+            blocks: List<String>
+        ): MutableLiveData<List<Comment>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushComment(comment: Comment): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun delete(comment: Comment): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override fun getLivePersonalFavorites(userID: String): MutableLiveData<List<String>> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun removeWatchedMovie(imdbID: String, userID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushLikedMovie(imdbID: String, userID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun removeLikedMovie(imdbID: String, userID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushWatchlistMovie(watch: Watch): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushScore(score: Score): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushReport(report: Report): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushBlockUser(userID: String, blockedID: String): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushPopularMovies(trends: List<Trend>): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushMockComment(): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushMockScore(): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun pushMockUser(): Result<Boolean> {
+            TODO("Not yet implemented")
+        }
+    }
+
+    val viewModel = SearchViewModel(fakeRepository)
+    val state = rememberSearchState(
+        searchResults = sampleLookItems,
+        searching = false
+    )
+
+    LaunchedEffect(Unit) {
+//        viewModel._lookItems.value = sampleLookItems
+    }
+
+    MaterialTheme {
+        SearchScreen(
+            viewModel = viewModel,
+            navigateToDetail = { /* provide navigation logic */ },
+            state = state
+        )
+    }
+}

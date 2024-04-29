@@ -31,7 +31,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
 
     val searchKey = MutableLiveData<String>()
 
-    private val _lookItems = MutableStateFlow<List<LookItem>>(emptyList())
+    val _lookItems = MutableStateFlow<List<LookItem>>(emptyList())
     val lookItems: StateFlow<List<LookItem>> = _lookItems.asStateFlow()
 
     private val _invalidSearch = MutableLiveData<Int>()

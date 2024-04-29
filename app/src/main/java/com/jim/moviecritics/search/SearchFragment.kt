@@ -34,8 +34,6 @@ class SearchFragment : Fragment() {
                 )
             }
         }
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
 
         viewModel.invalidSearch.observe(viewLifecycleOwner) {
             Logger.i("viewModel.invalidSearch.value = ${viewModel.invalidSearch.value}")

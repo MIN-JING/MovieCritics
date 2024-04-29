@@ -4,94 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".search.SearchFragment">
-    <data>
-        <variable
-            name="viewModel"
-            type="com.jim.moviecritics.search.SearchViewModel" />
-        <import type="com.jim.moviecritics.network.LoadApiStatus"/>
-        <import type="android.view.View"/>
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-<!--        <EditText-->
-<!--            android:id="@+id/edit_search"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="25dp"-->
-<!--            android:backgroundTint="#37474F"-->
-<!--            android:ems="10"-->
-<!--            android:hint="@string/edit_search"-->
-<!--            android:imeOptions="actionDone"-->
-<!--            android:importantForAutofill="no"-->
-<!--            android:inputType="text"-->
-<!--            android:maxLines="1"-->
-<!--            android:text="@={viewModel.searchKey}"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textColorHint="#37474F"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/button_search"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/button_search"-->
-<!--            android:layout_width="52dp"-->
-<!--            android:layout_height="52dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:backgroundTintMode="add"-->
-<!--            android:contentDescription="@string/button_search"-->
-<!--            android:onClick="@{() -> viewModel.prepareSearch()}"-->
-<!--            android:src="@drawable/ic_search"-->
-<!--            app:tint="@color/black"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/edit_search"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/edit_search" />-->
-
-<!--        <View-->
-<!--            android:id="@+id/divider1_search"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:background="?android:attr/listDivider"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/edit_search" />-->
-
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recyclerview_search"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:orientation="vertical"-->
-<!--            android:fadeScrollbars="false"-->
-<!--            android:scrollbarStyle="outsideInset"-->
-<!--            android:scrollbars="vertical"-->
-<!--            app:lookItems="@{viewModel.lookItems}"-->
-<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/divider1_search"-->
-<!--            tools:listitem="@layout/item_search_movie"/>-->
-
-<!--        <com.airbnb.lottie.LottieAnimationView-->
-<!--            android:id="@+id/animation_search"-->
-<!--            android:layout_width="300dp"-->
-<!--            android:layout_height="300dp"-->
-<!--            android:elevation="5dp"-->
-<!--            android:visibility="@{viewModel.status == LoadApiStatus.LOADING ? View.VISIBLE : View.GONE}"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:lottie_autoPlay="true"-->
-<!--            app:lottie_loop="true"-->
-<!--            app:lottie_rawRes="@raw/lottie_clapperboard_green"-->
-<!--            app:lottie_speed="3" />-->
 
         <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/compose_view_search"

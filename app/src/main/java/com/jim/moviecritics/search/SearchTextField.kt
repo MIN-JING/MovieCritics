@@ -45,8 +45,6 @@ fun SearchTextField(
         color = Color(0xffF5F5F5),
         shape = RoundedCornerShape(percent = 50),
     ) {
-
-//        LocalContentAlpha provides ContentAlpha.medium
         CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
             Box(
                 contentAlignment = Alignment.CenterStart,

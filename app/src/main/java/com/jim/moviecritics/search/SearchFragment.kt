@@ -37,13 +37,6 @@ class SearchFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-//        binding.recyclerviewSearch.adapter = SearchAdapter(
-//            SearchAdapter.OnClickListener {
-//                Logger.i("SearchAdapter.OnClickListener it = $it")
-//                Logger.i("SearchAdapter.OnClickListener it.id = ${it.id}")
-//            }
-//        )
-
         viewModel.invalidSearch.observe(viewLifecycleOwner) {
             Logger.i("viewModel.invalidSearch.value = ${viewModel.invalidSearch.value}")
             it?.let {

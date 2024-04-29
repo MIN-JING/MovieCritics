@@ -31,49 +31,8 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
 
     val searchKey = MutableLiveData<String>()
 
-//    val searchResults: StateFlow<List<LookItem>> =
-//        snapshotFlow { searchQuery }
-//            .combine(moviesFlow) { searchQuery, movies ->
-//                when {
-//                    searchQuery.isNotEmpty() -> movies.filter { movie ->
-//                        movie.name.contains(searchQuery, ignoreCase = true)
-//                    }
-//                    else -> movies
-//                }
-//            }
-
-//    val searchResults: StateFlow<List<Movie>> =
-//        snapshotFlow { searchQuery }
-//            .combine(moviesFlow) { searchQuery, movies ->
-//                when {
-//                    searchQuery.isNotEmpty() -> movies.filter { movie ->
-//                        movie.name.contains(searchQuery, ignoreCase = true)
-//                    }
-//                    else -> movies
-//                }
-//            }.stateIn(
-//                scope = viewModelScope,
-//                initialValue = emptyList(),
-//                started = SharingStarted.WhileSubscribed(5_000)
-//            )
-
-//    val searchResults: StateFlow<List<LookItem>> =
-//        snapshotFlow { searchQuery }
-//            .combine(lookItems) { searchQuery, lookItems ->
-//                when {
-//                    searchQuery.isNotEmpty() -> lookItems.filter { lookItem ->
-//                        lookItem.name.contains(searchQuery, ignoreCase = true)
-//                    }
-//                    else -> lookItems
-//                }
-//            }
-
-    private val _searchResults = MutableStateFlow<List<LookItem>>(emptyList())
-    val searchResults: StateFlow<List<LookItem>> = _searchResults.asStateFlow()
-
-    private val _lookItems = MutableLiveData<List<LookItem>>()
-    val lookItems: LiveData<List<LookItem>>
-        get() = _lookItems
+    private val _lookItems = MutableStateFlow<List<LookItem>>(emptyList())
+    val lookItems: StateFlow<List<LookItem>> = _lookItems.asStateFlow()
 
     private val _invalidSearch = MutableLiveData<Int>()
 
@@ -111,7 +70,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
 
             val result = repository.getSearchMulti(queryKey)
 
-            _searchResults.value = when (result) {
+            _lookItems.value = when (result) {
                 is Result.Success -> {
                     _error.value = null
                     if (isInitial) _status.value = LoadApiStatus.DONE

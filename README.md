@@ -75,16 +75,17 @@ SDK version 26+
 Gradle version 7.2
 
 ## Version History
-|    Version    |                    Detail                                                         |
-| ------------- | --------------------------------------------------------------------------------- |
-|     1.1.2     |   Modify radar chart UI, refactor rating page                                     |
-|     1.1.1     |   Refactor radar chart                                                            |
-|     1.1.0     |   Modify colors in dark mode                                                      |
-|     1.0.9     |   Fix loginning flow                                                              |
-|     1.0.8     |   Fix loginning flow                                                              |
-|     1.0.7     |   Add WebView for YouTube trailer, movie info sharing features, and refactoring   |
-|     1.0.6     |   Add Notifications                                                               |
-|     1.0.5     |   Add blocking user and reporting comment features                                |
+| Version | Detail                                                                        |
+|---------|-------------------------------------------------------------------------------|
+| 1.1.3   | Refactor the search page by Jetpack Compose; Upgrade libraries version        |
+| 1.1.2   | Modify radar chart UI, refactor rating page                                   |
+| 1.1.1   | Refactor radar chart                                                          |
+| 1.1.0   | Modify colors in dark mode                                                    |
+| 1.0.9   | Fix loginning flow                                                            |
+| 1.0.8   | Fix loginning flow                                                            |
+| 1.0.7   | Add WebView for YouTube trailer, movie info sharing features, and refactoring |
+| 1.0.6   | Add Notifications                                                             |
+| 1.0.5   | Add blocking user and reporting comment features                              |
 
 ## License
 ```

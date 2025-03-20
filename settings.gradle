@@ -6,23 +6,17 @@ pluginManagement {
         maven { url "https://jitpack.io/" }
         maven { url "https://jcenter.bintray.com" }
     }
-//    repositories {
-//        // Google's Maven repository
-//        google()
-//        mavenCentral()
-//        maven { url "https://plugins.gradle.org/m2/" }
-//        // Radar Chart
-//        maven { url "https://jitpack.io" }
-//    }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        // Radar Chart
+        // Radar Chart Library
         maven { url "https://jitpack.io" }
     }
 }
+
 rootProject.name = "MovieCritics"
+
 include ':app'

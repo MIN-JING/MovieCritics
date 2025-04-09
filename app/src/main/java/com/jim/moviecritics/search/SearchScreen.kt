@@ -1,11 +1,12 @@
 package com.jim.moviecritics.search
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +33,7 @@ import kotlinx.coroutines.delay
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel,
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: (Int) -> Unit,
     state: SearchState = rememberSearchState()
 ) {
     val lookItems by viewModel.lookItems.collectAsStateWithLifecycle()
@@ -60,6 +61,7 @@ fun SearchScreen(
                 SearchDisplay.INITIAL_RESULTS -> {
                     Log.i("SearchScreen", "INITIAL_RESULTS")
                 }
+
                 SearchDisplay.NO_RESULTS -> {
                     Log.i("SearchScreen", "NO_RESULTS")
                 }
@@ -76,19 +78,23 @@ fun SearchScreen(
                             Row(
                                 modifier = modifier
                                     .fillMaxWidth()
-                                    .padding(16.dp),
+                                    .padding(16.dp)
+                                    .clickable {
+                                        // Get the ID to pass to the detail screen
+                                        val id = when (result) {
+                                            is LookItem.LookMovie -> result.look.id
+                                            is LookItem.LookTelevision -> result.look.id
+                                            is LookItem.LookPerson -> result.look.id
+                                        }
+                                        // Call the navigation function with the item ID
+                                        navigateToDetail(id)
+                                    },
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 val title = when (result) {
-                                    is LookItem.LookMovie -> {
-                                        result.look.title
-                                    }
-                                    is LookItem.LookTelevision -> {
-                                        result.look.title
-                                    }
-                                    is LookItem.LookPerson -> {
-                                        result.look.title
-                                    }
+                                    is LookItem.LookMovie -> result.look.title
+                                    is LookItem.LookTelevision -> result.look.title
+                                    is LookItem.LookPerson -> result.look.title
                                 } ?: ""
 
                                 val overview = when (result) {
@@ -116,7 +122,7 @@ fun SearchScreen(
                                 Column {
                                     Text(
                                         text = title,
-                                        style = MaterialTheme.typography.subtitle1,
+                                        style = MaterialTheme.typography.titleMedium,
                                         maxLines = 2,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -125,7 +131,7 @@ fun SearchScreen(
 
                                     Text(
                                         text = overview,
-                                        style = MaterialTheme.typography.body2,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         maxLines = 3,
                                         overflow = TextOverflow.Ellipsis
                                     )

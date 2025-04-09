@@ -27,6 +27,7 @@ class ExpandAdapter(
                 }
             }
         }
+
         fun bind(lookItem: LookItem) {
             binding.lookItem = lookItem
             binding.executePendingBindings()

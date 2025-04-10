@@ -79,7 +79,16 @@ class WatchlistFragment : Fragment() {
                 it.seconds * 1000L + 9000000L
             )
             watch.expiration = it
-            viewModel.pushSingleWatchListExpiration(watch)
+            // 避免 Firestore document id 為空字串
+            if (watch.id.isNotEmpty()) {
+                viewModel.pushSingleWatchListExpiration(watch)
+            } else {
+                Toast.makeText(
+                    context,
+                    "Please select a movie from the watchlist",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
             viewModel.movieMap[watch.imdbID]?.let { find ->
                 context?.let { context ->

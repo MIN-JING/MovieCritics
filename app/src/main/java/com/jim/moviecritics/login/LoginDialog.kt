@@ -32,6 +32,9 @@ class LoginDialog : AppCompatDialogFragment() {
     private val launcher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        Logger.d("LoginDialog launcher result = $result")
+        val bundle = result.data?.extras
+        Logger.d("LoginDialog launcher bundle = $bundle")
         if (result.resultCode == Activity.RESULT_OK) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
             viewModel.handleSignInResult(task)

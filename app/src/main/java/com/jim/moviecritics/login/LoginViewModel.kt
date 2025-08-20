@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
 import com.jim.moviecritics.data.Result
 import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
@@ -109,6 +109,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
 
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
+                Logger.d("signInWithCredential: $task")
                 if (task.isSuccessful) {
                     Logger.i("signInWithCredential:success")
 

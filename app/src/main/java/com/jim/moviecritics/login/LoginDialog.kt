@@ -51,7 +51,7 @@ class LoginDialog : AppCompatDialogFragment() {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.service_client_id))
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
@@ -79,7 +79,7 @@ class LoginDialog : AppCompatDialogFragment() {
         binding.viewModel = viewModel
 
         binding.buttonLoginGoogle.setOnClickListener {
-            signInGoogle()
+            viewModel.signInWithGoogle2(requireActivity())
         }
 
         val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]

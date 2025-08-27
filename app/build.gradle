@@ -19,8 +19,25 @@ kotlin {
 
 android {
     namespace "com.jim.moviecritics"
-
     compileSdk 36
+
+    signingConfigs {
+        release {
+            // Load from local.properties (or your own file)
+            def props = new Properties()
+            props.load(rootProject.file('local.properties').newDataInputStream())
+
+            def ksFile   = props.getProperty('key.store.file')
+            def ksPass   = props.getProperty('key.store.password')
+            def alias    = props.getProperty('key.alias')
+            def aliasPas = props.getProperty('key.password')
+
+            storeFile    = file(ksFile)
+            storePassword = ksPass
+            keyAlias     = alias
+            keyPassword  = aliasPas
+        }
+    }
 
     defaultConfig {
         applicationId "com.jim.moviecritics"
@@ -37,15 +54,17 @@ android {
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def tmdbAPIKey = properties.getProperty('key.api.tmdb')
 
-        release {
-            buildConfigField("Boolean", "LOGGER_VISIBLE", "false")
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        debug {
+            signingConfig signingConfigs.release
+            buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
-        debug {
-            buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
+        release {
+            signingConfig signingConfigs.release
+            buildConfigField("Boolean", "LOGGER_VISIBLE", "false")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // BuildConfig could be used in java code
             buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
         }
@@ -139,9 +158,9 @@ dependencies {
     //implementation 'io.fabric.sdk.android:fabric:1.4.8'
     // Google login
     implementation "com.google.android.gms:play-services-auth:21.4.0"
-    //implementation 'androidx.credentials:credentials:1.5.0'
-    //implementation 'androidx.credentials:credentials-play-services:1.5.0'
-    //implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
+    implementation 'androidx.credentials:credentials:1.5.0'
+    implementation 'androidx.credentials:credentials-play-services-auth:1.5.0'
+    implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1'
 
     // Retrofit with Moshi Converter
     implementation "com.squareup.retrofit2:retrofit:3.0.0"

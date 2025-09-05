@@ -4,6 +4,8 @@
 build/
 captures/
 app/release/
+app/dev/
+app/production/
 .DS_Store
 .externalNativeBuild
 .cxx

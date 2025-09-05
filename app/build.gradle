@@ -11,6 +11,72 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
+ext {
+    majorVersion = 1
+    minorVersion = 1
+    patchVersion = 6
+
+    weightMajor = 1000000
+    weightMinor = 100000
+    weightPatch = 1000
+
+    weightProd = 999
+    weightBeta = 800
+
+    preReleaseProd = "r"
+    preReleaseBeta = "b"
+    betaVersion = 1
+
+    flavorProd = "production"
+    flavorDev = "dev"
+
+    nameProd = "MovieCritics"
+    nameDev = "DEV_MovieCritics"
+}
+
+Integer getVersionCode(String flavor) {
+    println("> Getting version code for flavor: ${flavor}")
+
+    def V = project.ext
+
+    def ret = (V.majorVersion * V.weightMajor) + (V.minorVersion * V.weightMinor) + (V.patchVersion * V.weightPatch)
+    println(">> Calculated base version code: ${ret}")
+
+    switch (flavor) {
+        case V.flavorProd:
+            def code = ret + V.weightProd
+            println("-> versionCode: ${code}")
+            return code
+
+        case V.flavorDev:
+            def code = ret + V.weightBeta + V.betaVersion
+            println("-> versionCode: ${code}")
+            return code
+
+        default:
+            def code = ret + V.betaVersion
+            println("-> versionCode: ${code}")
+            return code
+    }
+}
+
+String getVersionName(String flavor) {
+    println("> Getting version name for flavor: ${flavor}")
+
+    def V = project.ext
+    def fullVersion = "${V.majorVersion}.${V.minorVersion}.${V.patchVersion}"
+    println(">> Calculated full version name: ${fullVersion}")
+
+    if (flavor == V.flavorProd) {
+        println("-> versionName: ${fullVersion}")
+        return "${fullVersion}"
+    } else {
+        def name = "${fullVersion}${V.preReleaseBeta}${V.betaVersion}"
+        println("-> versionName: ${name}")
+        return name
+    }
+}
+
 kotlin {
     jvmToolchain {
         version = "17"
@@ -20,6 +86,7 @@ kotlin {
 android {
     namespace "com.jim.moviecritics"
     compileSdk 36
+    flavorDimensions += "default"
 
     signingConfigs {
         release {
@@ -27,15 +94,15 @@ android {
             def props = new Properties()
             props.load(rootProject.file('local.properties').newDataInputStream())
 
-            def ksFile   = props.getProperty('key.store.file')
-            def ksPass   = props.getProperty('key.store.password')
-            def alias    = props.getProperty('key.alias')
+            def ksFile = props.getProperty('key.store.file')
+            def ksPass = props.getProperty('key.store.password')
+            def alias = props.getProperty('key.alias')
             def aliasPas = props.getProperty('key.password')
 
-            storeFile    = file(ksFile)
+            storeFile = file(ksFile)
             storePassword = ksPass
-            keyAlias     = alias
-            keyPassword  = aliasPas
+            keyAlias = alias
+            keyPassword = aliasPas
         }
     }
 
@@ -43,30 +110,45 @@ android {
         applicationId "com.jim.moviecritics"
         minSdk 26
         targetSdk 36
-        versionCode 15
-        versionName "1.1.5"
+        // DO NOT call getVersionCode()/getVersionName() with no args here.
+        // Either leave placeholders (overridden later) or use the Variant API.
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        def V = project.ext
+
         // Input local properties
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
         def API_KEY = properties.getProperty('key.api.tmdb')
 
-        debug {
-            signingConfig signingConfigs.release
-            buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
-            // BuildConfig could be used in java code
-            buildConfigField "String", "API_KEY_TMDB", API_KEY
-        }
-        release {
-            signingConfig signingConfigs.release
+        production {
+            versionCode getVersionCode(V.flavorProd)
+            versionName getVersionName(V.flavorProd)
             buildConfigField("Boolean", "LOGGER_VISIBLE", "false")
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // BuildConfig could be used in java code
-            buildConfigField "String", "API_KEY_TMDB", API_KEY
+            buildConfigField("String", "API_KEY_TMDB", API_KEY)
+        }
+
+        dev {
+            versionCode getVersionCode(V.flavorDev)
+            versionName getVersionName(V.flavorDev)
+            applicationIdSuffix ".dev"
+            buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
+            buildConfigField("String", "API_KEY_TMDB", API_KEY)
         }
     }
 
@@ -190,4 +272,107 @@ dependencies {
 ktlint {
     android.set(true)
     outputColorName.set("RED")
+}
+
+androidComponents {
+    def V = project.ext
+
+    onVariants(selector().all()) { variant ->
+        // This debug message helps confirm the block is running
+        println(">> Configuring variant name: ${variant.name}")
+
+        // Loop through all outputs for the variant (e.g., a universal APK)
+        variant.outputs.each { output ->
+            def baseName
+
+            // Check for the 'production' flavor
+            if (variant.flavorName == 'production') {
+                // Get versionName from the 'output' object and call .get()
+                baseName = "${V.nameProd}-${output.versionName.get()}"
+            }
+            // Check for the 'dev' flavor
+            else if (variant.flavorName == 'dev') {
+                // Get versionName from the 'output' object and call .get()
+                baseName = "${V.nameDev}-${output.versionName.get()}"
+            }
+
+            // Configure the output for the current variant if a baseName was set
+            if (baseName != null) {
+                println("-> Base name is: ${baseName}")
+
+                def finalName = "${baseName}-${variant.name}"
+                println("-> Setting output name to: ${finalName}")
+
+                output.outputFileName.set("${finalName}.apk")
+            }
+        }
+    }
+}
+
+// Handle AAB naming separately with tasks
+tasks.configureEach { task ->
+    def V = project.ext
+
+    if (task.name.startsWith('bundle')) {
+        task.doLast {
+            // Get the variant name from task name
+            def variantName = task.name.replace('bundle', '')
+            println(">> Post-processing AAB for variant name: ${variantName}")
+
+            def flavor = ""
+            def buildType = ""
+
+            if (variantName.contains('DevRelease')) {
+                flavor = "dev"
+                buildType = "release"
+            } else if (variantName.contains('DevDebug')) {
+                flavor = "dev"
+                buildType = "debug"
+            } else if (variantName.contains('ProductionRelease')) {
+                flavor = "production"
+                buildType = "release"
+            } else if (variantName.contains('ProductionDebug')) {
+                flavor = "production"
+                buildType = "debug"
+            }
+
+            if (flavor && buildType) {
+                def outputDir = file("${flavor}/${buildType}")
+                println("-> Output directory: ${outputDir}")
+
+                if (outputDir.exists()) {
+                    println("-> Output directory exists. Listing files...")
+
+                    outputDir.listFiles().each { file ->
+                        println("-> Found file: ${file.name}")
+
+                        if (file.name.endsWith('.aab')) {
+                            println("-> Processing AAB file: ${file.name}")
+
+                            def newName
+                            if (variantName.contains('Production')) {
+                                println("-> Detected production flavor")
+                                def versionName = getVersionName(V.flavorProd)
+                                println("-> Version name for production: ${versionName}")
+                                newName = "${V.nameProd}-${versionName}-${variantName}.aab"
+                            } else if (variantName.contains('Dev')) {
+                                println("-> Detected dev flavor")
+                                def versionName = getVersionName(V.flavorDev)
+                                println("-> Version name for dev: ${versionName}")
+                                newName = "${V.nameDev}-${versionName}-${variantName}.aab"
+                            } else {
+                                println("-> Unknown flavor in variant name: ${variantName}")
+                            }
+
+                            if (newName) {
+                                def newFile = new File(outputDir, newName)
+                                file.renameTo(newFile)
+                                println("Renamed AAB: ${file.name} -> ${newName}")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

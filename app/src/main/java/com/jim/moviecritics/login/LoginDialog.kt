@@ -11,9 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.jim.moviecritics.MainViewModel
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.DialogLoginBinding
@@ -28,29 +25,12 @@ class LoginDialog : AppCompatDialogFragment() {
 
     private val viewModel by viewModels<LoginViewModel> { getVmFactory() }
     private lateinit var binding: DialogLoginBinding
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // ***** Let layout showing match constraint *****
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.LoginDialog)
-
-        // Google log in
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        googleSignInClient =
-            context?.let { GoogleSignIn.getClient(it, googleSignInOptions) }
-                ?: throw NullPointerException(
-                    "Expression 'context?.let { GoogleSignIn.getClient(it, gso) }'" +
-                            " must not be null"
-                )
     }
 
     override fun onCreateView(
@@ -68,7 +48,7 @@ class LoginDialog : AppCompatDialogFragment() {
         binding.viewModel = viewModel
 
         binding.buttonLoginGoogle.setOnClickListener {
-            viewModel.signInWithGoogle2(requireActivity())
+            viewModel.signInWithGoogle(requireActivity())
         }
 
         val mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]

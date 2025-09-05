@@ -21,6 +21,9 @@
     </style>
 
     <style name="LoginDialog">
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <!-- Transparent to allow edge-to-edge -->
+        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/translucent_40</item>
     </style>
 

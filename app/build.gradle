@@ -52,13 +52,13 @@ android {
         // Input local properties
         Properties properties = new Properties()
         properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        def tmdbAPIKey = properties.getProperty('key.api.tmdb')
+        def API_KEY = properties.getProperty('key.api.tmdb')
 
         debug {
             signingConfig signingConfigs.release
             buildConfigField("Boolean", "LOGGER_VISIBLE", "true")
             // BuildConfig could be used in java code
-            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
+            buildConfigField "String", "API_KEY_TMDB", API_KEY
         }
         release {
             signingConfig signingConfigs.release
@@ -66,7 +66,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // BuildConfig could be used in java code
-            buildConfigField "String", "API_KEY_TMDB", tmdbAPIKey
+            buildConfigField "String", "API_KEY_TMDB", API_KEY
         }
     }
 
@@ -149,13 +149,13 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.10.3"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:34.1.0')
+    implementation platform('com.google.firebase:firebase-bom:34.2.0')
     // Crashlytics
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-auth'
-    //implementation 'io.fabric.sdk.android:fabric:1.4.8'
+
     // Google login
     implementation "com.google.android.gms:play-services-auth:21.4.0"
     implementation 'androidx.credentials:credentials:1.5.0'

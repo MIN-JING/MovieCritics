@@ -3,54 +3,40 @@ package com.jim.moviecritics.search
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jim.moviecritics.R
 import com.jim.moviecritics.data.LookItem
 import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.buildMovie
 import com.jim.moviecritics.data.source.Repository
-import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val repository: Repository) : ViewModel() {
 
     companion object {
-        const val INVALID_FORMAT_SEARCH_KEY_EMPTY = 0x11
-        const val NO_ONE_KNOWS = 0x21
+        const val SEARCH_DEBOUNCE_MILLIS = 500L
     }
 
-    var searchQuery by mutableStateOf("")
+    // Kept as Compose state rather than a StateFlow so the text field is updated synchronously
+    var query by mutableStateOf("")
         private set
 
-    val searchKey = MutableLiveData<String>()
+    private val _uiState = MutableStateFlow(SearchUiState())
+    val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
-    val _lookItems = MutableStateFlow<List<LookItem>>(emptyList())
-    val lookItems: StateFlow<List<LookItem>> = _lookItems.asStateFlow()
-
-    private val _invalidSearch = MutableLiveData<Int>()
-
-    val invalidSearch: LiveData<Int>
-        get() = _invalidSearch
-
-    // status: The internal MutableLiveData that stores the status of the most recent request
-    private val _status = MutableLiveData<LoadApiStatus>()
-
-    val status: LiveData<LoadApiStatus>
-        get() = _status
-
-    // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String?>()
-
-    val error: LiveData<String?>
-        get() = _error
-
+    private var searchJob: Job? = null
+    private var detailJob: Job? = null
 
     init {
         Logger.i("------------------------------------")
@@ -58,52 +44,95 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
         Logger.i("------------------------------------")
     }
 
+    fun onQueryChange(newQuery: String) {
+        query = newQuery
+        searchJob?.cancel()
 
-    fun onSearchQueryChanged(query: String) {
-        searchQuery = query
-        getSearchResult(queryKey = query)
-    }
+        val queryKey = newQuery.trim()
+        if (queryKey.isEmpty()) {
+            _uiState.update { it.copy(results = emptyList(), searching = false, error = null) }
+            return
+        }
 
-    private fun getSearchResult(isInitial: Boolean = false, queryKey: String) {
-        viewModelScope.launch {
-            if (isInitial) _status.value = LoadApiStatus.LOADING
-
+        _uiState.update { it.copy(searching = true) }
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_MILLIS)
             val result = repository.getSearchMulti(queryKey)
+            // The data source catches every exception, including cancellation
+            ensureActive()
 
-            _lookItems.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    if (isInitial) _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    emptyList()
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    emptyList()
-                }
-                else -> {
-                    _error.value = Util.getString(R.string.you_know_nothing)
-                    if (isInitial) _status.value = LoadApiStatus.ERROR
-                    emptyList()
+            _uiState.update { state ->
+                when (result) {
+                    is Result.Success -> state.copy(
+                        results = result.data,
+                        searching = false,
+                        error = null
+                    )
+                    is Result.Fail -> state.copy(
+                        results = emptyList(),
+                        searching = false,
+                        error = result.error
+                    )
+                    is Result.Error -> state.copy(
+                        results = emptyList(),
+                        searching = false,
+                        error = result.exception.toString()
+                    )
+                    else -> state.copy(
+                        results = emptyList(),
+                        searching = false,
+                        error = Util.getString(R.string.you_know_nothing)
+                    )
                 }
             }
         }
     }
 
-    fun prepareSearch() {
-        when {
-            searchKey.value.isNullOrEmpty()
-            -> _invalidSearch.value = INVALID_FORMAT_SEARCH_KEY_EMPTY
-
-            !searchKey.value.isNullOrEmpty() -> searchKey.value?.let {
-                getSearchResult(isInitial = true, it)
-            }
-            else -> _invalidSearch.value = NO_ONE_KNOWS
+    fun onItemClick(item: LookItem) {
+        when (item) {
+            is LookItem.LookMovie -> loadMovieDetail(item.id)
+            is LookItem.LookTelevision, is LookItem.LookPerson ->
+                _uiState.update { it.copy(userMessage = R.string.search_detail_not_supported) }
         }
+    }
+
+    private fun loadMovieDetail(id: Int) {
+        if (detailJob?.isActive == true) return
+
+        detailJob = viewModelScope.launch {
+            _uiState.update { it.copy(loadingDetail = true) }
+
+            val detailDeferred = async { repository.getMovieDetail(id) }
+            val creditDeferred = async { repository.getMovieCredit(id) }
+            val detailResult = detailDeferred.await()
+            val creditResult = creditDeferred.await()
+            ensureActive()
+
+            _uiState.update { state ->
+                if (detailResult is Result.Success) {
+                    state.copy(
+                        loadingDetail = false,
+                        navigateToDetail = buildMovie(
+                            detailResult.data,
+                            (creditResult as? Result.Success)?.data
+                        )
+                    )
+                } else {
+                    Logger.w("loadMovieDetail id=$id failed: $detailResult")
+                    state.copy(
+                        loadingDetail = false,
+                        userMessage = R.string.search_detail_load_failed
+                    )
+                }
+            }
+        }
+    }
+
+    fun onDetailNavigated() {
+        _uiState.update { it.copy(navigateToDetail = null) }
+    }
+
+    fun onUserMessageShown() {
+        _uiState.update { it.copy(userMessage = null) }
     }
 }

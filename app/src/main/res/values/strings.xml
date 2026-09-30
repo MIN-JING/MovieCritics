@@ -31,6 +31,12 @@
     <string name="edit_search">Input keywords…</string>
     <string name="button_search">For search request</string>
     <string name="image_search">For search request</string>
+    <string name="search_hint">Search movies, TV shows, people</string>
+    <string name="search_clear">Clear search</string>
+    <string name="search_no_results">No results for \"%1$s\"</string>
+    <string name="search_known_for">Known for: %1$s</string>
+    <string name="search_detail_not_supported">Only movies have a detail page for now</string>
+    <string name="search_detail_load_failed">Unable to load movie details, please try again</string>
 
     <!-- Item Search Movie -->
     <string name="image_search_movie_poster">Movie poster</string>

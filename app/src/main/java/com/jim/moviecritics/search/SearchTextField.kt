@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -54,7 +54,7 @@ fun SearchTextField(
                 start = if (!focused) 16.dp else 0.dp,
                 end = 16.dp,
             ),
-        color = Color(0xffF5F5F5),
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(percent = 50),
     ) {
         CompositionLocalProvider(
@@ -80,6 +80,10 @@ fun SearchTextField(
                             .focusRequester(focusRequester)
                             .padding(top = 9.dp, bottom = 8.dp, start = 24.dp, end = 8.dp),
                         singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                     )
 
                     when {
@@ -115,7 +119,7 @@ private fun SearchHint(modifier: Modifier = Modifier) {
             .then(modifier),
     ) {
         Text(
-            color = Color(0xff757575),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             text = stringResource(R.string.search_hint),
         )
     }

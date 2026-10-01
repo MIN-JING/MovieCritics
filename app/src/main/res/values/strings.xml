@@ -39,7 +39,7 @@
     <string name="search_suggestions_title">Suggestions</string>
     <string name="search_try_these_title">Try one of these instead</string>
     <string name="search_no_results_title">No matching results</string>
-    <string name="search_no_results_body">No results for "%1$s". Try another keyword.</string>
+    <string name="search_no_results_body">No results for \"%1$s\". Try another keyword.</string>
     <string name="search_error_title">Search is unavailable</string>
     <string name="search_retry">Retry</string>
     <string name="search_unknown_title">Untitled</string>

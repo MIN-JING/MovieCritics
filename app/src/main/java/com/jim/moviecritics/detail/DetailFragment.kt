@@ -17,7 +17,9 @@ import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentDetailBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.util.InsetMode
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.applySystemBarInsets
 
 class DetailFragment : Fragment() {
 
@@ -32,6 +34,15 @@ class DetailFragment : Fragment() {
     ): View? {
 
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
+
+        // The toolbar and bottom navigation, which normally take the system bar insets,
+        // are hidden on this page, so keep the content clear of the status and navigation bars
+        applySystemBarInsets(
+            view = binding.root,
+            mode = InsetMode.PADDING,
+            applyTop = true,
+            applyBottom = true
+        )
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel

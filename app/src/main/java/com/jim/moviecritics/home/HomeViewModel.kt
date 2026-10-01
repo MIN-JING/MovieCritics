@@ -16,8 +16,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
     val homeItems: LiveData<List<HomeItem>>
         get() = _homeItems
 
-    private val movie = Movie()
-
     private val _status = MutableLiveData<LoadApiStatus>()
 
     val status: LiveData<LoadApiStatus>
@@ -55,10 +53,8 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
             _status.value = LoadApiStatus.LOADING
             val detailResult = getMovieDetail(index = 0, id = id)
             val creditResult = getMovieCredit(index = 1, id = id)
-            detailResultToMovie(detailResult)
-            creditResultToMovie(creditResult)
             _status.value = LoadApiStatus.DONE
-            navigateToDetail(movie)
+            navigateToDetail(buildMovie(detailResult, creditResult))
         }
     }
 
@@ -145,64 +141,6 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                 else -> {
                     _status.postValue(LoadApiStatus.ERROR)
                     null
-                }
-            }
-        }
-    }
-
-    private fun detailResultToMovie(detailResult: MovieDetailResult?) {
-        detailResult?.let { movieDetailResult ->
-            movie.id = movieDetailResult.id
-            movie.imdbID = movieDetailResult.imdbID
-            movie.awards = null
-            movie.country = null
-            movie.genres = movieDetailResult.genres
-            movie.overview = movieDetailResult.overview
-            if (!movieDetailResult.posterUri.isNullOrEmpty()) {
-                movie.posterUri = "https://image.tmdb.org/t/p/w185" + movieDetailResult.posterUri
-            }
-            movie.released = movieDetailResult.releaseDate
-            movie.runtime = movieDetailResult.runtime
-            movie.revenue = movieDetailResult.revenue
-            movie.salesTaiwan = null
-            movie.title = movieDetailResult.title
-            movie.trailerUri = null
-            movie.ratings = listOf()
-            movie.voteAverage = movieDetailResult.average / 2
-            Logger.i("movieDetailResult.average = ${movieDetailResult.average}")
-            Logger.i("movie.voteAverage = ${movie.voteAverage}")
-            if (!movieDetailResult.videos.results.isNullOrEmpty()) {
-                val youtubeKey = movieDetailResult.videos.results.maxByOrNull { it.published }?.key
-                youtubeKey?.let {
-                    Logger.i("youtubeKey = $youtubeKey")
-                    movie.trailerUri = "https://www.youtube.com/watch?v=$youtubeKey"
-                    Logger.i("HomeViewModel movie.trailerUri = ${movie.trailerUri}")
-                }
-            }
-        }
-    }
-
-    private fun creditResultToMovie(creditResult: CreditResult?) {
-        creditResult?.let { movieCreditResult ->
-            Logger.i("movieCreditResult = $creditResult")
-            movieCreditResult.casts.forEach { cast ->
-                if (!cast.profilePath.isNullOrEmpty()) {
-                    cast.profilePath = "https://image.tmdb.org/t/p/w185" + cast.profilePath
-                }
-            }
-            movie.casts = movieCreditResult.casts
-            movie.crews = movieCreditResult.crews
-            movieCreditResult.crews.forEach { crew ->
-                when (crew.job) {
-                    "Director" -> {
-                        movie.director = crew.name
-                        Logger.i("movie.director = ${movie.director}")
-                    }
-                    "Story" -> {
-                        movie.writing.add(crew.name)
-                        Logger.i("movie.writing = ${movie.writing}")
-                    }
-                    else -> {}
                 }
             }
         }

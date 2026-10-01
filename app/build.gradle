@@ -14,7 +14,7 @@ plugins {
 ext {
     majorVersion = 1
     minorVersion = 1
-    patchVersion = 6
+    patchVersion = 7
 
     weightMajor = 1000000
     weightMinor = 100000

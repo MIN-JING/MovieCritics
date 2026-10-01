@@ -31,6 +31,23 @@
     <string name="edit_search">Input keywords…</string>
     <string name="button_search">For search request</string>
     <string name="image_search">For search request</string>
+    <string name="search_hint">Search movies, TV shows, or people</string>
+    <string name="search_clear">Clear search query</string>
+    <string name="search_recent_title">Recent searches</string>
+    <string name="search_recent_empty">Your recent searches will appear here.</string>
+    <string name="search_discover_title">Try these searches</string>
+    <string name="search_suggestions_title">Suggestions</string>
+    <string name="search_try_these_title">Try one of these instead</string>
+    <string name="search_no_results_title">No matching results</string>
+    <string name="search_no_results_body">No results for \"%1$s\". Try another keyword.</string>
+    <string name="search_error_title">Search is unavailable</string>
+    <string name="search_retry">Retry</string>
+    <string name="search_unknown_title">Untitled</string>
+    <string name="search_default_description">No description available yet.</string>
+    <string name="search_person_default_description">No known-for credits available yet.</string>
+    <string name="search_open_detail_failed">Unable to open this title right now.</string>
+    <string name="search_tv_not_supported">TV detail is not supported yet.</string>
+    <string name="search_person_not_supported">Person detail is not supported yet.</string>
 
     <!-- Item Search Movie -->
     <string name="image_search_movie_poster">Movie poster</string>

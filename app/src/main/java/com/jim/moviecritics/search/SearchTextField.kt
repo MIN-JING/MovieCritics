@@ -1,11 +1,24 @@
 package com.jim.moviecritics.search
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -14,9 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import com.jim.moviecritics.R
 
 @Composable
 fun SearchTextField(
@@ -26,33 +41,32 @@ fun SearchTextField(
     onClearQuery: () -> Unit,
     searching: Boolean,
     focused: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
 
     Surface(
         modifier = modifier
-            .then(
-                Modifier
-                    .height(56.dp)
-                    .padding(
-                        top = 8.dp,
-                        bottom = 8.dp,
-                        start = if (!focused) 16.dp else 0.dp,
-                        end = 16.dp
-                    )
+            .height(56.dp)
+            .padding(
+                top = 8.dp,
+                bottom = 8.dp,
+                start = if (!focused) 16.dp else 0.dp,
+                end = 16.dp,
             ),
-        color = Color(0xffF5F5F5),
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(percent = 50),
     ) {
-        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
+        CompositionLocalProvider(
+            LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant,
+            LocalTextStyle provides MaterialTheme.typography.bodyLarge,
+        ) {
             Box(
                 contentAlignment = Alignment.CenterStart,
-                modifier = modifier
+                modifier = Modifier.fillMaxSize(),
             ) {
-
                 if (query.text.isEmpty()) {
-                    SearchHint(modifier.padding(start = 24.dp, end = 8.dp))
+                    SearchHint(Modifier.padding(start = 24.dp, end = 8.dp))
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -62,25 +76,31 @@ fun SearchTextField(
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f)
-                            .onFocusChanged {
-                                onSearchFocusChange(it.isFocused)
-                            }
+                            .onFocusChanged { onSearchFocusChange(it.isFocused) }
                             .focusRequester(focusRequester)
                             .padding(top = 9.dp, bottom = 8.dp, start = 24.dp, end = 8.dp),
-                        singleLine = true
+                        singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                        ),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                     )
 
                     when {
                         searching -> {
                             CircularProgressIndicator(
                                 modifier = Modifier
-                                    .padding(horizontal = 6.dp)
-                                    .size(36.dp)
+                                    .padding(horizontal = 12.dp)
+                                    .size(20.dp),
+                                strokeWidth = 2.dp,
                             )
                         }
                         query.text.isNotEmpty() -> {
                             IconButton(onClick = onClearQuery) {
-                                Icon(imageVector = Icons.Filled.Done, contentDescription = null)
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.search_clear),
+                                )
                             }
                         }
                     }
@@ -96,12 +116,11 @@ private fun SearchHint(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxSize()
-            .then(modifier)
-
+            .then(modifier),
     ) {
         Text(
-            color = Color(0xff757575),
-            text = "Search a Tag or Description",
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text = stringResource(R.string.search_hint),
         )
     }
 }

@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.databinding.FragmentSearchBinding
 import com.jim.moviecritics.ext.getVmFactory
+import com.jim.moviecritics.ext.showToast
 
 class SearchFragment : Fragment() {
 
@@ -21,23 +22,31 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
+    ): View? {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
-        binding.composeViewSearch.apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                MaterialTheme {
-                    SearchScreen(
-                        viewModel = viewModel,
-                        onNavigateToDetail = { movie ->
-                            findNavController().navigate(
-                                NavigationDirections.navigateToDetailFragment(movie)
-                            )
-                        }
-                    )
-                }
+        binding.composeViewSearch.setContent {
+            MaterialTheme {
+                SearchScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                )
             }
         }
+
+        viewModel.navigateToDetail.observe(viewLifecycleOwner) { movie ->
+            movie?.let {
+                findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
+                viewModel.onDetailNavigated()
+            }
+        }
+
+        viewModel.userMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                activity.showToast(it)
+                viewModel.onUserMessageShown()
+            }
+        }
+
         return binding.root
     }
 }

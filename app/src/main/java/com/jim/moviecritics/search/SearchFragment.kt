@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +12,7 @@ import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.databinding.FragmentSearchBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.ext.showToast
+import com.jim.moviecritics.ui.theme.MovieCriticsTheme
 
 class SearchFragment : Fragment() {
 
@@ -25,7 +25,7 @@ class SearchFragment : Fragment() {
     ): View? {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.composeViewSearch.setContent {
-            MaterialTheme {
+            MovieCriticsTheme {
                 SearchScreen(
                     modifier = Modifier,
                     viewModel = viewModel,

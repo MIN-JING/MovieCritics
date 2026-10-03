@@ -24,7 +24,7 @@ The Movie Critics application that uses data is attributed to [The Movie Databas
 <img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_popular_movies.gif" width="170" />
 
 #### Rating
-* Use [`MPAndroidChart`](https://github.com/PhilJay/MPAndroidChart) for showing ratings
+* Draw the ratings radar chart with a Jetpack Compose [`Canvas`](https://developer.android.com/develop/ui/compose/graphics/draw/overview)
 <img src="https://github.com/MIN-JING/MIN-JING/blob/main/image_MovieCritics/screen_rating.gif" width="170" />
 
 #### Comment

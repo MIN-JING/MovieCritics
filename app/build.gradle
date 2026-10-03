@@ -260,9 +260,6 @@ dependencies {
 
     // Lottie: 動畫效果
     implementation "com.airbnb.android:lottie:6.6.7"
-
-    // Radar Chart: 雷達圖
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 }
 
 ktlint {

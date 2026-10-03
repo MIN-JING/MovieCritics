@@ -55,6 +55,11 @@
     <string name="text_detail_ratings">RATINGS</string>
     <string name="text_detail_cast">Cast</string>
     <string name="text_detail_review">Review</string>
+    <string name="text_detail_runtime">%1$d Min</string>
+    <string name="text_detail_tmdb_rating">TMDB rating, scaled to 5: %1$.1f</string>
+    <string name="text_detail_your_rating">Your rating: %1$.1f</string>
+    <string name="text_detail_not_rated">You haven\'t rated this movie yet.</string>
+    <string name="text_detail_no_reviews">No reviews yet.</string>
 
     <!-- Item Detail Cast -->
     <string name="image_cast">Cast profile picture</string>

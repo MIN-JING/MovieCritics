@@ -171,10 +171,6 @@ android {
         buildConfig = true
         viewBinding = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.9"
-    }
 }
 
 dependencies {

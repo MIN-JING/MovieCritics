@@ -22,10 +22,10 @@
 
     <!-- Home -->
     <string name="text_home_popular">Popular movies this week</string>
-
-    <!-- Item Home Popular -->
-    <string name="image_home_poster">Movie poster</string>
     <string name="image_home_star">Rating star picture</string>
+    <string name="home_error_title">Popular movies are unavailable</string>
+    <string name="home_retry">Retry</string>
+    <string name="home_open_detail_failed">Unable to open this movie right now.</string>
 
     <!-- Search -->
     <string name="search_hint">Search movies, TV shows, or people</string>

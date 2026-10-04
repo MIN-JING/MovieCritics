@@ -3,146 +3,114 @@ package com.jim.moviecritics.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.data.*
+import androidx.lifecycle.viewModelScope
+import com.jim.moviecritics.R
+import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.buildMovie
 import com.jim.moviecritics.data.source.Repository
-import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.*
+import com.jim.moviecritics.util.Util
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository) : ViewModel() {
 
-    private val _homeItems = MutableLiveData<List<HomeItem>>()
-
-    val homeItems: LiveData<List<HomeItem>>
-        get() = _homeItems
-
-    private val _status = MutableLiveData<LoadApiStatus>()
-
-    val status: LiveData<LoadApiStatus>
-        get() = _status
-
-    private val _error = MutableLiveData<String?>()
-
-    val error: LiveData<String?>
-        get() = _error
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     private val _navigateToDetail = MutableLiveData<Movie?>()
-
     val navigateToDetail: LiveData<Movie?>
         get() = _navigateToDetail
 
-    private var viewModelJob = Job()
+    private val _userMessage = MutableLiveData<String?>()
+    val userMessage: LiveData<String?>
+        get() = _userMessage
 
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
+    private var popularJob: Job? = null
+    private var detailJob: Job? = null
 
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        getPopularMoviesResult()
+        loadPopularMovies()
     }
 
-    fun getMovieFull(id: Int) {
-        coroutineScope.launch {
-            _status.value = LoadApiStatus.LOADING
-            val detailResult = getMovieDetail(index = 0, id = id)
-            val creditResult = getMovieCredit(index = 1, id = id)
-            _status.value = LoadApiStatus.DONE
-            navigateToDetail(buildMovie(detailResult, creditResult))
+    fun retry() {
+        loadPopularMovies()
+    }
+
+    fun onMovieSelected(movieId: Int) {
+        if (detailJob?.isActive == true) return
+
+        detailJob = viewModelScope.launch {
+            _uiState.update { it.copy(openingDetail = true) }
+
+            val detailDeferred = async { repository.getMovieDetail(movieId) }
+            val creditDeferred = async { repository.getMovieCredit(movieId) }
+            val detailResult = detailDeferred.await()
+            val creditResult = creditDeferred.await()
+            // The data source catches every exception, including cancellation
+            ensureActive()
+
+            _uiState.update { it.copy(openingDetail = false) }
+
+            if (detailResult is Result.Success && creditResult is Result.Success) {
+                _navigateToDetail.value = buildMovie(detailResult.data, creditResult.data)
+            } else {
+                _userMessage.value = detailResult.failureMessage()
+                    ?: creditResult.failureMessage()
+                    ?: Util.getString(R.string.home_open_detail_failed)
+            }
         }
-    }
-
-    private fun navigateToDetail(movie: Movie) {
-        _navigateToDetail.value = movie
     }
 
     fun onDetailNavigated() {
         _navigateToDetail.value = null
     }
 
-    private fun getPopularMoviesResult() {
-        coroutineScope.launch {
-            _status.value = LoadApiStatus.LOADING
+    fun onUserMessageShown() {
+        _userMessage.value = null
+    }
+
+    private fun loadPopularMovies() {
+        if (popularJob?.isActive == true) return
+
+        popularJob = viewModelScope.launch {
+            _uiState.update { it.copy(loadingPopular = true, errorMessage = null) }
+
             val result = repository.getPopularMovies()
-            _homeItems.value = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    _status.value = LoadApiStatus.DONE
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    null
-                }
-                else -> {
-                    _status.value = LoadApiStatus.ERROR
-                    null
+            // The data source catches every exception, including cancellation
+            ensureActive()
+
+            _uiState.update {
+                when (result) {
+                    is Result.Success -> it.copy(
+                        loadingPopular = false,
+                        homeItems = result.data,
+                        errorMessage = null,
+                    )
+                    else -> it.copy(
+                        loadingPopular = false,
+                        errorMessage = result.failureMessage()
+                            ?: Util.getString(R.string.you_know_nothing),
+                    )
                 }
             }
         }
     }
 
-    private suspend fun getMovieDetail(index: Int, id: Int): MovieDetailResult? {
-        return withContext(Dispatchers.IO) {
-            when (val result = repository.getMovieDetail(id)) {
-                is Result.Success -> {
-                    _error.postValue(null)
-                    Logger.w("child $index result: ${result.data}")
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.postValue(result.error)
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                is Result.Error -> {
-                    _error.postValue(result.exception.toString())
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                else -> {
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-            }
-        }
-    }
-
-    private suspend fun getMovieCredit(index: Int, id: Int): CreditResult? {
-        return withContext(Dispatchers.IO) {
-            when (val result = repository.getMovieCredit(id)) {
-                is Result.Success -> {
-                    _error.postValue(null)
-                    Logger.w("child $index result: ${result.data}")
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.postValue(result.error)
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                is Result.Error -> {
-                    _error.postValue(result.exception.toString())
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                else -> {
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-            }
-        }
+    private fun Result<*>.failureMessage(): String? = when (this) {
+        is Result.Fail -> error
+        is Result.Error -> exception.localizedMessage
+        else -> null
     }
 }

@@ -50,6 +50,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 | 畫面 | 狀態 |
 |---|---|
 | Search | ✅ Compose（`search/`），StateFlow + `collectAsStateWithLifecycle`；導航和 Toast 透過 `LiveData` 由 Fragment 處理 |
+| Home | ✅ Compose（`home/`），同 Search 的做法；`LazyVerticalGrid` 兩欄，載入動畫用 `lottie-compose` |
 | Detail | 🟡 只有骨架 `detail/DetailScreen.kt`，尚未接上，**刻意保留**作為起點（參數是 `itemId`，實際 Detail 需要 `Movie`；用的是 M2 `TopAppBar`） |
 | 其他 | ❌ XML |
 
@@ -74,7 +75,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 
 ## 待辦
 
-- Compose 改寫下一個畫面（Home 或 Detail）
+- Compose 改寫下一個畫面（Detail）
 - 通知權限（`POST_NOTIFICATIONS`）與提醒時間
 - Search 的 query 仍以 `TextFieldValue` 放在 StateFlow，官方建議改用 Compose state
 - 用 Material Theme Builder 從 `#006A6A` 產生完整 teal 色票（目前中性色是 Material 預設，帶紫調）

@@ -1,11 +1,14 @@
 package com.jim.moviecritics.work
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.jim.moviecritics.MainActivity
@@ -23,6 +26,15 @@ class WatchlistReminderWorker(
 
     override fun doWork(): Result {
         Logger.i("doWork()")
+        val permission = Manifest.permission.POST_NOTIFICATIONS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(applicationContext, permission) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            Logger.i("POST_NOTIFICATIONS not granted, skip reminder")
+            return Result.success()
+        }
+
         val intent = Intent(applicationContext, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }

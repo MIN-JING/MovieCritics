@@ -64,7 +64,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 - TMDB 的金額欄位（`revenue`、`budget`）可能超過 `Int`，要用 `Long`
 - TMDB multi search 的 TV 和人物用 `name`，電影用 `title`
 - Android 字串資源裡的 `"` 要寫成 `\"`，否則會被 aapt 去掉
-- `AndroidManifest.xml` 沒有宣告 `POST_NOTIFICATIONS`，Android 13 以上收不到觀看提醒；`WatchlistFragment` 的提醒固定在選完時間 3 秒後觸發
+- 觀看提醒用 WorkManager `setInitialDelay`，不是精確鬧鐘，Doze 下可能延後；Android 13 以上在點清單項目時才要 `POST_NOTIFICATIONS`，拒絕的話 `WatchlistReminderWorker` 會略過通知
 
 ## 開發流程
 
@@ -76,7 +76,6 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 ## 待辦
 
 - Compose 改寫下一個畫面（Detail）
-- 通知權限（`POST_NOTIFICATIONS`）與提醒時間
 - Search 的 query 仍以 `TextFieldValue` 放在 StateFlow，官方建議改用 Compose state
 - 用 Material Theme Builder 從 `#006A6A` 產生完整 teal 色票（目前中性色是 Material 預設，帶紫調）
 - 清理沒用到的 value 資源：登入範本字串、`purple_*` / `teal_*` 顏色、幾個 dimen、`Theme.MovieCritics`

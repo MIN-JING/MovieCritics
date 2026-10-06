@@ -41,7 +41,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 - **DI**：沒有框架。`util/ServiceLocator` 提供 `Repository`，`factory/` 下 4 個 ViewModelFactory，Fragment 用 `getVmFactory(...)`（`ext/FragmentExt.kt`）取得
 - **資料層**：`Repository` → `DefaultRepository` → `ApiDataSource`（TMDB）/ `FirebaseDataSource`（Firestore）/ `LocalDataSource`。結果包成 `data/Result`（`Success` / `Fail` / `Error`）。部分 Firebase 方法仍回傳 `MutableLiveData`
 - **詳情頁的 `Movie`**：由 `data/MovieMapper.kt` 的 `buildMovie(detail, credit)` 組成，Home 和 Search 共用
-- **Edge-to-edge**：`MainActivity` 只讓 toolbar 和 bottom nav 吃 system bar insets。這兩者被隱藏的畫面（目前是 Detail）要自己用 `util/ViewUtils.kt` 的 `applySystemBarInsets()` 處理
+- **Edge-to-edge**：`MainActivity` 只讓 toolbar 和 bottom nav 吃 system bar insets。這兩者被隱藏的畫面（目前是 Detail）要自己處理：XML 畫面用 `util/ViewUtils.kt` 的 `applySystemBarInsets()`，Compose 畫面用 `Scaffold` 的 insets
 
 ## Compose 遷移現況
 
@@ -51,7 +51,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 |---|---|
 | Search | ✅ Compose（`search/`），StateFlow + `collectAsStateWithLifecycle`；導航和 Toast 透過 `LiveData` 由 Fragment 處理 |
 | Home | ✅ Compose（`home/`），同 Search 的做法；`LazyVerticalGrid` 兩欄，載入動畫用 `lottie-compose` |
-| Detail | 🟡 只有骨架 `detail/DetailScreen.kt`，尚未接上，**刻意保留**作為起點（參數是 `itemId`，實際 Detail 需要 `Movie`；用的是 M2 `TopAppBar`） |
+| Detail | ✅ Compose（`detail/`），同 Search 的做法；M3 `Scaffold` + `TopAppBar` 自己處理 system bar insets，雷達圖是 `RatingRadarChart`（Compose `Canvas`，不再用 MPAndroidChart） |
 | 其他 | ❌ XML |
 
 - **主題**：Compose 畫面一律包在 `ui/theme/Theme.kt` 的 `MovieCriticsTheme`，不要用裸的 `MaterialTheme`。顏色用 `colorResource` 讀 `colors.xml`，和 XML 主題共用一份
@@ -75,7 +75,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 
 ## 待辦
 
-- Compose 改寫下一個畫面（Detail）
+- Compose 改寫下一個畫面（Watchlist / Profile）
 - 通知權限（`POST_NOTIFICATIONS`）與提醒時間
 - Search 的 query 仍以 `TextFieldValue` 放在 StateFlow，官方建議改用 Compose state
 - 用 Material Theme Builder 從 `#006A6A` 產生完整 teal 色票（目前中性色是 Material 預設，帶紫調）

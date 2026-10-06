@@ -3,66 +3,32 @@ package com.jim.moviecritics.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.mikephil.charting.data.RadarEntry
-import com.jim.moviecritics.data.*
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewModelScope
+import com.jim.moviecritics.data.Comment
+import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
-import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val repository: Repository,
     private val arguments: Movie
 ) : ViewModel() {
 
-    private val _movie = MutableLiveData<Movie>().apply {
-        value = arguments
-    }
-
-    val movie: LiveData<Movie>
-        get() = _movie
-
-
-    private var users = listOf<User>()
+    private val _uiState = MutableStateFlow(DetailUiState(movie = arguments))
+    val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
 
     // check user login status
     val isLoggedIn
         get() = UserManager.isLoggedIn
-
-    var usersMap = mapOf<String, User>()
-
-    var liveScore = MutableLiveData<Score>()
-
-    var liveComments = MutableLiveData<List<Comment>>()
-
-    lateinit var averageRatings: ArrayList<RadarEntry>
-
-    var userRatings: ArrayList<RadarEntry> =
-        arrayListOf(
-            RadarEntry(0F),
-            RadarEntry(0F),
-            RadarEntry(0F),
-            RadarEntry(0F),
-            RadarEntry(0F)
-        )
-
-    private val _isUsersMapReady = MutableLiveData<Boolean>()
-
-    val isUsersMapReady: LiveData<Boolean>
-        get() = _isUsersMapReady
-
-    // status: The internal MutableLiveData that stores the status of the most recent request
-    private val _status = MutableLiveData<LoadApiStatus>()
-
-    val status: LiveData<LoadApiStatus>
-        get() = _status
-
-    // error: The internal MutableLiveData that stores the error of the most recent request
-    private val _error = MutableLiveData<String?>()
-
-    val error: LiveData<String?>
-        get() = _error
 
     private val _leave = MutableLiveData<Boolean>()
 
@@ -94,37 +60,19 @@ class DetailViewModel(
     val navigateToLogin: LiveData<Boolean?>
         get() = _navigateToLogin
 
-    private var viewModelJob = Job()
-
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
     init {
         Logger.i("------------------------------------")
         Logger.i("[${this::class.simpleName}]$this")
         Logger.i("------------------------------------")
 
-        movie.value?.let { movie ->
-            movie.imdbID?.let { imdbID ->
-                UserManager.userID?.let { getLiveScore(imdbID = imdbID, it) }
-                getLiveComments(imdbID = imdbID)
-            }
-            averageRatings = arrayListOf(
-                RadarEntry(movie.voteAverage),
-                RadarEntry(movie.voteAverage),
-                RadarEntry(movie.voteAverage),
-                RadarEntry(movie.voteAverage),
-                RadarEntry(movie.voteAverage)
-            )
+        arguments.imdbID?.let { imdbID ->
+            UserManager.userID?.let { observeScore(imdbID = imdbID, userID = it) }
+            observeComments(imdbID = imdbID)
         }
     }
 
-    fun navigateToPending(movie: Movie) {
-        _navigateToPending.value = movie
+    fun navigateToPending() {
+        _navigateToPending.value = arguments
     }
 
     fun onPendingNavigated() {
@@ -147,8 +95,8 @@ class DetailViewModel(
         _navigateToUserInfo.value = null
     }
 
-    fun navigateToTrailer(movie: Movie) {
-        _navigateToTrailer.value = movie
+    fun navigateToTrailer() {
+        _navigateToTrailer.value = arguments
     }
 
     fun onTrailerNavigated() {
@@ -167,52 +115,36 @@ class DetailViewModel(
         _leave.value = true
     }
 
-    private fun getLiveScore(imdbID: String, userID: String) {
-        liveScore.value = repository.getLiveScore(imdbID, userID).value
-        liveScore = repository.getLiveScore(imdbID, userID)
-    }
-
-    private fun getLiveComments(imdbID: String) {
-        _status.value = LoadApiStatus.LOADING
-        liveComments = repository.getLiveComments(imdbID)
-        _status.value = LoadApiStatus.DONE
-    }
-
-    fun getUsersResult(idList: List<String>) {
-        coroutineScope.launch {
-            val result = repository.getUsersByIdList(idList = idList)
-            users = when (result) {
-                is Result.Success -> {
-                    _error.value = null
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.value = result.error
-                    _status.value = LoadApiStatus.ERROR
-                    listOf()
-                }
-                is Result.Error -> {
-                    _error.value = result.exception.toString()
-                    _status.value = LoadApiStatus.ERROR
-                    listOf()
-                }
-                else -> {
-                    _status.value = LoadApiStatus.ERROR
-                    listOf()
-                }
+    private fun observeScore(imdbID: String, userID: String) {
+        viewModelScope.launch {
+            repository.getLiveScore(imdbID, userID).asFlow().collect { score ->
+                Logger.i("DetailViewModel score = $score")
+                _uiState.update { it.copy(userScore = score) }
             }
-            usersMap = users.associateBy(User::id)
-            _isUsersMapReady.value = true
         }
     }
 
-    fun setRadarEntry(score: Score) {
-        userRatings = arrayListOf(
-            RadarEntry(score.leisure),
-            RadarEntry(score.hit),
-            RadarEntry(score.cast),
-            RadarEntry(score.music),
-            RadarEntry(score.story)
-        )
+    private fun observeComments(imdbID: String) {
+        viewModelScope.launch {
+            repository.getLiveComments(imdbID).asFlow().collect { comments ->
+                _uiState.update { it.copy(comments = comments) }
+                loadMissingUsers(comments)
+            }
+        }
+    }
+
+    /** Loads the authors of [comments] that are not in the state yet. */
+    private suspend fun loadMissingUsers(comments: List<Comment>) {
+        val knownUserIds = _uiState.value.usersById.keys
+        val missingUserIds = comments.map { it.userID }.distinct().filterNot { it in knownUserIds }
+        if (missingUserIds.isEmpty()) return
+
+        Logger.i("DetailViewModel loading users = $missingUserIds")
+        when (val result = repository.getUsersByIdList(idList = missingUserIds)) {
+            is Result.Success -> _uiState.update { state ->
+                state.copy(usersById = state.usersById + result.data.associateBy(User::id))
+            }
+            else -> Logger.w("DetailViewModel getUsersByIdList = $result")
+        }
     }
 }

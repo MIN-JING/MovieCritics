@@ -7,19 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.mikephil.charting.charts.RadarChart
-import com.github.mikephil.charting.data.RadarData
-import com.github.mikephil.charting.data.RadarDataSet
-import com.github.mikephil.charting.data.RadarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.jim.moviecritics.NavigationDirections
-import com.jim.moviecritics.R
 import com.jim.moviecritics.databinding.FragmentDetailBinding
 import com.jim.moviecritics.ext.getVmFactory
-import com.jim.moviecritics.util.InsetMode
-import com.jim.moviecritics.util.Logger
-import com.jim.moviecritics.util.applySystemBarInsets
+import com.jim.moviecritics.ui.theme.MovieCriticsTheme
 
 class DetailFragment : Fragment() {
 
@@ -32,65 +23,12 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
-
-        // The toolbar and bottom navigation, which normally take the system bar insets,
-        // are hidden on this page, so keep the content clear of the status and navigation bars
-        applySystemBarInsets(
-            view = binding.root,
-            mode = InsetMode.PADDING,
-            applyTop = true,
-            applyBottom = true
-        )
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-
-        binding.recyclerviewDetailCast.adapter = CastAdapter(
-            CastAdapter.OnClickListener {
-                Logger.i("CastAdapter.OnClickListener it = $it")
-            }
-        )
-
-        val reviewAdapter = ReviewAdapter(
-            ReviewAdapter.OnClickListener {
-                Logger.i("ReviewAdapter.OnClickListener it = $it")
-            },
-            viewModel
-        )
-
-        binding.recyclerviewDetailReview.adapter = reviewAdapter
-
-        showRadarChart(
-            binding.radarChartRating,
-            setRatings(viewModel.averageRatings, viewModel.userRatings)
-        )
-
-        viewModel.liveScore.observe(viewLifecycleOwner) { score ->
-            Logger.i("DetailViewModel.liveScore = $score")
-            score?.let {
-                viewModel.setRadarEntry(it)
-                showRadarChart(
-                    binding.radarChartRating,
-                    setRatings(viewModel.averageRatings, viewModel.userRatings)
-                )
-            }
-        }
-
-        viewModel.liveComments.observe(viewLifecycleOwner) { comments ->
-            comments?.let { commentList ->
-                val list = mutableListOf<String>()
-                commentList.forEach { comment ->
-                    list.add(comment.userID)
-                }
-                val distinctUser = list.distinct()
-                Logger.i("DetailViewModel.liveComment userIDs = $distinctUser")
-                viewModel.getUsersResult(distinctUser)
-                viewModel.isUsersMapReady.observe(viewLifecycleOwner) { boolean ->
-                    Logger.i("DetailViewModel.isUsersMapReady = $boolean")
-                    reviewAdapter.submitList(comments)
-                }
+        // The toolbar and bottom navigation, which normally take the system bar insets, are
+        // hidden on this page. DetailScreen's Scaffold keeps its content clear of the bars.
+        binding.composeViewDetail.setContent {
+            MovieCriticsTheme {
+                DetailScreen(viewModel = viewModel)
             }
         }
 
@@ -103,6 +41,7 @@ class DetailFragment : Fragment() {
                         viewModel.onPendingNavigated()
                     }
                     false -> {
+                        viewModel.onPendingNavigated()
                         viewModel.navigateToLogin()
                     }
                 }
@@ -118,6 +57,7 @@ class DetailFragment : Fragment() {
                         viewModel.onReportNavigated()
                     }
                     false -> {
+                        viewModel.onReportNavigated()
                         viewModel.navigateToLogin()
                     }
                 }
@@ -133,6 +73,7 @@ class DetailFragment : Fragment() {
                         viewModel.onUserInfoNavigated()
                     }
                     false -> {
+                        viewModel.onUserInfoNavigated()
                         viewModel.navigateToLogin()
                     }
                 }
@@ -159,48 +100,5 @@ class DetailFragment : Fragment() {
             }
         }
         return binding.root
-    }
-
-    private fun setRatings(
-        averageRatings: ArrayList<RadarEntry>,
-        userRatings: ArrayList<RadarEntry>
-    ): RadarData {
-        val averageRatingsSet = RadarDataSet(
-            averageRatings, "TMDB ratings with linear transformation"
-        )
-        averageRatingsSet.lineWidth = 2F
-        averageRatingsSet.isDrawHighlightCircleEnabled = true
-        averageRatingsSet.setDrawHighlightIndicators(false)
-
-        val userRatingsSet = RadarDataSet(userRatings, "Ratings by you")
-        userRatingsSet.color = R.color.secondary
-        userRatingsSet.lineWidth = 2F
-        userRatingsSet.isDrawHighlightCircleEnabled = true
-        userRatingsSet.setDrawHighlightIndicators(false)
-
-        val totalRatingsSet = ArrayList<IRadarDataSet>()
-        totalRatingsSet.add(averageRatingsSet)
-        totalRatingsSet.add(userRatingsSet)
-
-        val radarData = RadarData(totalRatingsSet)
-        radarData.setValueTextSize(10F)
-        return radarData
-    }
-
-    private fun showRadarChart(radarChart: RadarChart, radarData: RadarData) {
-        radarChart.description.isEnabled = false
-        radarChart.isRotationEnabled = true
-        val labels: Array<String> = arrayOf("Leisure", "Hit", "Cast", "Music", "Story")
-        radarChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-        radarChart.xAxis.textSize = 15F
-        radarChart.yAxis.axisMinimum = 0F
-        radarChart.yAxis.axisMaximum = 5F
-        radarChart.yAxis.setLabelCount(5, true)
-        // NOT show yAxis label
-        radarChart.yAxis.setDrawLabels(false)
-        radarChart.scaleX = 1.05F
-        radarChart.scaleY = 1.05F
-        radarChart.data = radarData
-        radarChart.invalidate()
     }
 }

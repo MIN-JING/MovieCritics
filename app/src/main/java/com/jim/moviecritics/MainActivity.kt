@@ -5,6 +5,7 @@ import android.view.Gravity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -13,9 +14,15 @@ import com.jim.moviecritics.databinding.ActivityMainBinding
 import com.jim.moviecritics.ext.getVmFactory
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.InsetMode
 import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.util.applySystemBarInsets
 
 class MainActivity : AppCompatActivity() {
+
+    private companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
 
     private lateinit var binding: ActivityMainBinding
 
@@ -24,7 +31,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // 1. Enable edge-to-edge display to draw behind system bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        // 2. Inflate your layout and set the content view
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        // 3. Apply the insets! This is the best place.
+        // Apply top inset as padding to a root container that scrolls
+        applySystemBarInsets(
+            view = binding.toolbar,
+            mode = InsetMode.MARGIN,
+            applyTop = true,
+            applyBottom = false // Toolbar doesn't need bottom inset
+        )
+
+        // Apply top inset as margin to a non-scrolling Toolbar
+        applySystemBarInsets(
+            view = binding.bottomNavView,
+            mode = InsetMode.MARGIN,
+            applyTop = false,
+            applyBottom = true
+        )
+
+        setupToolbar()
+        setupBottomNavOnItemSelectedListener()
+        setupNavController()
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
@@ -56,10 +89,6 @@ class MainActivity : AppCompatActivity() {
             Logger.i("MainViewModel.user = $it")
             UserManager.user = it
         }
-
-        setupToolbar()
-        setupBottomNav()
-        setupNavController()
     }
 
     private fun setupToolbar() {
@@ -71,8 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavController() {
-        findNavController(R.id.navHostFragment).addOnDestinationChangedListener {
-            navController: NavController, _: NavDestination, _: Bundle? ->
+        findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.homeFragment -> CurrentFragmentType.HOME
                 R.id.searchFragment -> CurrentFragmentType.SEARCH
@@ -84,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupBottomNav() {
+    private fun setupBottomNavOnItemSelectedListener() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
@@ -93,12 +121,14 @@ class MainActivity : AppCompatActivity() {
                         .navigate(NavigationDirections.navigateToHomeFragment())
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.navigation_search -> {
 
                     findNavController(R.id.navHostFragment)
                         .navigate(NavigationDirections.navigateToSearchFragment())
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.navigation_watchlist -> {
 
                     when (viewModel.isLoggedIn) {
@@ -109,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                                     .navigateToWatchlistFragment(viewModel.user.value)
                             )
                         }
+
                         false -> {
                             findNavController(R.id.navHostFragment)
                                 .navigate(NavigationDirections.navigationToLoginDialog())
@@ -117,6 +148,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     return@setOnItemSelectedListener true
                 }
+
                 R.id.navigation_profile -> {
 
                     when (viewModel.isLoggedIn) {
@@ -126,6 +158,7 @@ class MainActivity : AppCompatActivity() {
                                 NavigationDirections.navigateToProfileFragment(viewModel.user.value)
                             )
                         }
+
                         false -> {
                             findNavController(R.id.navHostFragment)
                                 .navigate(NavigationDirections.navigationToLoginDialog())

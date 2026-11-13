@@ -77,6 +77,8 @@ Gradle version 7.2
 ## Version History
 | Version | Detail                                                                        |
 |---------|-------------------------------------------------------------------------------|
+| 1.1.8   | Rewrite home page by Jetpack Compose; request notification permission for watchlist reminders; keep detail page clear of system bars |
+| 1.1.7   | Refactor search UX: recent searches, suggestions, filters, open movie detail  |
 | 1.1.5   | Prevent passing empty Firestore document ID on the watchlist page             |
 | 1.1.4   | Add click event on search page                                                |
 | 1.1.3   | Refactor the search page by Jetpack Compose; Upgrade libraries version        |
@@ -91,7 +93,7 @@ Gradle version 7.2
 
 ## License
 ```
-Copyright 2022 MIN JING SU
+Copyright 2022 MINJING SU
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -106,4 +108,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 ## Contact
-MIN-JING, SU : goodcack@gmail.com
+MINJING SU : goodcack@gmail.com

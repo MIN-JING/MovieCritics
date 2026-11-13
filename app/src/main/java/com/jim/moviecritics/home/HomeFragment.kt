@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.jim.moviecritics.NavigationDirections
 import com.jim.moviecritics.databinding.FragmentHomeBinding
 import com.jim.moviecritics.ext.getVmFactory
-import com.jim.moviecritics.util.Logger
+import com.jim.moviecritics.ext.showToast
+import com.jim.moviecritics.ui.theme.MovieCriticsTheme
 
 class HomeFragment : Fragment() {
 
@@ -21,28 +23,30 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
-
-        viewModel.homeItems.observe(viewLifecycleOwner) {
-            Logger.i("HomeViewModel.homeItems = $it")
+        binding.composeViewHome.setContent {
+            MovieCriticsTheme {
+                HomeScreen(
+                    modifier = Modifier,
+                    viewModel = viewModel,
+                )
+            }
         }
 
-        binding.recyclerviewHomePopular.adapter = HomeAdapter(
-            HomeAdapter.OnClickListener {
-                Logger.i("HomeAdapter.OnClickListener it = $it")
-                viewModel.getMovieFull(it.id)
-            }
-        )
-
-        viewModel.navigateToDetail.observe(viewLifecycleOwner) {
-            it?.let {
+        viewModel.navigateToDetail.observe(viewLifecycleOwner) { movie ->
+            movie?.let {
                 findNavController().navigate(NavigationDirections.navigateToDetailFragment(it))
                 viewModel.onDetailNavigated()
             }
         }
+
+        viewModel.userMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                activity.showToast(it)
+                viewModel.onUserMessageShown()
+            }
+        }
+
         return binding.root
     }
 }

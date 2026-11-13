@@ -21,7 +21,7 @@ data class Movie(
     var runtime: Int? = 0,
     val writing: MutableList<String?> = mutableListOf(),
     var ratings: List<Rating> = listOf(),
-    var revenue: Int? = 0,
+    var revenue: Long? = 0,
     var salesTaiwan: String? = "",
     var voteAverage: Float = 0F
 ) : Parcelable

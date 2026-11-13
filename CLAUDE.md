@@ -29,9 +29,13 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 ./gradlew testProductionDebugUnitTest
 ```
 
-目前**沒有 CI**，單元測試只有範本的 `ExampleUnitTest`。改動後至少要在 Android Studio 建置並實機點過受影響的畫面。
+`ktlintCheck` 目前不會過：`BindingAdapters.kt` 和 `ExampleInstrumentedTest.kt` 各有一個 wildcard import（既有問題）。
+
+目前**沒有 CI**（`azure-pipelines.yml` 是 2024 年的範本，只建 `assembleDebug`，沒有 `local.properties` 也跑不起來），單元測試只有範本的 `ExampleUnitTest`。改動後至少要在 Android Studio 建置並實機點過受影響的畫面。
 
 **版本號：** `app/build.gradle` 的 `ext { majorVersion / minorVersion / patchVersion }`，versionCode 由 `getVersionCode()` 依 flavor 計算。升版時同步更新 `README.md` 的 Version History。
+
+**打包上架：** `./gradlew bundleProductionRelease`，產出在 `app/build/outputs/bundle/productionRelease/app-production-release.aab`。`app/production/release/` 是 Android Studio「Generate Signed Bundle」改名後的位置，命令列建置不會更新那裡，小心拿到舊檔。Play 商店上的 1.1.7 versionCode 是 1001007（舊算法），之後都用目前的公式（例如 1.1.8 = 1108999），一定比較大。已上架的 versionName 不能再用，上架前先確認商店最新版本。
 
 ## 架構
 
@@ -51,7 +55,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 |---|---|
 | Search | ✅ Compose（`search/`），StateFlow + `collectAsStateWithLifecycle`；導航和 Toast 透過 `LiveData` 由 Fragment 處理 |
 | Home | ✅ Compose（`home/`），同 Search 的做法；`LazyVerticalGrid` 兩欄，載入動畫用 `lottie-compose` |
-| Detail | 🟡 只有骨架 `detail/DetailScreen.kt`，尚未接上，**刻意保留**作為起點（參數是 `itemId`，實際 Detail 需要 `Movie`；用的是 M2 `TopAppBar`） |
+| Detail | 🟡 只有骨架 `detail/DetailScreen.kt`，尚未接上，**刻意保留**作為起點（參數是 `itemId`，實際 Detail 需要 `Movie`；用的是 M2 `TopAppBar`）。改寫進行中：PR #9（Draft） |
 | 其他 | ❌ XML |
 
 - **主題**：Compose 畫面一律包在 `ui/theme/Theme.kt` 的 `MovieCriticsTheme`，不要用裸的 `MaterialTheme`。顏色用 `colorResource` 讀 `colors.xml`，和 XML 主題共用一份
@@ -68,7 +72,8 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 
 ## 開發流程
 
-- 主要開發分支是 **`develop`**；`main` 是發布用，目前落後 `develop`
+- 主要開發分支是 **`develop`**；`main` 是發布用，1.1.8 時和 `develop` 同步
+- 發布：開 `develop` → `main` 的 PR。不要直接在 `main` 上修，否則之後合併會衝突
 - 每個改動從最新的 `develop` 開分支，PR 合併回 `develop`，一個 PR 只做一件事
 - Commit 和 PR 用英文；PR 描述寫清楚改了什麼、為什麼、怎麼驗證
 - 使用者會在本機 Android Studio 建置並實機測試後才合併
@@ -79,5 +84,5 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 - Search 的 query 仍以 `TextFieldValue` 放在 StateFlow，官方建議改用 Compose state
 - 用 Material Theme Builder 從 `#006A6A` 產生完整 teal 色票（目前中性色是 Material 預設，帶紫調）
 - 清理沒用到的 value 資源：登入範本字串、`purple_*` / `teal_*` 顏色、幾個 dimen、`Theme.MovieCritics`
-- 發布 1.1.7：`develop` 合併到 `main`
+- 修掉兩個 wildcard import，讓 `ktlintCheck` 能過
 - 參考：`docs/search-page-proposal.md`（搜尋頁的產品規劃）

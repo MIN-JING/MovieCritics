@@ -1,10 +1,15 @@
 package com.jim.moviecritics.watchlist
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jim.moviecritics.data.Watch
@@ -20,6 +25,19 @@ class WatchlistFragment : Fragment() {
     }
 
     private var watch = Watch()
+
+    private val requestNotificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            Logger.i("POST_NOTIFICATIONS isGranted = $isGranted")
+            if (!isGranted) {
+                Toast.makeText(
+                    context,
+                    "Notifications are off, so you won't get a reminder",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            context?.let { context -> viewModel.showDateTimeDialog(context) }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +58,7 @@ class WatchlistFragment : Fragment() {
             WatchlistAdapter.OnClickListener {
                 Logger.i("WatchlistAdapter.OnClickListener it = $it")
                 watch = it
-                context?.let { context -> viewModel.showDateTimeDialog(context) }
+                showDateTimeDialogWithPermission()
                 intent.putExtra(
                     CalendarContract.Events.TITLE,
                     "[Movie] ${viewModel.movieMap[it.imdbID]?.title}"
@@ -90,9 +108,16 @@ class WatchlistFragment : Fragment() {
                 ).show()
             }
 
+            val delayMillis = it.toDate().time - System.currentTimeMillis()
             viewModel.movieMap[watch.imdbID]?.let { find ->
                 context?.let { context ->
-                    viewModel.scheduleReminder(3, TimeUnit.SECONDS, find.title, context)
+                    if (delayMillis > 0) {
+                        viewModel.scheduleReminder(
+                            delayMillis, TimeUnit.MILLISECONDS, find.title, context
+                        )
+                    } else {
+                        Logger.i("Selected time has passed, skip reminder")
+                    }
                 }
             }
 
@@ -114,5 +139,17 @@ class WatchlistFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun showDateTimeDialogWithPermission() {
+        val context = context ?: return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.showDateTimeDialog(context)
+        }
     }
 }

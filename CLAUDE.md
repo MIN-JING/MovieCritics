@@ -29,7 +29,7 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 ./gradlew testProductionDebugUnitTest
 ```
 
-`ktlintCheck` 目前不會過：`BindingAdapters.kt` 和 `ExampleInstrumentedTest.kt` 各有一個 wildcard import（既有問題）。
+`ktlintCheck` 目前不會過：專案有約 105 個既有違規（30 個檔案，主要是括號前後換行、wildcard import、行長），`ktlintFormat` 修不掉。ktlint-gradle 10.3.0 是**增量檢查**，有快取時只回報變動過的檔案，要看全貌得加 `--rerun-tasks`。PR 前至少確認自己改到的檔案沒有新增違規。
 
 目前**沒有 CI**（`azure-pipelines.yml` 是 2024 年的範本，只建 `assembleDebug`，沒有 `local.properties` 也跑不起來），單元測試只有範本的 `ExampleUnitTest`。改動後至少要在 Android Studio 建置並實機點過受影響的畫面。
 
@@ -84,5 +84,5 @@ Package：`com.jim.moviecritics`，minSdk 26、targetSdk/compileSdk 36。
 - Search 的 query 仍以 `TextFieldValue` 放在 StateFlow，官方建議改用 Compose state
 - 用 Material Theme Builder 從 `#006A6A` 產生完整 teal 色票（目前中性色是 Material 預設，帶紫調）
 - 清理沒用到的 value 資源：登入範本字串、`purple_*` / `teal_*` 顏色、幾個 dimen、`Theme.MovieCritics`
-- 修掉兩個 wildcard import，讓 `ktlintCheck` 能過
+- 升級 ktlint-gradle（目前 10.3.0），用新版 `ktlintFormat` 修掉既有違規，讓 `ktlintCheck` 能過。和 Detail 改寫（PR #9）錯開，避免衝突
 - 參考：`docs/search-page-proposal.md`（搜尋頁的產品規劃）

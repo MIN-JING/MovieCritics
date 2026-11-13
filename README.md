@@ -77,7 +77,8 @@ Gradle version 7.2
 ## Version History
 | Version | Detail                                                                        |
 |---------|-------------------------------------------------------------------------------|
-| 1.1.7   | Refactor search UX; rewrite home page by Jetpack Compose; request notification permission for watchlist reminders; target SDK 36 with edge-to-edge |
+| 1.1.8   | Rewrite home page by Jetpack Compose; request notification permission for watchlist reminders; keep detail page clear of system bars |
+| 1.1.7   | Refactor search UX: recent searches, suggestions, filters, open movie detail  |
 | 1.1.5   | Prevent passing empty Firestore document ID on the watchlist page             |
 | 1.1.4   | Add click event on search page                                                |
 | 1.1.3   | Refactor the search page by Jetpack Compose; Upgrade libraries version        |

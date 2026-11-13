@@ -18,10 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ReportViewModel(
-    private val repository: Repository,
-    private val arguments: Comment
-) : ViewModel() {
+class ReportViewModel(private val repository: Repository, private val arguments: Comment) :
+    ViewModel() {
 
     private val _comment = MutableLiveData<Comment>().apply {
         value = arguments
@@ -29,7 +27,6 @@ class ReportViewModel(
 
     val comment: LiveData<Comment>
         get() = _comment
-
 
     private val report = Report()
 
@@ -40,7 +37,9 @@ class ReportViewModel(
             R.id.radios_report_reason_abuse -> getString(R.string.text_report_reason_abuse)
             R.id.radios_reason_spoilers -> getString(R.string.text_report_reason_spoilers_label)
             R.id.radios_report_reason_spam -> getString(R.string.text_report_reason_spam)
-            R.id.radios_report_reason_plagiarism -> getString(R.string.text_report_reason_plagiarism)
+            R.id.radios_report_reason_plagiarism -> getString(
+                R.string.text_report_reason_plagiarism
+            )
             R.id.radios_report_reason_other -> getString(R.string.text_report_reason_other_label)
             else -> ""
         }
@@ -116,7 +115,6 @@ class ReportViewModel(
 
     private fun pushReport(report: Report) {
         coroutineScope.launch {
-
             report.createdTime = Timestamp.now()
 
             _status.value = LoadApiStatus.LOADING

@@ -37,9 +37,8 @@ class ReviewDialog : AppCompatDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         binding = DialogReviewBinding.inflate(inflater, container, false)
         binding.layoutReview.startAnimation(
             AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
@@ -61,8 +60,12 @@ class ReviewDialog : AppCompatDialogFragment() {
                     dismiss()
                     viewModel.onLeaveCompleted()
                 }
-                false -> { Logger.i("Review Dialog leave false = $it") }
-                null -> { Logger.i("Review Dialog leave null = $it") }
+                false -> {
+                    Logger.i("Review Dialog leave false = $it")
+                }
+                null -> {
+                    Logger.i("Review Dialog leave null = $it")
+                }
             }
         }
 
@@ -87,7 +90,9 @@ class ReviewDialog : AppCompatDialogFragment() {
             it?.let {
                 when (it) {
                     LoadApiStatus.DONE -> activity.showToast("The movie's review was published !")
-                    else -> { Logger.i("ReviewViewModel status value else = $it") }
+                    else -> {
+                        Logger.i("ReviewViewModel status value else = $it")
+                    }
                 }
             }
         }

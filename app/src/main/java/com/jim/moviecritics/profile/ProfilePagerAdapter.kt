@@ -10,15 +10,11 @@ import com.jim.moviecritics.profile.item.ItemGuideFragment
 class ProfilePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
-    override fun getItemCount(): Int {
-        return ProfileTypeFilter.values().size
-    }
+    override fun getItemCount(): Int = ProfileTypeFilter.values().size
 
-    override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> ItemGuideFragment()
-            1 -> ItemFavoriteFragment()
-            else -> ItemGuideFragment()
-        }
+    override fun createFragment(position: Int): Fragment = when (position) {
+        0 -> ItemGuideFragment()
+        1 -> ItemFavoriteFragment()
+        else -> ItemGuideFragment()
     }
 }

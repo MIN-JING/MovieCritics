@@ -22,15 +22,11 @@ object ServiceLocator {
         }
     }
 
-    private fun createApplicationRepository(context: Context): Repository {
-        return DefaultRepository(
-            ApiDataSource,
-            FirebaseDataSource,
-            createLocalDataSource(context)
-        )
-    }
+    private fun createApplicationRepository(context: Context): Repository = DefaultRepository(
+        ApiDataSource,
+        FirebaseDataSource,
+        createLocalDataSource(context)
+    )
 
-    private fun createLocalDataSource(context: Context): DataSource {
-        return LocalDataSource(context)
-    }
+    private fun createLocalDataSource(context: Context): DataSource = LocalDataSource(context)
 }

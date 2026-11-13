@@ -20,12 +20,12 @@ import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
+import java.util.Date
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.util.Date
 
 class LoginViewModel(private val repository: Repository) : ViewModel() {
 
@@ -146,7 +146,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
         user.pictureUri = credential.profilePictureUri?.toString() ?: ""
         Logger.i(
             "Google ID = ${user.id}, Name = ${user.name}, Email = ${user.email}, " +
-                    "Picture URI = ${user.pictureUri}"
+                "Picture URI = ${user.pictureUri}"
         )
     }
 
@@ -180,16 +180,16 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
         // `signInProvider` comes from the token or providerData; token may be null
         user.signInProvider = tokenResult.signInProvider
             ?: firebaseCurrentUser.providerData.firstOrNull()?.providerId
-                    ?: "unknown"
+            ?: "unknown"
 
         // 4) New vs existing user
         if (authResult.additionalUserInfo?.isNewUser == true) {
-            pushUserInfo(user)          // your write-to-FireStore
+            pushUserInfo(user) // your write-to-FireStore
             UserManager.user = user
             _liveUser.postValue(user)
             _statusLogIn.postValue(FIREBASE_LOG_IN_FIRST)
         } else {
-            getUserByID(user.id)        // your read-from-FireStore
+            getUserByID(user.id) // your read-from-FireStore
             _statusLogIn.postValue(FIREBASE_LOG_IN_EVER)
         }
 

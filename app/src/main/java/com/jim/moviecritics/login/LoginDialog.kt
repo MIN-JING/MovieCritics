@@ -36,9 +36,8 @@ class LoginDialog : AppCompatDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         binding = DialogLoginBinding.inflate(inflater, container, false)
         binding.layoutLogin.startAnimation(
             AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)

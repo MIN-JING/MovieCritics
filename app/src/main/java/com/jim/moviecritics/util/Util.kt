@@ -3,7 +3,8 @@ package com.jim.moviecritics.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build.*
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import com.jim.moviecritics.MovieApplication
 
 object Util {
@@ -17,20 +18,21 @@ object Util {
             if (activeNetwork != null) {
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
                 if (networkCapabilities != null) {
-                    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    return networkCapabilities.hasTransport(
+                        NetworkCapabilities.TRANSPORT_CELLULAR
+                    ) ||
                         networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                 }
             }
             false
         } else {
-            @Suppress("DEPRECATION") val netInfo = connectivityManager.activeNetworkInfo
+            @Suppress("DEPRECATION")
+            val netInfo = connectivityManager.activeNetworkInfo
 
             @Suppress("DEPRECATION")
             netInfo != null && netInfo.isConnectedOrConnecting
         }
     }
 
-    fun getString(resourceId: Int): String {
-        return MovieApplication.instance.getString(resourceId)
-    }
+    fun getString(resourceId: Int): String = MovieApplication.instance.getString(resourceId)
 }

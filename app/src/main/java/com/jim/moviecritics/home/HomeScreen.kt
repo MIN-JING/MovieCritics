@@ -46,18 +46,15 @@ import com.jim.moviecritics.util.GlideImage
 import java.util.Locale
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel,
-) {
+fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Surface {
         Box(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize()
         ) {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             ) {
                 HomeHeader()
 
@@ -65,13 +62,13 @@ fun HomeScreen(
                     uiState.errorMessage != null && uiState.homeItems.isEmpty() -> {
                         HomeErrorContent(
                             message = uiState.errorMessage,
-                            onRetry = viewModel::retry,
+                            onRetry = viewModel::retry
                         )
                     }
                     else -> {
                         HomePopularGrid(
                             homeItems = uiState.homeItems,
-                            onMovieClick = viewModel::onMovieSelected,
+                            onMovieClick = viewModel::onMovieSelected
                         )
                     }
                 }
@@ -79,7 +76,7 @@ fun HomeScreen(
 
             if (uiState.loading) {
                 HomeLoadingAnimation(
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }
@@ -92,28 +89,25 @@ private fun HomeHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, top = 8.dp, end = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = painterResource(R.drawable.ic_tmdb_attribution),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = stringResource(R.string.text_home_popular),
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
 
 @Composable
-private fun HomePopularGrid(
-    homeItems: List<HomeItem>,
-    onMovieClick: (Int) -> Unit,
-) {
+private fun HomePopularGrid(homeItems: List<HomeItem>, onMovieClick: (Int) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxSize(),
@@ -121,16 +115,16 @@ private fun HomePopularGrid(
             start = 16.dp,
             top = 16.dp,
             end = 16.dp,
-            bottom = 24.dp,
+            bottom = 24.dp
         ),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(homeItems, key = { it.id }) { item ->
             when (item) {
                 is HomeItem.PopularMovie -> PopularMovieItem(
                     trend = item.trend,
-                    onClick = { onMovieClick(item.trend.id) },
+                    onClick = { onMovieClick(item.trend.id) }
                 )
             }
         }
@@ -138,15 +132,12 @@ private fun HomePopularGrid(
 }
 
 @Composable
-private fun PopularMovieItem(
-    trend: Trend,
-    onClick: () -> Unit,
-) {
+private fun PopularMovieItem(trend: Trend, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
     ) {
         GlideImage(
             imageUrl = trend.posterUri.orEmpty(),
@@ -156,14 +147,14 @@ private fun PopularMovieItem(
                 .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Crop,
             placeHolder = R.drawable.ic_movie,
-            error = R.drawable.ic_error,
+            error = R.drawable.ic_error
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.Top
         ) {
             Text(
                 text = trend.title,
@@ -172,23 +163,23 @@ private fun PopularMovieItem(
                 textAlign = TextAlign.Center,
                 minLines = 3,
                 maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.size(4.dp))
 
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_star),
                     contentDescription = stringResource(R.string.image_home_star),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp)
                 )
                 Text(
                     text = String.format(Locale.US, "%.1f", trend.average),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -196,24 +187,21 @@ private fun PopularMovieItem(
 }
 
 @Composable
-private fun HomeErrorContent(
-    message: String?,
-    onRetry: () -> Unit,
-) {
+private fun HomeErrorContent(message: String?, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
             text = stringResource(R.string.home_error_title),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium
         )
         Text(
             text = message ?: stringResource(R.string.you_know_nothing),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         OutlinedButton(onClick = onRetry) {
             Text(text = stringResource(R.string.home_retry))
@@ -222,9 +210,7 @@ private fun HomeErrorContent(
 }
 
 @Composable
-private fun HomeLoadingAnimation(
-    modifier: Modifier = Modifier,
-) {
+private fun HomeLoadingAnimation(modifier: Modifier = Modifier) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.lottie_clapperboard_green)
     )
@@ -233,6 +219,6 @@ private fun HomeLoadingAnimation(
         composition = composition,
         modifier = modifier.size(300.dp),
         iterations = LottieConstants.IterateForever,
-        speed = 3f,
+        speed = 3f
     )
 }

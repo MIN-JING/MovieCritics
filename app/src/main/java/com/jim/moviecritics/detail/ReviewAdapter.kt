@@ -8,14 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jim.moviecritics.data.Comment
 import com.jim.moviecritics.databinding.ItemDetailReviewBinding
 
-class ReviewAdapter(
-    private val onClickListener: OnClickListener,
-    val viewModel: DetailViewModel
-) : ListAdapter<Comment, ReviewAdapter.ReviewViewHolder>(DiffCallback) {
+class ReviewAdapter(private val onClickListener: OnClickListener, val viewModel: DetailViewModel) :
+    ListAdapter<Comment, ReviewAdapter.ReviewViewHolder>(DiffCallback) {
 
-    class ReviewViewHolder(
-        private val binding: ItemDetailReviewBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    class ReviewViewHolder(private val binding: ItemDetailReviewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: Comment, onClickListener: OnClickListener, viewModel: DetailViewModel) {
             binding.comment = comment
@@ -26,22 +23,21 @@ class ReviewAdapter(
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Comment>() {
-        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
-            return oldItem === newItem
-        }
+        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean =
+            oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean =
+            oldItem.id == newItem.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
-        return ReviewViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder =
+        ReviewViewHolder(
             ItemDetailReviewBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         holder.bind((getItem(position)), onClickListener, viewModel)

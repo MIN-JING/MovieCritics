@@ -22,22 +22,20 @@ class FavoriteItemAdapter(private val onClickListener: OnClickListener) :
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Find>() {
-        override fun areItemsTheSame(oldItem: Find, newItem: Find): Boolean {
-            return oldItem === newItem
-        }
+        override fun areItemsTheSame(oldItem: Find, newItem: Find): Boolean = oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Find, newItem: Find): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Find, newItem: Find): Boolean =
+            oldItem.id == newItem.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteItemViewHolder {
-        return FavoriteItemViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteItemViewHolder =
+        FavoriteItemViewHolder(
             ItemProfileFavoriteChildBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: FavoriteItemViewHolder, position: Int) {
         holder.bind((getItem(position)), onClickListener)

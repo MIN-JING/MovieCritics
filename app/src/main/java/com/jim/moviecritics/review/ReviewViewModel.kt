@@ -18,10 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ReviewViewModel(
-    private val repository: Repository,
-    private val arguments: Movie
-) : ViewModel() {
+class ReviewViewModel(private val repository: Repository, private val arguments: Movie) :
+    ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -29,7 +27,6 @@ class ReviewViewModel(
 
     val movie: LiveData<Movie>
         get() = _movie
-
 
     private val comment = Comment()
 

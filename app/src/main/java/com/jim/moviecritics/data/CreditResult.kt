@@ -9,5 +9,5 @@ data class CreditResult(
     @Json(name = "status_message")val error: String?,
     val id: Int,
     @Json(name = "cast")val casts: List<Cast>,
-    @Json(name = "crew")val crews: List<Crew>,
+    @Json(name = "crew")val crews: List<Crew>
 ) : Parcelable

@@ -13,22 +13,29 @@ import androidx.work.WorkManager
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Find
+import com.jim.moviecritics.data.FindResult
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.work.WatchlistReminderWorker
-import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.nameKey
+import com.jim.moviecritics.work.WatchlistReminderWorker.Companion.NAME_KEY
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class WatchlistViewModel(
-    private val repository: Repository,
-    private val arguments: User?
-) : ViewModel() {
+class WatchlistViewModel(private val repository: Repository, private val arguments: User?) :
+    ViewModel() {
 
     private val _user = MutableLiveData<User>().apply {
         arguments?.let {
@@ -111,8 +118,8 @@ class WatchlistViewModel(
         }
     }
 
-    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
-        return withContext(Dispatchers.IO) {
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? =
+        withContext(Dispatchers.IO) {
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
@@ -135,7 +142,6 @@ class WatchlistViewModel(
                 }
             }
         }
-    }
 
     private fun getLiveWatchListByUserResult(userID: String) {
         liveWatchListByUser = repository.getLiveWatchListByUser(userID)
@@ -233,7 +239,7 @@ class WatchlistViewModel(
     ) {
         Logger.i("scheduleReminder()")
         val data = Data.Builder()
-            .putString(nameKey, movieTitle)
+            .putString(NAME_KEY, movieTitle)
             .build()
 
         val oneTimeWorkRequest = OneTimeWorkRequestBuilder<WatchlistReminderWorker>()
@@ -243,7 +249,8 @@ class WatchlistViewModel(
 
         WorkManager.getInstance(context).enqueueUniqueWork(
             movieTitle,
-            ExistingWorkPolicy.REPLACE, oneTimeWorkRequest
+            ExistingWorkPolicy.REPLACE,
+            oneTimeWorkRequest
         )
     }
 }

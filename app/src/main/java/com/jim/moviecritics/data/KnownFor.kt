@@ -25,5 +25,5 @@ data class KnownFor(
     @Json(name = "first_air_date") val firstAir: String?,
     @Json(name = "original_country") val originalCountry: List<String>?,
     val name: String?,
-    @Json(name = "original_name") val originalName: String?,
+    @Json(name = "original_name") val originalName: String?
 ) : Parcelable

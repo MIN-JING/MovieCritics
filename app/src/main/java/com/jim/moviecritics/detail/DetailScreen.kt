@@ -7,19 +7,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
 
-
 @Composable
-fun DetailScreen(
-    itemId: Int,
-    viewModel: DetailViewModel?,
-    onBackPressed: () -> Unit
-) {
+fun DetailScreen(itemId: Int, viewModel: DetailViewModel?, onBackPressed: () -> Unit) {
     // Fetch item details using the viewModel and itemId
 //    val itemDetails by viewModel.itemDetails.collectAsStateWithLifecycle()
 

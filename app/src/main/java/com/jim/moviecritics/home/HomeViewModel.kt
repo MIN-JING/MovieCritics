@@ -96,12 +96,12 @@ class HomeViewModel(private val repository: Repository) : ViewModel() {
                     is Result.Success -> it.copy(
                         loadingPopular = false,
                         homeItems = result.data,
-                        errorMessage = null,
+                        errorMessage = null
                     )
                     else -> it.copy(
                         loadingPopular = false,
                         errorMessage = result.failureMessage()
-                            ?: Util.getString(R.string.you_know_nothing),
+                            ?: Util.getString(R.string.you_know_nothing)
                     )
                 }
             }

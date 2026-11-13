@@ -2,7 +2,18 @@ package com.jim.moviecritics.data.source
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Comment
+import com.jim.moviecritics.data.CreditResult
+import com.jim.moviecritics.data.FindResult
+import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.MovieDetailResult
+import com.jim.moviecritics.data.Report
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.Trend
+import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.Watch
 
 /**
  * Main entry point for accessing Application sources.

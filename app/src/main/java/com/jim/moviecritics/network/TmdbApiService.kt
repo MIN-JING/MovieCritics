@@ -1,14 +1,20 @@
 package com.jim.moviecritics.network
 
 import com.jim.moviecritics.BuildConfig
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.CreditResult
+import com.jim.moviecritics.data.FindResult
+import com.jim.moviecritics.data.MovieDetailResult
+import com.jim.moviecritics.data.PopularMoviesResult
+import com.jim.moviecritics.data.SearchResult
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 private const val HOST_NAME = "api.themoviedb.org"
 private const val API_VERSION = "3"

@@ -11,10 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 
-class TrailerViewModel(
-    private val repository: Repository,
-    private val arguments: Movie
-) : ViewModel() {
+class TrailerViewModel(private val repository: Repository, private val arguments: Movie) :
+    ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments

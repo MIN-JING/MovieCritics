@@ -11,33 +11,31 @@ import com.jim.moviecritics.profile.item.ItemGuideViewModel
 import com.jim.moviecritics.search.SearchViewModel
 
 @Suppress("UNCHECKED_CAST")
-class ViewModelFactory constructor(
-    private val repository: Repository,
-) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory constructor(private val repository: Repository) :
+    ViewModelProvider.NewInstanceFactory() {
 
-    override fun <T : ViewModel> create(modelClass: Class<T>) =
-        with(modelClass) {
-            when {
-                isAssignableFrom(MainViewModel::class.java) ->
-                    MainViewModel(repository)
+    override fun <T : ViewModel> create(modelClass: Class<T>) = with(modelClass) {
+        when {
+            isAssignableFrom(MainViewModel::class.java) ->
+                MainViewModel(repository)
 
-                isAssignableFrom(HomeViewModel::class.java) ->
-                    HomeViewModel(repository)
+            isAssignableFrom(HomeViewModel::class.java) ->
+                HomeViewModel(repository)
 
-                isAssignableFrom(SearchViewModel::class.java) ->
-                    SearchViewModel(repository)
+            isAssignableFrom(SearchViewModel::class.java) ->
+                SearchViewModel(repository)
 
-                isAssignableFrom(LoginViewModel::class.java) ->
-                    LoginViewModel(repository)
+            isAssignableFrom(LoginViewModel::class.java) ->
+                LoginViewModel(repository)
 
-                isAssignableFrom(ItemGuideViewModel::class.java) ->
-                    ItemGuideViewModel(repository)
+            isAssignableFrom(ItemGuideViewModel::class.java) ->
+                ItemGuideViewModel(repository)
 
-                isAssignableFrom(ItemFavoriteViewModel::class.java) ->
-                    ItemFavoriteViewModel(repository)
+            isAssignableFrom(ItemFavoriteViewModel::class.java) ->
+                ItemFavoriteViewModel(repository)
 
-                else ->
-                    throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
-            }
-        } as T
+            else ->
+                throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
+        }
+    } as T
 }

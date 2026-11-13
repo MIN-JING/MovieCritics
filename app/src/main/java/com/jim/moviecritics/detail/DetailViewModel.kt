@@ -4,17 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.RadarEntry
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Comment
+import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
-class DetailViewModel(
-    private val repository: Repository,
-    private val arguments: Movie
-) : ViewModel() {
+class DetailViewModel(private val repository: Repository, private val arguments: Movie) :
+    ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -22,7 +28,6 @@ class DetailViewModel(
 
     val movie: LiveData<Movie>
         get() = _movie
-
 
     private var users = listOf<User>()
 

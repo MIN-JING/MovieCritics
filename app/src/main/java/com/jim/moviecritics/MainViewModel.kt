@@ -3,11 +3,13 @@ package com.jim.moviecritics
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
-import com.jim.moviecritics.util.*
+import com.jim.moviecritics.util.CurrentFragmentType
+import com.jim.moviecritics.util.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

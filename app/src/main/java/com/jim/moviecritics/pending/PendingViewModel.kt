@@ -7,17 +7,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Movie
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class PendingViewModel(
-    private val repository: Repository,
-    private val arguments: Movie
-) : ViewModel() {
+class PendingViewModel(private val repository: Repository, private val arguments: Movie) :
+    ViewModel() {
 
     private val _movie = MutableLiveData<Movie>().apply {
         value = arguments
@@ -30,7 +37,6 @@ class PendingViewModel(
 
     val user: LiveData<User?>
         get() = _user
-
 
     val watch = Watch()
 
@@ -268,7 +274,8 @@ class PendingViewModel(
             coroutineScope.launch {
                 when (
                     val result = repository.removeWatchlistMovie(
-                        imdbID = watch.imdbID, userID = watch.userID
+                        imdbID = watch.imdbID,
+                        userID = watch.userID
                     )
                 ) {
                     is Result.Success -> {
@@ -329,12 +336,14 @@ class PendingViewModel(
             score.music = musicPending.value!!
             score.story = storyPending.value!!
             score.average = (
-                (leisurePending.value!! +
-                    hitPending.value!! +
-                    castPending.value!! +
-                    musicPending.value!! +
-                    storyPending.value!!) / 5
-            )
+                (
+                    leisurePending.value!! +
+                        hitPending.value!! +
+                        castPending.value!! +
+                        musicPending.value!! +
+                        storyPending.value!!
+                    ) / 5
+                )
             Logger.i("score.average = ${score.average}")
             Logger.i("score = $score")
             pushScore(score)
@@ -386,8 +395,10 @@ class PendingViewModel(
             Intent().apply {
                 action = Intent.ACTION_SEND
                 type = "*/*"
-                putExtra(Intent.EXTRA_TEXT,
-                    "https://www.themoviedb.org/movie/${movie.value?.id}")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "https://www.themoviedb.org/movie/${movie.value?.id}"
+                )
                 putExtra(Intent.EXTRA_TITLE, movie.value?.title)
                 val uri = Uri.parse(movie.value?.posterUri)
                 Logger.i("share uri = $uri")
@@ -399,28 +410,26 @@ class PendingViewModel(
         return share
     }
 
-    private suspend fun getUserByID(userID: String) : User? {
-        return withContext(Dispatchers.IO) {
-            when (val result = repository.getUserById(userID)) {
-                is Result.Success -> {
-                    _error.postValue(null)
-                    Logger.w("child result: ${result.data}")
-                    result.data
-                }
-                is Result.Fail -> {
-                    _error.postValue(result.error)
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                is Result.Error -> {
-                    _error.postValue(result.exception.toString())
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
-                else -> {
-                    _status.postValue(LoadApiStatus.ERROR)
-                    null
-                }
+    private suspend fun getUserByID(userID: String): User? = withContext(Dispatchers.IO) {
+        when (val result = repository.getUserById(userID)) {
+            is Result.Success -> {
+                _error.postValue(null)
+                Logger.w("child result: ${result.data}")
+                result.data
+            }
+            is Result.Fail -> {
+                _error.postValue(result.error)
+                _status.postValue(LoadApiStatus.ERROR)
+                null
+            }
+            is Result.Error -> {
+                _error.postValue(result.exception.toString())
+                _status.postValue(LoadApiStatus.ERROR)
+                null
+            }
+            else -> {
+                _status.postValue(LoadApiStatus.ERROR)
+                null
             }
         }
     }

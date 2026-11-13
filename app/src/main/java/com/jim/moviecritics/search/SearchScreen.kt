@@ -2,7 +2,6 @@ package com.jim.moviecritics.search
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,15 +40,12 @@ import com.jim.moviecritics.util.GlideImage
 import java.util.Locale
 
 @Composable
-fun SearchScreen(
-    modifier: Modifier = Modifier,
-    viewModel: SearchViewModel,
-) {
+fun SearchScreen(modifier: Modifier = Modifier, viewModel: SearchViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Surface {
         Column(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize()
         ) {
             SearchTextField(
                 query = uiState.query,
@@ -57,19 +53,19 @@ fun SearchScreen(
                 onSearchFocusChange = viewModel::onSearchFocusChange,
                 onClearQuery = viewModel::onClearQuery,
                 searching = uiState.searching,
-                focused = uiState.focused,
+                focused = uiState.focused
             )
 
             if (uiState.query.text.isNotBlank()) {
                 SearchFilterRow(
                     selectedFilter = uiState.selectedFilter,
-                    onFilterSelected = viewModel::onFilterSelected,
+                    onFilterSelected = viewModel::onFilterSelected
                 )
             }
 
             if (uiState.searching) {
                 LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -77,34 +73,34 @@ fun SearchScreen(
                 uiState.errorMessage != null && uiState.query.text.isNotBlank() -> {
                     SearchErrorContent(
                         message = uiState.errorMessage,
-                        onRetry = viewModel::retrySearch,
+                        onRetry = viewModel::retrySearch
                     )
                 }
                 uiState.searchDisplay == SearchDisplay.INITIAL_RESULTS -> {
                     SearchDiscoveryContent(
                         recentSearches = uiState.recentSearches,
                         suggestedQueries = uiState.suggestedQueries,
-                        onSuggestionSelected = viewModel::onSuggestionSelected,
+                        onSuggestionSelected = viewModel::onSuggestionSelected
                     )
                 }
                 uiState.searchDisplay == SearchDisplay.SUGGESTIONS -> {
                     SearchSuggestionContent(
                         recentSearches = uiState.recentSearches,
                         suggestedQueries = uiState.suggestedQueries,
-                        onSuggestionSelected = viewModel::onSuggestionSelected,
+                        onSuggestionSelected = viewModel::onSuggestionSelected
                     )
                 }
                 uiState.searchDisplay == SearchDisplay.NO_RESULTS -> {
                     SearchNoResultContent(
                         query = uiState.query.text,
                         suggestedQueries = uiState.suggestedQueries,
-                        onSuggestionSelected = viewModel::onSuggestionSelected,
+                        onSuggestionSelected = viewModel::onSuggestionSelected
                     )
                 }
                 else -> {
                     SearchResultList(
                         results = uiState.searchResults,
-                        onItemClick = viewModel::onResultSelected,
+                        onItemClick = viewModel::onResultSelected
                     )
                 }
             }
@@ -115,15 +111,15 @@ fun SearchScreen(
 @Composable
 private fun SearchFilterRow(
     selectedFilter: SearchFilter,
-    onFilterSelected: (SearchFilter) -> Unit,
+    onFilterSelected: (SearchFilter) -> Unit
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
             horizontal = 16.dp,
-            vertical = 12.dp,
+            vertical = 12.dp
         ),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(SearchFilter.entries) { filter ->
             FilterChip(
@@ -131,7 +127,7 @@ private fun SearchFilterRow(
                 onClick = { onFilterSelected(filter) },
                 label = {
                     Text(text = filter.toLabel())
-                },
+                }
             )
         }
     }
@@ -141,26 +137,26 @@ private fun SearchFilterRow(
 private fun SearchDiscoveryContent(
     recentSearches: List<String>,
     suggestedQueries: List<String>,
-    onSuggestionSelected: (String) -> Unit,
+    onSuggestionSelected: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         item {
             SectionBlock(
                 title = stringResource(R.string.search_recent_title),
                 emptyText = stringResource(R.string.search_recent_empty),
                 items = recentSearches,
-                onSuggestionSelected = onSuggestionSelected,
+                onSuggestionSelected = onSuggestionSelected
             )
         }
         item {
             SectionBlock(
                 title = stringResource(R.string.search_discover_title),
                 items = suggestedQueries,
-                onSuggestionSelected = onSuggestionSelected,
+                onSuggestionSelected = onSuggestionSelected
             )
         }
     }
@@ -170,26 +166,26 @@ private fun SearchDiscoveryContent(
 private fun SearchSuggestionContent(
     recentSearches: List<String>,
     suggestedQueries: List<String>,
-    onSuggestionSelected: (String) -> Unit,
+    onSuggestionSelected: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         item {
             SectionBlock(
                 title = stringResource(R.string.search_recent_title),
                 emptyText = stringResource(R.string.search_recent_empty),
                 items = recentSearches,
-                onSuggestionSelected = onSuggestionSelected,
+                onSuggestionSelected = onSuggestionSelected
             )
         }
         item {
             SectionBlock(
                 title = stringResource(R.string.search_suggestions_title),
                 items = suggestedQueries,
-                onSuggestionSelected = onSuggestionSelected,
+                onSuggestionSelected = onSuggestionSelected
             )
         }
     }
@@ -199,52 +195,49 @@ private fun SearchSuggestionContent(
 private fun SearchNoResultContent(
     query: String,
     suggestedQueries: List<String>,
-    onSuggestionSelected: (String) -> Unit,
+    onSuggestionSelected: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 24.dp),
+            .padding(horizontal = 16.dp, vertical = 24.dp)
     ) {
         Text(
             text = stringResource(R.string.search_no_results_title),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = stringResource(R.string.search_no_results_body, query),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(24.dp))
         SectionBlock(
             title = stringResource(R.string.search_try_these_title),
             items = suggestedQueries,
             onSuggestionSelected = onSuggestionSelected,
-            outerPadding = 0.dp,
+            outerPadding = 0.dp
         )
     }
 }
 
 @Composable
-private fun SearchErrorContent(
-    message: String?,
-    onRetry: () -> Unit,
-) {
+private fun SearchErrorContent(message: String?, onRetry: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
             text = stringResource(R.string.search_error_title),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium
         )
         Text(
             text = message ?: stringResource(R.string.you_know_nothing),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         OutlinedButton(onClick = onRetry) {
             Text(text = stringResource(R.string.search_retry))
@@ -253,44 +246,38 @@ private fun SearchErrorContent(
 }
 
 @Composable
-private fun SearchResultList(
-    results: List<LookItem>,
-    onItemClick: (LookItem) -> Unit,
-) {
+private fun SearchResultList(results: List<LookItem>, onItemClick: (LookItem) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
             start = 16.dp,
             top = 8.dp,
             end = 16.dp,
-            bottom = 24.dp,
+            bottom = 24.dp
         ),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(results, key = { "${it.mediaType}-${it.id}" }) { item ->
             SearchResultCard(
                 item = item,
-                onItemClick = { onItemClick(item) },
+                onItemClick = { onItemClick(item) }
             )
         }
     }
 }
 
 @Composable
-private fun SearchResultCard(
-    item: LookItem,
-    onItemClick: () -> Unit,
-) {
+private fun SearchResultCard(item: LookItem, onItemClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onItemClick),
+            .clickable(onClick = onItemClick)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             GlideImage(
                 imageUrl = item.imageUrl(),
@@ -299,7 +286,7 @@ private fun SearchResultCard(
                     .clip(RoundedCornerShape(12.dp)),
                 contentScale = ContentScale.Crop,
                 placeHolder = R.drawable.ic_movie,
-                error = R.drawable.ic_error,
+                error = R.drawable.ic_error
             )
 
             Spacer(modifier = Modifier.size(16.dp))
@@ -309,7 +296,7 @@ private fun SearchResultCard(
                     onClick = onItemClick,
                     label = {
                         Text(text = item.mediaTypeLabel())
-                    },
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -318,7 +305,7 @@ private fun SearchResultCard(
                     text = item.titleText(),
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
 
                 item.subtitleText()?.let { subtitle ->
@@ -326,7 +313,7 @@ private fun SearchResultCard(
                     Text(
                         text = subtitle,
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
 
@@ -337,7 +324,7 @@ private fun SearchResultCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 4,
-                    overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -350,16 +337,16 @@ private fun SectionBlock(
     items: List<String>,
     onSuggestionSelected: (String) -> Unit,
     emptyText: String? = null,
-    outerPadding: androidx.compose.ui.unit.Dp = 16.dp,
+    outerPadding: androidx.compose.ui.unit.Dp = 16.dp
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = outerPadding),
+            .padding(horizontal = outerPadding)
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -369,7 +356,7 @@ private fun SectionBlock(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             return
@@ -379,84 +366,68 @@ private fun SectionBlock(
             items(items) { query ->
                 AssistChip(
                     onClick = { onSuggestionSelected(query) },
-                    label = { Text(text = query) },
+                    label = { Text(text = query) }
                 )
             }
         }
     }
 }
 
-private fun SearchFilter.toLabel(): String {
-    return when (this) {
-        SearchFilter.ALL -> "All"
-        SearchFilter.MOVIE -> "Movie"
-        SearchFilter.TV -> "TV"
-        SearchFilter.PERSON -> "Person"
+private fun SearchFilter.toLabel(): String = when (this) {
+    SearchFilter.ALL -> "All"
+    SearchFilter.MOVIE -> "Movie"
+    SearchFilter.TV -> "TV"
+    SearchFilter.PERSON -> "Person"
+}
+
+private fun LookItem.titleText(): String = when (this) {
+    is LookItem.LookMovie -> look.title.orSearchFallback()
+    is LookItem.LookTelevision -> (look.name ?: look.title).orSearchFallback()
+    is LookItem.LookPerson -> (look.name ?: look.title).orSearchFallback()
+}
+
+private fun LookItem.subtitleText(): String? = when (this) {
+    is LookItem.LookMovie -> buildMovieSubtitle(look)
+    is LookItem.LookTelevision -> buildTvSubtitle(look)
+    is LookItem.LookPerson -> buildPersonSubtitle(look.knownFor)
+}
+
+private fun LookItem.descriptionText(): String = when (this) {
+    is LookItem.LookMovie -> look.overview.orSearchDefaultDescription()
+    is LookItem.LookTelevision -> look.overview.orSearchDefaultDescription()
+    is LookItem.LookPerson -> {
+        val knownFor = look.knownFor
+            ?.mapNotNull { it.title ?: it.name }
+            ?.take(3)
+            ?.joinToString(", ")
+
+        knownFor?.let {
+            "Known for $it"
+        } ?: stringResourceSafe(R.string.search_person_default_description)
     }
 }
 
-private fun LookItem.titleText(): String {
-    return when (this) {
-        is LookItem.LookMovie -> look.title.orSearchFallback()
-        is LookItem.LookTelevision -> (look.name ?: look.title).orSearchFallback()
-        is LookItem.LookPerson -> (look.name ?: look.title).orSearchFallback()
-    }
+private fun LookItem.imageUrl(): String = when (this) {
+    is LookItem.LookMovie -> look.posterPath.orEmpty()
+    is LookItem.LookTelevision -> look.posterPath.orEmpty()
+    is LookItem.LookPerson -> look.profilePath.orEmpty()
 }
 
-private fun LookItem.subtitleText(): String? {
-    return when (this) {
-        is LookItem.LookMovie -> buildMovieSubtitle(look)
-        is LookItem.LookTelevision -> buildTvSubtitle(look)
-        is LookItem.LookPerson -> buildPersonSubtitle(look.knownFor)
-    }
+private fun LookItem.mediaTypeLabel(): String = when (this) {
+    is LookItem.LookMovie -> "Movie"
+    is LookItem.LookTelevision -> "TV"
+    is LookItem.LookPerson -> "Person"
 }
 
-private fun LookItem.descriptionText(): String {
-    return when (this) {
-        is LookItem.LookMovie -> look.overview.orSearchDefaultDescription()
-        is LookItem.LookTelevision -> look.overview.orSearchDefaultDescription()
-        is LookItem.LookPerson -> {
-            val knownFor = look.knownFor
-                ?.mapNotNull { it.title ?: it.name }
-                ?.take(3)
-                ?.joinToString(", ")
+private fun buildMovieSubtitle(look: Look): String? = listOfNotNull(
+    look.releaseDate?.takeIf { it.length >= 4 }?.take(4),
+    look.average?.let { String.format(Locale.US, "TMDB %.1f", it) }
+).takeIf { it.isNotEmpty() }?.joinToString(" • ")
 
-            knownFor?.let {
-                "Known for $it"
-            } ?: stringResourceSafe(R.string.search_person_default_description)
-        }
-    }
-}
-
-private fun LookItem.imageUrl(): String {
-    return when (this) {
-        is LookItem.LookMovie -> look.posterPath.orEmpty()
-        is LookItem.LookTelevision -> look.posterPath.orEmpty()
-        is LookItem.LookPerson -> look.profilePath.orEmpty()
-    }
-}
-
-private fun LookItem.mediaTypeLabel(): String {
-    return when (this) {
-        is LookItem.LookMovie -> "Movie"
-        is LookItem.LookTelevision -> "TV"
-        is LookItem.LookPerson -> "Person"
-    }
-}
-
-private fun buildMovieSubtitle(look: Look): String? {
-    return listOfNotNull(
-        look.releaseDate?.takeIf { it.length >= 4 }?.take(4),
-        look.average?.let { String.format(Locale.US, "TMDB %.1f", it) },
-    ).takeIf { it.isNotEmpty() }?.joinToString(" • ")
-}
-
-private fun buildTvSubtitle(look: Look): String? {
-    return listOfNotNull(
-        look.firstAirDate?.takeIf { it.length >= 4 }?.take(4),
-        look.average?.let { String.format(Locale.US, "TMDB %.1f", it) },
-    ).takeIf { it.isNotEmpty() }?.joinToString(" • ")
-}
+private fun buildTvSubtitle(look: Look): String? = listOfNotNull(
+    look.firstAirDate?.takeIf { it.length >= 4 }?.take(4),
+    look.average?.let { String.format(Locale.US, "TMDB %.1f", it) }
+).takeIf { it.isNotEmpty() }?.joinToString(" • ")
 
 private fun buildPersonSubtitle(knownFor: List<KnownFor>?): String? {
     val totalKnownFor = knownFor?.size ?: 0
@@ -467,22 +438,17 @@ private fun buildPersonSubtitle(knownFor: List<KnownFor>?): String? {
     }
 }
 
-private fun String?.orSearchFallback(): String {
-    return if (this.isNullOrBlank()) {
-        stringResourceSafe(R.string.search_unknown_title)
-    } else {
-        this
-    }
+private fun String?.orSearchFallback(): String = if (this.isNullOrBlank()) {
+    stringResourceSafe(R.string.search_unknown_title)
+} else {
+    this
 }
 
-private fun String?.orSearchDefaultDescription(): String {
-    return if (this.isNullOrBlank()) {
-        stringResourceSafe(R.string.search_default_description)
-    } else {
-        this
-    }
+private fun String?.orSearchDefaultDescription(): String = if (this.isNullOrBlank()) {
+    stringResourceSafe(R.string.search_default_description)
+} else {
+    this
 }
 
-private fun stringResourceSafe(resId: Int): String {
-    return com.jim.moviecritics.MovieApplication.instance.getString(resId)
-}
+private fun stringResourceSafe(resId: Int): String =
+    com.jim.moviecritics.MovieApplication.instance.getString(resId)

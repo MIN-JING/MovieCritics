@@ -3,7 +3,18 @@ package com.jim.moviecritics.data.source.remote
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Comment
+import com.jim.moviecritics.data.CreditResult
+import com.jim.moviecritics.data.FindResult
+import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.MovieDetailResult
+import com.jim.moviecritics.data.Report
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.Trend
+import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.data.source.DataSource
 import com.jim.moviecritics.network.TmdbApi
 import com.jim.moviecritics.util.Logger
@@ -16,7 +27,6 @@ import com.jim.moviecritics.util.Util.isInternetConnected
 object ApiDataSource : DataSource {
 
     override suspend fun getPopularMovies(): Result<List<HomeItem>> {
-
         if (!isInternetConnected()) {
             return Result.Fail(getString(R.string.internet_not_connected))
         }
@@ -36,7 +46,6 @@ object ApiDataSource : DataSource {
     }
 
     override suspend fun getMovieDetail(id: Int): Result<MovieDetailResult> {
-
         if (!isInternetConnected()) {
             return Result.Fail(getString(R.string.internet_not_connected))
         }
@@ -119,7 +128,7 @@ object ApiDataSource : DataSource {
     override suspend fun pushMultiWatchListExpiration(
         imdbID: String,
         userID: String,
-        expiration: Timestamp,
+        expiration: Timestamp
     ): Result<Boolean> {
         TODO("Not yet implemented")
     }
@@ -182,7 +191,7 @@ object ApiDataSource : DataSource {
 
     override fun getLiveCommentsExcludeBlocks(
         imdbID: String,
-        blocks: List<String>,
+        blocks: List<String>
     ): MutableLiveData<List<Comment>> {
         TODO("Not yet implemented")
     }

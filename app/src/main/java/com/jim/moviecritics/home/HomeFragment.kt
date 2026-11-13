@@ -21,14 +21,14 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.composeViewHome.setContent {
             MovieCriticsTheme {
                 HomeScreen(
                     modifier = Modifier,
-                    viewModel = viewModel,
+                    viewModel = viewModel
                 )
             }
         }

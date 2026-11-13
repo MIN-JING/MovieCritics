@@ -21,14 +21,14 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         binding.composeViewSearch.setContent {
             MovieCriticsTheme {
                 SearchScreen(
                     modifier = Modifier,
-                    viewModel = viewModel,
+                    viewModel = viewModel
                 )
             }
         }

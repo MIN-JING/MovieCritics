@@ -7,7 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Cast
+import com.jim.moviecritics.data.Find
 import com.jim.moviecritics.detail.CastAdapter
 import com.jim.moviecritics.profile.item.FavoriteItemAdapter
 import com.jim.moviecritics.util.Logger

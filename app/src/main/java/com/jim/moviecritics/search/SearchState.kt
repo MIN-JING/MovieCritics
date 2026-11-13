@@ -19,7 +19,7 @@ data class SearchUiState(
     val recentSearches: List<String> = emptyList(),
     val suggestedQueries: List<String> = defaultSuggestedQueries(),
     val selectedFilter: SearchFilter = SearchFilter.ALL,
-    val errorMessage: String? = null,
+    val errorMessage: String? = null
 ) {
     val searchResults: List<LookItem>
         get() = when (selectedFilter) {
@@ -40,12 +40,10 @@ data class SearchUiState(
         }
 }
 
-private fun defaultSuggestedQueries(): List<String> {
-    return listOf(
-        "Dune",
-        "Interstellar",
-        "The Dark Knight",
-        "Breaking Bad",
-        "Emma Stone",
-    )
-}
+private fun defaultSuggestedQueries(): List<String> = listOf(
+    "Dune",
+    "Interstellar",
+    "The Dark Knight",
+    "Breaking Bad",
+    "Emma Stone"
+)

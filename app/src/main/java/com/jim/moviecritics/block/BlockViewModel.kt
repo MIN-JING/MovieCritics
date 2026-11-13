@@ -14,10 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class BlockViewModel(
-    private val repository: Repository,
-    private val arguments: User?
-) : ViewModel() {
+class BlockViewModel(private val repository: Repository, private val arguments: User?) :
+    ViewModel() {
     private val _user = MutableLiveData<User>().apply {
         value = arguments
     }

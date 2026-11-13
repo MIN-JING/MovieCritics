@@ -12,11 +12,14 @@ import com.jim.moviecritics.login.UserManager
 import com.jim.moviecritics.network.LoadApiStatus
 import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ItemFavoriteViewModel(
-    private val repository: Repository
-) : ViewModel() {
+class ItemFavoriteViewModel(private val repository: Repository) : ViewModel() {
 
     private val _finds = MutableLiveData<List<Find>>()
 
@@ -82,8 +85,8 @@ class ItemFavoriteViewModel(
         }
     }
 
-    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
-        return withContext(Dispatchers.IO) {
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? =
+        withContext(Dispatchers.IO) {
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
@@ -107,5 +110,4 @@ class ItemFavoriteViewModel(
                 }
             }
         }
-    }
 }

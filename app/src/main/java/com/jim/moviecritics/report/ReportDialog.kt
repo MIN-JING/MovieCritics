@@ -34,7 +34,7 @@ class ReportDialog : AppCompatDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = DialogReportBinding.inflate(inflater, container, false)
         binding.layoutReport.startAnimation(

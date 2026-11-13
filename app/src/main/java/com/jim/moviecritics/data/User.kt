@@ -21,5 +21,5 @@ data class User(
     var firebaseToken: String = "",
     var firebaseTokenExpiration: Timestamp = Timestamp.now(),
     var signInProvider: String = "",
-    var email: String = "",
+    var email: String = ""
 ) : Parcelable

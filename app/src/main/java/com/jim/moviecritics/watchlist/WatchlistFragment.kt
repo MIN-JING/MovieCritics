@@ -6,7 +6,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -42,9 +44,8 @@ class WatchlistFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         setHasOptionsMenu(true)
 
         val binding = FragmentWatchlistBinding.inflate(inflater, container, false)
@@ -113,7 +114,10 @@ class WatchlistFragment : Fragment() {
                 context?.let { context ->
                     if (delayMillis > 0) {
                         viewModel.scheduleReminder(
-                            delayMillis, TimeUnit.MILLISECONDS, find.title, context
+                            delayMillis,
+                            TimeUnit.MILLISECONDS,
+                            find.title,
+                            context
                         )
                     } else {
                         Logger.i("Selected time has passed, skip reminder")
@@ -127,7 +131,8 @@ class WatchlistFragment : Fragment() {
                     Logger.i("pushSingleWatchListExpiration(watch) = $watch")
                 } else {
                     Toast.makeText(
-                        context, "There is no app that can support this action",
+                        context,
+                        "There is no app that can support this action",
                         Toast.LENGTH_LONG
                     ).show()
                 }

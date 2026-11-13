@@ -6,7 +6,7 @@ data class HomeUiState(
     val loadingPopular: Boolean = false,
     val openingDetail: Boolean = false,
     val homeItems: List<HomeItem> = emptyList(),
-    val errorMessage: String? = null,
+    val errorMessage: String? = null
 ) {
     val loading: Boolean
         get() = loadingPopular || openingDetail

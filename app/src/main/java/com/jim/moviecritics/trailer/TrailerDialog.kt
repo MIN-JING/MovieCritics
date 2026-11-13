@@ -1,7 +1,11 @@
 package com.jim.moviecritics.trailer
 
 import android.os.Bundle
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -35,9 +39,8 @@ class TrailerDialog : AppCompatDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         binding = DialogTrailerBinding.inflate(inflater, container, false)
         binding.layoutTrailer.startAnimation(
             AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
@@ -80,8 +83,12 @@ class TrailerDialog : AppCompatDialogFragment() {
                     dismiss()
                     viewModel.onLeaveCompleted()
                 }
-                false -> { Logger.i("Trailer Dialog leave false = $it") }
-                null -> { Logger.i("Trailer Dialog leave null = $it") }
+                false -> {
+                    Logger.i("Trailer Dialog leave false = $it")
+                }
+                null -> {
+                    Logger.i("Trailer Dialog leave null = $it")
+                }
             }
         }
 
@@ -90,7 +97,9 @@ class TrailerDialog : AppCompatDialogFragment() {
             it?.let {
                 when (it) {
                     LoadApiStatus.DONE -> activity.showToast("The movie's review was published !")
-                    else -> { Logger.i("ReviewViewModel status value else = $it") }
+                    else -> {
+                        Logger.i("ReviewViewModel status value else = $it")
+                    }
                 }
             }
         }

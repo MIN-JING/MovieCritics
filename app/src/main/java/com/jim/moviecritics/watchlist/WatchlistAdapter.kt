@@ -11,12 +11,10 @@ import com.jim.moviecritics.databinding.ItemWatchlistBinding
 class WatchlistAdapter(
     private val onClickListener: OnClickListener,
     val viewModel: WatchlistViewModel
-) :
-    ListAdapter<Watch, WatchlistAdapter.WatchlistItemViewHolder>(DiffCallback) {
+) : ListAdapter<Watch, WatchlistAdapter.WatchlistItemViewHolder>(DiffCallback) {
 
-    class WatchlistItemViewHolder(
-        private var binding: ItemWatchlistBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    class WatchlistItemViewHolder(private var binding: ItemWatchlistBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(watch: Watch, onClickListener: OnClickListener, viewModel: WatchlistViewModel) {
             binding.watch = watch
@@ -31,22 +29,20 @@ class WatchlistAdapter(
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Watch>() {
-        override fun areItemsTheSame(oldItem: Watch, newItem: Watch): Boolean {
-            return oldItem === newItem
-        }
+        override fun areItemsTheSame(oldItem: Watch, newItem: Watch): Boolean = oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Watch, newItem: Watch): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Watch, newItem: Watch): Boolean =
+            oldItem.id == newItem.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchlistItemViewHolder {
-        return WatchlistItemViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchlistItemViewHolder =
+        WatchlistItemViewHolder(
             ItemWatchlistBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: WatchlistItemViewHolder, position: Int) {
         holder.bind((getItem(position)), onClickListener, viewModel)

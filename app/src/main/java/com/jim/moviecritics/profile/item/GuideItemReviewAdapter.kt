@@ -11,8 +11,7 @@ import com.jim.moviecritics.databinding.ItemProfileGuideCommentBinding
 class GuideItemReviewAdapter(
     private val onClickListener: OnClickListener,
     val viewModel: ItemGuideViewModel
-) :
-    ListAdapter<Comment, GuideItemReviewAdapter.GuideItemReviewViewHolder>(DiffCallback) {
+) : ListAdapter<Comment, GuideItemReviewAdapter.GuideItemReviewViewHolder>(DiffCallback) {
 
     class GuideItemReviewViewHolder(private var binding: ItemProfileGuideCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -30,22 +29,21 @@ class GuideItemReviewAdapter(
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Comment>() {
-        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
-            return oldItem === newItem
-        }
+        override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean =
+            oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean =
+            oldItem.id == newItem.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideItemReviewViewHolder {
-        return GuideItemReviewViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideItemReviewViewHolder =
+        GuideItemReviewViewHolder(
             ItemProfileGuideCommentBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: GuideItemReviewViewHolder, position: Int) {
         holder.bind((getItem(position)), onClickListener, viewModel)

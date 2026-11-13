@@ -15,10 +15,7 @@ import com.jim.moviecritics.R
  * source. Roles the XML theme does not set keep the Material 3 baseline values.
  */
 @Composable
-fun MovieCriticsTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+fun MovieCriticsTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = if (darkTheme) nightColorScheme() else dayColorScheme(),
         content = content

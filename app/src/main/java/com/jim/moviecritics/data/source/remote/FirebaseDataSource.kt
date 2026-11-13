@@ -7,7 +7,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
-import com.jim.moviecritics.data.*
+import com.jim.moviecritics.data.Comment
+import com.jim.moviecritics.data.CreditResult
+import com.jim.moviecritics.data.FindResult
+import com.jim.moviecritics.data.HomeItem
+import com.jim.moviecritics.data.LookItem
+import com.jim.moviecritics.data.MovieDetailResult
+import com.jim.moviecritics.data.Report
+import com.jim.moviecritics.data.Result
+import com.jim.moviecritics.data.Score
+import com.jim.moviecritics.data.Trend
+import com.jim.moviecritics.data.User
+import com.jim.moviecritics.data.Watch
 import com.jim.moviecritics.data.source.DataSource
 import com.jim.moviecritics.util.Logger
 import kotlin.coroutines.resume
@@ -198,9 +209,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing
-                            ))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -246,8 +259,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -289,8 +305,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -358,8 +377,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -399,8 +421,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -439,8 +464,11 @@ object FirebaseDataSource : DataSource {
                         return@addOnCompleteListener
                     }
                     continuation.resume(
-                        Result.Fail(MovieApplication.instance.getString(
-                            R.string.you_know_nothing))
+                        Result.Fail(
+                            MovieApplication.instance.getString(
+                                R.string.you_know_nothing
+                            )
+                        )
                     )
                 }
             }
@@ -486,8 +514,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -531,8 +562,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -691,8 +725,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -785,8 +822,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -812,8 +852,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -839,8 +882,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -866,8 +912,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -896,8 +945,11 @@ object FirebaseDataSource : DataSource {
                             return@addOnCompleteListener
                         }
                         continuation.resume(
-                            Result.Fail(MovieApplication.instance.getString(
-                                R.string.you_know_nothing))
+                            Result.Fail(
+                                MovieApplication.instance.getString(
+                                    R.string.you_know_nothing
+                                )
+                            )
                         )
                     }
                 }
@@ -906,7 +958,10 @@ object FirebaseDataSource : DataSource {
     override suspend fun removeWatchlistMovie(imdbID: String, userID: String): Result<Boolean> =
         suspendCoroutine { continuation ->
             val itemRef = FirebaseFirestore.getInstance().collection(PATH_WATCHLIST)
-            val query = itemRef.whereEqualTo(FIELD_IMDB_ID, imdbID).whereEqualTo(FIELD_USER_ID, userID)
+            val query = itemRef.whereEqualTo(
+                FIELD_IMDB_ID,
+                imdbID
+            ).whereEqualTo(FIELD_USER_ID, userID)
 
             query.get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -938,8 +993,11 @@ object FirebaseDataSource : DataSource {
                         return@addOnCompleteListener
                     }
                     continuation.resume(
-                        Result.Fail(MovieApplication.instance.getString(
-                            R.string.you_know_nothing))
+                        Result.Fail(
+                            MovieApplication.instance.getString(
+                                R.string.you_know_nothing
+                            )
+                        )
                     )
                 }
             }
@@ -967,7 +1025,11 @@ object FirebaseDataSource : DataSource {
                             continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
-                        continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                        continuation.resume(
+                            Result.Fail(
+                                MovieApplication.instance.getString(R.string.you_know_nothing)
+                            )
+                        )
                     }
                 }
         }
@@ -994,7 +1056,11 @@ object FirebaseDataSource : DataSource {
                             continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
-                        continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                        continuation.resume(
+                            Result.Fail(
+                                MovieApplication.instance.getString(R.string.you_know_nothing)
+                            )
+                        )
                     }
                 }
         }
@@ -1018,7 +1084,11 @@ object FirebaseDataSource : DataSource {
                             continuation.resume(Result.Error(it))
                             return@addOnCompleteListener
                         }
-                        continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                        continuation.resume(
+                            Result.Fail(
+                                MovieApplication.instance.getString(R.string.you_know_nothing)
+                            )
+                        )
                     }
                 }
         }
@@ -1044,7 +1114,11 @@ object FirebaseDataSource : DataSource {
                                 continuation.resume(Result.Error(it))
                                 return@addOnCompleteListener
                             }
-                            continuation.resume(Result.Fail(MovieApplication.instance.getString(R.string.you_know_nothing)))
+                            continuation.resume(
+                                Result.Fail(
+                                    MovieApplication.instance.getString(R.string.you_know_nothing)
+                                )
+                            )
                         }
                     }
             }

@@ -93,14 +93,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         val layoutParams = Toolbar.LayoutParams(
-            Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT
+            Toolbar.LayoutParams.WRAP_CONTENT,
+            Toolbar.LayoutParams.WRAP_CONTENT
         )
         layoutParams.gravity = Gravity.CENTER
         binding.textToolbarTitle.layoutParams = layoutParams
     }
 
     private fun setupNavController() {
-        findNavController(R.id.navHostFragment).addOnDestinationChangedListener { navController: NavController, _: NavDestination, _: Bundle? ->
+        findNavController(R.id.navHostFragment).addOnDestinationChangedListener {
+                navController: NavController,
+                _: NavDestination,
+                _: Bundle?
+            ->
             viewModel.currentFragmentType.value = when (navController.currentDestination?.id) {
                 R.id.homeFragment -> CurrentFragmentType.HOME
                 R.id.searchFragment -> CurrentFragmentType.SEARCH
@@ -116,21 +121,18 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
-
                     findNavController(R.id.navHostFragment)
                         .navigate(NavigationDirections.navigateToHomeFragment())
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.navigation_search -> {
-
                     findNavController(R.id.navHostFragment)
                         .navigate(NavigationDirections.navigateToSearchFragment())
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.navigation_watchlist -> {
-
                     when (viewModel.isLoggedIn) {
                         true -> {
                             viewModel.checkUser()
@@ -150,7 +152,6 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.navigation_profile -> {
-
                     when (viewModel.isLoggedIn) {
                         true -> {
                             viewModel.checkUser()

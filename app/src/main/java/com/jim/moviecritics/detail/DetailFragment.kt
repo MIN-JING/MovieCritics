@@ -30,9 +30,8 @@ class DetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         val binding = FragmentDetailBinding.inflate(inflater, container, false)
 
         // The toolbar and bottom navigation, which normally take the system bar insets,
@@ -166,7 +165,8 @@ class DetailFragment : Fragment() {
         userRatings: ArrayList<RadarEntry>
     ): RadarData {
         val averageRatingsSet = RadarDataSet(
-            averageRatings, "TMDB ratings with linear transformation"
+            averageRatings,
+            "TMDB ratings with linear transformation"
         )
         averageRatingsSet.lineWidth = 2F
         averageRatingsSet.isDrawHighlightCircleEnabled = true

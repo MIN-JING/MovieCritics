@@ -22,22 +22,20 @@ class CastAdapter(private val onClickListener: OnClickListener) :
     }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Cast>() {
-        override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean {
-            return oldItem === newItem
-        }
+        override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean = oldItem === newItem
 
-        override fun areContentsTheSame(oldItem: Cast, newItem: Cast): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areContentsTheSame(oldItem: Cast, newItem: Cast): Boolean =
+            oldItem.id == newItem.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
-        return CastViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder =
+        CastViewHolder(
             ItemDetailCastBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context),
+                parent,
+                false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {
         holder.bind((getItem(position)), onClickListener)

@@ -42,9 +42,8 @@ class PendingDialog : AppCompatDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-
         binding = DialogPendingBinding.inflate(inflater, container, false)
         binding.layoutPending.startAnimation(
             AnimationUtils.loadAnimation(context, R.anim.anim_slide_up)
@@ -111,7 +110,9 @@ class PendingDialog : AppCompatDialogFragment() {
                     dismiss()
                     viewModel.onLeaveCompleted()
                 }
-                else -> { Logger.i("PendingViewModel.leave.value != true") }
+                else -> {
+                    Logger.i("PendingViewModel.leave.value != true")
+                }
             }
         }
 

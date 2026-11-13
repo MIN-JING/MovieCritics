@@ -52,7 +52,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
         _uiState.update {
             it.copy(
                 query = query,
-                errorMessage = null,
+                errorMessage = null
             )
         }
 
@@ -64,7 +64,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                     searching = false,
                     hasSearched = false,
                     rawResults = emptyList(),
-                    errorMessage = null,
+                    errorMessage = null
                 )
             }
             return
@@ -89,7 +89,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                 hasSearched = false,
                 rawResults = emptyList(),
                 errorMessage = null,
-                selectedFilter = SearchFilter.ALL,
+                selectedFilter = SearchFilter.ALL
             )
         }
     }
@@ -109,7 +109,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
             it.copy(
                 query = TextFieldValue(normalizedQuery),
                 focused = false,
-                errorMessage = null,
+                errorMessage = null
             )
         }
 
@@ -156,7 +156,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
         _uiState.update {
             it.copy(
                 searching = true,
-                errorMessage = null,
+                errorMessage = null
             )
         }
 
@@ -172,7 +172,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                         hasSearched = true,
                         rawResults = result.data,
                         recentSearches = SearchRecentStore.save(query),
-                        errorMessage = null,
+                        errorMessage = null
                     )
                 }
             }
@@ -182,7 +182,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                         searching = false,
                         hasSearched = true,
                         rawResults = emptyList(),
-                        errorMessage = result.error,
+                        errorMessage = result.error
                     )
                 }
             }
@@ -193,7 +193,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                         hasSearched = true,
                         rawResults = emptyList(),
                         errorMessage = result.exception.localizedMessage
-                            ?: Util.getString(R.string.you_know_nothing),
+                            ?: Util.getString(R.string.you_know_nothing)
                     )
                 }
             }
@@ -203,7 +203,7 @@ class SearchViewModel(private val repository: Repository) : ViewModel() {
                         searching = false,
                         hasSearched = true,
                         rawResults = emptyList(),
-                        errorMessage = Util.getString(R.string.you_know_nothing),
+                        errorMessage = Util.getString(R.string.you_know_nothing)
                     )
                 }
             }

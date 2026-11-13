@@ -7,11 +7,8 @@ import com.jim.moviecritics.data.User
 import com.jim.moviecritics.data.source.Repository
 import com.jim.moviecritics.util.Logger
 
-
-class FollowViewModel(
-    private val repository: Repository,
-    private val arguments: User?
-) : ViewModel() {
+class FollowViewModel(private val repository: Repository, private val arguments: User?) :
+    ViewModel() {
 
     private val _user = MutableLiveData<User>().apply {
         value = arguments

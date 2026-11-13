@@ -16,10 +16,8 @@ import com.jim.moviecritics.MovieApplication
 import com.jim.moviecritics.R
 import com.jim.moviecritics.util.Logger
 
-class WatchlistReminderWorker(
-    context: Context,
-    workerParams: WorkerParameters,
-) : Worker(context, workerParams) {
+class WatchlistReminderWorker(context: Context, workerParams: WorkerParameters) :
+    Worker(context, workerParams) {
 
     // Arbitrary id number
     private val notificationId = 17
@@ -58,7 +56,7 @@ class WatchlistReminderWorker(
                     )
             }
 
-        val movieTitle = inputData.getString(nameKey)
+        val movieTitle = inputData.getString(NAME_KEY)
 
         val builder = NotificationCompat.Builder(applicationContext, MovieApplication.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -76,6 +74,6 @@ class WatchlistReminderWorker(
     }
 
     companion object {
-        const val nameKey = "MovieTitle"
+        const val NAME_KEY = "MovieTitle"
     }
 }

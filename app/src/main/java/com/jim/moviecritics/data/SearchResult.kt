@@ -49,7 +49,9 @@ data class SearchResult(
                         }
                         items.add(LookItem.LookPerson(look))
                     }
-                    else -> { Logger.i("mediaType unknown data = $look") }
+                    else -> {
+                        Logger.i("mediaType unknown data = $look")
+                    }
                 }
                 items.sortBy { items -> items.order }
             }

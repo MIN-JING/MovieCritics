@@ -16,11 +16,14 @@ import com.jim.moviecritics.util.Logger
 import com.jim.moviecritics.util.Util
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class ItemGuideViewModel(
-    private val repository: Repository
-) : ViewModel() {
+class ItemGuideViewModel(private val repository: Repository) : ViewModel() {
 
     var livePersonalComments = MutableLiveData<List<Comment>>()
 
@@ -62,10 +65,9 @@ class ItemGuideViewModel(
         livePersonalComments = repository.getLivePersonalComments(userID)
     }
 
-    fun timeStampToDate(timestamp: Timestamp): String {
-        return SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
+    fun timeStampToDate(timestamp: Timestamp): String =
+        SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
             .format(timestamp.toDate())
-    }
 
     fun getFindsByImdbIDs(imdbIDs: List<String>) {
         val list = mutableListOf<Find>()
@@ -98,8 +100,8 @@ class ItemGuideViewModel(
         }
     }
 
-    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? {
-        return withContext(Dispatchers.IO) {
+    private suspend fun getFindResult(imdbID: String, index: Int): FindResult? =
+        withContext(Dispatchers.IO) {
             when (val result = repository.getFind(imdbID)) {
                 is Result.Success -> {
                     _error.postValue(null)
@@ -123,5 +125,4 @@ class ItemGuideViewModel(
                 }
             }
         }
-    }
 }

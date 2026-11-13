@@ -64,12 +64,7 @@ fun applySystemBarInsets(
 /**
  * Resets the top/bottom margin or padding of a view to 0.
  */
-private fun resetInsets(
-    view: View,
-    mode: InsetMode,
-    applyTop: Boolean,
-    applyBottom: Boolean
-) {
+private fun resetInsets(view: View, mode: InsetMode, applyTop: Boolean, applyBottom: Boolean) {
     when (mode) {
         InsetMode.MARGIN -> {
             val params = view.layoutParams as MarginLayoutParams

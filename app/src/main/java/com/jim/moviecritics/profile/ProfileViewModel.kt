@@ -14,10 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(
-    private val repository: Repository,
-    private val arguments: User?
-) : ViewModel() {
+class ProfileViewModel(private val repository: Repository, private val arguments: User?) :
+    ViewModel() {
 
     // After login to Firebase server through Google
     // at the same time we can get user info to provide to display ui

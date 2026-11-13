@@ -41,7 +41,7 @@ fun SearchTextField(
     onClearQuery: () -> Unit,
     searching: Boolean,
     focused: Boolean,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
 
@@ -52,18 +52,18 @@ fun SearchTextField(
                 top = 8.dp,
                 bottom = 8.dp,
                 start = if (!focused) 16.dp else 0.dp,
-                end = 16.dp,
+                end = 16.dp
             ),
         color = MaterialTheme.colorScheme.surfaceVariant,
-        shape = RoundedCornerShape(percent = 50),
+        shape = RoundedCornerShape(percent = 50)
     ) {
         CompositionLocalProvider(
             LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant,
-            LocalTextStyle provides MaterialTheme.typography.bodyLarge,
+            LocalTextStyle provides MaterialTheme.typography.bodyLarge
         ) {
             Box(
                 contentAlignment = Alignment.CenterStart,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             ) {
                 if (query.text.isEmpty()) {
                     SearchHint(Modifier.padding(start = 24.dp, end = 8.dp))
@@ -81,9 +81,9 @@ fun SearchTextField(
                             .padding(top = 9.dp, bottom = 8.dp, start = 24.dp, end = 8.dp),
                         singleLine = true,
                         textStyle = MaterialTheme.typography.bodyLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = MaterialTheme.colorScheme.onSurface
                         ),
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
                     )
 
                     when {
@@ -92,14 +92,14 @@ fun SearchTextField(
                                 modifier = Modifier
                                     .padding(horizontal = 12.dp)
                                     .size(20.dp),
-                                strokeWidth = 2.dp,
+                                strokeWidth = 2.dp
                             )
                         }
                         query.text.isNotEmpty() -> {
                             IconButton(onClick = onClearQuery) {
                                 Icon(
                                     imageVector = Icons.Filled.Close,
-                                    contentDescription = stringResource(R.string.search_clear),
+                                    contentDescription = stringResource(R.string.search_clear)
                                 )
                             }
                         }
@@ -116,11 +116,11 @@ private fun SearchHint(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxSize()
-            .then(modifier),
+            .then(modifier)
     ) {
         Text(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            text = stringResource(R.string.search_hint),
+            text = stringResource(R.string.search_hint)
         )
     }
 }
